@@ -8,7 +8,7 @@ class WorkoutsScreen extends React.Component {
     tabBarLabel: 'Workouts',
     tabBarIcon: ({ tintColor }) => (
       <Text>Workouts</Text>
-    ),
+    )
   };
 
   mockAction() {
