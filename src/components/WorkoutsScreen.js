@@ -1,4 +1,5 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import { StyleSheet, Text, View, Button } from 'react-native';
 
 class WorkoutsScreen extends React.Component {
@@ -16,10 +17,17 @@ class WorkoutsScreen extends React.Component {
           onPress={() => this.props.navigation.goBack()}
           title="Go back home"
         />
+        <Text>{this.props.message}</Text>
       </View>
     );
   }
 }
+
+const mapStateToProps = (state, ownProps) => {
+  return {
+    message: state.workouts.message
+  };
+};
 
 const styles = StyleSheet.create({
   container: {
@@ -29,4 +37,5 @@ const styles = StyleSheet.create({
   }
 });
 
-export default WorkoutsScreen
+export default connect(mapStateToProps, null)(WorkoutsScreen);
+// export default WorkoutsScreen

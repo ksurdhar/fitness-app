@@ -5,7 +5,7 @@ import { TabNavigator } from 'react-navigation';
 import WorkoutsScreen from './components/WorkoutsScreen';
 import HomeScreen from './components/HomeScreen';
 
-const WorkoutApp = TabNavigator({
+const NavigationApp = TabNavigator({
   Home: {
     screen: HomeScreen
   },
@@ -17,7 +17,7 @@ const WorkoutApp = TabNavigator({
   animationEnabled: true,
   tabBarOptions: {
     activeTintColor: '#e91e63',
-  },
+  }
 });
 
-export default WorkoutApp
+export default NavigationApp
