@@ -5,7 +5,7 @@ const initialState = {
 
 export default function workoutsReducer (state = initialState, action) {
   switch (action.type) {
-    case 'ADD_WORKOUT':
+    case 'ADD_WORKOUT_SUCCESS':
       return Object.assign({}, state, {
         workouts: state.workouts.concat(action.workout)
       });

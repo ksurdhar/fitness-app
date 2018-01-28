@@ -15,6 +15,10 @@ class WorkoutsScreen extends React.Component {
     this.props.mockAction();
   }
 
+  addWorkout() {
+    this.props.addWorkout('pushups');
+  }
+
   render() {
     return (
       <View style={styles.container}>
@@ -23,6 +27,10 @@ class WorkoutsScreen extends React.Component {
           title="Update Message"
         />
         <Text>{this.props.message}</Text>
+        <Button
+          onPress={() => this.addWorkout()}
+          title="Add Workout"
+        />
       </View>
     );
   }
@@ -36,6 +44,7 @@ const mapStateToProps = (state, ownProps) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
+    addWorkout: (name) => { dispatch(workoutActions.addWorkout(name)); },
     mockAction: () => { dispatch(workoutActions.mockAction()); }
   };
 }
