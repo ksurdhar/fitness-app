@@ -1,16 +1,23 @@
-import React, { Component } from 'react';
-import { Provider } from 'react-redux';
-import store from './redux/store';
-import WorkoutApp from './WorkoutApp';
+import React from 'react';
+import { StyleSheet, Text, View, Button } from 'react-native';
+import { TabNavigator } from 'react-navigation';
 
-class Application extends Component {
-  render() {
-    return (
-      <Provider store={store}>
-        <WorkoutApp />
-      </Provider>
-    );
-  }
-}
+import WorkoutsScreen from './components/WorkoutsScreen';
+import HomeScreen from './components/HomeScreen';
 
-export default Application;
+const WorkoutApp = TabNavigator({
+  Home: {
+    screen: HomeScreen
+  },
+  Workouts: {
+    screen: WorkoutsScreen
+  },
+}, {
+  tabBarPosition: 'bottom',
+  animationEnabled: true,
+  tabBarOptions: {
+    activeTintColor: '#e91e63',
+  },
+});
+
+export default WorkoutApp
