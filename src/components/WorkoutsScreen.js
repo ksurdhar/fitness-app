@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { StyleSheet, Text, View, Button } from 'react-native';
+import * as workoutActions from '../redux/actions/workoutActions';
 
 class WorkoutsScreen extends React.Component {
   static navigationOptions = {
@@ -10,12 +11,16 @@ class WorkoutsScreen extends React.Component {
     ),
   };
 
+  mockAction() {
+    this.props.mockAction();
+  }
+
   render() {
     return (
       <View style={styles.container}>
         <Button
-          onPress={() => this.props.navigation.goBack()}
-          title="Go back home"
+          onPress={() => this.mockAction()}
+          title="Update Message"
         />
         <Text>{this.props.message}</Text>
       </View>
@@ -29,6 +34,12 @@ const mapStateToProps = (state, ownProps) => {
   };
 };
 
+const mapDispatchToProps = (dispatch) => {
+  return {
+    mockAction: () => { dispatch(workoutActions.mockAction()); }
+  };
+}
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -37,5 +48,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default connect(mapStateToProps, null)(WorkoutsScreen);
-// export default WorkoutsScreen
+export default connect(mapStateToProps, mapDispatchToProps)(WorkoutsScreen);

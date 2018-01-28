@@ -9,6 +9,11 @@ export default function workoutsReducer (state = initialState, action) {
       return Object.assign({}, state, {
         workouts: state.workouts.concat(action.workout)
       });
+    case 'MOCK_ACTION':
+      const newMessage = state.message === 'redux connected' ? 'action working' : 'redux connected';
+      return Object.assign({}, state, {
+        message: newMessage
+      });
     default:
       return state;
   }
