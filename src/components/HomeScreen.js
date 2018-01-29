@@ -2,7 +2,6 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { StyleSheet, Text, View, Button, ListView } from 'react-native';
 
-
 class HomeScreen extends React.Component {
   static navigationOptions = {
     tabBarLabel: 'Home',

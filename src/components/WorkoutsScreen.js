@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { StyleSheet, Text, View, Button } from 'react-native';
+import { StyleSheet, Text, View, Button, TextInput } from 'react-native';
 import * as workoutActions from '../redux/actions/workoutActions';
 
 class WorkoutsScreen extends React.Component {
@@ -11,12 +11,21 @@ class WorkoutsScreen extends React.Component {
     )
   };
 
+  constructor() {
+    super()
+
+    this.state = {
+      workoutName: ''
+    }
+  }
+
   mockAction() {
     this.props.mockAction();
   }
 
   addWorkout() {
-    this.props.addWorkout('pushups');
+    this.props.addWorkout(this.state.workoutName);
+    this.setState({workoutName: ''});
   }
 
   render() {
@@ -27,10 +36,12 @@ class WorkoutsScreen extends React.Component {
           title="Update Message"
         />
         <Text>{this.props.message}</Text>
-        <Button
-          onPress={() => this.addWorkout()}
-          title="Add Workout"
-        />
+        <TextInput placeholder="ex. squats"
+                 style={styles.nameInput}
+                 ref="newWorkout"
+                 value={this.state.workoutName}
+                 onChangeText={(workoutName) => this.setState({workoutName})}
+                 onSubmitEditing={() => this.addWorkout()} />
       </View>
     );
   }
@@ -54,7 +65,19 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center'
-  }
+  },
+  nameInput: {
+    backgroundColor: '#FFFFFF',
+    height: 42,
+    borderColor: '#CCCCCC',
+    borderWidth: 1,
+    marginBottom: 10,
+    marginLeft: 20,
+    marginRight: 20,
+    paddingLeft: 10,
+    borderRadius: 5,
+    fontSize: 20
+  },
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(WorkoutsScreen);
