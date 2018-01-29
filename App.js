@@ -1,13 +1,14 @@
-import React, { Component } from 'react';
-import { Provider } from 'react-redux';
-import store from './src/redux/store';
-import NavigationApp from './src/index';
+import React, { Component } from "react";
+import { Provider } from "react-redux";
+import store from "./src/redux/store";
+
+import Index from "./src/Index";
 
 class WorkoutApp extends Component {
   render() {
     return (
       <Provider store={store}>
-        <NavigationApp />
+        <Index />
       </Provider>
     );
   }
