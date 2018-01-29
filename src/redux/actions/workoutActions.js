@@ -1,5 +1,12 @@
 import { workoutsRef } from '../../firebase';
 
+export function recievedWorkouts(workouts) {
+  return {
+    type: 'RECIEVED_WORKOUTS',
+    workouts: workouts
+  }
+}
+
 export function addWorkout(name) {
   const id = Math.random().toString(36).substring(7)
   const workoutRef = workoutsRef.child(id)

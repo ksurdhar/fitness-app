@@ -1,5 +1,5 @@
 import { initializeApp } from 'firebase'
-import { addWorkoutSuccess } from './redux/actions/workoutActions';
+import { addWorkoutSuccess, recievedWorkouts } from './redux/actions/workoutActions';
 
 import config from '../config'
 
@@ -15,5 +15,9 @@ export const workoutsRef = firebaseApp.database().ref('workouts')
 export function syncFirebase(store) {
   workoutsRef.on('child_added', (snapshot) => {
     store.dispatch(addWorkoutSuccess(snapshot.val()))
+  })
+
+  workoutsRef.on('value', (snapshot) => {
+    store.dispatch(recievedWorkouts(snapshot.val()))
   })
 }
