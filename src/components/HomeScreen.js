@@ -21,6 +21,17 @@ class HomeScreen extends React.Component {
     )
   }
 
+  renderList() {
+    if (!!this.props.workouts) {
+      return (
+        <ListView
+          dataSource={this.dataSource.cloneWithRows(Object.values(this.props.workouts))}
+          renderRow={this.renderRow.bind(this)}
+        />
+      )
+    }
+  }
+
   render() {
     return (
       <View style={styles.container}>
@@ -28,10 +39,7 @@ class HomeScreen extends React.Component {
           onPress={() => this.props.navigation.navigate('Workouts')}
           title="Go to workouts"
         />
-        <ListView
-          dataSource={this.dataSource.cloneWithRows(this.props.workouts)}
-          renderRow={this.renderRow.bind(this)}
-        />
+        {this.renderList()}
       </View>
     );
   }
