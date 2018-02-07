@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { StyleSheet, Text, View, Button, ListView } from 'react-native';
+import { StyleSheet, Text, View, Button, FlatList } from 'react-native';
 
 class HomeScreen extends React.Component {
   static navigationOptions = {
@@ -10,22 +10,18 @@ class HomeScreen extends React.Component {
     ),
   };
 
-  componentWillMount() {
-    this.dataSource = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2})
-  }
-
-  renderRow(workout) {
+  renderRow({item}) {
     return (
-      <Text>{workout.name}</Text>
+      <Text>{item.name}</Text>
     )
   }
 
   renderList() {
-    if (!!this.props.workouts) {
+    if (Object.values(this.props.workouts).length > 0) {
       return (
-        <ListView
-          dataSource={this.dataSource.cloneWithRows(Object.values(this.props.workouts))}
-          renderRow={this.renderRow.bind(this)}
+        <FlatList
+          data={Object.values(this.props.workouts)}
+          renderItem={this.renderRow.bind(this)}
         />
       )
     }
