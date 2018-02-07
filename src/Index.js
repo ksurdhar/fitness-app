@@ -6,9 +6,11 @@ import Navigator from "./Navigator";
 import store from "./redux/store";
 import LoginScreen from "./components/LoginScreen";
 
+import config from '../config';
+
 class Index extends Component {
   render() {
-    if (this.props.isLoggedIn) {
+    if (this.props.isLoggedIn || config.DEV_MODE) {
       return (
         <Provider store={store}>
           <Navigator />
