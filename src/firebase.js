@@ -22,7 +22,6 @@ export function syncFirebase(store) {
   })
 
   workoutsRef.on('child_removed', (snapshot) => {
-    console.log('child_removed', snapshot.val())
     store.dispatch(removeWorkoutSuccess(snapshot.val()))
   })
 

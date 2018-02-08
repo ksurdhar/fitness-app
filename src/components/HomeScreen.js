@@ -41,6 +41,13 @@ class HomeScreen extends React.Component {
           renderItem={this.renderRow.bind(this)}
         />
       )
+    } else {
+      console.log(' no workouts defined')
+      return (
+        <View style={styles.emptyMessage}>
+          <Text>No Workouts Defined Yet!</Text>
+        </View>
+      )
     }
   }
 
@@ -48,10 +55,6 @@ class HomeScreen extends React.Component {
     return (
       <View style={styles.container}>
         {this.renderList()}
-        <Button
-          onPress={() => this.props.navigation.navigate('Workouts')}
-          title="Go to workouts"
-        />
       </View>
     );
   }
@@ -72,22 +75,28 @@ const mapDispatchToProps = (dispatch) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    marginTop: 20,
   },
   list: {
     flex: 1,
     flexDirection: 'column',
-    marginTop: 20,
   },
   row: {
     backgroundColor: 'skyblue',
     height: 40,
     borderColor: 'white',
     borderWidth: 1,
-    paddingLeft: 20,
-    paddingTop: 7,
+    flex: 1,
+    flexDirection: 'row'
   },
   rowText: {
     fontSize: 18,
+    paddingLeft: 20,
+    paddingTop: 7,
+  },
+  emptyMessage: {
+    alignItems: 'center',
+    marginTop: 300
   }
 });
 
