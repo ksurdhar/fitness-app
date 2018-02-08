@@ -21,6 +21,21 @@ export function addWorkout(name) {
   }
 }
 
+export function removeWorkout(id) {
+  workoutsRef.child(id).remove()
+
+  return {
+    type: 'REMOVE_WORKOUT'
+  }
+}
+
+export function removeWorkoutSuccess(workout) {
+  return {
+    type: 'REMOVE_WORKOUT_SUCCESS',
+    workout: workout
+  }
+}
+
 export function addWorkoutSuccess(workout) {
   return {
     type: 'ADD_WORKOUT_SUCCESS',

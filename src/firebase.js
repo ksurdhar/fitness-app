@@ -1,5 +1,9 @@
 import { initializeApp } from 'firebase'
-import { addWorkoutSuccess, recievedWorkouts } from './redux/actions/workoutActions';
+import {
+  addWorkoutSuccess,
+  removeWorkoutSuccess,
+  recievedWorkouts
+} from './redux/actions/workoutActions';
 
 import config from '../config'
 
@@ -17,7 +21,12 @@ export function syncFirebase(store) {
     store.dispatch(addWorkoutSuccess(snapshot.val()))
   })
 
-  workoutsRef.on('value', (snapshot) => {
+  workoutsRef.on('child_removed', (snapshot) => {
+    console.log('child_removed', snapshot.val())
+    store.dispatch(removeWorkoutSuccess(snapshot.val()))
+  })
+
+  workoutsRef.once('value', (snapshot) => {
     store.dispatch(recievedWorkouts(snapshot.val()))
   })
 }
