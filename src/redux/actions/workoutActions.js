@@ -9,8 +9,7 @@ export function recievedWorkouts(workouts) {
 
 export function addWorkout(name, userID) {
   const id = Math.random().toString(36).substring(7)
-  const workoutRef = workoutsRef.child(userID).child(id)
-  console.log('workoutRef', workoutRef.toString())
+  const workoutRef = workoutsRef.child(`${userID}/${id}`)
 
   workoutRef.set({
     id,
@@ -22,8 +21,9 @@ export function addWorkout(name, userID) {
   }
 }
 
-export function removeWorkout(id) {
-  workoutsRef.child(id).remove()
+export function removeWorkout(id, userID) {
+  const workoutRef = workoutsRef.child(`${userID}/${id}`)
+  workoutRef.remove()
 
   return {
     type: 'REMOVE_WORKOUT'

@@ -16,7 +16,7 @@ class WorkoutsScreen extends React.Component {
   }
 
   removeWorkout(id) {
-    this.props.removeWorkout(id)
+    this.props.removeWorkout(id, this.props.userID)
   }
 
   renderRow({item}) {
@@ -61,13 +61,14 @@ class WorkoutsScreen extends React.Component {
 
 const mapStateToProps = (state, ownProps) => {
   return {
-    workouts: state.workouts.workouts
+    workouts: state.workouts.workouts,
+    userID: state.auth.user.uid,
   };
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    removeWorkout: (name) => { dispatch(workoutActions.removeWorkout(name)); },
+    removeWorkout: (name, userID) => { dispatch(workoutActions.removeWorkout(name, userID)); },
   };
 }
 

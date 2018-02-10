@@ -38,12 +38,9 @@ class LoginScreen extends Component {
       .auth()
       .signInWithEmailAndPassword(this.state.email, this.state.password)
       .then(user => {
-        // from here, create a new ref that lives on the LoginScreen
-        // that ref is scoped to user id: userWorkoutsRef = firebaseApp.database().ref('workouts/' + user.uid)
-        // import the store so that you can dispatch actions.
+        // TODO: move this into something managing state, clean up connections on logout
         const personalizedRef = firebaseApp.database().ref(`workouts/${user.uid}`)
         personalizedRef.on('child_added', (snapshot) => {
-          console.log('GOT INTO HERE')
           store.dispatch(addWorkoutSuccess(snapshot.val()))
         })
 
