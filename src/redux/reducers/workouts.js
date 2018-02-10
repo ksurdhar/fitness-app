@@ -3,7 +3,7 @@ const initialState = {
   message: 'redux connected'
 };
 
-export default function workoutsReducer (state = initialState, action) {
+export default function workoutsReducer(state = initialState, action) {
   switch (action.type) {
     case 'RECIEVED_WORKOUTS':
       const updatedWorkouts = action.workouts ? Object.values(action.workouts) : []

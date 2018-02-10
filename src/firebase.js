@@ -29,3 +29,6 @@ export function syncFirebase(store) {
     store.dispatch(recievedWorkouts(snapshot.val()))
   })
 }
+
+
+// can create listeners at any time (after login) - just need a reference to the store

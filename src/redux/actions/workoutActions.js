@@ -7,9 +7,10 @@ export function recievedWorkouts(workouts) {
   }
 }
 
-export function addWorkout(name) {
+export function addWorkout(name, userID) {
+  console.log('received:', userID)
   const id = Math.random().toString(36).substring(7)
-  const workoutRef = workoutsRef.child(id)
+  const workoutRef = workoutsRef.child(userID)
 
   workoutRef.set({
     id,

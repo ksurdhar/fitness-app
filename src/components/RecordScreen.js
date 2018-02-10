@@ -20,7 +20,8 @@ class RecordScreen extends React.Component {
   }
 
   addWorkout() {
-    this.props.addWorkout(this.state.workoutName);
+    console.log('user?',this.props.user.uid)
+    this.props.addWorkout(this.state.workoutName, this.props.user.uid);
     this.setState({workoutName: ''});
   }
 
@@ -39,9 +40,15 @@ class RecordScreen extends React.Component {
   }
 }
 
+const mapStateToProps = (state, ownProps) => {
+  return {
+    user: state.auth.user
+  };
+};
+
 const mapDispatchToProps = (dispatch) => {
   return {
-    addWorkout: (name) => { dispatch(workoutActions.addWorkout(name)); },
+    addWorkout: (name, uid) => { dispatch(workoutActions.addWorkout(name, uid)); },
   };
 }
 
@@ -65,4 +72,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default connect(null, mapDispatchToProps)(RecordScreen);
+export default connect(mapStateToProps, mapDispatchToProps)(RecordScreen);
