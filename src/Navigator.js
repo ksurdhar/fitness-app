@@ -2,16 +2,20 @@ import React from "react";
 import { StyleSheet, Text, View, Button } from "react-native";
 import { TabNavigator } from "react-navigation";
 
+import RecordScreen from "./components/RecordScreen";
 import WorkoutsScreen from "./components/WorkoutsScreen";
-import HomeScreen from "./components/HomeScreen";
+import ProfileScreen from "./components/ProfileScreen";
 
 const Navigator = TabNavigator(
   {
-    Home: {
-      screen: HomeScreen
-    },
     Workouts: {
       screen: WorkoutsScreen
+    },
+    Record: {
+      screen: RecordScreen
+    },
+    Profile: {
+      screen: ProfileScreen
     }
   },
   {

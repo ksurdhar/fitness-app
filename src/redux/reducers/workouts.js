@@ -18,11 +18,6 @@ export default function workoutsReducer (state = initialState, action) {
       return Object.assign({}, state, {
         workouts: state.workouts.filter((workout) => workout.id !== action.workout.id)
       });
-    case 'MOCK_ACTION':
-      const newMessage = state.message === 'redux connected' ? 'action working' : 'redux connected';
-      return Object.assign({}, state, {
-        message: newMessage
-      });
     default:
       return state;
   }

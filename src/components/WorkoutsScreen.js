@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { StyleSheet, Text, View, Button, TextInput } from 'react-native';
+import { StyleSheet, Text, View, Button, FlatList } from 'react-native';
 import * as workoutActions from '../redux/actions/workoutActions';
 
 class WorkoutsScreen extends React.Component {
@@ -8,40 +8,52 @@ class WorkoutsScreen extends React.Component {
     tabBarLabel: 'Workouts',
     tabBarIcon: ({ tintColor }) => (
       <Text>Workouts</Text>
-    )
+    ),
   };
 
-  constructor() {
-    super()
+  _keyExtractor(item, index) {
+    return item.id
+  }
 
-    this.state = {
-      workoutName: ''
+  removeWorkout(id) {
+    this.props.removeWorkout(id)
+  }
+
+  renderRow({item}) {
+    return (
+      <View style={styles.row}>
+        <Text style={styles.rowText}>{item.name}</Text>
+        <Button
+          onPress={() => this.removeWorkout(item.id) }
+          title="x"
+        />
+      </View>
+    )
+  }
+
+  renderList() {
+    if (this.props.workouts.length > 0) {
+      return (
+        <FlatList
+          style={styles.list}
+          data={this.props.workouts}
+          keyExtractor={this._keyExtractor}
+          renderItem={this.renderRow.bind(this)}
+        />
+      )
+    } else {
+      return (
+        <View style={styles.emptyMessage}>
+          <Text>No Workouts Defined Yet!</Text>
+        </View>
+      )
     }
-  }
-
-  mockAction() {
-    this.props.mockAction();
-  }
-
-  addWorkout() {
-    this.props.addWorkout(this.state.workoutName);
-    this.setState({workoutName: ''});
   }
 
   render() {
     return (
       <View style={styles.container}>
-        <Button
-          onPress={() => this.mockAction()}
-          title="Update Message"
-        />
-        <Text>{this.props.message}</Text>
-        <TextInput placeholder="ex. squats"
-                 style={styles.nameInput}
-                 ref="newWorkout"
-                 value={this.state.workoutName}
-                 onChangeText={(workoutName) => this.setState({workoutName})}
-                 onSubmitEditing={() => this.addWorkout()} />
+        {this.renderList()}
       </View>
     );
   }
@@ -49,35 +61,42 @@ class WorkoutsScreen extends React.Component {
 
 const mapStateToProps = (state, ownProps) => {
   return {
-    message: state.workouts.message
+    workouts: state.workouts.workouts
   };
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    addWorkout: (name) => { dispatch(workoutActions.addWorkout(name)); },
-    mockAction: () => { dispatch(workoutActions.mockAction()); }
+    removeWorkout: (name) => { dispatch(workoutActions.removeWorkout(name)); },
   };
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center'
+    marginTop: 20,
   },
-  nameInput: {
-    backgroundColor: '#FFFFFF',
-    height: 42,
-    borderColor: '#CCCCCC',
+  list: {
+    flex: 1,
+    flexDirection: 'column',
+  },
+  row: {
+    backgroundColor: 'skyblue',
+    height: 40,
+    borderColor: 'white',
     borderWidth: 1,
-    marginBottom: 10,
-    marginLeft: 20,
-    marginRight: 20,
-    paddingLeft: 10,
-    borderRadius: 5,
-    fontSize: 20
+    flex: 1,
+    flexDirection: 'row'
   },
+  rowText: {
+    fontSize: 18,
+    paddingLeft: 20,
+    paddingTop: 7,
+  },
+  emptyMessage: {
+    alignItems: 'center',
+    marginTop: 300
+  }
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(WorkoutsScreen);

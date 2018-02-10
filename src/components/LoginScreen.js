@@ -10,6 +10,7 @@ import {
 } from "react-native";
 import { login, loginFailed } from "../redux/actions/auth";
 import firebase from "firebase";
+import config from '../../config.js'
 
 const LOGIN = "Login";
 const SIGNUP = "Sign Up";
@@ -22,6 +23,11 @@ class LoginScreen extends Component {
       email: "",
       password: ""
     };
+
+    if (config.DEV_MODE) {
+      this.state.email = 'admin@gmail.com'
+      this.state.password = 'password'
+    }
   }
 
   onLogin(e) {

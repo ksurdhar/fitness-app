@@ -42,9 +42,3 @@ export function addWorkoutSuccess(workout) {
     workout: workout
   };
 }
-
-export function mockAction() {
-  return {
-    type: 'MOCK_ACTION'
-  }
-}

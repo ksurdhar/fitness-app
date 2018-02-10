@@ -10,7 +10,7 @@ import config from '../config';
 
 class Index extends Component {
   render() {
-    if (this.props.isLoggedIn || config.DEV_MODE) {
+    if (this.props.isLoggedIn) {
       return (
         <Provider store={store}>
           <Navigator />

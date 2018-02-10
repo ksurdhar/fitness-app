@@ -1,5 +1,3 @@
-import firebase from "firebase";
-
 const defaultState = {
   isLoggedIn: false,
   user: {}
