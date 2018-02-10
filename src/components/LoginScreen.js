@@ -89,9 +89,10 @@ class LoginScreen extends Component {
 
   render() {
     return (
-      <View style={styles.container}>
+      <ScrollView contentContainerStyle={styles.container}>
         <Text style={styles.title}>{this.state.action}</Text>
         <TextInput
+          style={styles.input}
           placeholder="Email Address"
           autoCapitalize="none"
           autoCorrect={false}
@@ -101,6 +102,7 @@ class LoginScreen extends Component {
           onChangeText={text => this.setState({ email: text })}
         />
         <TextInput
+          style={styles.input}
           placeholder="Password"
           autoCapitalize="none"
           autoCorrect={false}
@@ -108,12 +110,19 @@ class LoginScreen extends Component {
           value={this.state.password}
           onChangeText={text => this.setState({ password: text })}
         />
-        <Button onPress={e => this.onSubmitForm(e)} title={this.state.action} />
-        <Button
-          onPress={e => this.onToggleAction(e)}
-          title={this.state.action === LOGIN ? SIGNUP : LOGIN}
-        />
-      </View>
+        <View style={styles.buttonContainer}>
+          <Button
+            color='dodgerblue'
+            onPress={e => this.onSubmitForm(e)}
+            title={this.state.action}
+          />
+          <Button
+            color='dodgerblue'
+            onPress={e => this.onToggleAction(e)}
+            title={this.state.action === LOGIN ? SIGNUP : LOGIN}
+          />
+        </View>
+      </ScrollView>
     );
   }
 }
@@ -123,10 +132,27 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#fff",
     alignItems: "center",
-    justifyContent: "center"
+    justifyContent: "flex-start",
   },
   title: {
-    fontSize: 48
+    fontSize: 48,
+    marginTop: 80,
+    marginBottom: 40,
+  },
+  input: {
+    height: 40,
+    width: 300,
+    borderBottomWidth: StyleSheet.hairlineWidth,
+    borderBottomColor: 'black',
+    marginTop: 20,
+    marginBottom: 10,
+  },
+  buttonContainer: {
+    marginTop: 30,
+    width: 300,
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'space-between'
   }
 });
 
