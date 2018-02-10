@@ -8,9 +8,9 @@ import {
   View,
   Button
 } from "react-native";
-import { login, loginFailed } from "../redux/actions/auth";
+import { login, loginFailed } from "../redux/actions/authActions";
 import firebase from "firebase";
-import config from '../../config.js'
+import config from '../../config';
 
 const LOGIN = "Login";
 const SIGNUP = "Sign Up";

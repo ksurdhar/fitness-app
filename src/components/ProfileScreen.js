@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View, Button } from 'react-native';
+import * as authActions from '../redux/actions/authActions.js';
 
 class ProfileScreen extends React.Component {
   static navigationOptions = {
@@ -10,6 +11,10 @@ class ProfileScreen extends React.Component {
     ),
   };
 
+  logout() {
+    this.props.logout();
+  }
+
   render() {
     let message = 'No user logged in.'
     if (this.props.isLoggedIn) {
@@ -18,6 +23,10 @@ class ProfileScreen extends React.Component {
     return (
       <View style={styles.container}>
         <Text>{message}</Text>
+        <Button
+          title='Logout'
+          onPress={() => this.logout()}
+        />
       </View>
     );
   }
@@ -30,6 +39,12 @@ const mapStateToProps = (state, ownProps) => {
   };
 };
 
+const mapDispatchToProps = (dispatch) => {
+  return {
+    logout: (name) => { dispatch(authActions.logout()); },
+  };
+}
+
 
 const styles = StyleSheet.create({
   container: {
@@ -38,4 +53,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default connect(mapStateToProps, null)(ProfileScreen);
+export default connect(mapStateToProps, mapDispatchToProps)(ProfileScreen);
