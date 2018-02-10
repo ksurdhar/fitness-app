@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { StyleSheet, Text, View, Button, TextInput } from 'react-native';
+import { StyleSheet, Text, ScrollView, Button, TextInput } from 'react-native';
 import * as workoutActions from '../redux/actions/workoutActions';
 
 class RecordScreen extends React.Component {
@@ -26,15 +26,16 @@ class RecordScreen extends React.Component {
 
   render() {
     return (
-      <View style={styles.container}>
+      <ScrollView contentContainerStyle={styles.container}>
+        <Text style={styles.title}>Record Workout</Text>
         <TextInput
           placeholder="ex. squats"
-          style={styles.nameInput}
+          style={styles.input}
           ref="newWorkout"
           value={this.state.workoutName}
           onChangeText={(workoutName) => this.setState({workoutName})}
           onSubmitEditing={() => this.addWorkout()} />
-      </View>
+      </ScrollView>
     );
   }
 }
@@ -54,10 +55,15 @@ const mapDispatchToProps = (dispatch) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
+    justifyContent: 'flex-start',
   },
-  nameInput: {
+  title: {
+    fontSize: 40,
+    marginTop: 60,
+    marginBottom: 60,
+  },
+  input: {
     backgroundColor: '#FFFFFF',
     height: 42,
     borderColor: '#CCCCCC',
@@ -67,7 +73,8 @@ const styles = StyleSheet.create({
     marginRight: 20,
     paddingLeft: 10,
     borderRadius: 5,
-    fontSize: 20
+    fontSize: 20,
+    width: 300,
   },
 });
 

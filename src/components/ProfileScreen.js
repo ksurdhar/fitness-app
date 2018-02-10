@@ -22,6 +22,7 @@ class ProfileScreen extends React.Component {
     }
     return (
       <View style={styles.container}>
+        <Text style={styles.title}>Profile</Text>
         <Text>{message}</Text>
         <Button
           title='Logout'
@@ -45,12 +46,17 @@ const mapDispatchToProps = (dispatch) => {
   };
 }
 
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    marginTop: 20,
-  }
+    alignItems: 'center',
+    justifyContent: 'flex-start',
+  },
+  title: {
+    fontSize: 40,
+    marginTop: 60,
+    marginBottom: 60,
+  },
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(ProfileScreen);

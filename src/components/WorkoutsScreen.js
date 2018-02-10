@@ -53,6 +53,9 @@ class WorkoutsScreen extends React.Component {
   render() {
     return (
       <View style={styles.container}>
+        <View style={styles.titleContainer}>
+          <Text style={styles.title}>Workouts</Text>
+        </View>
         {this.renderList()}
       </View>
     );
@@ -75,7 +78,15 @@ const mapDispatchToProps = (dispatch) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    marginTop: 20,
+    justifyContent: 'flex-start',
+  },
+  titleContainer: {
+    alignItems: 'center'
+  },
+  title: {
+    fontSize: 40,
+    marginTop: 60,
+    marginBottom: 20,
   },
   list: {
     flex: 1,
@@ -96,7 +107,7 @@ const styles = StyleSheet.create({
   },
   emptyMessage: {
     alignItems: 'center',
-    marginTop: 300
+    marginTop: 150
   }
 });
 
