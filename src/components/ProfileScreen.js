@@ -1,7 +1,9 @@
 import React from 'react';
+import firebase from "firebase";
 import { connect } from 'react-redux';
 import { StyleSheet, Text, View, Button } from 'react-native';
 import * as authActions from '../redux/actions/authActions.js';
+import { firebaseApp } from '../firebase.js'
 
 class ProfileScreen extends React.Component {
   static navigationOptions = {
@@ -12,7 +14,14 @@ class ProfileScreen extends React.Component {
   };
 
   logout() {
-    this.props.logout();
+    firebase
+      .auth()
+      .signOut()
+      .then(() => {
+        firebaseApp.database().ref(`workouts/${this.props.user.uid}`).off()
+        this.props.logout()
+        console.log('logged out!')
+      })
   }
 
   render() {
