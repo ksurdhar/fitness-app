@@ -20,9 +20,11 @@ class WorkoutsScreen extends React.Component {
   }
 
   renderRow({item}) {
+    const exerciseText = Object.values(item.exercises)[0].name
     return (
       <View style={styles.row}>
-        <Text style={styles.rowText}>{item.name}</Text>
+        <Text style={styles.rowText}>{`workout: ${item.name}`}</Text>
+        <Text style={styles.rowText}>{`exercise: ${exerciseText}`}</Text>
         <Button
           onPress={() => this.removeWorkout(item.id) }
           title="x"

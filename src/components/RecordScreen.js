@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { StyleSheet, Text, ScrollView, Button, TextInput } from 'react-native';
+import { StyleSheet, Text, ScrollView, Button, TextInput, Keyboard } from 'react-native';
 import * as workoutActions from '../redux/actions/workoutActions';
 
 class RecordScreen extends React.Component {
@@ -27,7 +27,7 @@ class RecordScreen extends React.Component {
       this.props.user.uid
     );
     this.setState({ workoutName: '', exerciseName: '' });
-    // probably a good idea to navigate to workouts
+    this.props.navigation.navigate('Workouts')
   }
 
   render() {
@@ -37,9 +37,11 @@ class RecordScreen extends React.Component {
         <TextInput
           placeholder="ex. Legs"
           style={styles.input}
+          ref='firstInput'
           value={this.state.workoutName}
           onChangeText={(workoutName) => this.setState({workoutName})}
           onSubmitEditing={() => this.refs.secondInput.focus()}
+          onEndEditing={() => this.refs.firstInput.blur()}
         />
         <TextInput
           placeholder="ex. Squats"
@@ -47,7 +49,7 @@ class RecordScreen extends React.Component {
           ref='secondInput'
           value={this.state.exerciseName}
           onChangeText={(exerciseName) => this.setState({exerciseName})}
-          onSubmitEditing={() => this.refs.secondInput.blur()}
+          onEndEditing={() => this.refs.secondInput.blur()}
         />
         <Button
           onPress={() => {this.addWorkout()}}
