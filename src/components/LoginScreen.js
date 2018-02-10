@@ -8,9 +8,12 @@ import {
   View,
   Button
 } from "react-native";
-import { login, loginFailed } from "../redux/actions/authActions";
 import firebase from "firebase";
-import config from '../../config';
+import { login, loginFailed } from "../redux/actions/authActions.js";
+import { addWorkoutSuccess, removeWorkoutSuccess, recievedWorkouts } from '../redux/actions/workoutActions';
+import config from '../../config.js';
+import store from '../redux/store.js'
+import { firebaseApp } from '../firebase.js'
 
 const LOGIN = "Login";
 const SIGNUP = "Sign Up";
@@ -35,6 +38,22 @@ class LoginScreen extends Component {
       .auth()
       .signInWithEmailAndPassword(this.state.email, this.state.password)
       .then(user => {
+        // from here, create a new ref that lives on the LoginScreen
+        // that ref is scoped to user id: userWorkoutsRef = firebaseApp.database().ref('workouts/' + user.uid)
+        // import the store so that you can dispatch actions.
+        const personalizedRef = firebaseApp.database().ref(`workouts/${user.uid}`)
+        personalizedRef.on('child_added', (snapshot) => {
+          console.log('GOT INTO HERE')
+          store.dispatch(addWorkoutSuccess(snapshot.val()))
+        })
+
+        personalizedRef.on('child_removed', (snapshot) => {
+          store.dispatch(removeWorkoutSuccess(snapshot.val()))
+        })
+
+        personalizedRef.once('value', (snapshot) => {
+          store.dispatch(recievedWorkouts(snapshot.val()))
+        })
         this.props.dispatchLogin(user);
       })
       .catch(error => {

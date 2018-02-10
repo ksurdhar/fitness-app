@@ -20,7 +20,6 @@ class RecordScreen extends React.Component {
   }
 
   addWorkout() {
-    console.log('user?',this.props.user.uid)
     this.props.addWorkout(this.state.workoutName, this.props.user.uid);
     this.setState({workoutName: ''});
   }
