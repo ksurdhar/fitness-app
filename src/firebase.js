@@ -15,17 +15,3 @@ export const firebaseApp = initializeApp({
 })
 
 export const workoutsRef = firebaseApp.database().ref('workouts')
-
-export function syncFirebase(store) {
-  // workoutsRef.on('child_added', (snapshot) => {
-  //   store.dispatch(addWorkoutSuccess(snapshot.val()))
-  // })
-  //
-  // workoutsRef.on('child_removed', (snapshot) => {
-  //   store.dispatch(removeWorkoutSuccess(snapshot.val()))
-  // })
-  //
-  // workoutsRef.once('value', (snapshot) => {
-  //   store.dispatch(recievedWorkouts(snapshot.val()))
-  // })
-}

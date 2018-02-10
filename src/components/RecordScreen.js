@@ -15,13 +15,19 @@ class RecordScreen extends React.Component {
     super()
 
     this.state = {
-      workoutName: ''
+      workoutName: '',
+      exerciseName: '',
     }
   }
 
   addWorkout() {
-    this.props.addWorkout(this.state.workoutName, this.props.user.uid);
-    this.setState({workoutName: ''});
+    this.props.addWorkout(
+      this.state.workoutName,
+      this.state.exerciseName,
+      this.props.user.uid
+    );
+    this.setState({ workoutName: '', exerciseName: '' });
+    // probably a good idea to navigate to workouts
   }
 
   render() {
@@ -29,12 +35,24 @@ class RecordScreen extends React.Component {
       <ScrollView contentContainerStyle={styles.container}>
         <Text style={styles.title}>Record Workout</Text>
         <TextInput
-          placeholder="ex. squats"
+          placeholder="ex. Legs"
           style={styles.input}
-          ref="newWorkout"
           value={this.state.workoutName}
           onChangeText={(workoutName) => this.setState({workoutName})}
-          onSubmitEditing={() => this.addWorkout()} />
+          onSubmitEditing={() => this.refs.secondInput.focus()}
+        />
+        <TextInput
+          placeholder="ex. Squats"
+          style={styles.input}
+          ref='secondInput'
+          value={this.state.exerciseName}
+          onChangeText={(exerciseName) => this.setState({exerciseName})}
+          onSubmitEditing={() => this.refs.secondInput.blur()}
+        />
+        <Button
+          onPress={() => {this.addWorkout()}}
+          title='Create'
+        />
       </ScrollView>
     );
   }
@@ -48,7 +66,7 @@ const mapStateToProps = (state, ownProps) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    addWorkout: (name, uid) => { dispatch(workoutActions.addWorkout(name, uid)); },
+    addWorkout: (workoutName, exerciseName, uid) => { dispatch(workoutActions.addWorkout(workoutName, exerciseName, uid)); },
   };
 }
 
