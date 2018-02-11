@@ -1,7 +1,12 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { StyleSheet, Text, ScrollView, Button, TextInput, Keyboard } from 'react-native';
+import { StyleSheet, Text, ScrollView, Button, TextInput, Keyboard, View } from 'react-native';
 import * as workoutActions from '../redux/actions/workoutActions';
+
+INITIAL_STATE = {
+  workoutName: '',
+  inputNumber: 1,
+}
 
 class RecordScreen extends React.Component {
   static navigationOptions = {
@@ -13,22 +18,45 @@ class RecordScreen extends React.Component {
 
   constructor() {
     super()
+    this.state = INITIAL_STATE
+  }
 
-    this.state = {
-      workoutName: '',
-      exerciseName: '',
-    }
+  resetState() {
+    this.setState(INITIAL_STATE)
   }
 
   addWorkout() {
     this.props.addWorkout(
       this.state.workoutName,
-      this.state.exerciseName,
+      this.state.input1Text,
       this.props.user.uid
     );
-    this.setState({ workoutName: '', exerciseName: '' });
+    this.resetState()
     this.props.navigation.navigate('Workouts')
     Keyboard.dismiss()
+  }
+
+  // state: inputs { 0: { text: 'blah' } }
+  // then add attributes
+  // reps, sets, weight, time
+
+  renderExerciseInputs() {
+    const inputs = []
+    for (x = 0; x < this.state.inputNumber; x++) {
+      inputs.push(
+        <TextInput
+          placeholder='exercise name'
+          style={styles.input}
+          key={`input${x}`}
+          ref={`input${x}`}
+          value={this.state[`input${x}Text`]}
+          onChangeText={ (exerciseName) => this.setState({ [`input${x}Text`]: exerciseName }) }
+        />
+      )
+    }
+    return (
+      <View>{ inputs }</View>
+    )
   }
 
   render() {
@@ -41,17 +69,9 @@ class RecordScreen extends React.Component {
           ref='firstInput'
           value={this.state.workoutName}
           onChangeText={(workoutName) => this.setState({workoutName})}
-          onSubmitEditing={() => this.refs.secondInput.focus()}
           onEndEditing={() => this.refs.firstInput.blur()}
         />
-        <TextInput
-          placeholder='ex. Squats'
-          style={styles.input}
-          ref='secondInput'
-          value={this.state.exerciseName}
-          onChangeText={(exerciseName) => this.setState({exerciseName})}
-          onEndEditing={() => this.refs.secondInput.blur()}
-        />
+        { this.renderExerciseInputs() }
         <Button
           onPress={() => {this.addWorkout()}}
           title='Create'
