@@ -1,15 +1,25 @@
 import React from "react";
 import { StyleSheet, Text, View, Button } from "react-native";
-import { TabNavigator } from "react-navigation";
+import { TabNavigator, StackNavigator } from "react-navigation";
 
 import RecordScreen from "./components/RecordScreen";
 import WorkoutsScreen from "./components/WorkoutsScreen";
+import WorkoutScreen from "./components/WorkoutScreen";
 import ProfileScreen from "./components/ProfileScreen";
+
+const WorkoutStack = StackNavigator({
+  Workouts: {
+    screen: WorkoutsScreen
+  },
+  Workout: {
+    screen: WorkoutScreen
+  }
+})
 
 const Navigator = TabNavigator(
   {
     Workouts: {
-      screen: WorkoutsScreen
+      screen: WorkoutStack
     },
     Record: {
       screen: RecordScreen

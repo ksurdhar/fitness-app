@@ -3,74 +3,60 @@ import { connect } from 'react-redux';
 import { StyleSheet, Text, View, Button, FlatList } from 'react-native';
 import * as workoutActions from '../redux/actions/workoutActions';
 
-class WorkoutsScreen extends React.Component {
+class WorkoutScreen extends React.Component {
   static navigationOptions = {
     tabBarLabel: 'Workouts',
     tabBarIcon: ({ tintColor }) => (
       <Text>Workouts</Text>
     ),
-  };
+  }
 
   _keyExtractor(item, index) {
     return item.id
   }
 
-  navigateToWorkout(item) {
-    this.props.navigation.navigate('Workout', {
-      workout: item,
-      userID: this.props.userID
-    })
+  removeWorkout(id) {
+    const userID = this.props.navigation.state.params.userID
+    this.props.removeWorkout(id, userID)
+    this.props.navigation.goBack()
   }
 
-  renderRow({item}) {
+  renderExercise({item}) {
     return (
       <View style={styles.row}>
         <Text style={styles.rowText}>{item.name}</Text>
-        <Button
-          onPress={() => { this.navigateToWorkout(item) }}
-          title="Details"
-        />
       </View>
     )
   }
 
-  renderList() {
-    if (this.props.workouts.length > 0) {
-      return (
-        <FlatList
-          style={styles.list}
-          data={this.props.workouts}
-          keyExtractor={this._keyExtractor}
-          renderItem={this.renderRow.bind(this)}
-        />
-      )
-    } else {
-      return (
-        <View style={styles.emptyMessage}>
-          <Text>No Workouts Defined Yet!</Text>
-        </View>
-      )
-    }
+  renderExercises() {
+    const exercises = Object.values(this.props.navigation.state.params.workout.exercises)
+    return (
+      <FlatList
+        style={styles.list}
+        data={exercises}
+        keyExtractor={this._keyExtractor}
+        renderItem={this.renderExercise.bind(this)}
+      />
+    )
   }
 
   render() {
+    const workout = this.props.navigation.state.params.workout
     return (
       <View style={styles.container}>
         <View style={styles.titleContainer}>
-          <Text style={styles.title}>Workouts</Text>
+          <Text style={styles.title}>{workout.name}</Text>
         </View>
-        {this.renderList()}
+        {this.renderExercises()}
+        <Button
+          onPress={() => { this.removeWorkout(workout.id) }}
+          title="Remove"
+        />
       </View>
     );
   }
 }
-
-const mapStateToProps = (state, ownProps) => {
-  return {
-    workouts: state.workouts.workouts,
-    userID: state.auth.user.uid,
-  };
-};
 
 const mapDispatchToProps = (dispatch) => {
   return {
@@ -114,4 +100,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(WorkoutsScreen);
+export default connect(null, mapDispatchToProps)(WorkoutScreen);

@@ -28,6 +28,7 @@ class RecordScreen extends React.Component {
     );
     this.setState({ workoutName: '', exerciseName: '' });
     this.props.navigation.navigate('Workouts')
+    Keyboard.dismiss()
   }
 
   render() {
@@ -35,7 +36,7 @@ class RecordScreen extends React.Component {
       <ScrollView contentContainerStyle={styles.container}>
         <Text style={styles.title}>Record Workout</Text>
         <TextInput
-          placeholder="ex. Legs"
+          placeholder='ex. Legs'
           style={styles.input}
           ref='firstInput'
           value={this.state.workoutName}
@@ -44,7 +45,7 @@ class RecordScreen extends React.Component {
           onEndEditing={() => this.refs.firstInput.blur()}
         />
         <TextInput
-          placeholder="ex. Squats"
+          placeholder='ex. Squats'
           style={styles.input}
           ref='secondInput'
           value={this.state.exerciseName}
