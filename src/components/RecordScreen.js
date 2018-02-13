@@ -6,6 +6,7 @@ import * as workoutActions from '../redux/actions/workoutActions';
 INITIAL_STATE = {
   workoutName: '',
   inputValues: [],
+  exerciseData: {}
 }
 
 class RecordScreen extends React.Component {
@@ -44,6 +45,10 @@ class RecordScreen extends React.Component {
     })
   }
 
+  componentDidUpdate() {
+    console.log('state',this.state)
+  }
+
   handleInputChange(idx, value) {
     console.log('value', value)
     let inputValues = [...this.state.inputValues]
@@ -51,16 +56,40 @@ class RecordScreen extends React.Component {
     this.setState({ inputValues })
   }
 
-  renderExerciseInputs() {
+  addAttribute(idx) {
+    this.setState((prevState) => {
+      const newExerciseData = Object.assign({}, prevState.exerciseData, {
+        [idx]: [{type: null, value: null}]
+      })
+      return {
+        exerciseData: newExerciseData
+      }
+    })
+  }
+
+  // renderAttributes(idx) {
+  //   // render a picker and
+  //   return this.state.exerciseData[idx].map((attr) => {
+  //
+  //   })
+  // }
+
+  renderExerciseInputs() { // will need to render getAttributes(i)
     const inputs = this.state.inputValues.map((val, idx) => {
       return (
-        <TextInput
-          placeholder='exercise name'
-          style={styles.input}
-          key={idx}
-          value={val || ''}
-          onChangeText={ this.handleInputChange.bind(this, idx) }
-        />
+        <View key={idx}>
+          <TextInput
+            placeholder='exercise name'
+            style={styles.input}
+            key={idx}
+            value={val || ''}
+            onChangeText={ this.handleInputChange.bind(this, idx) }
+          />
+          <Button
+            title='Add Attribute'
+            onPress={() => { this.addAttribute(idx) }}
+          />
+        </View>
       )
     })
 
