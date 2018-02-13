@@ -28,7 +28,7 @@ class RecordScreen extends React.Component {
   addWorkout() {
     this.props.addWorkout(
       this.state.workoutName,
-      this.state.inputValues[0], // needs to change to accomodate all things
+      this.state.inputValues,
       this.props.user.uid
     );
     this.resetState()
@@ -101,7 +101,7 @@ const mapStateToProps = (state, ownProps) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    addWorkout: (workoutName, exerciseName, uid) => { dispatch(workoutActions.addWorkout(workoutName, exerciseName, uid)); },
+    addWorkout: (workoutName, exerciseNames, uid) => { dispatch(workoutActions.addWorkout(workoutName, exerciseNames, uid)); },
   };
 }
 
