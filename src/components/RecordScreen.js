@@ -5,7 +5,7 @@ import * as workoutActions from '../redux/actions/workoutActions';
 
 INITIAL_STATE = {
   workoutName: '',
-  inputNumber: 1,
+  inputValues: [],
 }
 
 class RecordScreen extends React.Component {
@@ -28,7 +28,7 @@ class RecordScreen extends React.Component {
   addWorkout() {
     this.props.addWorkout(
       this.state.workoutName,
-      this.state.input1Text,
+      this.state.inputValues[0], // needs to change to accomodate all things
       this.props.user.uid
     );
     this.resetState()
@@ -36,27 +36,35 @@ class RecordScreen extends React.Component {
     Keyboard.dismiss()
   }
 
-  // state: inputs { 0: { text: 'blah' } }
-  // then add attributes
-  // reps, sets, weight, time
+  addInput() {
+    this.setState((prevState) => {
+      return {
+        inputValues: [...prevState.inputValues, '']
+      }
+    })
+  }
+
+  handleInputChange(idx, value) {
+    console.log('value', value)
+    let inputValues = [...this.state.inputValues]
+    inputValues[idx] = value
+    this.setState({ inputValues })
+  }
 
   renderExerciseInputs() {
-    const inputs = []
-    for (x = 0; x < this.state.inputNumber; x++) {
-      inputs.push(
+    const inputs = this.state.inputValues.map((val, idx) => {
+      return (
         <TextInput
           placeholder='exercise name'
           style={styles.input}
-          key={`input${x}`}
-          ref={`input${x}`}
-          value={this.state[`input${x}Text`]}
-          onChangeText={ (exerciseName) => this.setState({ [`input${x}Text`]: exerciseName }) }
+          key={idx}
+          value={val || ''}
+          onChangeText={ this.handleInputChange.bind(this, idx) }
         />
       )
-    }
-    return (
-      <View>{ inputs }</View>
-    )
+    })
+
+    return (<View>{ inputs }</View>)
   }
 
   render() {
@@ -72,6 +80,10 @@ class RecordScreen extends React.Component {
           onEndEditing={() => this.refs.firstInput.blur()}
         />
         { this.renderExerciseInputs() }
+        <Button
+          onPress={() => {this.addInput()}}
+          title='Add Exercise'
+        />
         <Button
           onPress={() => {this.addWorkout()}}
           title='Create'
