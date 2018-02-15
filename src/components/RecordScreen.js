@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { StyleSheet, Text, ScrollView, Button, TextInput, Keyboard, View } from 'react-native';
+import { update } from 'immutability-helper';
+import { StyleSheet, Text, ScrollView, Button, TextInput, Keyboard, View, Picker } from 'react-native';
 import * as workoutActions from '../redux/actions/workoutActions';
 
 INITIAL_STATE = {
@@ -50,7 +51,6 @@ class RecordScreen extends React.Component {
   }
 
   handleInputChange(idx, value) {
-    console.log('value', value)
     let inputValues = [...this.state.inputValues]
     inputValues[idx] = value
     this.setState({ inputValues })
@@ -59,7 +59,7 @@ class RecordScreen extends React.Component {
   addAttribute(idx) {
     this.setState((prevState) => {
       const newExerciseData = Object.assign({}, prevState.exerciseData, {
-        [idx]: [{type: null, value: null}]
+        [idx]: [{type: 'sets', value: null}]
       })
       return {
         exerciseData: newExerciseData
@@ -67,14 +67,46 @@ class RecordScreen extends React.Component {
     })
   }
 
-  // renderAttributes(idx) {
-  //   // render a picker and
-  //   return this.state.exerciseData[idx].map((attr) => {
-  //
-  //   })
-  // }
+  setAttrType(eIdx, attrIdx, value) {
+    console.log('PICKER VALUES', eIdx, attrIdx, value)
+    // this.setState((prevState) => {
+    //   // const newExerciseData = Object.assign({}, prevState.exerciseData, {
+    //   //   [idx]: [{type: 'sets', value: null}]
+    //   // })
+    //   // const newState = update(prevState, {
+    //   //   exerciseData: { [exerciseIdx]: { } }
+    //   // })
+    //   // instead of an array, attempt to do this with an object and update
+    //   // probably
+    //   return {
+    //     exerciseData: newExerciseData
+    //   }
+    // })
+  }
 
-  renderExerciseInputs() { // will need to render getAttributes(i)
+  renderAttributes(exIdx) {
+    if (this.state.exerciseData[exIdx]) {
+      const pickers = this.state.exerciseData[exIdx].map((attr, attrIdx) => {
+        return (
+          <Picker
+            selectedValue={this.state.exerciseData[exIdx].type}
+            onValueChange={ this.setAttrType.bind(this, exIdx, attrIdx)}
+            key={attrIdx}
+          >
+            <Picker.Item label='sets' value='sets'/>
+            <Picker.Item label='reps' value='reps'/>
+            <Picker.Item label='weight' value='weight'/>
+          </Picker>
+        )
+      })
+
+      return (<View>{ pickers }</View>)
+    } else {
+      return null
+    }
+  }
+
+  renderExerciseInputs() {
     const inputs = this.state.inputValues.map((val, idx) => {
       return (
         <View key={idx}>
@@ -85,6 +117,7 @@ class RecordScreen extends React.Component {
             value={val || ''}
             onChangeText={ this.handleInputChange.bind(this, idx) }
           />
+          { this.renderAttributes(idx) }
           <Button
             title='Add Attribute'
             onPress={() => { this.addAttribute(idx) }}
