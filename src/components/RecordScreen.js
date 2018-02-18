@@ -93,27 +93,25 @@ class RecordScreen extends React.Component {
   }
 
   renderAttributes(exIdx) {
-    return <View><Text>Testing</Text></View>
-    // if (this.state.exerciseData[exIdx]) {
-    //   // have to iterate differently
-    //   const pickers = this.state.exerciseData[exIdx].map((attr, attrIdx) => {
-    //     return (
-    //       <Picker
-    //         selectedValue={this.state.exerciseData[exIdx].type}
-    //         onValueChange={ this.setAttrType.bind(this, exIdx, attrIdx) }
-    //         key={attrIdx}
-    //       >
-    //         <Picker.Item label='sets' value='sets'/>
-    //         <Picker.Item label='reps' value='reps'/>
-    //         <Picker.Item label='weight' value='weight'/>
-    //       </Picker>
-    //     )
-    //   })
-    //
-    //   return (<View>{ pickers }</View>)
-    // } else {
-    //   return null
-    // }
+    if (this.state.exerciseData[exIdx]) {
+      const pickers = Object.entries(this.state.exerciseData[exIdx]).map((attrEntry, attrIdx) => {
+        return (
+          <Picker
+          selectedValue={this.state.exerciseData[exIdx].type}
+          onValueChange={ this.setAttrType.bind(this, exIdx, attrIdx) }
+          key={attrIdx}
+          >
+          <Picker.Item label='sets' value='sets'/>
+          <Picker.Item label='reps' value='reps'/>
+          <Picker.Item label='weight' value='weight'/>
+          </Picker>
+        )
+      })
+
+      return (<View>{ pickers }</View>)
+    } else {
+      return null
+    }
   }
 
   renderExerciseInputs() {
