@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { update } from 'immutability-helper';
+import update from 'immutability-helper';
 import { StyleSheet, Text, ScrollView, Button, TextInput, Keyboard, View, Picker } from 'react-native';
 import * as workoutActions from '../redux/actions/workoutActions';
 
@@ -39,10 +39,17 @@ class RecordScreen extends React.Component {
   }
 
   addInput() {
+    let newEIdx = 0 // default when no exercises exist
+    if (Object.keys(this.state.exerciseData).length > 0) {
+      newEIdx = Object.keys(this.state.exerciseData).length
+    }
+
     this.setState((prevState) => {
-      return {
-        inputValues: [...prevState.inputValues, '']
-      }
+      const newState = update(prevState, {
+        inputValues: { $push: [''] },
+        exerciseData: { $merge: { [newEIdx]: {} } }
+      })
+      return newState
     })
   }
 
@@ -56,54 +63,57 @@ class RecordScreen extends React.Component {
     this.setState({ inputValues })
   }
 
-  addAttribute(idx) {
+  setAttrType(eIdx, attrIdx, value) {
+    console.log('PICKER VALUES', eIdx, attrIdx, value)
     this.setState((prevState) => {
-      const newExerciseData = Object.assign({}, prevState.exerciseData, {
-        [idx]: [{type: 'sets', value: null}]
-      })
-      return {
-        exerciseData: newExerciseData
-      }
+      // const newExerciseData = Object.assign({}, prevState.exerciseData, {
+      //   [idx]: [{type: 'sets', value: null}]
+      // })
+      // const newState = update(prevState, {
+      //   exerciseData: { [exerciseIdx]: { } }
+      // })
+      // instead of an array, attempt to do this with an object and update
+      // probably
+      // return {
+      //   exerciseData: newExerciseData
+      // }
     })
   }
 
-  setAttrType(eIdx, attrIdx, value) {
-    console.log('PICKER VALUES', eIdx, attrIdx, value)
-    // this.setState((prevState) => {
-    //   // const newExerciseData = Object.assign({}, prevState.exerciseData, {
-    //   //   [idx]: [{type: 'sets', value: null}]
-    //   // })
-    //   // const newState = update(prevState, {
-    //   //   exerciseData: { [exerciseIdx]: { } }
-    //   // })
-    //   // instead of an array, attempt to do this with an object and update
-    //   // probably
-    //   return {
-    //     exerciseData: newExerciseData
-    //   }
-    // })
+  addAttribute(eIdx) {
+    const firstAttribute = !this.state.exerciseData[eIdx]
+    const newAttrIdx = firstAttribute ? 0 : Object.keys(this.state.exerciseData[eIdx]).length
+    this.setState((prevState) => {
+      let setMethod = firstAttribute ? '$set': '$merge'
+      newState = update(prevState, {
+        exerciseData: { [eIdx]: { [setMethod]: { [newAttrIdx]: { type: null, val: null } } } }
+      })
+      return newState
+    })
   }
 
   renderAttributes(exIdx) {
-    if (this.state.exerciseData[exIdx]) {
-      const pickers = this.state.exerciseData[exIdx].map((attr, attrIdx) => {
-        return (
-          <Picker
-            selectedValue={this.state.exerciseData[exIdx].type}
-            onValueChange={ this.setAttrType.bind(this, exIdx, attrIdx)}
-            key={attrIdx}
-          >
-            <Picker.Item label='sets' value='sets'/>
-            <Picker.Item label='reps' value='reps'/>
-            <Picker.Item label='weight' value='weight'/>
-          </Picker>
-        )
-      })
-
-      return (<View>{ pickers }</View>)
-    } else {
-      return null
-    }
+    return <View><Text>Testing</Text></View>
+    // if (this.state.exerciseData[exIdx]) {
+    //   // have to iterate differently
+    //   const pickers = this.state.exerciseData[exIdx].map((attr, attrIdx) => {
+    //     return (
+    //       <Picker
+    //         selectedValue={this.state.exerciseData[exIdx].type}
+    //         onValueChange={ this.setAttrType.bind(this, exIdx, attrIdx) }
+    //         key={attrIdx}
+    //       >
+    //         <Picker.Item label='sets' value='sets'/>
+    //         <Picker.Item label='reps' value='reps'/>
+    //         <Picker.Item label='weight' value='weight'/>
+    //       </Picker>
+    //     )
+    //   })
+    //
+    //   return (<View>{ pickers }</View>)
+    // } else {
+    //   return null
+    // }
   }
 
   renderExerciseInputs() {
@@ -111,7 +121,7 @@ class RecordScreen extends React.Component {
       return (
         <View key={idx}>
           <TextInput
-            placeholder='exercise name'
+            placeholder={`exercise ${idx + 1}`}
             style={styles.input}
             key={idx}
             value={val || ''}
@@ -131,26 +141,28 @@ class RecordScreen extends React.Component {
 
   render() {
     return (
-      <ScrollView contentContainerStyle={styles.container}>
-        <Text style={styles.title}>Record Workout</Text>
-        <TextInput
-          placeholder='ex. Legs'
-          style={styles.input}
-          ref='firstInput'
-          value={this.state.workoutName}
-          onChangeText={(workoutName) => this.setState({workoutName})}
-          onEndEditing={() => this.refs.firstInput.blur()}
-        />
-        { this.renderExerciseInputs() }
-        <Button
-          onPress={() => {this.addInput()}}
-          title='Add Exercise'
-        />
-        <Button
-          onPress={() => {this.addWorkout()}}
-          title='Create'
-        />
-      </ScrollView>
+      <View style={styles.container}>
+        <ScrollView style={{flex: 1}} contentContainerStyle={styles.container}>
+          <Text style={styles.title}>Record Workout</Text>
+          <TextInput
+            placeholder='workout name ex. Legs'
+            style={styles.input}
+            ref='workoutInput'
+            value={this.state.workoutName}
+            onChangeText={(workoutName) => this.setState({workoutName})}
+            onEndEditing={() => this.refs.workoutInput.blur()}
+          />
+          { this.renderExerciseInputs() }
+          <Button
+            onPress={() => {this.addInput()}}
+            title='Add Exercise'
+          />
+          <Button
+            onPress={() => {this.addWorkout()}}
+            title='Create'
+          />
+        </ScrollView>
+      </View>
     );
   }
 }
