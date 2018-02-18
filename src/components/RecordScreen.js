@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import update from 'immutability-helper';
+import produce from 'immer';
 import { StyleSheet, Text, ScrollView, Button, TextInput, Keyboard, View, Picker } from 'react-native';
 import * as workoutActions from '../redux/actions/workoutActions';
 
@@ -27,6 +27,10 @@ class RecordScreen extends React.Component {
     this.setState(INITIAL_STATE)
   }
 
+  componentDidUpdate() {
+    console.log('state',this.state)
+  }
+
   addWorkout() {
     this.props.addWorkout(
       this.state.workoutName,
@@ -43,18 +47,12 @@ class RecordScreen extends React.Component {
     if (Object.keys(this.state.exerciseData).length > 0) {
       newEIdx = Object.keys(this.state.exerciseData).length
     }
-
     this.setState((prevState) => {
-      const newState = update(prevState, {
-        inputValues: { $push: [''] },
-        exerciseData: { $merge: { [newEIdx]: {} } }
+      return produce(prevState, (draftState) => {
+        draftState.inputValues.push('')
+        draftState.exerciseData[newEIdx] = {}
       })
-      return newState
     })
-  }
-
-  componentDidUpdate() {
-    console.log('state',this.state)
   }
 
   handleInputChange(idx, value) {
@@ -82,13 +80,11 @@ class RecordScreen extends React.Component {
 
   addAttribute(eIdx) {
     const firstAttribute = !this.state.exerciseData[eIdx]
-    const newAttrIdx = firstAttribute ? 0 : Object.keys(this.state.exerciseData[eIdx]).length
+    const attrIdx = firstAttribute ? 0 : Object.keys(this.state.exerciseData[eIdx]).length
     this.setState((prevState) => {
-      let setMethod = firstAttribute ? '$set': '$merge'
-      newState = update(prevState, {
-        exerciseData: { [eIdx]: { [setMethod]: { [newAttrIdx]: { type: null, val: null } } } }
+      return produce(prevState, (draftState) => {
+        draftState.exerciseData[eIdx][attrIdx] = {type: null, val: null}
       })
-      return newState
     })
   }
 
@@ -101,9 +97,9 @@ class RecordScreen extends React.Component {
           onValueChange={ this.setAttrType.bind(this, exIdx, attrIdx) }
           key={attrIdx}
           >
-          <Picker.Item label='sets' value='sets'/>
-          <Picker.Item label='reps' value='reps'/>
-          <Picker.Item label='weight' value='weight'/>
+            <Picker.Item label='sets' value='sets'/>
+            <Picker.Item label='reps' value='reps'/>
+            <Picker.Item label='weight' value='weight'/>
           </Picker>
         )
       })
