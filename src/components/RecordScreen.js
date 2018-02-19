@@ -55,8 +55,9 @@ class RecordScreen extends React.Component {
     this.props.addWorkout(
       this.state.workoutName,
       this.state.inputValues,
+      this.state.exerciseData,
       this.props.user.uid
-    );
+    )
     this.resetState()
     this.props.navigation.navigate('Workouts')
     Keyboard.dismiss()
@@ -198,7 +199,7 @@ const mapStateToProps = (state, ownProps) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    addWorkout: (workoutName, exerciseNames, uid) => { dispatch(workoutActions.addWorkout(workoutName, exerciseNames, uid)); },
+    addWorkout: (workoutName, exerciseNames, exerciseData, uid) => { dispatch(workoutActions.addWorkout(workoutName, exerciseNames, exerciseData, uid)); },
   };
 }
 

@@ -7,16 +7,22 @@ export function recievedWorkouts(workouts) {
   }
 }
 
-export function addWorkout(workoutName, exerciseNames, userID) {
+export function addWorkout(workoutName, exerciseNames, exerciseData, userID) {
   const id = Math.random().toString(36).substring(7)
   const workoutRef = workoutsRef.child(`${userID}/${id}`)
 
   const exercises = {}
-  exerciseNames.forEach((name) => {
+  exerciseNames.forEach((name, eIdx) => {
     const exerciseID = Math.random().toString(36).substring(7)
+    const attributes = {}
+    Object.entries(exerciseData[eIdx]).forEach((exercise, attrIdx) => {
+      attributes[exerciseID+attrIdx] = exercise[1] // {type, val}
+    })
+
     exercises[exerciseID] = {
       id: exerciseID,
-      name: name
+      name: name,
+      attributes: attributes
     }
   })
 
