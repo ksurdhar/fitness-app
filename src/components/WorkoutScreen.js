@@ -21,10 +21,20 @@ class WorkoutScreen extends React.Component {
     this.props.navigation.goBack()
   }
 
+  renderAttributes(attributes) {
+    return Object.keys(attributes).map((attrKey, idx) => {
+      const attr = attributes[idx]
+      return (<Text key={idx}>{`${attr.type}: ${attr.val}`}</Text>)
+    })
+  }
+
   renderExercise({item}) {
     return (
       <View style={styles.row}>
-        <Text style={styles.rowText}>{item.name}</Text>
+        <View style={{flexDirection: 'column', flex: 1}}>
+          <Text style={styles.rowText}>{item.name}</Text>
+          { this.renderAttributes(item.attributes) }
+        </View>
       </View>
     )
   }

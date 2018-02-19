@@ -16,7 +16,7 @@ export function addWorkout(workoutName, exerciseNames, exerciseData, userID) {
     const exerciseID = Math.random().toString(36).substring(7)
     const attributes = {}
     Object.entries(exerciseData[eIdx]).forEach((exercise, attrIdx) => {
-      attributes[exerciseID+attrIdx] = exercise[1] // {type, val}
+      attributes[attrIdx] = exercise[1] // {type, val}
     })
 
     exercises[exerciseID] = {
