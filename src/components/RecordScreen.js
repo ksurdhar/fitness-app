@@ -1,14 +1,34 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import produce from 'immer';
-import { StyleSheet, Text, ScrollView, Button, TextInput, Keyboard, View, Picker } from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  ScrollView,
+  Button,
+  TextInput,
+  Keyboard,
+  View,
+  Picker,
+} from 'react-native';
 import * as workoutActions from '../redux/actions/workoutActions';
+import { Dropdown } from 'react-native-material-dropdown';
 
 INITIAL_STATE = {
   workoutName: '',
   inputValues: [],
   exerciseData: {}
 }
+
+ATTRIBUTE_TYPES = [
+  {value: 'sets'},
+  {value: 'reps'},
+  {value: 'weight'},
+]
+
+ATTRIBUTE_VALS = [...Array(100).keys()].map((num) => {
+  return {value: num + 1}
+})
 
 class RecordScreen extends React.Component {
   static navigationOptions = {
@@ -61,20 +81,19 @@ class RecordScreen extends React.Component {
     this.setState({ inputValues })
   }
 
-  setAttrType(eIdx, attrIdx, value) {
-    console.log('PICKER VALUES', eIdx, attrIdx, value)
+  setAttrType(eIdx, attrIdx, type) {
     this.setState((prevState) => {
-      // const newExerciseData = Object.assign({}, prevState.exerciseData, {
-      //   [idx]: [{type: 'sets', value: null}]
-      // })
-      // const newState = update(prevState, {
-      //   exerciseData: { [exerciseIdx]: { } }
-      // })
-      // instead of an array, attempt to do this with an object and update
-      // probably
-      // return {
-      //   exerciseData: newExerciseData
-      // }
+      return produce(prevState, (draftState) => {
+        draftState.exerciseData[eIdx][attrIdx].type = type
+      })
+    })
+  }
+
+  setAttrVal(eIdx, attrIdx, val) {
+    this.setState((prevState) => {
+      return produce(prevState, (draftState) => {
+        draftState.exerciseData[eIdx][attrIdx].val = val
+      })
     })
   }
 
@@ -90,21 +109,31 @@ class RecordScreen extends React.Component {
 
   renderAttributes(exIdx) {
     if (this.state.exerciseData[exIdx]) {
-      const pickers = Object.entries(this.state.exerciseData[exIdx]).map((attrEntry, attrIdx) => {
+      const dropdowns = Object.entries(this.state.exerciseData[exIdx]).map((attrEntry, attrIdx) => {
         return (
-          <Picker
-          selectedValue={this.state.exerciseData[exIdx].type}
-          onValueChange={ this.setAttrType.bind(this, exIdx, attrIdx) }
-          key={attrIdx}
+          <View
+            key={exIdx + attrIdx}
+            style={{flexDirection: 'row'}}
           >
-            <Picker.Item label='sets' value='sets'/>
-            <Picker.Item label='reps' value='reps'/>
-            <Picker.Item label='weight' value='weight'/>
-          </Picker>
+            <View style={{flex: 1}}>
+              <Dropdown
+                label='Attribute'
+                data={ATTRIBUTE_TYPES}
+                onChangeText={ this.setAttrType.bind(this, exIdx, attrIdx) }
+              />
+            </View>
+            <View style={{ width: 96, marginLeft: 8}}>
+              <Dropdown
+                label='Val'
+                data={ATTRIBUTE_VALS}
+                onChangeText={ this.setAttrVal.bind(this, exIdx, attrIdx) }
+              />
+            </View>
+          </View>
         )
       })
 
-      return (<View>{ pickers }</View>)
+      return (<View>{ dropdowns }</View>)
     } else {
       return null
     }
@@ -135,7 +164,7 @@ class RecordScreen extends React.Component {
 
   render() {
     return (
-      <View style={styles.container}>
+      <View style={{flex: 1}}>
         <ScrollView style={{flex: 1}} contentContainerStyle={styles.container}>
           <Text style={styles.title}>Record Workout</Text>
           <TextInput
@@ -175,7 +204,6 @@ const mapDispatchToProps = (dispatch) => {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     alignItems: 'center',
     justifyContent: 'flex-start',
   },
@@ -190,12 +218,12 @@ const styles = StyleSheet.create({
     borderColor: '#CCCCCC',
     borderWidth: 1,
     marginBottom: 10,
-    marginLeft: 20,
-    marginRight: 20,
+    marginLeft: 10,
+    marginRight: 10,
     paddingLeft: 10,
     borderRadius: 5,
     fontSize: 20,
-    width: 300,
+    width: 320,
   },
 });
 
