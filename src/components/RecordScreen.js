@@ -24,6 +24,7 @@ ATTRIBUTE_TYPES = [
   {value: 'sets'},
   {value: 'reps'},
   {value: 'weight'},
+  {value: 'seconds'},
 ]
 
 ATTRIBUTE_VALS = [...Array(100).keys()].map((num) => {
@@ -71,7 +72,7 @@ class RecordScreen extends React.Component {
     this.setState((prevState) => {
       return produce(prevState, (draftState) => {
         draftState.inputValues.push('')
-        draftState.exerciseData[newEIdx] = {}
+        draftState.exerciseData[newEIdx] = {0: {type: null, val: null}}
       })
     })
   }
@@ -99,8 +100,7 @@ class RecordScreen extends React.Component {
   }
 
   addAttribute(eIdx) {
-    const firstAttribute = !this.state.exerciseData[eIdx]
-    const attrIdx = firstAttribute ? 0 : Object.keys(this.state.exerciseData[eIdx]).length
+    const attrIdx = Object.keys(this.state.exerciseData[eIdx]).length
     this.setState((prevState) => {
       return produce(prevState, (draftState) => {
         draftState.exerciseData[eIdx][attrIdx] = {type: null, val: null}
