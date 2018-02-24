@@ -120,6 +120,16 @@ class EditWorkoutScreen extends React.Component {
 
   renderAttributes(exIdx) { // this needs to change to only render the value dropdown if recording a session (no workout name)
     if (this.state.exerciseData[exIdx]) {
+      const valDropdown = this.state.isRecording ? (
+        <View style={{ width: 96, marginLeft: 8}}>
+          <Dropdown
+            label='Val'
+            data={ATTRIBUTE_VALS}
+            onChangeText={ this.setAttrVal.bind(this, exIdx, attrIdx) }
+          />
+        </View>
+      ) : null
+
       const dropdowns = Object.entries(this.state.exerciseData[exIdx]).map((attrEntry, attrIdx) => {
         return (
           <View
@@ -133,13 +143,7 @@ class EditWorkoutScreen extends React.Component {
                 onChangeText={ this.setAttrType.bind(this, exIdx, attrIdx) }
               />
             </View>
-            <View style={{ width: 96, marginLeft: 8}}>
-              <Dropdown
-                label='Val'
-                data={ATTRIBUTE_VALS}
-                onChangeText={ this.setAttrVal.bind(this, exIdx, attrIdx) }
-              />
-            </View>
+            { valDropdown }
           </View>
         )
       })
