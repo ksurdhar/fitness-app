@@ -6,6 +6,8 @@ import RecordScreen from "./components/RecordScreen";
 import WorkoutsScreen from "./components/WorkoutsScreen";
 import WorkoutScreen from "./components/WorkoutScreen";
 import ProfileScreen from "./components/ProfileScreen";
+import AddWorkoutScreen from './components/AddWorkoutScreen';
+import EditWorkoutScreen from './components/EditWorkoutScreen';
 
 const WorkoutStack = StackNavigator({
   Workouts: {
@@ -16,13 +18,25 @@ const WorkoutStack = StackNavigator({
   }
 })
 
+const RecordStack = StackNavigator({
+  Record: {
+    screen: RecordScreen
+  },
+  AddWorkout: {
+    screen: AddWorkoutScreen
+  },
+  EditWorkout: {
+    screen: EditWorkoutScreen
+  }
+})
+
 const Navigator = TabNavigator(
   {
     Workouts: {
       screen: WorkoutStack
     },
     Record: {
-      screen: RecordScreen
+      screen: RecordStack
     },
     Profile: {
       screen: ProfileScreen

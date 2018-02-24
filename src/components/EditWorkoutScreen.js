@@ -16,12 +16,10 @@ import { Dropdown } from 'react-native-material-dropdown';
 
 INITIAL_STATE = {
   workoutName: '',
-  inputValues: [],
+  exerciseNames: [],
   exerciseData: {},
-  newWorkout: null,
+  isRecording: null,
 }
-// gonna prepopulate input values, exercise data
-
 
 ATTRIBUTE_TYPES = [
   {value: 'sets'},
@@ -34,7 +32,7 @@ ATTRIBUTE_VALS = [...Array(100).keys()].map((num) => {
   return {value: num + 1}
 })
 
-class RecordScreen extends React.Component {
+class EditWorkoutScreen extends React.Component {
   static navigationOptions = {
     tabBarLabel: 'Record',
     tabBarIcon: ({ tintColor }) => (
@@ -51,14 +49,23 @@ class RecordScreen extends React.Component {
     this.setState(INITIAL_STATE)
   }
 
+  componentDidMount() {
+    this.setState({
+      workoutName: this.props.navigation.state.params.workoutName,
+      isRecording: this.props.navigation.state.params.isRecording,
+      exerciseData: this.props.navigation.state.params.exerciseData,
+      exerciseNames: this.props.navigation.state.params.exerciseNames,
+    })
+  }
+
   componentDidUpdate() {
-    console.log('state',this.state)
+    // console.log('state',this.state)
   }
 
   addWorkout() {
     this.props.addWorkout(
       this.state.workoutName,
-      this.state.inputValues,
+      this.state.exerciseNames,
       this.state.exerciseData,
       this.props.user.uid
     )
@@ -74,17 +81,17 @@ class RecordScreen extends React.Component {
     }
     this.setState((prevState) => {
       return produce(prevState, (draftState) => {
-        draftState.inputValues.push('')
+        draftState.exerciseNames.push('')
         draftState.exerciseData[newEIdx] = {0: {type: null, val: null}}
       })
     })
   }
 
   handleInputChange(idx, value) {
-    let inputValues = [...this.state.inputValues]
-    inputValues[idx] = value
-    this.setState({ inputValues })
-  }
+    let exerciseNames = [...this.state.exerciseNames]
+    exerciseNames[idx] = value
+    this.setState({ exerciseNames })
+  } // inputs should be disabled if recording session - only set values
 
   setAttrType(eIdx, attrIdx, type) {
     this.setState((prevState) => {
@@ -111,7 +118,7 @@ class RecordScreen extends React.Component {
     })
   }
 
-  renderAttributes(exIdx) {
+  renderAttributes(exIdx) { // this needs to change to only render the value dropdown if recording a session (no workout name)
     if (this.state.exerciseData[exIdx]) {
       const dropdowns = Object.entries(this.state.exerciseData[exIdx]).map((attrEntry, attrIdx) => {
         return (
@@ -144,7 +151,7 @@ class RecordScreen extends React.Component {
   }
 
   renderExerciseInputs() {
-    const inputs = this.state.inputValues.map((val, idx) => {
+    const inputs = this.state.exerciseNames.map((val, idx) => {
       return (
         <View key={idx}>
           <TextInput
@@ -166,50 +173,20 @@ class RecordScreen extends React.Component {
     return (<View>{ inputs }</View>)
   }
 
-  defineWorkout() {
-    this.props.navigation.navigate('AddWorkout')
-  }
-
-// create new workout button if no workouts exist
-  // render() {
-  //   return (
-  //     <View style={{flex: 1}}>
-  //       <ScrollView style={{flex: 1}} contentContainerStyle={styles.container}>
-  //         <Text style={styles.title}>Record Workout</Text>
-  //         <TextInput
-  //           placeholder='workout name ex. Legs'
-  //           style={styles.input}
-  //           ref='workoutInput'
-  //           value={this.state.workoutName}
-  //           onChangeText={(workoutName) => this.setState({workoutName})}
-  //           onEndEditing={() => this.refs.workoutInput.blur()}
-  //         />
-  //         { this.renderExerciseInputs() }
-  //         <Button
-  //           onPress={() => {this.addInput()}}
-  //           title='Add Exercise'
-  //         />
-  //         <Button
-  //           onPress={() => {this.addWorkout()}}
-  //           title='Create'
-  //         />
-  //       </ScrollView>
-  //     </View>
-  //   );
-  // }
-  // based on state, render either one of two components
-
-  // record session
-  // or
-  // create new workout (render name input)
   render() {
+    const recordMode = this.state.workoutName.length > 0 // can probably use a better determinant
     return (
       <View style={{flex: 1}}>
         <ScrollView style={{flex: 1}} contentContainerStyle={styles.container}>
-          <Text style={styles.title}>Record Workout</Text>
+          <Text style={styles.title}>{ recordMode ? 'Add Exercises' : 'Record Session' }</Text>
+          { this.renderExerciseInputs() }
           <Button
-            onPress={() => {this.defineWorkout()}}
-            title='Add Workout'
+            onPress={() => {this.addInput()}}
+            title='Add Exercise'
+          />
+          <Button
+            onPress={() => {this.addWorkout()}}
+            title='Create'
           />
         </ScrollView>
       </View>
@@ -254,4 +231,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(RecordScreen);
+export default connect(mapStateToProps, mapDispatchToProps)(EditWorkoutScreen);
