@@ -20,19 +20,6 @@ INITIAL_STATE = {
   exerciseData: {},
   newWorkout: null,
 }
-// gonna prepopulate input values, exercise data
-
-
-ATTRIBUTE_TYPES = [
-  {value: 'sets'},
-  {value: 'reps'},
-  {value: 'weight'},
-  {value: 'seconds'},
-]
-
-ATTRIBUTE_VALS = [...Array(100).keys()].map((num) => {
-  return {value: num + 1}
-})
 
 class RecordScreen extends React.Component {
   static navigationOptions = {
@@ -52,157 +39,45 @@ class RecordScreen extends React.Component {
   }
 
   componentDidUpdate() {
-    console.log('state',this.state)
+    // console.log('state',this.state)
+    console.log('props', this.props)
   }
 
-  addWorkout() {
-    this.props.addWorkout(
-      this.state.workoutName,
-      this.state.inputValues,
-      this.state.exerciseData,
-      this.props.user.uid
-    )
-    this.resetState()
-    this.props.navigation.navigate('Workouts')
-    Keyboard.dismiss()
+  recordSession(workoutName) {
+    console.log('about to record a session for:', workoutName)
+    // the dropdown needs a notion of id
+    // when the use presses, open up edit workout prepopulated with data
+    // to know what to gather, need the workout id 
   }
 
-  addInput() {
-    let newEIdx = 0 // default when no exercises exist
-    if (Object.keys(this.state.exerciseData).length > 0) {
-      newEIdx = Object.keys(this.state.exerciseData).length
-    }
-    this.setState((prevState) => {
-      return produce(prevState, (draftState) => {
-        draftState.inputValues.push('')
-        draftState.exerciseData[newEIdx] = {0: {type: null, val: null}}
-      })
+  renderWorkoutDropdown() {
+    const workoutNames = Object.entries(this.props.workouts).map((workoutEntry, workoutIdx) => {
+      return { value: workoutEntry[1].name }
     })
-  }
 
-  handleInputChange(idx, value) {
-    let inputValues = [...this.state.inputValues]
-    inputValues[idx] = value
-    this.setState({ inputValues })
-  }
-
-  setAttrType(eIdx, attrIdx, type) {
-    this.setState((prevState) => {
-      return produce(prevState, (draftState) => {
-        draftState.exerciseData[eIdx][attrIdx].type = type
-      })
-    })
-  }
-
-  setAttrVal(eIdx, attrIdx, val) {
-    this.setState((prevState) => {
-      return produce(prevState, (draftState) => {
-        draftState.exerciseData[eIdx][attrIdx].val = val
-      })
-    })
-  }
-
-  addAttribute(eIdx) {
-    const attrIdx = Object.keys(this.state.exerciseData[eIdx]).length
-    this.setState((prevState) => {
-      return produce(prevState, (draftState) => {
-        draftState.exerciseData[eIdx][attrIdx] = {type: null, val: null}
-      })
-    })
-  }
-
-  renderAttributes(exIdx) {
-    if (this.state.exerciseData[exIdx]) {
-      const dropdowns = Object.entries(this.state.exerciseData[exIdx]).map((attrEntry, attrIdx) => {
-        return (
-          <View
-            key={exIdx + attrIdx}
-            style={{flexDirection: 'row'}}
-          >
-            <View style={{flex: 1}}>
-              <Dropdown
-                label='Attribute'
-                data={ATTRIBUTE_TYPES}
-                onChangeText={ this.setAttrType.bind(this, exIdx, attrIdx) }
-              />
-            </View>
-            <View style={{ width: 96, marginLeft: 8}}>
-              <Dropdown
-                label='Val'
-                data={ATTRIBUTE_VALS}
-                onChangeText={ this.setAttrVal.bind(this, exIdx, attrIdx) }
-              />
-            </View>
+    if (workoutNames.length > 0) {
+      const dropDown = (
+        <View style={{ flexDirection: 'row' }}>
+          <View style={{ flex: 1 }}>
+            <Dropdown
+              label='Workout Type'
+              data={workoutNames}
+              onChangeText={ this.recordSession.bind(this) }
+            />
           </View>
-        )
-      })
-
-      return (<View>{ dropdowns }</View>)
-    } else {
-      return null
-    }
-  }
-
-  renderExerciseInputs() {
-    const inputs = this.state.inputValues.map((val, idx) => {
-      return (
-        <View key={idx}>
-          <TextInput
-            placeholder={`exercise ${idx + 1}`}
-            style={styles.input}
-            key={idx}
-            value={val || ''}
-            onChangeText={ this.handleInputChange.bind(this, idx) }
-          />
-          { this.renderAttributes(idx) }
-          <Button
-            title='Add Attribute'
-            onPress={() => { this.addAttribute(idx) }}
-          />
         </View>
       )
-    })
+      return dropDown
+    }
 
-    return (<View>{ inputs }</View>)
+    return null
   }
 
   defineWorkout() {
     this.props.navigation.navigate('AddWorkout')
   }
 
-// create new workout button if no workouts exist
-  // render() {
-  //   return (
-  //     <View style={{flex: 1}}>
-  //       <ScrollView style={{flex: 1}} contentContainerStyle={styles.container}>
-  //         <Text style={styles.title}>Record Workout</Text>
-  //         <TextInput
-  //           placeholder='workout name ex. Legs'
-  //           style={styles.input}
-  //           ref='workoutInput'
-  //           value={this.state.workoutName}
-  //           onChangeText={(workoutName) => this.setState({workoutName})}
-  //           onEndEditing={() => this.refs.workoutInput.blur()}
-  //         />
-  //         { this.renderExerciseInputs() }
-  //         <Button
-  //           onPress={() => {this.addInput()}}
-  //           title='Add Exercise'
-  //         />
-  //         <Button
-  //           onPress={() => {this.addWorkout()}}
-  //           title='Create'
-  //         />
-  //       </ScrollView>
-  //     </View>
-  //   );
-  // }
-  // based on state, render either one of two components
-
-  // record session
-  // or
-  // create new workout (render name input)
-  render() {
+  render() { // two separate views when no workouts / workouts exist
     return (
       <View style={{flex: 1}}>
         <ScrollView style={{flex: 1}} contentContainerStyle={styles.container}>
@@ -211,6 +86,8 @@ class RecordScreen extends React.Component {
             onPress={() => {this.defineWorkout()}}
             title='Add Workout'
           />
+          <Text>Or Choose a workout</Text>
+          { this.renderWorkoutDropdown() }
         </ScrollView>
       </View>
     );
@@ -219,7 +96,8 @@ class RecordScreen extends React.Component {
 
 const mapStateToProps = (state, ownProps) => {
   return {
-    user: state.auth.user
+    user: state.auth.user,
+    workouts: state.workouts.workouts,
   };
 };
 
