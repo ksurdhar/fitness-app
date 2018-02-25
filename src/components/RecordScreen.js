@@ -40,14 +40,30 @@ class RecordScreen extends React.Component {
 
   componentDidUpdate() {
     // console.log('state',this.state)
-    console.log('props', this.props)
+    // console.log('props', this.props)
   }
 
-  recordSession(workoutName) {
-    console.log('about to record a session for:', workoutName)
-    // the dropdown needs a notion of id
-    // when the use presses, open up edit workout prepopulated with data
-    // to know what to gather, need the workout id 
+  recordSession(workoutName, idx) {
+    const workoutKey = Object.keys(this.props.workouts)[idx]
+    const workout = this.props.workouts[workoutKey]
+
+    const exerciseData = {}
+    const exerciseNames = []
+    Object.entries(workout.exercises).forEach((exerciseEntry, eIdx) => {
+      const exercise = exerciseEntry[1]
+      exerciseData[eIdx] = {}
+      exercise.attributes.forEach((attr, attrIdx) => {
+        exerciseData[eIdx][attrIdx] = attr
+      })
+      exerciseNames.push(exercise.name)
+    })
+
+    this.props.navigation.navigate('EditWorkout', {
+      workoutName: workout.name,
+      isRecording: true,
+      exerciseData: exerciseData,
+      exerciseNames: exerciseNames
+    })
   }
 
   renderWorkoutDropdown() {
@@ -77,7 +93,7 @@ class RecordScreen extends React.Component {
     this.props.navigation.navigate('AddWorkout')
   }
 
-  render() { // two separate views when no workouts / workouts exist
+  render() {
     return (
       <View style={{flex: 1}}>
         <ScrollView style={{flex: 1}} contentContainerStyle={styles.container}>
