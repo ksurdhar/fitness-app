@@ -1,4 +1,4 @@
-import { workoutsRef } from '../../firebase';
+import { usersRef } from '../../firebase';
 
 export function recievedWorkouts(workouts) {
   return {
@@ -9,7 +9,7 @@ export function recievedWorkouts(workouts) {
 
 export function addWorkout(workoutName, exerciseNames, exerciseData, userID) {
   const id = Math.random().toString(36).substring(7)
-  const workoutRef = workoutsRef.child(`${userID}/${id}`)
+  const workoutRef = usersRef.child(`${userID}/workouts/${id}`)
 
   const exercises = {}
   exerciseNames.forEach((name, eIdx) => {
@@ -38,7 +38,7 @@ export function addWorkout(workoutName, exerciseNames, exerciseData, userID) {
 }
 
 export function removeWorkout(id, userID) {
-  const workoutRef = workoutsRef.child(`${userID}/${id}`)
+  const workoutRef = usersRef.child(`${userID}/workouts/${id}`)
   workoutRef.remove()
 
   return {

@@ -12,6 +12,7 @@ import {
   Picker,
 } from 'react-native';
 import * as workoutActions from '../redux/actions/workoutActions';
+import * as sessionActions from '../redux/actions/sessionActions';
 import { Dropdown } from 'react-native-material-dropdown';
 
 INITIAL_STATE = {
@@ -74,8 +75,28 @@ class EditWorkoutScreen extends React.Component {
     Keyboard.dismiss()
   }
 
+  addSession() {
+    this.props.addSession(
+      this.state.exerciseNames,
+      this.state.exerciseData,
+      this.props.user.uid,
+    )
+    this.resetState()
+    this.props.navigation.navigate('Workouts')
+    Keyboard.dismiss()
+  }
+
+  addWorkoutOrSession() {
+    if (this.state.isRecording) {
+      this.addSession()
+    } else {
+      this.addWorkout()
+    }
+  }
+
   addInput() {
     let newEIdx = 0 // default when no exercises exist
+    console.log('E DATA', this.state.exerciseData)
     if (Object.keys(this.state.exerciseData).length > 0) {
       newEIdx = Object.keys(this.state.exerciseData).length
     }
@@ -142,7 +163,7 @@ class EditWorkoutScreen extends React.Component {
           >
             <View style={{flex: 1}}>
               <Dropdown
-                value={attrEntry[1].type}
+                value={attrEntry[1].type ? attrEntry[1].type : ''}
                 label='Attribute'
                 data={ATTRIBUTE_TYPES}
                 onChangeText={ this.setAttrType.bind(this, exIdx, attrIdx) }
@@ -194,7 +215,7 @@ class EditWorkoutScreen extends React.Component {
             title='Add Exercise'
           />
           <Button
-            onPress={() => {this.addWorkout()}}
+            onPress={() => {this.addWorkoutOrSession()}}
             title='Create'
           />
         </ScrollView>
