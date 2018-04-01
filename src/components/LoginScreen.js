@@ -13,7 +13,7 @@ import { login, loginFailed } from "../redux/actions/authActions.js";
 import { addWorkoutSuccess, removeWorkoutSuccess, recievedWorkouts } from '../redux/actions/workoutActions';
 import config from '../../config.js';
 import store from '../redux/store.js'
-import { firebaseApp } from '../firebase.js'
+import { firebaseApp, rootRef } from '../firebase.js'
 
 const LOGIN = "Login";
 const SIGNUP = "Sign Up";
@@ -38,21 +38,15 @@ class LoginScreen extends Component {
       .auth()
       .signInWithEmailAndPassword(this.state.email, this.state.password)
       .then(user => {
-        // we could probably also move this into authActions
-        const userRef = firebaseApp.database().ref(`users/${user.uid}`)
-          const workoutsRef = userRef.child('workouts')
+        const workoutsRef = rootRef.child('workouts')
         workoutsRef.on('child_added', (snapshot) => {
           store.dispatch(addWorkoutSuccess(snapshot.val()))
         })
-
         workoutsRef.on('child_removed', (snapshot) => {
           store.dispatch(removeWorkoutSuccess(snapshot.val()))
         })
-
-        userRef.once('value', (snapshot) => {
-          // const {workouts, sessions} = snapshot.val()
-          // store.dispatch(recievedWorkouts(workouts))
-          // store.dispatch(recievedSessions(sessions))
+        workoutsRef.orderByChild('userID').equalTo(user.uid).once('value', (snapshot) => {
+          store.dispatch(recievedWorkouts(snapshot.val()))
         })
         this.props.dispatchLogin(user);
       })

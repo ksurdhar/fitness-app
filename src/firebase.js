@@ -14,4 +14,4 @@ export const firebaseApp = initializeApp({
   storageBucket: config.STORAGE_BUCKET
 })
 
-export const rootRef = firebaseApp.database()
+export const rootRef = firebaseApp.database().ref()
