@@ -81,6 +81,8 @@ class EditWorkoutScreen extends React.Component {
       this.state.exerciseData,
       this.props.user.uid,
     )
+    // this should include the workout-type name
+    // next step is to get the session to save and appear in firebase
     this.resetState()
     this.props.navigation.navigate('Workouts')
     Keyboard.dismiss()

@@ -38,25 +38,20 @@ class LoginScreen extends Component {
       .auth()
       .signInWithEmailAndPassword(this.state.email, this.state.password)
       .then(user => {
-        const personalizedRef = firebaseApp.database().ref(`users/${user.uid}`)
-          // need some concept of separation here
-          // right now we add workouts whenever there are entries to the user
-          // now we need a separation for workout and session endpoints
-
-          // we could probably also move this into authActions
-
-        personalizedRef.on('child_added', (snapshot) => {
+        // we could probably also move this into authActions
+        const userRef = firebaseApp.database().ref(`users/${user.uid}`)
+          const workoutsRef = userRef.child('workouts')
+        workoutsRef.on('child_added', (snapshot) => {
           store.dispatch(addWorkoutSuccess(snapshot.val()))
         })
 
-        personalizedRef.on('child_removed', (snapshot) => {
+        workoutsRef.on('child_removed', (snapshot) => {
           store.dispatch(removeWorkoutSuccess(snapshot.val()))
         })
 
-        personalizedRef.once('value', (snapshot) => {
-          // this needs to fire off multiple actions
-          const {workouts, sessions} = snapshot.val()
-          store.dispatch(recievedWorkouts(workouts))
+        userRef.once('value', (snapshot) => {
+          // const {workouts, sessions} = snapshot.val()
+          // store.dispatch(recievedWorkouts(workouts))
           // store.dispatch(recievedSessions(sessions))
         })
         this.props.dispatchLogin(user);

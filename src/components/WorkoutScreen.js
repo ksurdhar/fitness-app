@@ -40,6 +40,8 @@ class WorkoutScreen extends React.Component {
   }
 
   renderExercises() {
+    // cannot render workout when
+    console.log('WORKOUT', this.props.navigation.state.params.workout)
     const exercises = Object.values(this.props.navigation.state.params.workout.exercises)
     return (
       <FlatList

@@ -66,27 +66,27 @@ class RecordScreen extends React.Component {
     })
   }
 
-  renderWorkoutDropdown() {
-    const workoutNames = Object.entries(this.props.workouts).map((workoutEntry, workoutIdx) => {
-      return { value: workoutEntry[1].name }
-    })
-
-    if (workoutNames.length > 0) {
-      const dropDown = (
-        <View style={{ flexDirection: 'row' }}>
-          <View style={{ flex: 1 }}>
-            <Dropdown
-              label='Workout Type'
-              data={workoutNames}
-              onChangeText={ this.recordSession.bind(this) }
-            />
-          </View>
-        </View>
-      )
-      return dropDown
-    }
-
-    return null
+  renderWorkoutDropdown() { // DOES NOTHING CURRENTLY
+    // const workoutNames = Object.entries(this.props.workouts).map((workoutEntry, workoutIdx) => {
+    //   return { value: workoutEntry[1].name }
+    // })
+    //
+    // if (workoutNames.length > 0) {
+    //   const dropDown = (
+    //     <View style={{ flexDirection: 'row' }}>
+    //       <View style={{ flex: 1 }}>
+    //         <Dropdown
+    //           label='Workout Type'
+    //           data={workoutNames}
+    //           onChangeText={ this.recordSession.bind(this) }
+    //         />
+    //       </View>
+    //     </View>
+    //   )
+    //   return dropDown
+    // }
+    //
+    // return null
   }
 
   defineWorkout() {
