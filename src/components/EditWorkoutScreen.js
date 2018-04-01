@@ -75,17 +75,17 @@ class EditWorkoutScreen extends React.Component {
     Keyboard.dismiss()
   }
 
-  addSession() {
-    this.props.addSession(
-      this.state.exerciseNames,
-      this.state.exerciseData,
-      this.props.user.uid,
-    )
-    // this should include the workout-type name
-    // next step is to get the session to save and appear in firebase
-    this.resetState()
-    this.props.navigation.navigate('Workouts')
-    Keyboard.dismiss()
+  addSession() { // NOT BEING USED
+    // this.props.addSession(
+    //   this.state.exerciseNames,
+    //   this.state.exerciseData,
+    //   this.props.user.uid,
+    // )
+    // // this should include the workout-type name
+    // // next step is to get the session to save and appear in firebase
+    // this.resetState()
+    // this.props.navigation.navigate('Workouts')
+    // Keyboard.dismiss()
   }
 
   addWorkoutOrSession() {
@@ -206,11 +206,10 @@ class EditWorkoutScreen extends React.Component {
   }
 
   render() {
-    const recordMode = this.state.workoutName.length > 0 // can probably use a better determinant
     return (
       <View style={{flex: 1}}>
         <ScrollView style={{flex: 1}} contentContainerStyle={styles.container}>
-          <Text style={styles.title}>{ recordMode ? 'Add Exercises' : 'Record Session' }</Text>
+          <Text style={styles.title}>{ this.state.isRecording ? 'Record Session' : 'Add Exercises' }</Text>
           { this.renderExerciseInputs() }
           <Button
             onPress={() => {this.addInput()}}
