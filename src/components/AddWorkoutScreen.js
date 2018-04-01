@@ -32,6 +32,7 @@ class AddWorkoutScreen extends React.Component {
 
   addExercises() {
     this.props.navigation.navigate('EditWorkout', {
+      workoutID: null,
       workoutName: this.state.workoutName,
       isRecording: false,
       exerciseData: {0: {0: {type: null, val: null}}},

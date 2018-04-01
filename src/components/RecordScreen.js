@@ -39,8 +39,8 @@ class RecordScreen extends React.Component {
   }
 
   componentDidUpdate() {
-    console.log('RECORD STATE',this.state)
-    console.log('RECORD PROPS', this.props)
+    // console.log('RECORD STATE',this.state)
+    // console.log('RECORD PROPS', this.props)
   }
 
   recordSession(workoutName, idx) {
@@ -59,6 +59,7 @@ class RecordScreen extends React.Component {
     })
 
     this.props.navigation.navigate('EditWorkout', {
+      workoutID: workout.id,
       workoutName: workout.name,
       isRecording: true,
       exerciseData: exerciseData,

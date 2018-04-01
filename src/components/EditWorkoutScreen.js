@@ -51,11 +51,13 @@ class EditWorkoutScreen extends React.Component {
   }
 
   componentDidMount() {
+    const params = this.props.navigation.state.params
     this.setState({
-      workoutName: this.props.navigation.state.params.workoutName,
-      isRecording: this.props.navigation.state.params.isRecording,
-      exerciseData: this.props.navigation.state.params.exerciseData,
-      exerciseNames: this.props.navigation.state.params.exerciseNames,
+      workoutID: params.workoutID,
+      workoutName: params.workoutName,
+      isRecording: params.isRecording,
+      exerciseData: params.exerciseData,
+      exerciseNames: params.exerciseNames,
     })
   }
 
@@ -75,17 +77,18 @@ class EditWorkoutScreen extends React.Component {
     Keyboard.dismiss()
   }
 
-  addSession() { // NOT BEING USED
-    // this.props.addSession(
-    //   this.state.exerciseNames,
-    //   this.state.exerciseData,
-    //   this.props.user.uid,
-    // )
-    // // this should include the workout-type name
-    // // next step is to get the session to save and appear in firebase
-    // this.resetState()
-    // this.props.navigation.navigate('Workouts')
-    // Keyboard.dismiss()
+  addSession() {
+    this.props.addSession(
+      this.state.exerciseNames,
+      this.state.exerciseData,
+      this.props.user.uid,
+      this.state.workoutID,
+    )
+    // this should include the workout-type name
+    // next step is to get the session to save and appear in firebase
+    this.resetState()
+    this.props.navigation.navigate('Workouts')
+    Keyboard.dismiss()
   }
 
   addWorkoutOrSession() {
@@ -234,6 +237,7 @@ const mapStateToProps = (state, ownProps) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     addWorkout: (workoutName, exerciseNames, exerciseData, uid) => { dispatch(workoutActions.addWorkout(workoutName, exerciseNames, exerciseData, uid)); },
+    addSession: (exerciseNames, exerciseData, uid, workoutID) => { dispatch(sessionActions.addSession(exerciseNames, exerciseData, uid, workoutID)); },
   };
 }
 
