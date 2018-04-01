@@ -9,7 +9,7 @@ export function recievedWorkouts(workouts) {
 
 export function addWorkout(workoutName, exerciseNames, exerciseData, userID) {
   const id = Math.random().toString(36).substring(7)
-  const workoutRef = rootRef.ref('workouts').child(`${id}`)
+  const workoutRef = rootRef.child(`workouts/${id}`)
 
   const exercises = {}
   exerciseNames.forEach((name, eIdx) => {
@@ -39,7 +39,7 @@ export function addWorkout(workoutName, exerciseNames, exerciseData, userID) {
 }
 
 export function removeWorkout(id, userID) {
-  const workoutRef = rootRef.child(`${userID}/workouts/${id}`)
+  const workoutRef = rootRef.child(`workouts/${id}`)
   workoutRef.remove()
 
   return {

@@ -9,7 +9,7 @@ export function recievedSessions(sessions) {
 
 export function addSession(sessionName, exerciseNames, exerciseData, userID) {
   const id = Math.random().toString(36).substring(7)
-  const sessionRef = rootRef.child(`${userID}/sessions/${id}`)
+  const sessionRef = rootRef.child(`sessions/${id}`)
 
   const exercises = {}
   exerciseNames.forEach((name, eIdx) => {
@@ -28,6 +28,7 @@ export function addSession(sessionName, exerciseNames, exerciseData, userID) {
 
   sessionRef.set({
     id,
+    userID,
     name: sessionName,
     exercises,
   })
@@ -38,7 +39,7 @@ export function addSession(sessionName, exerciseNames, exerciseData, userID) {
 }
 
 export function removeSession(id, userID) {
-  const sessionRef = rootRef.child(`${userID}/sessions/${id}`)
+  const sessionRef = rootRef.child(`sessions/${id}`)
   sessionRef.remove()
 
   return {
