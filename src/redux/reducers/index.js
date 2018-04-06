@@ -1,11 +1,13 @@
-import { combineReducers } from "redux";
+import { combineReducers } from 'redux';
 
-import auth from "./auth";
-import workouts from "./workouts";
+import auth from './auth';
+import workouts from './workouts';
+import sessions from './sessions';
 
 const reducers = combineReducers({
   auth,
-  workouts
+  workouts,
+  sessions,
 });
 
 const rootReducer = ( state, action ) => {

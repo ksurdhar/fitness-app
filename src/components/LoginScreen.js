@@ -11,6 +11,8 @@ import {
 import firebase from "firebase";
 import { login, loginFailed } from "../redux/actions/authActions.js";
 import { addWorkoutSuccess, removeWorkoutSuccess, recievedWorkouts } from '../redux/actions/workoutActions';
+import { addSessionSuccess, removeSessionSuccess, recievedSessions } from '../redux/actions/sessionActions';
+
 import config from '../../config.js';
 import store from '../redux/store.js'
 import { firebaseApp, rootRef } from '../firebase.js'
@@ -38,6 +40,7 @@ class LoginScreen extends Component {
       .auth()
       .signInWithEmailAndPassword(this.state.email, this.state.password)
       .then(user => {
+        // WORKOUTS
         const workoutsRef = rootRef.child('workouts')
         workoutsRef.on('child_added', (snapshot) => {
           store.dispatch(addWorkoutSuccess(snapshot.val()))
@@ -47,6 +50,17 @@ class LoginScreen extends Component {
         })
         workoutsRef.orderByChild('userID').equalTo(user.uid).once('value', (snapshot) => {
           store.dispatch(recievedWorkouts(snapshot.val()))
+        })
+        //SESSIONS
+        const sessionsRef = rootRef.child('sessions')
+        sessionsRef.on('child_added', (snapshot) => {
+          store.dispatch(addSessionSuccess(snapshot.val()))
+        })
+        sessionsRef.on('child_removed', (snapshot) => {
+          store.dispatch(removeSessionSuccess(snapshot.val()))
+        })
+        sessionsRef.orderByChild('userID').equalTo(user.uid).once('value', (snapshot) => {
+          store.dispatch(recievedSessions(snapshot.val()))
         })
         this.props.dispatchLogin(user);
       })

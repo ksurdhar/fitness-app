@@ -5,12 +5,12 @@ const defaultState = {
 
 export default function reducer(state = defaultState, action) {
   switch (action.type) {
-    case "LOGIN":
+    case 'LOGIN':
       return Object.assign({}, state, {
         isLoggedIn: true,
         user: action.user
       });
-    case "LOGOUT":
+    case 'LOGOUT':
       return Object.assign({}, state, {
         isLoggedIn: false,
         user: {}

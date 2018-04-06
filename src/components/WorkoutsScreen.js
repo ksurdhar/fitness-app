@@ -15,6 +15,11 @@ class WorkoutsScreen extends React.Component {
     return item.id
   }
 
+  componentDidUpdate() {
+    // console.log('WORKOUTS STATE', this.state)
+    // console.log('WORKOUTS PROPS', this.props)
+  }
+
   navigateToWorkout(item) {
     this.props.navigation.navigate('Workout', {
       workout: item,
@@ -23,9 +28,10 @@ class WorkoutsScreen extends React.Component {
   }
 
   renderRow({item}) {
+    console.log('ATTEMPTING TO RENDER ROW', item)
     return (
       <View style={styles.row}>
-        <Text style={styles.rowText}>{item.name}</Text>
+        <Text style={styles.rowText}>{item.date}</Text>
         <Button
           onPress={() => { this.navigateToWorkout(item) }}
           title="Details"
@@ -34,16 +40,18 @@ class WorkoutsScreen extends React.Component {
     )
   }
 
-  renderList() {
+  renderWorkouts() {
     if (this.props.workouts.length > 0) {
+      const lists = this.props.workouts.map((workout) => {
+        return this.renderSessions(workout.id)
+      })
       return (
-        <FlatList
-          style={styles.list}
-          data={this.props.workouts}
-          keyExtractor={this._keyExtractor}
-          renderItem={this.renderRow.bind(this)}
-        />
+        lists
       )
+      // return (
+      //   this.renderSessions(this.props.workouts[0].id)
+      // )
+
     } else {
       return (
         <View style={styles.emptyMessage}>
@@ -53,13 +61,27 @@ class WorkoutsScreen extends React.Component {
     }
   }
 
+  renderSessions(workoutID) {
+    const sessions = this.props.sessions.filter((session) => { return session.workoutID === workoutID })
+    console.log('SESSIONS', sessions)
+    return (
+      <FlatList
+        key={workoutID}
+        style={styles.list}
+        data={sessions}
+        keyExtractor={this._keyExtractor}
+        renderItem={this.renderRow.bind(this)}
+      />
+    )
+  }
+
   render() {
     return (
       <View style={styles.container}>
         <View style={styles.titleContainer}>
           <Text style={styles.title}>Workouts</Text>
         </View>
-        {this.renderList()}
+        {this.renderWorkouts()}
       </View>
     );
   }
@@ -68,6 +90,7 @@ class WorkoutsScreen extends React.Component {
 const mapStateToProps = (state, ownProps) => {
   return {
     workouts: state.workouts.workouts,
+    sessions: state.sessions.sessions,
     userID: state.auth.user.uid,
   };
 };
