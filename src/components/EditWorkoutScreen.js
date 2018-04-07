@@ -3,9 +3,7 @@ import { connect } from 'react-redux'
 import produce from 'immer'
 import {
   StyleSheet,
-  Text,
   ScrollView,
-  Button,
   TextInput,
   Keyboard,
   View,
@@ -14,6 +12,7 @@ import {
 import * as workoutActions from '../redux/actions/workoutActions'
 import * as sessionActions from '../redux/actions/sessionActions'
 import { Dropdown } from 'react-native-material-dropdown'
+import { Button, Text } from 'native-base'
 
 INITIAL_STATE = {
   workoutName: '',
@@ -218,9 +217,14 @@ class EditWorkoutScreen extends React.Component {
           { this.renderExerciseInputs() }
           { !this.state.isRecording && <Button title='Add Exercise' onPress={() => this.addInput() }/> }
           <Button
+            rounded
+            small
+            bordered
             onPress={() => {this.addWorkoutOrSession()}}
             title={ this.state.isRecording ? 'Record' : 'Create' }
-          />
+          >
+            <Text>{ this.state.isRecording ? 'Record' : 'Create' }</Text>
+          </Button>
         </ScrollView>
       </View>
     )

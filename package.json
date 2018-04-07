@@ -24,6 +24,7 @@
     "firebase": "^4.9.0",
     "immer": "^1.0.3",
     "immutability-helper": "^2.6.4",
+    "native-base": "^2.4.1",
     "react": "16.0.0",
     "react-native": "0.50.3",
     "react-native-material-dropdown": "^0.8.0",
