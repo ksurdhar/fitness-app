@@ -7,10 +7,10 @@ export function recievedSessions(sessions) {
   }
 }
 
-export function addSession(exerciseNames, exerciseData, userID, workoutID) {
+export function addSession(exerciseNames, exerciseData, userID, workoutID, workoutName) {
   const id = Math.random().toString(36).substring(7)
   const sessionRef = rootRef.child(`sessions/${id}`)
-  const date = new Date().toString()
+  const date = Date.now()
 
   const exercises = {}
   exerciseNames.forEach((name, eIdx) => {
@@ -32,7 +32,8 @@ export function addSession(exerciseNames, exerciseData, userID, workoutID) {
     exercises,
     userID,
     workoutID,
-    date
+    date,
+    workoutName
   })
 
   return {

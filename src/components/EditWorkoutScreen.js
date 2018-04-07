@@ -83,9 +83,8 @@ class EditWorkoutScreen extends React.Component {
       this.state.exerciseData,
       this.props.user.uid,
       this.state.workoutID,
+      this.state.workoutName
     )
-    // this should include the workout-type name
-    // next step is to get the session to save and appear in firebase
     this.resetState()
     this.props.navigation.navigate('Workouts')
     Keyboard.dismiss()
@@ -101,7 +100,6 @@ class EditWorkoutScreen extends React.Component {
 
   addInput() {
     let newEIdx = 0 // default when no exercises exist
-    console.log('E DATA', this.state.exerciseData)
     if (Object.keys(this.state.exerciseData).length > 0) {
       newEIdx = Object.keys(this.state.exerciseData).length
     }
@@ -117,7 +115,7 @@ class EditWorkoutScreen extends React.Component {
     let exerciseNames = [...this.state.exerciseNames]
     exerciseNames[idx] = value
     this.setState({ exerciseNames })
-  } // inputs should be disabled if recording session - only set values
+  }
 
   setAttrType(eIdx, attrIdx, type) {
     this.setState((prevState) => {
@@ -171,6 +169,7 @@ class EditWorkoutScreen extends React.Component {
                 value={attrEntry[1].type ? attrEntry[1].type : ''}
                 label='Attribute'
                 data={ATTRIBUTE_TYPES}
+                disabled={this.state.isRecording}
                 onChangeText={ this.setAttrType.bind(this, exIdx, attrIdx) }
               />
             </View>
@@ -197,10 +196,7 @@ class EditWorkoutScreen extends React.Component {
             onChangeText={ this.handleInputChange.bind(this, idx) }
           />
           { this.renderAttributes(idx) }
-          <Button
-            title='Add Attribute'
-            onPress={() => { this.addAttribute(idx) }}
-          />
+          { !this.state.isRecording && <Button title='Add Attribute' onPress={() => this.addAttribute(idx) }/> }
         </View>
       )
     })
@@ -214,13 +210,10 @@ class EditWorkoutScreen extends React.Component {
         <ScrollView style={{flex: 1}} contentContainerStyle={styles.container}>
           <Text style={styles.title}>{ this.state.isRecording ? 'Record Session' : 'Add Exercises' }</Text>
           { this.renderExerciseInputs() }
-          <Button
-            onPress={() => {this.addInput()}}
-            title='Add Exercise'
-          />
+          { !this.state.isRecording && <Button title='Add Exercise' onPress={() => this.addInput() }/> }
           <Button
             onPress={() => {this.addWorkoutOrSession()}}
-            title='Create'
+            title={ this.state.isRecording ? 'Record' : 'Create' }
           />
         </ScrollView>
       </View>
@@ -237,7 +230,7 @@ const mapStateToProps = (state, ownProps) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     addWorkout: (workoutName, exerciseNames, exerciseData, uid) => { dispatch(workoutActions.addWorkout(workoutName, exerciseNames, exerciseData, uid)); },
-    addSession: (exerciseNames, exerciseData, uid, workoutID) => { dispatch(sessionActions.addSession(exerciseNames, exerciseData, uid, workoutID)); },
+    addSession: (exerciseNames, exerciseData, uid, workoutID, workoutName) => { dispatch(sessionActions.addSession(exerciseNames, exerciseData, uid, workoutID, workoutName)); },
   };
 }
 

@@ -19,6 +19,7 @@
     "preset": "jest-expo"
   },
   "dependencies": {
+    "date-fns": "^1.29.0",
     "expo": "^23.0.4",
     "firebase": "^4.9.0",
     "immer": "^1.0.3",

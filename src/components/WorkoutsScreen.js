@@ -1,7 +1,16 @@
-import React from 'react';
-import { connect } from 'react-redux';
-import { StyleSheet, Text, View, Button, FlatList } from 'react-native';
-import * as workoutActions from '../redux/actions/workoutActions';
+import React from 'react'
+import { connect } from 'react-redux'
+import { StyleSheet, Text, View, Button, FlatList } from 'react-native'
+import * as workoutActions from '../redux/actions/workoutActions'
+import {format} from 'date-fns'
+
+const mapStateToProps = (state, ownProps) => {
+  return {
+    workouts: state.workouts.workouts,
+    sessions: state.sessions.sessions,
+    userID: state.auth.user.uid,
+  }
+}
 
 class WorkoutsScreen extends React.Component {
   static navigationOptions = {
@@ -9,7 +18,7 @@ class WorkoutsScreen extends React.Component {
     tabBarIcon: ({ tintColor }) => (
       <Text>Workouts</Text>
     ),
-  };
+  }
 
   _keyExtractor(item, index) {
     return item.id
@@ -28,10 +37,10 @@ class WorkoutsScreen extends React.Component {
   }
 
   renderRow({item}) {
-    console.log('ATTEMPTING TO RENDER ROW', item)
+    const dateString = format(item.date, 'MMM D, YYYY [at] h:mm A')
     return (
       <View style={styles.row}>
-        <Text style={styles.rowText}>{item.date}</Text>
+        <Text style={styles.rowText}>{`${item.workoutName} on ${dateString}`}</Text>
         <Button
           onPress={() => { this.navigateToWorkout(item) }}
           title="Details"
@@ -41,17 +50,15 @@ class WorkoutsScreen extends React.Component {
   }
 
   renderWorkouts() {
-    if (this.props.workouts.length > 0) {
-      const lists = this.props.workouts.map((workout) => {
-        return this.renderSessions(workout.id)
-      })
+    if (this.props.sessions.length > 0) {
       return (
-        lists
+        <FlatList
+          style={styles.list}
+          data={this.props.sessions}
+          keyExtractor={this._keyExtractor}
+          renderItem={this.renderRow.bind(this)}
+        />
       )
-      // return (
-      //   this.renderSessions(this.props.workouts[0].id)
-      // )
-
     } else {
       return (
         <View style={styles.emptyMessage}>
@@ -59,20 +66,6 @@ class WorkoutsScreen extends React.Component {
         </View>
       )
     }
-  }
-
-  renderSessions(workoutID) {
-    const sessions = this.props.sessions.filter((session) => { return session.workoutID === workoutID })
-    console.log('SESSIONS', sessions)
-    return (
-      <FlatList
-        key={workoutID}
-        style={styles.list}
-        data={sessions}
-        keyExtractor={this._keyExtractor}
-        renderItem={this.renderRow.bind(this)}
-      />
-    )
   }
 
   render() {
@@ -83,22 +76,14 @@ class WorkoutsScreen extends React.Component {
         </View>
         {this.renderWorkouts()}
       </View>
-    );
+    )
   }
 }
 
-const mapStateToProps = (state, ownProps) => {
-  return {
-    workouts: state.workouts.workouts,
-    sessions: state.sessions.sessions,
-    userID: state.auth.user.uid,
-  };
-};
-
 const mapDispatchToProps = (dispatch) => {
   return {
-    removeWorkout: (id, userID) => { dispatch(workoutActions.removeWorkout(id, userID)); },
-  };
+    removeWorkout: (id, userID) => { dispatch(workoutActions.removeWorkout(id, userID)) },
+  }
 }
 
 const styles = StyleSheet.create({
@@ -135,6 +120,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginTop: 150
   }
-});
+})
 
-export default connect(mapStateToProps, mapDispatchToProps)(WorkoutsScreen);
+export default connect(mapStateToProps, mapDispatchToProps)(WorkoutsScreen)

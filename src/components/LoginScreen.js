@@ -41,25 +41,25 @@ class LoginScreen extends Component {
       .signInWithEmailAndPassword(this.state.email, this.state.password)
       .then(user => {
         // WORKOUTS
-        const workoutsRef = rootRef.child('workouts')
+        const workoutsRef = rootRef.child('workouts').orderByChild('userID').equalTo(user.uid)
         workoutsRef.on('child_added', (snapshot) => {
           store.dispatch(addWorkoutSuccess(snapshot.val()))
         })
         workoutsRef.on('child_removed', (snapshot) => {
           store.dispatch(removeWorkoutSuccess(snapshot.val()))
         })
-        workoutsRef.orderByChild('userID').equalTo(user.uid).once('value', (snapshot) => {
+        workoutsRef.once('value', (snapshot) => {
           store.dispatch(recievedWorkouts(snapshot.val()))
         })
         //SESSIONS
-        const sessionsRef = rootRef.child('sessions')
+        const sessionsRef = rootRef.child('sessions').orderByChild('userID').equalTo(user.uid)
         sessionsRef.on('child_added', (snapshot) => {
           store.dispatch(addSessionSuccess(snapshot.val()))
         })
         sessionsRef.on('child_removed', (snapshot) => {
           store.dispatch(removeSessionSuccess(snapshot.val()))
         })
-        sessionsRef.orderByChild('userID').equalTo(user.uid).once('value', (snapshot) => {
+        sessionsRef.once('value', (snapshot) => {
           store.dispatch(recievedSessions(snapshot.val()))
         })
         this.props.dispatchLogin(user);

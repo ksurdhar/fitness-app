@@ -63,8 +63,13 @@ class RecordScreen extends React.Component {
       workoutName: workout.name,
       isRecording: true,
       exerciseData: exerciseData,
-      exerciseNames: exerciseNames
+      exerciseNames: exerciseNames,
+      workoutName: workout.name
     })
+  }
+
+  defineWorkout() {
+    this.props.navigation.navigate('AddWorkout')
   }
 
   renderWorkoutDropdown() {
@@ -88,10 +93,6 @@ class RecordScreen extends React.Component {
     }
 
     return null
-  }
-
-  defineWorkout() {
-    this.props.navigation.navigate('AddWorkout')
   }
 
   render() {
