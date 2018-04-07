@@ -1,6 +1,6 @@
-import React from 'react';
-import { connect } from 'react-redux';
-import produce from 'immer';
+import React from 'react'
+import { connect } from 'react-redux'
+import produce from 'immer'
 import {
   StyleSheet,
   Text,
@@ -10,9 +10,9 @@ import {
   Keyboard,
   View,
   Picker,
-} from 'react-native';
-import * as workoutActions from '../redux/actions/workoutActions';
-import { Dropdown } from 'react-native-material-dropdown';
+} from 'react-native'
+import * as workoutActions from '../redux/actions/workoutActions'
+import { Dropdown } from 'react-native-material-dropdown'
 
 INITIAL_STATE = {
   workoutName: '',
@@ -23,11 +23,12 @@ INITIAL_STATE = {
 
 class RecordScreen extends React.Component {
   static navigationOptions = {
+    title: 'Record',
     tabBarLabel: 'Record',
     tabBarIcon: ({ tintColor }) => (
       <Text>Record</Text>
     )
-  };
+  }
 
   constructor() {
     super()
@@ -99,7 +100,6 @@ class RecordScreen extends React.Component {
     return (
       <View style={{flex: 1}}>
         <ScrollView style={{flex: 1}} contentContainerStyle={styles.container}>
-          <Text style={styles.title}>Record Workout</Text>
           <Button
             onPress={() => {this.defineWorkout()}}
             title='Add Workout'
@@ -108,7 +108,7 @@ class RecordScreen extends React.Component {
           { this.renderWorkoutDropdown() }
         </ScrollView>
       </View>
-    );
+    )
   }
 }
 
@@ -116,13 +116,13 @@ const mapStateToProps = (state, ownProps) => {
   return {
     user: state.auth.user,
     workouts: state.workouts.workouts,
-  };
-};
+  }
+}
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    addWorkout: (workoutName, exerciseNames, exerciseData, uid) => { dispatch(workoutActions.addWorkout(workoutName, exerciseNames, exerciseData, uid)); },
-  };
+    addWorkout: (workoutName, exerciseNames, exerciseData, uid) => { dispatch(workoutActions.addWorkout(workoutName, exerciseNames, exerciseData, uid)) },
+  }
 }
 
 const styles = StyleSheet.create({
@@ -148,6 +148,6 @@ const styles = StyleSheet.create({
     fontSize: 20,
     width: 320,
   },
-});
+})
 
-export default connect(mapStateToProps, mapDispatchToProps)(RecordScreen);
+export default connect(mapStateToProps, mapDispatchToProps)(RecordScreen)

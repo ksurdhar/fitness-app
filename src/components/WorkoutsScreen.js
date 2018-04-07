@@ -14,6 +14,7 @@ const mapStateToProps = (state, ownProps) => {
 
 class WorkoutsScreen extends React.Component {
   static navigationOptions = {
+    title: 'Workouts',
     tabBarLabel: 'Workouts',
     tabBarIcon: ({ tintColor }) => (
       <Text>Workouts</Text>
@@ -29,9 +30,9 @@ class WorkoutsScreen extends React.Component {
     // console.log('WORKOUTS PROPS', this.props)
   }
 
-  navigateToWorkout(item) {
+  navigateToSession(item) {
     this.props.navigation.navigate('Workout', {
-      workout: item,
+      session: item,
       userID: this.props.userID
     })
   }
@@ -42,7 +43,7 @@ class WorkoutsScreen extends React.Component {
       <View style={styles.row}>
         <Text style={styles.rowText}>{`${item.workoutName} on ${dateString}`}</Text>
         <Button
-          onPress={() => { this.navigateToWorkout(item) }}
+          onPress={() => { this.navigateToSession(item) }}
           title="Details"
         />
       </View>
@@ -71,9 +72,6 @@ class WorkoutsScreen extends React.Component {
   render() {
     return (
       <View style={styles.container}>
-        <View style={styles.titleContainer}>
-          <Text style={styles.title}>Workouts</Text>
-        </View>
         {this.renderWorkouts()}
       </View>
     )
@@ -90,14 +88,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'flex-start',
-  },
-  titleContainer: {
-    alignItems: 'center'
-  },
-  title: {
-    fontSize: 40,
-    marginTop: 60,
-    marginBottom: 20,
   },
   list: {
     flex: 1,

@@ -1,6 +1,6 @@
-import React from 'react';
-import { connect } from 'react-redux';
-import produce from 'immer';
+import React from 'react'
+import { connect } from 'react-redux'
+import produce from 'immer'
 import {
   StyleSheet,
   Text,
@@ -10,10 +10,10 @@ import {
   Keyboard,
   View,
   Picker,
-} from 'react-native';
-import * as workoutActions from '../redux/actions/workoutActions';
-import * as sessionActions from '../redux/actions/sessionActions';
-import { Dropdown } from 'react-native-material-dropdown';
+} from 'react-native'
+import * as workoutActions from '../redux/actions/workoutActions'
+import * as sessionActions from '../redux/actions/sessionActions'
+import { Dropdown } from 'react-native-material-dropdown'
 
 INITIAL_STATE = {
   workoutName: '',
@@ -34,12 +34,19 @@ ATTRIBUTE_VALS = [...Array(100).keys()].map((num) => {
 })
 
 class EditWorkoutScreen extends React.Component {
-  static navigationOptions = {
-    tabBarLabel: 'Record',
-    tabBarIcon: ({ tintColor }) => (
-      <Text>Record</Text>
-    )
-  };
+  static navigationOptions = ({navigation}) => {
+    const { params } = navigation.state
+    const recordStr = `Recording ${params.workoutName}`
+    const createStr = `Defining ${params.workoutName}`
+
+    return {
+      title: params.isRecording ? recordStr : createStr,
+      tabBarLabel: 'Record',
+      tabBarIcon: ({ tintColor }) => (
+        <Text>Record</Text>
+      )
+    }
+  }
 
   constructor() {
     super()
@@ -208,7 +215,6 @@ class EditWorkoutScreen extends React.Component {
     return (
       <View style={{flex: 1}}>
         <ScrollView style={{flex: 1}} contentContainerStyle={styles.container}>
-          <Text style={styles.title}>{ this.state.isRecording ? 'Record Session' : 'Add Exercises' }</Text>
           { this.renderExerciseInputs() }
           { !this.state.isRecording && <Button title='Add Exercise' onPress={() => this.addInput() }/> }
           <Button
@@ -217,21 +223,21 @@ class EditWorkoutScreen extends React.Component {
           />
         </ScrollView>
       </View>
-    );
+    )
   }
 }
 
 const mapStateToProps = (state, ownProps) => {
   return {
     user: state.auth.user
-  };
-};
+  }
+}
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    addWorkout: (workoutName, exerciseNames, exerciseData, uid) => { dispatch(workoutActions.addWorkout(workoutName, exerciseNames, exerciseData, uid)); },
-    addSession: (exerciseNames, exerciseData, uid, workoutID, workoutName) => { dispatch(sessionActions.addSession(exerciseNames, exerciseData, uid, workoutID, workoutName)); },
-  };
+    addWorkout: (workoutName, exerciseNames, exerciseData, uid) => { dispatch(workoutActions.addWorkout(workoutName, exerciseNames, exerciseData, uid)) },
+    addSession: (exerciseNames, exerciseData, uid, workoutID, workoutName) => { dispatch(sessionActions.addSession(exerciseNames, exerciseData, uid, workoutID, workoutName)) },
+  }
 }
 
 const styles = StyleSheet.create({
@@ -257,6 +263,6 @@ const styles = StyleSheet.create({
     fontSize: 20,
     width: 320,
   },
-});
+})
 
-export default connect(mapStateToProps, mapDispatchToProps)(EditWorkoutScreen);
+export default connect(mapStateToProps, mapDispatchToProps)(EditWorkoutScreen)

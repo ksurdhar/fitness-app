@@ -15,6 +15,7 @@ INITIAL_STATE = {
 
 class AddWorkoutScreen extends React.Component {
   static navigationOptions = {
+    title: 'Define Workout',
     tabBarLabel: 'Record',
     tabBarIcon: ({ tintColor }) => (
       <Text>Record</Text>
@@ -43,7 +44,6 @@ class AddWorkoutScreen extends React.Component {
   render() {
     return (
       <View style={{flex: 1}}>
-        <Text style={styles.title}>Define Workout</Text>
         <TextInput
           placeholder='Workout Name ex. Legs'
           style={styles.input}

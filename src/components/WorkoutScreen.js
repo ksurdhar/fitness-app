@@ -4,11 +4,16 @@ import { StyleSheet, Text, View, Button, FlatList } from 'react-native';
 import * as workoutActions from '../redux/actions/workoutActions';
 
 class WorkoutScreen extends React.Component {
-  static navigationOptions = {
-    tabBarLabel: 'Workouts',
-    tabBarIcon: ({ tintColor }) => (
-      <Text>Workouts</Text>
-    ),
+  static navigationOptions = ({navigation}) => {
+    const { params } = navigation.state
+
+    return {
+      title: `${params.session.workoutName} Session Details`,
+      tabBarLabel: 'Workouts',
+      tabBarIcon: ({ tintColor }) => (
+        <Text>Workouts</Text>
+      ),
+    }
   }
 
   _keyExtractor(item, index) {
@@ -40,7 +45,7 @@ class WorkoutScreen extends React.Component {
   }
 
   renderExercises() {
-    const exercises = Object.values(this.props.navigation.state.params.workout.exercises)
+    const exercises = Object.values(this.props.navigation.state.params.session.exercises)
     return (
       <FlatList
         style={styles.list}
@@ -52,15 +57,12 @@ class WorkoutScreen extends React.Component {
   }
 
   render() {
-    const workout = this.props.navigation.state.params.workout
+    const session = this.props.navigation.state.params.session
     return (
       <View style={styles.container}>
-        <View style={styles.titleContainer}>
-          <Text style={styles.title}>{workout.name}</Text>
-        </View>
         {this.renderExercises()}
         <Button
-          onPress={() => { this.removeWorkout(workout.id) }}
+          onPress={() => { this.removeWorkout(session.id) }}
           title="Remove"
         />
       </View>
@@ -78,14 +80,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'flex-start',
-  },
-  titleContainer: {
-    alignItems: 'center'
-  },
-  title: {
-    fontSize: 40,
-    marginTop: 60,
-    marginBottom: 20,
   },
   list: {
     flex: 1,
