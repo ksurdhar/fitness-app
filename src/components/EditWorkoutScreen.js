@@ -133,7 +133,7 @@ class EditWorkoutScreen extends React.Component {
   renderValDropdown(exIdx, attrIdx) {
     if (this.state.isRecording) {
       return (
-        <Container style={{ width: 96, marginLeft: 8}}>
+        <Container style={{ width: 96, Left: 8}}>
           <Dropdown
             label='Val'
             data={ATTRIBUTE_VALS}
@@ -159,12 +159,17 @@ class EditWorkoutScreen extends React.Component {
 
   renderAttrButtons(eIdx) {
     const buttons = ATTRIBUTE_TYPES.map((attr, aIdx) => {
+      const style = {marginLeft: 2, marginRight: 2}
       const attrData = this.state.exerciseData[eIdx][aIdx]
       const attrEnabled = attrData && !!attrData.type
+      if (attrEnabled) {
+        style.borderWidth = 1
+        style.borderColor = 'transparent'
+      }
       return (
         <Button small rounded info
           bordered={ !attrEnabled }
-          style={{marginLeft: 2, marginRight: 2}}
+          style={style}
           key={aIdx}
           onPress={this.toggleAttr.bind(this, eIdx, aIdx, attr) }>
           <Text>{attr}</Text>
@@ -173,7 +178,7 @@ class EditWorkoutScreen extends React.Component {
     })
 
     return (
-      <Container style={{flexDirection: 'row', paddingRight: 6}}>
+      <Container style={{flexDirection: 'row', paddingLeft: 12}}>
         { buttons }
       </Container>
     )
@@ -197,16 +202,24 @@ class EditWorkoutScreen extends React.Component {
   }
 
   render() {
+    const exerciseButton = (
+      <Button rounded style={{marginRight: 4}} onPress={() => this.addExercise() }>
+      <Text>Add Exercise</Text>
+      </Button>
+    )
+    const createButton = (
+      <Button rounded success onPress={() => this.addWorkoutOrSession() }>
+        <Text>{ this.state.isRecording ? 'Record Session' : 'Create Workout' }</Text>
+      </Button>
+    )
     return (
       <Container style={{flex: 1}}>
         <Content style={{flex: 1}} contentContainerStyle={styles.container}>
           { this.renderExercises() }
-          { !this.state.isRecording && <Button onPress={() => this.addExercise() }><Text>Add Exercise</Text></Button> }
-          <Button rounded small bordered
-            onPress={() => this.addWorkoutOrSession() }
-          >
-            <Text>{ this.state.isRecording ? 'Record' : 'Create' }</Text>
-          </Button>
+          <Container style={{flexDirection: 'row', justifyContent: 'space-around', marginTop: 20, height: 80}}>
+            { !this.state.isRecording && exerciseButton }
+            { createButton }
+          </Container>
         </Content>
       </Container>
     )
