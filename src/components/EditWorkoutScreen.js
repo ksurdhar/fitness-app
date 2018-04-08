@@ -3,7 +3,6 @@ import { connect } from 'react-redux'
 import produce from 'immer'
 import {
   StyleSheet,
-  ScrollView,
   TextInput,
   Keyboard,
   View,
@@ -12,7 +11,7 @@ import {
 import * as workoutActions from '../redux/actions/workoutActions'
 import * as sessionActions from '../redux/actions/sessionActions'
 import { Dropdown } from 'react-native-material-dropdown'
-import { Button, Text } from 'native-base'
+import { Button, Text, Container, Content } from 'native-base'
 
 INITIAL_STATE = {
   workoutName: '',
@@ -22,10 +21,10 @@ INITIAL_STATE = {
 }
 
 ATTRIBUTE_TYPES = [
-  {value: 'sets'},
-  {value: 'reps'},
-  {value: 'weight'},
-  {value: 'seconds'},
+  'sets',
+  'reps',
+  'weight',
+  'seconds',
 ]
 
 ATTRIBUTE_VALS = [...Array(100).keys()].map((num) => {
@@ -68,7 +67,7 @@ class EditWorkoutScreen extends React.Component {
   }
 
   componentDidUpdate() {
-    // console.log('state',this.state)
+    console.log('state',this.state)
   }
 
   addWorkout() {
@@ -104,7 +103,7 @@ class EditWorkoutScreen extends React.Component {
     }
   }
 
-  addInput() {
+  addExercise() {
     let newEIdx = 0 // default when no exercises exist
     if (Object.keys(this.state.exerciseData).length > 0) {
       newEIdx = Object.keys(this.state.exerciseData).length
@@ -123,14 +122,6 @@ class EditWorkoutScreen extends React.Component {
     this.setState({ exerciseNames })
   }
 
-  setAttrType(eIdx, attrIdx, type) {
-    this.setState((prevState) => {
-      return produce(prevState, (draftState) => {
-        draftState.exerciseData[eIdx][attrIdx].type = type
-      })
-    })
-  }
-
   setAttrVal(eIdx, attrIdx, val) {
     this.setState((prevState) => {
       return produce(prevState, (draftState) => {
@@ -139,61 +130,59 @@ class EditWorkoutScreen extends React.Component {
     })
   }
 
-  addAttribute(eIdx) {
-    const attrIdx = Object.keys(this.state.exerciseData[eIdx]).length
-    this.setState((prevState) => {
-      return produce(prevState, (draftState) => {
-        draftState.exerciseData[eIdx][attrIdx] = {type: null, val: null}
-      })
-    })
-  }
-
   renderValDropdown(exIdx, attrIdx) {
     if (this.state.isRecording) {
       return (
-        <View style={{ width: 96, marginLeft: 8}}>
+        <Container style={{ width: 96, marginLeft: 8}}>
           <Dropdown
             label='Val'
             data={ATTRIBUTE_VALS}
             onChangeText={ this.setAttrVal.bind(this, exIdx, attrIdx) }
           />
-        </View>
+        </Container>
       )
     } return null
   }
 
-  renderAttributes(exIdx) {
-    if (this.state.exerciseData[exIdx]) {
-      const dropdowns = Object.entries(this.state.exerciseData[exIdx]).map((attrEntry, attrIdx) => {
-        return (
-          <View
-            key={exIdx + attrIdx}
-            style={{flexDirection: 'row'}}
-          >
-            <View style={{flex: 1}}>
-              <Dropdown
-                value={attrEntry[1].type ? attrEntry[1].type : ''}
-                label='Attribute'
-                data={ATTRIBUTE_TYPES}
-                disabled={this.state.isRecording}
-                onChangeText={ this.setAttrType.bind(this, exIdx, attrIdx) }
-              />
-            </View>
-            { this.renderValDropdown(exIdx, attrIdx) }
-          </View>
-        )
+  toggleAttr(eIdx, aIdx, attrType) {
+    this.setState((prevState) => {
+      return produce(prevState, (draftState) => {
+        const attr = prevState.exerciseData[eIdx][aIdx]
+        if (attr && !!attr.type) {
+          delete draftState.exerciseData[eIdx][aIdx]
+        } else {
+          draftState.exerciseData[eIdx][aIdx] = {type: attrType, val: null}
+        }
       })
-
-      return (<View>{ dropdowns }</View>)
-    } else {
-      return null
-    }
+    })
   }
 
-  renderExerciseInputs() {
-    const inputs = this.state.exerciseNames.map((val, idx) => {
+  renderAttrButtons(eIdx) {
+    const buttons = ATTRIBUTE_TYPES.map((attr, aIdx) => {
+      const attrData = this.state.exerciseData[eIdx][aIdx]
+      const attrEnabled = attrData && !!attrData.type
       return (
-        <View key={idx}>
+        <Button small rounded info
+          bordered={ !attrEnabled }
+          style={{marginLeft: 2, marginRight: 2}}
+          key={aIdx}
+          onPress={this.toggleAttr.bind(this, eIdx, aIdx, attr) }>
+          <Text>{attr}</Text>
+        </Button>
+      )
+    })
+
+    return (
+      <Container style={{flexDirection: 'row', paddingRight: 6}}>
+        { buttons }
+      </Container>
+    )
+  }
+
+  renderExercises() {
+    return this.state.exerciseNames.map((val, idx) => {
+      return (
+        <Container key={idx} style={{height: 100, paddingTop: 5, paddingBottom: 5}}>
           <TextInput
             placeholder={`exercise ${idx + 1}`}
             style={styles.input}
@@ -201,32 +190,25 @@ class EditWorkoutScreen extends React.Component {
             value={val || ''}
             onChangeText={ this.handleInputChange.bind(this, idx) }
           />
-          { this.renderAttributes(idx) }
-          { !this.state.isRecording && <Button title='Add Attribute' onPress={() => this.addAttribute(idx) }/> }
-        </View>
+          { this.renderAttrButtons(idx) }
+        </Container>
       )
     })
-
-    return (<View>{ inputs }</View>)
   }
 
   render() {
     return (
-      <View style={{flex: 1}}>
-        <ScrollView style={{flex: 1}} contentContainerStyle={styles.container}>
-          { this.renderExerciseInputs() }
-          { !this.state.isRecording && <Button title='Add Exercise' onPress={() => this.addInput() }/> }
-          <Button
-            rounded
-            small
-            bordered
-            onPress={() => {this.addWorkoutOrSession()}}
-            title={ this.state.isRecording ? 'Record' : 'Create' }
+      <Container style={{flex: 1}}>
+        <Content style={{flex: 1}} contentContainerStyle={styles.container}>
+          { this.renderExercises() }
+          { !this.state.isRecording && <Button onPress={() => this.addExercise() }><Text>Add Exercise</Text></Button> }
+          <Button rounded small bordered
+            onPress={() => this.addWorkoutOrSession() }
           >
             <Text>{ this.state.isRecording ? 'Record' : 'Create' }</Text>
           </Button>
-        </ScrollView>
-      </View>
+        </Content>
+      </Container>
     )
   }
 }
@@ -246,13 +228,9 @@ const mapDispatchToProps = (dispatch) => {
 
 const styles = StyleSheet.create({
   container: {
+    paddingTop: 10,
     alignItems: 'center',
     justifyContent: 'flex-start',
-  },
-  title: {
-    fontSize: 40,
-    marginTop: 60,
-    marginBottom: 60,
   },
   input: {
     backgroundColor: '#FFFFFF',

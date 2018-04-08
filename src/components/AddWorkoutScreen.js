@@ -1,13 +1,13 @@
-import React from 'react';
-import { connect } from 'react-redux';
-import produce from 'immer';
+import React from 'react'
+import { connect } from 'react-redux'
+import produce from 'immer'
 import {
   StyleSheet,
   Text,
   Button,
   TextInput,
   View,
-} from 'react-native';
+} from 'react-native'
 
 INITIAL_STATE = {
   workoutName: '',
@@ -20,7 +20,7 @@ class AddWorkoutScreen extends React.Component {
     tabBarIcon: ({ tintColor }) => (
       <Text>Record</Text>
     )
-  };
+  }
 
   constructor() {
     super()
@@ -57,15 +57,15 @@ class AddWorkoutScreen extends React.Component {
           title='Add Exercises'
         />
       </View>
-    );
+    )
   }
 }
 
 const mapStateToProps = (state, ownProps) => {
   return {
     user: state.auth.user
-  };
-};
+  }
+}
 
 const styles = StyleSheet.create({
   container: {
@@ -90,6 +90,6 @@ const styles = StyleSheet.create({
     fontSize: 20,
     width: 320,
   },
-});
+})
 
-export default connect(mapStateToProps, null)(AddWorkoutScreen);
+export default connect(mapStateToProps, null)(AddWorkoutScreen)
