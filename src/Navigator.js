@@ -1,13 +1,15 @@
-import React from "react";
-import { StyleSheet, Text, View, Button } from "react-native";
-import { TabNavigator, StackNavigator } from "react-navigation";
+import React from "react"
+import { StyleSheet, Text, View, Button } from "react-native"
+import { TabNavigator, StackNavigator } from "react-navigation"
 
-import RecordScreen from "./components/RecordScreen";
-import WorkoutsScreen from "./components/WorkoutsScreen";
-import WorkoutScreen from "./components/WorkoutScreen";
-import ProfileScreen from "./components/ProfileScreen";
-import AddWorkoutScreen from './components/AddWorkoutScreen';
-import EditWorkoutScreen from './components/EditWorkoutScreen';
+import PromptScreen from "./components/PromptScreen"
+import WorkoutsScreen from "./components/WorkoutsScreen"
+import WorkoutScreen from "./components/WorkoutScreen"
+import ProfileScreen from "./components/ProfileScreen"
+import NameWorkoutScreen from './components/NameWorkoutScreen'
+import AddWorkoutScreen from './components/AddWorkoutScreen'
+import AddSessionScreen from './components/AddSessionScreen'
+
 
 const WorkoutStack = StackNavigator({
   Workouts: {
@@ -20,13 +22,16 @@ const WorkoutStack = StackNavigator({
 
 const RecordStack = StackNavigator({
   Record: {
-    screen: RecordScreen
+    screen: PromptScreen
+  },
+  NameWorkout: {
+    screen: NameWorkoutScreen
   },
   AddWorkout: {
     screen: AddWorkoutScreen
   },
-  EditWorkout: {
-    screen: EditWorkoutScreen
+  AddSession: {
+    screen: AddSessionScreen
   }
 })
 
@@ -49,6 +54,6 @@ const Navigator = TabNavigator(
       activeTintColor: "#e91e63"
     }
   }
-);
+)
 
-export default Navigator;
+export default Navigator
