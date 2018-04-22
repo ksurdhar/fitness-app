@@ -9,15 +9,8 @@ import {
   Picker,
 } from 'react-native'
 import * as workoutActions from '../redux/actions/workoutActions'
-import * as sessionActions from '../redux/actions/sessionActions'
 import { Dropdown } from 'react-native-material-dropdown'
-import { Button, Text, Container, Content } from 'native-base'
-
-INITIAL_STATE = {
-  workoutName: '',
-  exerciseNames: [],
-  exerciseData: {},
-}
+import { Button, Text, Container, Content, Input, Item, Label } from 'native-base'
 
 ATTRIBUTE_TYPES = [
   'sets',
@@ -29,6 +22,18 @@ ATTRIBUTE_TYPES = [
 ATTRIBUTE_VALS = [...Array(100).keys()].map((num) => {
   return {value: num + 1}
 })
+
+INITIAL_STATE = {
+  workoutName: '',
+  exerciseNames: [],
+  exerciseData: {},
+}
+
+const mapStateToProps = (state, ownProps) => {
+  return {
+    user: state.auth.user
+  }
+}
 
 class AddWorkoutScreen extends React.Component {
   static navigationOptions = ({navigation}) => {
@@ -97,28 +102,6 @@ class AddWorkoutScreen extends React.Component {
     this.setState({ exerciseNames })
   }
 
-  // setAttrVal(eIdx, attrIdx, val) {
-  //   this.setState((prevState) => {
-  //     return produce(prevState, (draftState) => {
-  //       draftState.exerciseData[eIdx][attrIdx].val = val
-  //     })
-  //   })
-  // }
-  //
-  // renderValDropdown(exIdx, attrIdx) {
-  //   if (this.state.isRecording) {
-  //     return (
-  //       <Container style={{ width: 96, Left: 8}}>
-  //         <Dropdown
-  //           label='Val'
-  //           data={ATTRIBUTE_VALS}
-  //           onChangeText={ this.setAttrVal.bind(this, exIdx, attrIdx) }
-  //         />
-  //       </Container>
-  //     )
-  //   } return null
-  // }
-
   toggleAttr(eIdx, aIdx, attrType) {
     this.setState((prevState) => {
       return produce(prevState, (draftState) => {
@@ -163,13 +146,14 @@ class AddWorkoutScreen extends React.Component {
     return this.state.exerciseNames.map((val, idx) => {
       return (
         <Container key={idx} style={{height: 100, paddingTop: 5, paddingBottom: 5}}>
-          <TextInput
-            placeholder={`exercise ${idx + 1}`}
-            style={styles.input}
-            key={idx}
-            value={val || ''}
-            onChangeText={ this.handleInputChange.bind(this, idx) }
-          />
+          <Item floatingLabel style={{marginBottom: 10}}>
+            <Label>{`exercise ${idx + 1}`}</Label>
+            <Input
+              key={idx}
+              value={val || ''}
+              onChangeText={ this.handleInputChange.bind(this, idx) }
+            />
+          </Item>
           { this.renderAttrButtons(idx) }
         </Container>
       )
@@ -179,12 +163,12 @@ class AddWorkoutScreen extends React.Component {
   render() {
     const exerciseButton = (
       <Button rounded style={{marginRight: 4}} onPress={() => this.addExercise() }>
-      <Text>Add Exercise</Text>
+        <Text>Add Exercise</Text>
       </Button>
     )
     const createButton = (
       <Button rounded success onPress={() => this.addWorkout() }>
-        <Text>{ 'Create Workout' }</Text>
+        <Text>Create Workout</Text>
       </Button>
     )
     return (
@@ -201,16 +185,11 @@ class AddWorkoutScreen extends React.Component {
   }
 }
 
-const mapStateToProps = (state, ownProps) => {
-  return {
-    user: state.auth.user
-  }
-}
-
 const mapDispatchToProps = (dispatch) => {
   return {
-    addWorkout: (workoutName, exerciseNames, exerciseData, uid) => { dispatch(workoutActions.addWorkout(workoutName, exerciseNames, exerciseData, uid)) },
-    addSession: (exerciseNames, exerciseData, uid, workoutID, workoutName) => { dispatch(sessionActions.addSession(exerciseNames, exerciseData, uid, workoutID, workoutName)) },
+    addWorkout: (workoutName, exerciseNames, exerciseData, uid) => {
+      dispatch(workoutActions.addWorkout(workoutName, exerciseNames, exerciseData, uid))
+    },
   }
 }
 
@@ -219,20 +198,7 @@ const styles = StyleSheet.create({
     paddingTop: 10,
     alignItems: 'center',
     justifyContent: 'flex-start',
-  },
-  input: {
-    backgroundColor: '#FFFFFF',
-    height: 42,
-    borderColor: '#CCCCCC',
-    borderWidth: 1,
-    marginBottom: 10,
-    marginLeft: 10,
-    marginRight: 10,
-    paddingLeft: 10,
-    borderRadius: 5,
-    fontSize: 20,
-    width: 320,
-  },
+  }
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(AddWorkoutScreen)

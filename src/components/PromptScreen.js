@@ -9,7 +9,6 @@ import {
   TextInput,
   Keyboard,
   View,
-  Picker,
 } from 'react-native'
 import * as workoutActions from '../redux/actions/workoutActions'
 import { Dropdown } from 'react-native-material-dropdown'
@@ -19,6 +18,13 @@ INITIAL_STATE = {
   inputValues: [],
   exerciseData: {},
   newWorkout: null,
+}
+
+const mapStateToProps = (state, ownProps) => {
+  return {
+    user: state.auth.user,
+    workouts: state.workouts.workouts,
+  }
 }
 
 class PromptScreen extends React.Component {
@@ -45,43 +51,47 @@ class PromptScreen extends React.Component {
   }
 
   recordSession(workoutName, idx) {
-    const workoutKey = Object.keys(this.props.workouts)[idx]
-    const workout = this.props.workouts[workoutKey]
+    if (idx === this.props.workouts.length) {
+      this.props.navigation.navigate('NameWorkout')
+    } else {
+      const workoutKey = Object.keys(this.props.workouts)[idx]
+      const workout = this.props.workouts[workoutKey]
 
-    const exerciseData = {}
-    const exerciseNames = []
-    Object.entries(workout.exercises).forEach((exerciseEntry, eIdx) => {
-      const exercise = exerciseEntry[1]
-      exerciseData[eIdx] = {}
-      exercise.attributes.forEach((attr, attrIdx) => {
-        exerciseData[eIdx][attrIdx] = attr
+      const exerciseData = {}
+      const exerciseNames = []
+      Object.entries(workout.exercises).forEach((exerciseEntry, eIdx) => {
+        const exercise = exerciseEntry[1]
+        exerciseData[eIdx] = {}
+        exercise.attributes.forEach((attr, attrIdx) => {
+          exerciseData[eIdx][attrIdx] = attr
+        })
+        exerciseNames.push(exercise.name)
       })
-      exerciseNames.push(exercise.name)
-    })
 
-    this.props.navigation.navigate('AddSession', {
-      workoutID: workout.id,
-      workoutName: workout.name,
-      exerciseData: exerciseData,
-      exerciseNames: exerciseNames,
-      workoutName: workout.name
-    })
-  }
-
-  defineWorkout() {
-    this.props.navigation.navigate('NameWorkout')
+      this.props.navigation.navigate('AddSession', {
+        workoutID: workout.id,
+        workoutName: workout.name,
+        exerciseData: exerciseData,
+        exerciseNames: exerciseNames,
+        workoutName: workout.name
+      })
+    }
   }
 
   renderWorkoutDropdown() {
     const workoutNames = Object.entries(this.props.workouts).map((workoutEntry, workoutIdx) => {
       return { value: workoutEntry[1].name }
     })
+    workoutNames.push({ value: 'Add New Workout'})
 
     if (workoutNames.length > 0) {
       const dropDown = (
-        <View style={{ flexDirection: 'row' }}>
-          <View style={{ flex: 1 }}>
+        <View style={{ flexDirection: 'row', paddingTop: 80 }}>
+          <View style={{ flex: 1, marginLeft: 15, marginRight: 15 }}>
             <Dropdown
+              animationDuration={50}
+              rippleOpacity={.3}
+              dropdownOffset={{top:110, left:0}}
               label='Workout Type'
               data={workoutNames}
               onChangeText={ this.recordSession.bind(this) }
@@ -99,22 +109,11 @@ class PromptScreen extends React.Component {
     return (
       <View style={{flex: 1}}>
         <ScrollView style={{flex: 1}} contentContainerStyle={styles.container}>
-          <Button
-            onPress={() => {this.defineWorkout()}}
-            title='Add Workout'
-          />
-          <Text>Or Choose a workout</Text>
+          <Text>Choose a workout</Text>
           { this.renderWorkoutDropdown() }
         </ScrollView>
       </View>
     )
-  }
-}
-
-const mapStateToProps = (state, ownProps) => {
-  return {
-    user: state.auth.user,
-    workouts: state.workouts.workouts,
   }
 }
 
@@ -127,19 +126,6 @@ const styles = StyleSheet.create({
     fontSize: 40,
     marginTop: 60,
     marginBottom: 60,
-  },
-  input: {
-    backgroundColor: '#FFFFFF',
-    height: 42,
-    borderColor: '#CCCCCC',
-    borderWidth: 1,
-    marginBottom: 10,
-    marginLeft: 10,
-    marginRight: 10,
-    paddingLeft: 10,
-    borderRadius: 5,
-    fontSize: 20,
-    width: 320,
   },
 })
 

@@ -3,11 +3,9 @@ import { connect } from 'react-redux'
 import produce from 'immer'
 import {
   StyleSheet,
-  Text,
-  Button,
   TextInput,
-  View,
 } from 'react-native'
+import { Button, Text, Container, Content, Input, Item, Form } from 'native-base'
 
 INITIAL_STATE = {
   workoutName: '',
@@ -42,20 +40,20 @@ class NameWorkoutScreen extends React.Component {
 
   render() {
     return (
-      <View style={{flex: 1}}>
-        <TextInput
-          placeholder='Workout Name ex. Legs'
-          style={styles.input}
-          ref='workoutInput'
-          value={this.state.workoutName}
-          onChangeText={(workoutName) => this.setState({workoutName})}
-          onEndEditing={() => this.refs.workoutInput.blur()}
-        />
-        <Button
-          onPress={() => {this.addExercises()}}
-          title='Add Exercises'
-        />
-      </View>
+      <Container style={{flex: 1}}>
+        <Content style={{flex: 1}} contentContainerStyle={styles.container}>
+          <Item style={{marginLeft:15, marginRight: 15}}>
+            <Input
+              style={{fontSize: 24}}
+              underline
+              placeholder='Workout name ex. Leg Blasters'
+              value={this.state.workoutName}
+              onChangeText={(workoutName) => this.setState({workoutName})}
+              onSubmitEditing={this.addExercises.bind(this)}
+            />
+          </Item>
+        </Content>
+      </Container>
     )
   }
 }
@@ -68,26 +66,9 @@ const mapStateToProps = (state, ownProps) => {
 
 const styles = StyleSheet.create({
   container: {
+    paddingTop: 100,
     alignItems: 'center',
     justifyContent: 'flex-start',
-  },
-  title: {
-    fontSize: 40,
-    marginTop: 60,
-    marginBottom: 60,
-  },
-  input: {
-    backgroundColor: '#FFFFFF',
-    height: 42,
-    borderColor: '#CCCCCC',
-    borderWidth: 1,
-    marginBottom: 10,
-    marginLeft: 10,
-    marginRight: 10,
-    paddingLeft: 10,
-    borderRadius: 5,
-    fontSize: 20,
-    width: 320,
   },
 })
 

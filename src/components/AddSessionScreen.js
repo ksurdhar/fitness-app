@@ -3,10 +3,7 @@ import { connect } from 'react-redux'
 import produce from 'immer'
 import {
   StyleSheet,
-  TextInput,
   Keyboard,
-  View,
-  Picker,
 } from 'react-native'
 import * as sessionActions from '../redux/actions/sessionActions'
 import { Dropdown } from 'react-native-material-dropdown'
@@ -118,7 +115,7 @@ class AddSessionScreen extends React.Component {
         <Container key={attrIdx} style={{height: 100, paddingTop: 5, paddingBottom: 5}}>
           <Text>{attr.type}</Text>
           <Item>
-            <Input underline keyboardType={"numeric"} onChangeText={ this.setAttrVal.bind(this, exIdx, attrIdx)}></Input>
+            <Input underline keyboardType={"numeric"} onChangeText={ this.setAttrVal.bind(this, exIdx, attrIdx)}/>
           </Item>
         </Container>
       )
@@ -141,7 +138,7 @@ class AddSessionScreen extends React.Component {
   render() {
     const recordButton = (
       <Button rounded success onPress={() => this.addSession() }>
-        <Text>{ 'Record Session' }</Text>
+        <Text>Record Session</Text>
       </Button>
     )
     return (
@@ -174,19 +171,6 @@ const styles = StyleSheet.create({
     paddingTop: 10,
     alignItems: 'center',
     justifyContent: 'flex-start',
-  },
-  input: {
-    backgroundColor: '#FFFFFF',
-    height: 42,
-    borderColor: '#CCCCCC',
-    borderWidth: 1,
-    marginBottom: 10,
-    marginLeft: 10,
-    marginRight: 10,
-    paddingLeft: 10,
-    borderRadius: 5,
-    fontSize: 20,
-    width: 320,
   },
 })
 
