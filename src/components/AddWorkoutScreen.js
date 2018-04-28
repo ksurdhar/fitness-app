@@ -19,10 +19,6 @@ ATTRIBUTE_TYPES = [
   'seconds',
 ]
 
-ATTRIBUTE_VALS = [...Array(100).keys()].map((num) => {
-  return {value: num + 1}
-})
-
 INITIAL_STATE = {
   workoutName: '',
   exerciseNames: [],

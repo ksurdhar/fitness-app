@@ -7,13 +7,7 @@ import {
 } from 'react-native'
 import * as sessionActions from '../redux/actions/sessionActions'
 import { Dropdown } from 'react-native-material-dropdown'
-import { Button, Text, Container, Content, Input, Form, Item } from 'native-base'
-
-INITIAL_STATE = {
-  workoutName: '',
-  exerciseNames: [],
-  exerciseData: {},
-}
+import { Button, Text, Container, Content, Input, Form, Item, Label, Card, CardItem, Body } from 'native-base'
 
 // SHAPE OF EXERCISE DATA
 // Object {
@@ -29,16 +23,17 @@ INITIAL_STATE = {
 //   },
 // }
 
-ATTRIBUTE_TYPES = [
-  'sets',
-  'reps',
-  'weight',
-  'seconds',
-]
+INITIAL_STATE = {
+  workoutName: '',
+  exerciseNames: [],
+  exerciseData: {},
+}
 
-ATTRIBUTE_VALS = [...Array(100).keys()].map((num) => {
-  return {value: num + 1}
-})
+const mapStateToProps = (state, ownProps) => {
+  return {
+    user: state.auth.user
+  }
+}
 
 class AddSessionScreen extends React.Component {
   static navigationOptions = ({navigation}) => {
@@ -97,27 +92,22 @@ class AddSessionScreen extends React.Component {
     })
   }
 
-  renderValDropdown(exIdx, attrIdx) {
-    return (
-      <Container style={{ width: 96, Left: 8}}>
-        <Dropdown
-          label='Val'
-          data={ATTRIBUTE_VALS}
-          onChangeText={ this.setAttrVal.bind(this, exIdx, attrIdx) }
-        />
-      </Container>
-    )
-  }
-
   renderAttrInputs(exIdx) {
     return Object.entries(this.state.exerciseData[exIdx]).map(([attrIdx, attr]) => {
       return (
-        <Container key={attrIdx} style={{height: 100, paddingTop: 5, paddingBottom: 5}}>
-          <Text>{attr.type}</Text>
-          <Item>
-            <Input underline keyboardType={"numeric"} onChangeText={ this.setAttrVal.bind(this, exIdx, attrIdx)}/>
-          </Item>
-        </Container>
+        <CardItem key={attrIdx} style={{backgroundColor: 'white', height: 60, marginBottom: 10}}>
+          <Body>
+            <Item stackedLabel>
+              <Label>{attr.type}</Label>
+              <Input
+                style={{width: 320, maxHeight: 25, backgroundColor: 'white', borderBottomWidth: 1, borderBottomColor: 'gray'}}
+                underline
+                keyboardType={"numeric"}
+                onChangeText={ this.setAttrVal.bind(this, exIdx, attrIdx)}
+              />
+            </Item>
+          </Body>
+        </CardItem>
       )
     })
   }
@@ -125,12 +115,12 @@ class AddSessionScreen extends React.Component {
   renderExercises() {
     return this.state.exerciseNames.map((val, exIdx) => {
       return (
-        <Container key={exIdx} style={{height: 100, paddingTop: 5, paddingBottom: 5}}>
-          <Text>{val}</Text>
-          <Form>
-            { this.renderAttrInputs(exIdx) }
-          </Form>
-        </Container>
+        <Card key={exIdx}>
+          <CardItem header bordered>
+            <Text>{val}</Text>
+          </CardItem>
+          { this.renderAttrInputs(exIdx) }
+        </Card>
       )
     })
   }
@@ -142,21 +132,13 @@ class AddSessionScreen extends React.Component {
       </Button>
     )
     return (
-      <Container style={{flex: 1}}>
-        <Content style={{flex: 1}} contentContainerStyle={styles.container}>
-          { this.renderExercises() }
-          <Container style={{flexDirection: 'row', justifyContent: 'space-around', marginTop: 20, height: 80}}>
-            { recordButton }
-          </Container>
-        </Content>
-      </Container>
+      <Content padder>
+        { this.renderExercises() }
+        <Container style={{flexDirection: 'row', justifyContent: 'space-around', marginTop: 20, height: 80}}>
+          { recordButton }
+        </Container>
+      </Content>
     )
-  }
-}
-
-const mapStateToProps = (state, ownProps) => {
-  return {
-    user: state.auth.user
   }
 }
 
