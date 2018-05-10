@@ -4,7 +4,8 @@ import {
   Animated,
   StyleSheet,
   TextInput,
-  View
+  View,
+  TouchableWithoutFeedback
 } from 'react-native'
 import { Button, Text, Container, Content, Input, Item } from 'native-base'
 import { Col, Row, Grid } from 'react-native-easy-grid'
@@ -59,9 +60,14 @@ class DemoScreen extends React.Component {
     this.setState({text})
   }
 
+  handleOnTouch = (test) => {
+    console.log('TOUCHED')
+  }
+
   handleInputRef = (ref) => {
     this.input = ref
   }
+
 
 // <Animated.View style={{backgroundColor: 'red', flex: 1, height: 100, marginTop: 20}}>
 //   <Text>Animate Me!</Text>
@@ -72,25 +78,29 @@ class DemoScreen extends React.Component {
       <Container>
         <Content padder contentContainerStyle={styles.content}>
           <Grid>
-            <Row size={2} style={{backgroundColor: COLORS.red, flexDirection: 'column' }}>
-              <Item style={{flex: 1, backgroundColor: COLORS.red }}/>
-              <Item style={{flex: 1, backgroundColor: COLORS.gold }}>
-                <Input
-                  ref={this.handleInputRef}
-                  style={{fontSize: 24, backgroundColor: COLORS.white }}
-                  placeholder='touch me to animate!'
-                  value={this.state.text}
-                  onFocus={this.focusHandler}
-                  onBlur={this.blurHandler}
-                  onChangeText={this.changeTextHandler}
-                  onSubmitEditing={this.submitHandler.bind(this)}
-                />
-              </Item>
-              <Item style={{flex: 1, backgroundColor: COLORS.red }}/>
-            </Row>
-            <Row size={1} style={{backgroundColor: COLORS.gold }}>
-              <Text>Right</Text>
-            </Row>
+            <Row size={1} style={{backgroundColor: COLORS.blue }}/>
+            <TouchableWithoutFeedback onPress={this.handleOnTouch}>
+              <Row size={1} style={{backgroundColor: COLORS.red, flexDirection: 'column' }}>
+                <Item style={{flex: 1, backgroundColor: COLORS.gold }}>
+                  <Input
+                    ref={this.handleInputRef}
+                    style={{fontSize: 24, backgroundColor: COLORS.white }}
+                    placeholder='touch me to animate!'
+                    value={this.state.text}
+                    onFocus={this.focusHandler}
+                    onBlur={this.blurHandler}
+                    onChangeText={this.changeTextHandler}
+                    onSubmitEditing={this.submitHandler.bind(this)}
+                  />
+                </Item>
+              </Row>
+            </TouchableWithoutFeedback>
+            <Row size={1} style={{backgroundColor: COLORS.blue }}/>
+            <TouchableWithoutFeedback onPress={this.handleOnTouch}>
+              <Row size={1} style={{backgroundColor: COLORS.red }}>
+                <Text>Right</Text>
+              </Row>
+            </TouchableWithoutFeedback>
           </Grid>
         </Content>
       </Container>
