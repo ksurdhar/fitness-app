@@ -1,19 +1,19 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import produce from 'immer'
 import {
+  Animated,
   StyleSheet,
   TextInput,
 } from 'react-native'
 import { Button, Text, Container, Content, Input, Item } from 'native-base'
 
 INITIAL_STATE = {
-  workoutName: '',
+  text: '',
 }
 
-class NameWorkoutScreen extends React.Component {
+class DemoScreen extends React.Component {
   static navigationOptions = {
-    title: 'Define Workout',
+    title: 'DEMO SCREEN',
     tabBarLabel: 'Record',
     tabBarIcon: ({ tintColor }) => (
       <Text>Record</Text>
@@ -24,24 +24,28 @@ class NameWorkoutScreen extends React.Component {
     super()
     this.state = INITIAL_STATE
     this.changeTextHandler = this.changeTextHandler.bind(this)
+    this.focusHandler = this.focusHandler.bind(this)
+    this.blurHandler = this.blurHandler.bind(this)
   }
 
   resetState() {
     this.setState(INITIAL_STATE)
   }
 
-  addExercises() {
-    this.props.navigation.navigate('AddWorkout', {
-      workoutID: null,
-      workoutName: this.state.workoutName,
-      exerciseData: {0: {0: {type: null, val: null}}},
-      exerciseNames: ['']
-    })
+  submitHandler() {
+    console.log('FIRING SUBMIT')
   }
 
-  changeTextHandler(workoutName) {
-    // if state workout name has no length, add one class, otherwise add another
-    this.setState({workoutName})
+  focusHandler() {
+    console.log('focused')
+  }
+
+  blurHandler(){
+    console.log('blurred')
+  }
+
+  changeTextHandler(text) {
+    this.setState({text})
   }
 
   render() {
@@ -54,20 +58,16 @@ class NameWorkoutScreen extends React.Component {
               style={{fontSize: 24}}
               underline
               placeholder='Workout name ex. Leg Blasters'
-              value={this.state.workoutName}
+              value={this.state.text}
+              onFocus={this.focusHandler}
+              onBlur={this.blurHandler}
               onChangeText={this.changeTextHandler}
-              onSubmitEditing={this.addExercises.bind(this)}
+              onSubmitEditing={this.submitHandler.bind(this)}
             />
           </Item>
         </Content>
       </Container>
     )
-  }
-}
-
-const mapStateToProps = (state, ownProps) => {
-  return {
-    user: state.auth.user
   }
 }
 
@@ -79,4 +79,4 @@ const styles = StyleSheet.create({
   },
 })
 
-export default connect(mapStateToProps, null)(NameWorkoutScreen)
+export default connect(null, null)(DemoScreen)
