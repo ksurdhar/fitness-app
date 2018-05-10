@@ -4,12 +4,22 @@ import {
   Animated,
   StyleSheet,
   TextInput,
+  View
 } from 'react-native'
 import { Button, Text, Container, Content, Input, Item } from 'native-base'
 import { Col, Row, Grid } from 'react-native-easy-grid'
 
 INITIAL_STATE = {
   text: '',
+}
+
+// 50% opacity added for building
+COLORS = {
+  red: '#B2222250', // firebrick
+  blue: '#1E90FF50', // dodgerblue
+  gold: '#FFD70050', // gold
+  gray: '#77889950', // lightslategray
+  white: 'ghostwhite'
 }
 
 class DemoScreen extends React.Component {
@@ -49,18 +59,10 @@ class DemoScreen extends React.Component {
     this.setState({text})
   }
 
-//   <Input
-//     ref={this}
-//     style={{fontSize: 24}}
-//     underline
-//     placeholder='Workout name ex. Leg Blasters'
-//     value={this.state.text}
-//     onFocus={this.focusHandler}
-//     onBlur={this.blurHandler}
-//     onChangeText={this.changeTextHandler}
-//     onSubmitEditing={this.submitHandler.bind(this)}
-//   />
-// </Item>
+  handleInputRef = (ref) => {
+    this.input = ref
+  }
+
 // <Animated.View style={{backgroundColor: 'red', flex: 1, height: 100, marginTop: 20}}>
 //   <Text>Animate Me!</Text>
 // </Animated.View>
@@ -70,10 +72,23 @@ class DemoScreen extends React.Component {
       <Container>
         <Content padder contentContainerStyle={styles.content}>
           <Grid>
-            <Row size={2} style={{backgroundColor: 'lavender'}}>
-              <Text>Left</Text>
+            <Row size={2} style={{backgroundColor: COLORS.red, flexDirection: 'column' }}>
+              <Item style={{flex: 1, backgroundColor: COLORS.red }}/>
+              <Item style={{flex: 1, backgroundColor: COLORS.gold }}>
+                <Input
+                  ref={this.handleInputRef}
+                  style={{fontSize: 24, backgroundColor: COLORS.white }}
+                  placeholder='touch me to animate!'
+                  value={this.state.text}
+                  onFocus={this.focusHandler}
+                  onBlur={this.blurHandler}
+                  onChangeText={this.changeTextHandler}
+                  onSubmitEditing={this.submitHandler.bind(this)}
+                />
+              </Item>
+              <Item style={{flex: 1, backgroundColor: COLORS.red }}/>
             </Row>
-            <Row size={1}style={{backgroundColor: 'gold'}}>
+            <Row size={1} style={{backgroundColor: COLORS.gold }}>
               <Text>Right</Text>
             </Row>
           </Grid>
