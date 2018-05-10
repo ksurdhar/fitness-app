@@ -7,7 +7,7 @@ import {
   View,
   TouchableWithoutFeedback
 } from 'react-native'
-import { Button, Text, Container, Content, Input, Item } from 'native-base'
+import { Button, Text, Container, Content, Input, Item, Form } from 'native-base'
 import { Col, Row, Grid } from 'react-native-easy-grid'
 
 INITIAL_STATE = {
@@ -72,29 +72,29 @@ class DemoScreen extends React.Component {
 // <Animated.View style={{backgroundColor: 'red', flex: 1, height: 100, marginTop: 20}}>
 //   <Text>Animate Me!</Text>
 // </Animated.View>
-
+// Test adding a Form element - the input is effectively swallowing up the whole row and capturing its events
   render() {
     return (
       <Container>
         <Content padder contentContainerStyle={styles.content}>
           <Grid>
             <Row size={1} style={{backgroundColor: COLORS.blue }}/>
+            <Row size={1} style={{backgroundColor: COLORS.red, flexDirection: 'column' }}>
             <TouchableWithoutFeedback onPress={this.handleOnTouch}>
-              <Row size={1} style={{backgroundColor: COLORS.red, flexDirection: 'column' }}>
-                <Item style={{flex: 1, backgroundColor: COLORS.gold }}>
-                  <Input
-                    ref={this.handleInputRef}
-                    style={{fontSize: 24, backgroundColor: COLORS.white }}
-                    placeholder='touch me to animate!'
-                    value={this.state.text}
-                    onFocus={this.focusHandler}
-                    onBlur={this.blurHandler}
-                    onChangeText={this.changeTextHandler}
-                    onSubmitEditing={this.submitHandler.bind(this)}
+              <Item style={{flex: 1, backgroundColor: COLORS.gold }}>
+                <Input
+                  ref={this.handleInputRef}
+                  style={{fontSize: 24, backgroundColor: COLORS.white }}
+                  placeholder='touch me to animate!'
+                  value={this.state.text}
+                  onFocus={this.focusHandler}
+                  onBlur={this.blurHandler}
+                  onChangeText={this.changeTextHandler}
+                  onSubmitEditing={this.submitHandler.bind(this)}
                   />
                 </Item>
-              </Row>
-            </TouchableWithoutFeedback>
+              </TouchableWithoutFeedback>
+            </Row>
             <Row size={1} style={{backgroundColor: COLORS.blue }}/>
             <TouchableWithoutFeedback onPress={this.handleOnTouch}>
               <Row size={1} style={{backgroundColor: COLORS.red }}>
