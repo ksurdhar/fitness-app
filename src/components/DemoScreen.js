@@ -6,6 +6,7 @@ import {
   TextInput,
 } from 'react-native'
 import { Button, Text, Container, Content, Input, Item } from 'native-base'
+import { Col, Row, Grid } from 'react-native-easy-grid'
 
 INITIAL_STATE = {
   text: '',
@@ -48,23 +49,34 @@ class DemoScreen extends React.Component {
     this.setState({text})
   }
 
+//   <Input
+//     ref={this}
+//     style={{fontSize: 24}}
+//     underline
+//     placeholder='Workout name ex. Leg Blasters'
+//     value={this.state.text}
+//     onFocus={this.focusHandler}
+//     onBlur={this.blurHandler}
+//     onChangeText={this.changeTextHandler}
+//     onSubmitEditing={this.submitHandler.bind(this)}
+//   />
+// </Item>
+// <Animated.View style={{backgroundColor: 'red', flex: 1, height: 100, marginTop: 20}}>
+//   <Text>Animate Me!</Text>
+// </Animated.View>
+
   render() {
     return (
-      <Container style={{flex: 1}}>
-        <Content style={{flex: 1}} contentContainerStyle={styles.container}>
-          <Item style={{marginLeft:15, marginRight: 15}}>
-            <Input
-              ref={this}
-              style={{fontSize: 24}}
-              underline
-              placeholder='Workout name ex. Leg Blasters'
-              value={this.state.text}
-              onFocus={this.focusHandler}
-              onBlur={this.blurHandler}
-              onChangeText={this.changeTextHandler}
-              onSubmitEditing={this.submitHandler.bind(this)}
-            />
-          </Item>
+      <Container>
+        <Content padder contentContainerStyle={styles.content}>
+          <Grid>
+            <Row size={2} style={{backgroundColor: 'lavender'}}>
+              <Text>Left</Text>
+            </Row>
+            <Row size={1}style={{backgroundColor: 'gold'}}>
+              <Text>Right</Text>
+            </Row>
+          </Grid>
         </Content>
       </Container>
     )
@@ -72,11 +84,11 @@ class DemoScreen extends React.Component {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    paddingTop: 100,
-    alignItems: 'center',
-    justifyContent: 'flex-start',
+  content: {
+    flex: 1,
+    justifyContent: "flex-start",
   },
 })
+// alignItems: center can be necessary to center views
 
 export default connect(null, null)(DemoScreen)
