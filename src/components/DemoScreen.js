@@ -25,7 +25,9 @@ COLORS = {
   white: 'ghostwhite',
   orange: 'rgb(223, 102, 89)',
   clear: 'rgb(0, 0, 0)',
-  'clear-dark': 'rgba(64, 77, 91, 0.1)'
+  gray1: 'rgba(64, 77, 91, 0.1)',
+  gray3: 'rgba(64, 77, 91, 0.3)',
+  gray5: 'rgba(64, 77, 91, 0.5)'
 }
 
 
@@ -89,28 +91,30 @@ class DemoScreen extends React.Component {
 // Scrollview will not display "flexed views without a height"
   render() {
     return (
-      <View style={{backgroundColor: COLORS.white, flex: 1}}>
+      <View style={{backgroundColor: COLORS.white, flex: 1, padding: 10}}>
         <TouchableWithoutFeedback
           onPress={this.handleOnTouch}
           style={{flex: 1}}
         >
           <View style={{ flex: 1, justifyContent: 'space-around'}}>
-            <TextInput
-              ref={(element) => { this.textInput = element }}
-              style={{ fontFamily: 'rubik-medium', fontSize: 36, fontWeight: 'bold', backgroundColor: COLORS.white }}
-              placeholder='touch me to animate!'
-              value={this.state.text}
-              onFocus={this.focusHandler}
-              onEndEditing={this.blurHandler}
-              onChangeText={this.changeTextHandler}
-              onSubmitEditing={this.submitHandler.bind(this)}
-            />
+            <View style={{ borderBottomWidth: 3, borderBottomColor: COLORS.gray3 }}>
+              <TextInput
+                ref={(element) => { this.textInput = element }}
+                style={styles.input}
+                placeholder='72 reps'
+                value={this.state.text}
+                onFocus={this.focusHandler}
+                onEndEditing={this.blurHandler}
+                onChangeText={this.changeTextHandler}
+                onSubmitEditing={this.submitHandler.bind(this)}
+              />
+            </View>
           </View>
         </TouchableWithoutFeedback>
         <TouchableWithoutFeedback onPress={this.handleOnTouch}>
           <View style={{flex: 1}}>
-            <Text style={{fontFamily: 'raleway-bold', fontSize: 48, color: COLORS['clear-dark']}}>
-              Right
+            <Text style={{fontFamily: 'raleway-bold', fontSize: 48, color: COLORS.gray1}}>
+              Craft Workout
             </Text>
           </View>
         </TouchableWithoutFeedback>
@@ -120,6 +124,11 @@ class DemoScreen extends React.Component {
 }
 
 const styles = StyleSheet.create({
+  input: {
+    fontFamily: 'rubik-medium',
+    fontSize: 36,
+    backgroundColor: COLORS.white,
+  },
   content: {
     flex: 1,
     justifyContent: "flex-start",
