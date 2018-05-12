@@ -22,8 +22,13 @@ COLORS = {
   blue: '#1E90FF50', // dodgerblue
   gold: '#FFD70050', // gold
   gray: '#77889950', // lightslategray
-  white: 'ghostwhite'
+  white: 'ghostwhite',
+  orange: 'rgb(223, 102, 89)',
+  clear: 'rgb(0, 0, 0)',
+  'clear-dark': 'rgba(64, 77, 91, 0.1)'
 }
+
+
 
 class DemoScreen extends React.Component {
   static navigationOptions = {
@@ -46,6 +51,10 @@ class DemoScreen extends React.Component {
 
   resetState() {
     this.setState(INITIAL_STATE)
+  }
+
+  componentDidUpdate() {
+    console.log('props', this.props)
   }
 
   // setInput(element) {
@@ -80,15 +89,15 @@ class DemoScreen extends React.Component {
 // Scrollview will not display "flexed views without a height"
   render() {
     return (
-      <View style={{backgroundColor: COLORS.blue, flex: 1}}>
+      <View style={{backgroundColor: COLORS.white, flex: 1}}>
         <TouchableWithoutFeedback
           onPress={this.handleOnTouch}
           style={{flex: 1}}
         >
-          <View style={{backgroundColor: COLORS.red, flex: 1, justifyContent: 'space-around'}}>
+          <View style={{ flex: 1, justifyContent: 'space-around'}}>
             <TextInput
               ref={(element) => { this.textInput = element }}
-              style={{fontSize: 24, backgroundColor: COLORS.white }}
+              style={{ fontFamily: 'rubik-medium', fontSize: 36, fontWeight: 'bold', backgroundColor: COLORS.white }}
               placeholder='touch me to animate!'
               value={this.state.text}
               onFocus={this.focusHandler}
@@ -99,8 +108,10 @@ class DemoScreen extends React.Component {
           </View>
         </TouchableWithoutFeedback>
         <TouchableWithoutFeedback onPress={this.handleOnTouch}>
-          <View style={{backgroundColor: COLORS.gold, flex: 1}}>
-            <Text>Right</Text>
+          <View style={{flex: 1}}>
+            <Text style={{fontFamily: 'raleway-bold', fontSize: 48, color: COLORS['clear-dark']}}>
+              Right
+            </Text>
           </View>
         </TouchableWithoutFeedback>
       </View>
@@ -114,6 +125,5 @@ const styles = StyleSheet.create({
     justifyContent: "flex-start",
   },
 })
-// alignItems: center can be necessary to center views
 
 export default connect(null, null)(DemoScreen)

@@ -6,22 +6,33 @@ import Navigator from './Navigator'
 import store from './redux/store'
 import LoginScreen from './components/LoginScreen'
 import DemoScreen from './components/DemoScreen'
+import { Font } from 'expo'
 
 import Config from 'react-native-config'
 
 import config from '../config'
 
+INITIAL_STATE = {
+  fontLoaded: false
+}
+
 class Index extends Component {
+  constructor(props) {
+    super(props)
+    this.state = INITIAL_STATE
+  }
+
   render() {
     // console.log('Config', Config)
     // console.log('env value', process.env)
     // console.log('process value', process)
-
-    return (
-      <Provider store={store}>
-        <DemoScreen />
-      </Provider>
-    )
+    if (this.state.fontLoaded) {
+      return (
+        <Provider store={store}>
+          <DemoScreen/>
+        </Provider>
+      )
+    }
     if (this.props.isLoggedIn) {
       return (
         <Provider store={store}>
@@ -35,6 +46,18 @@ class Index extends Component {
         </Provider>
       )
     }
+    return null
+  }
+
+  async componentDidMount() {
+    await Font.loadAsync({
+      'raleway-bold': require('../assets/fonts/Raleway-Bold.ttf'),
+      'rubik-medium': require('../assets/fonts/Rubik-Medium.ttf')
+    })
+    console.log('loaded font!')
+    this.setState({
+      fontLoaded: true
+    })
   }
 }
 

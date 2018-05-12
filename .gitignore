@@ -12,6 +12,9 @@
 .env.test.local
 .env.production.local
 
+# assets
+/assets
+
 # keys
 config.js
 
