@@ -9,28 +9,18 @@ import {
   Text,
   TouchableWithoutFeedback
 } from 'react-native'
-// import { Button, Text, Container, Content, Input, Item, Form } from 'native-base'
-// import { Col, Row, Grid } from 'react-native-easy-grid'
 
 INITIAL_STATE = {
-  text: '',
+  text: ''
 }
 
-// 50% opacity added for building
 COLORS = {
-  red: '#B2222250', // firebrick
-  blue: '#1E90FF50', // dodgerblue
-  gold: '#FFD70050', // gold
-  gray: '#77889950', // lightslategray
   white: 'ghostwhite',
   orange: 'rgb(223, 102, 89)',
-  clear: 'rgb(0, 0, 0)',
   gray1: 'rgba(64, 77, 91, 0.1)',
   gray3: 'rgba(64, 77, 91, 0.3)',
   gray5: 'rgba(64, 77, 91, 0.5)'
 }
-
-
 
 class DemoScreen extends React.Component {
   static navigationOptions = {
@@ -40,6 +30,8 @@ class DemoScreen extends React.Component {
       <Text>Record</Text>
     )
   }
+
+  animatedValue = new Animated.Value(0)
 
   constructor() {
     super()
@@ -51,6 +43,13 @@ class DemoScreen extends React.Component {
     this.handleOnTouch = this.handleOnTouch.bind(this)
   }
 
+  componentDidMount() {
+    Animated.timing(this.animatedValue, {
+      toValue: 100,
+      duration: 1500
+    }).start()
+  }
+
   resetState() {
     this.setState(INITIAL_STATE)
   }
@@ -58,11 +57,6 @@ class DemoScreen extends React.Component {
   componentDidUpdate() {
     console.log('props', this.props)
   }
-
-  // setInput(element) {
-  //   console.log('being called')
-  //   this.textInput = element
-  // }
 
   submitHandler() {
     console.log('FIRING SUBMIT')
@@ -85,11 +79,14 @@ class DemoScreen extends React.Component {
     this.setState({text})
   }
 
-// <Animated.View style={{backgroundColor: 'red', flex: 1, height: 100, marginTop: 20}}>
-//   <Text>Animate Me!</Text>
-// </Animated.View>
 // Scrollview will not display "flexed views without a height"
   render() {
+    console.log('title color',this.state.titleColor)
+    const titleColor = this.animatedValue.interpolate({
+      inputRange: [0, 100],
+      outputRange: ['rgba(64, 77, 91, 0.1)', 'rgba(223, 102, 89, 1.0)']
+    })
+
     return (
       <View style={{backgroundColor: COLORS.white, flex: 1, padding: 10}}>
         <TouchableWithoutFeedback
@@ -113,9 +110,9 @@ class DemoScreen extends React.Component {
         </TouchableWithoutFeedback>
         <TouchableWithoutFeedback onPress={this.handleOnTouch}>
           <View style={{flex: 1}}>
-            <Text style={{fontFamily: 'raleway-bold', fontSize: 48, color: COLORS.gray1}}>
+            <Animated.Text style={{fontFamily: 'raleway-bold', fontSize: 48, color: titleColor}}>
               Craft Workout
-            </Text>
+            </Animated.Text>
           </View>
         </TouchableWithoutFeedback>
       </View>
