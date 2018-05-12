@@ -1,14 +1,16 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import {
+  ScrollView,
   Animated,
   StyleSheet,
   TextInput,
   View,
+  Text,
   TouchableWithoutFeedback
 } from 'react-native'
-import { Button, Text, Container, Content, Input, Item, Form } from 'native-base'
-import { Col, Row, Grid } from 'react-native-easy-grid'
+// import { Button, Text, Container, Content, Input, Item, Form } from 'native-base'
+// import { Col, Row, Grid } from 'react-native-easy-grid'
 
 INITIAL_STATE = {
   text: '',
@@ -35,14 +37,21 @@ class DemoScreen extends React.Component {
   constructor() {
     super()
     this.state = INITIAL_STATE
+
     this.changeTextHandler = this.changeTextHandler.bind(this)
     this.focusHandler = this.focusHandler.bind(this)
     this.blurHandler = this.blurHandler.bind(this)
+    this.handleOnTouch = this.handleOnTouch.bind(this)
   }
 
   resetState() {
     this.setState(INITIAL_STATE)
   }
+
+  // setInput(element) {
+  //   console.log('being called')
+  //   this.textInput = element
+  // }
 
   submitHandler() {
     console.log('FIRING SUBMIT')
@@ -56,54 +65,45 @@ class DemoScreen extends React.Component {
     console.log('blurred')
   }
 
+  handleOnTouch() {
+    console.log('on touch!')
+    this.textInput && this.textInput.blur()
+  }
+
   changeTextHandler(text) {
     this.setState({text})
   }
 
-  handleOnTouch = (test) => {
-    console.log('TOUCHED')
-  }
-
-  handleInputRef = (ref) => {
-    this.input = ref
-  }
-
-
 // <Animated.View style={{backgroundColor: 'red', flex: 1, height: 100, marginTop: 20}}>
 //   <Text>Animate Me!</Text>
 // </Animated.View>
-// Test adding a Form element - the input is effectively swallowing up the whole row and capturing its events
+// Scrollview will not display "flexed views without a height"
   render() {
     return (
-      <Container>
-        <Content padder contentContainerStyle={styles.content}>
-          <Grid>
-            <Row size={1} style={{backgroundColor: COLORS.blue }}/>
-            <Row size={1} style={{backgroundColor: COLORS.red, flexDirection: 'column' }}>
-            <TouchableWithoutFeedback onPress={this.handleOnTouch}>
-              <Item style={{flex: 1, backgroundColor: COLORS.gold }}>
-                <Input
-                  ref={this.handleInputRef}
-                  style={{fontSize: 24, backgroundColor: COLORS.white }}
-                  placeholder='touch me to animate!'
-                  value={this.state.text}
-                  onFocus={this.focusHandler}
-                  onBlur={this.blurHandler}
-                  onChangeText={this.changeTextHandler}
-                  onSubmitEditing={this.submitHandler.bind(this)}
-                  />
-                </Item>
-              </TouchableWithoutFeedback>
-            </Row>
-            <Row size={1} style={{backgroundColor: COLORS.blue }}/>
-            <TouchableWithoutFeedback onPress={this.handleOnTouch}>
-              <Row size={1} style={{backgroundColor: COLORS.red }}>
-                <Text>Right</Text>
-              </Row>
-            </TouchableWithoutFeedback>
-          </Grid>
-        </Content>
-      </Container>
+      <View style={{backgroundColor: COLORS.blue, flex: 1}}>
+        <TouchableWithoutFeedback
+          onPress={this.handleOnTouch}
+          style={{flex: 1}}
+        >
+          <View style={{backgroundColor: COLORS.red, flex: 1, justifyContent: 'space-around'}}>
+            <TextInput
+              ref={(element) => { this.textInput = element }}
+              style={{fontSize: 24, backgroundColor: COLORS.white }}
+              placeholder='touch me to animate!'
+              value={this.state.text}
+              onFocus={this.focusHandler}
+              onEndEditing={this.blurHandler}
+              onChangeText={this.changeTextHandler}
+              onSubmitEditing={this.submitHandler.bind(this)}
+            />
+          </View>
+        </TouchableWithoutFeedback>
+        <TouchableWithoutFeedback onPress={this.handleOnTouch}>
+          <View style={{backgroundColor: COLORS.gold, flex: 1}}>
+            <Text>Right</Text>
+          </View>
+        </TouchableWithoutFeedback>
+      </View>
     )
   }
 }
