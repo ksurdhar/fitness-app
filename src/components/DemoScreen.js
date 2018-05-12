@@ -44,10 +44,7 @@ class DemoScreen extends React.Component {
   }
 
   componentDidMount() {
-    Animated.timing(this.animatedValue, {
-      toValue: 100,
-      duration: 1500
-    }).start()
+    console.log('component did mount')
   }
 
   resetState() {
@@ -63,10 +60,18 @@ class DemoScreen extends React.Component {
   }
 
   focusHandler() {
+    Animated.timing(this.animatedValue, {
+      toValue: 100,
+      duration: 1000
+    }).start()
     console.log('focused')
   }
 
   blurHandler(){
+    Animated.timing(this.animatedValue, {
+      toValue: 0,
+      duration: 1000
+    }).start()
     console.log('blurred')
   }
 
