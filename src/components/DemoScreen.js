@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 import {
   ScrollView,
   Animated,
+  Button,
   StyleSheet,
   TextInput,
   View,
@@ -19,7 +20,8 @@ COLORS = {
   orange: 'rgb(223, 102, 89)',
   gray1: 'rgba(64, 77, 91, 0.1)',
   gray3: 'rgba(64, 77, 91, 0.3)',
-  gray5: 'rgba(64, 77, 91, 0.5)'
+  gray5: 'rgba(64, 77, 91, 0.5)',
+  gray10: 'rgba(64, 77, 91, 1.0)'
 }
 
 class DemoScreen extends React.Component {
@@ -42,18 +44,19 @@ class DemoScreen extends React.Component {
     this.focusHandler = this.focusHandler.bind(this)
     this.blurHandler = this.blurHandler.bind(this)
     this.handleOnTouch = this.handleOnTouch.bind(this)
-  }
-
-  componentDidMount() {
-    console.log('component did mount')
+    this.handleButtonOnPress = this.handleButtonOnPress.bind(this)
   }
 
   resetState() {
     this.setState(INITIAL_STATE)
   }
 
+  componentDidMount() {
+    // console.log('component did mount')
+  }
+
   componentDidUpdate() {
-    console.log('props', this.props)
+    // console.log('props', this.props)
   }
 
   submitHandler() {
@@ -87,6 +90,10 @@ class DemoScreen extends React.Component {
     this.textInput && this.textInput.blur()
   }
 
+  handleButtonOnPress() {
+    console.log('pressed!')
+  }
+
   changeTextHandler(text) {
     if (text.length > 5) {
       Animated.timing(this.headerColor, {
@@ -96,8 +103,9 @@ class DemoScreen extends React.Component {
     }
     this.setState({text})
   }
-
+// UI lessons:
 // Scrollview will not display "flexed views without a height"
+// TouchableWithoutFeedback does not impact layout and cannot be styled
   render() {
     const titleColor = this.headerColor.interpolate({
       inputRange: [0, 100],
@@ -110,10 +118,7 @@ class DemoScreen extends React.Component {
 
     return (
       <View style={{backgroundColor: COLORS.white, flex: 1, padding: 10}}>
-        <TouchableWithoutFeedback
-          onPress={this.handleOnTouch}
-          style={{flex: 1}}
-        >
+        <TouchableWithoutFeedback onPress={this.handleOnTouch}>
           <View style={{ flex: 1, justifyContent: 'space-around'}}>
             <View style={{ borderBottomWidth: 3, borderBottomColor: COLORS.gray3 }}>
               <Animated.Text style={styleLabel(labelPosition)}>
@@ -132,7 +137,16 @@ class DemoScreen extends React.Component {
           </View>
         </TouchableWithoutFeedback>
         <TouchableWithoutFeedback onPress={this.handleOnTouch}>
-          <View style={{flex: 1}}>
+          <View style={{flex: 2}}>
+            <View style={{flexDirection: 'row', justifyContent: 'space-around'}}>
+              <TouchableWithoutFeedback onPress={this.handleButtonOnPress}>
+                <View style={styleButton()}>
+                  <Text style={{fontSize: 36, fontFamily: 'rubik-medium', color: COLORS.gray10, textAlign: 'center'}}>
+                    Add exercise
+                  </Text>
+                </View>
+              </TouchableWithoutFeedback>
+            </View>
             <Animated.Text style={{fontFamily: 'raleway-bold', fontSize: 48, color: titleColor}}>
               Craft Workout
             </Animated.Text>
@@ -143,7 +157,23 @@ class DemoScreen extends React.Component {
   }
 }
 
-function styleLabel (labelPosition) {
+function styleButton() {
+  return {
+    backgroundColor: COLORS.white,
+    borderTopWidth: 4,
+    borderBottomWidth: 4,
+    borderLeftWidth: 4,
+    borderRightWidth: 4,
+    borderTopColor: COLORS.gray10,
+    borderBottomColor: COLORS.gray10,
+    borderLeftColor: COLORS.gray10,
+    borderRightColor: COLORS.gray10,
+    padding: 10,
+    alignSelf: 'flex-start' // critical to create view width of contents
+  }
+}
+
+function styleLabel(labelPosition) {
   return {
     position: 'absolute',
     fontFamily: 'rubik-medium',
