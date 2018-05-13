@@ -73,7 +73,7 @@ class DemoScreen extends React.Component {
       toValue: 0,
       duration: 500
     }).start()
-    if (this.state.text.length === 0) {
+    if (!this.state.text || this.state.text.length === 0) {
       Animated.timing(this.labelPosition, {
         toValue: 0,
         duration: 300
@@ -105,7 +105,7 @@ class DemoScreen extends React.Component {
     })
     const labelPosition = this.labelPosition.interpolate({
       inputRange: [0, 100],
-      outputRange: [-42, 0]
+      outputRange: [0, 42]
     })
 
     return (
@@ -116,7 +116,7 @@ class DemoScreen extends React.Component {
         >
           <View style={{ flex: 1, justifyContent: 'space-around'}}>
             <View style={{ borderBottomWidth: 3, borderBottomColor: COLORS.gray3 }}>
-              <Animated.Text style={{ fontFamily: 'rubik-medium', fontSize: 36, color: COLORS.gray3, marginBottom: labelPosition}}>
+              <Animated.Text style={styleLabel(labelPosition)}>
                 Name
               </Animated.Text>
               <TextInput
@@ -140,6 +140,16 @@ class DemoScreen extends React.Component {
         </TouchableWithoutFeedback>
       </View>
     )
+  }
+}
+
+function styleLabel (labelPosition) {
+  return {
+    position: 'absolute',
+    fontFamily: 'rubik-medium',
+    fontSize: 36,
+    color: COLORS.gray3,
+    bottom: labelPosition
   }
 }
 
