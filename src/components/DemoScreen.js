@@ -35,6 +35,7 @@ class DemoScreen extends React.Component {
 
   headerColor = new Animated.Value(0)
   labelPosition = new Animated.Value(0)
+  buttonColor = new Animated.Value(0)
 
   constructor() {
     super()
@@ -81,6 +82,10 @@ class DemoScreen extends React.Component {
         toValue: 0,
         duration: 300
       }).start()
+      Animated.timing(this.buttonColor, {
+        toValue: 0,
+        duration: 500
+      }).start()
     }
     console.log('blurred')
   }
@@ -96,6 +101,10 @@ class DemoScreen extends React.Component {
 
   changeTextHandler(text) {
     if (text.length > 5) {
+      Animated.timing(this.buttonColor, {
+        toValue: 100,
+        duration: 500
+      }).start()
       Animated.timing(this.headerColor, {
         toValue: 100,
         duration: 500
@@ -112,10 +121,17 @@ class DemoScreen extends React.Component {
       inputRange: [0, 100],
       outputRange: ['rgba(64, 77, 91, 0.1)', 'rgba(223, 102, 89, 1.0)']
     })
+    const buttonColor = this.buttonColor.interpolate({
+      inputRange: [0, 100],
+      outputRange: ['rgba(64, 77, 91, 0)', 'rgba(64, 77, 91, 1.0)']
+    })
     const labelPosition = this.labelPosition.interpolate({
       inputRange: [0, 100],
       outputRange: [0, 42]
     })
+    console.log('title', titleColor)
+    console.log('button', buttonColor)
+
 
     return (
       <View style={{backgroundColor: COLORS.white, flex: 1, padding: 10}}>
@@ -141,11 +157,11 @@ class DemoScreen extends React.Component {
           <View style={{flex: 2, justifyContent: 'space-around'}}>
             <View style={{flexDirection: 'row', justifyContent: 'space-around'}}>
               <TouchableWithoutFeedback onPress={this.handleButtonOnPress}>
-                <View style={styles.button}>
+                <Animated.View style={styleButton(buttonColor)}>
                   <Text style={{fontSize: 36, fontFamily: 'rubik-medium', color: COLORS.gray10, textAlign: 'center'}}>
                     Add exercise
                   </Text>
-                </View>
+                </Animated.View>
               </TouchableWithoutFeedback>
             </View>
             <View style={{flexDirection: 'row', justifyContent: 'space-around'}}>
@@ -167,6 +183,21 @@ class DemoScreen extends React.Component {
   }
 }
 
+function styleButton(buttonColor) {
+  return {
+    borderTopWidth: 4,
+    borderBottomWidth: 4,
+    borderLeftWidth: 4,
+    borderRightWidth: 4,
+    borderTopColor: buttonColor,
+    borderBottomColor: buttonColor,
+    borderLeftColor: buttonColor,
+    borderRightColor: buttonColor,
+    padding: 10,
+    alignSelf: 'flex-start' // critical to create view width of contents
+  }
+}
+
 function styleLabel(labelPosition) {
   return {
     position: 'absolute',
@@ -182,6 +213,12 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.gray5,
     padding: 10,
     alignSelf: 'flex-start' // critical to create view width of contents
+  },
+  border: {
+    borderTopWidth: 4,
+    borderBottomWidth: 4,
+    borderLeftWidth: 4,
+    borderRightWidth: 4,
   },
   bordered: {
     backgroundColor: COLORS.white,
