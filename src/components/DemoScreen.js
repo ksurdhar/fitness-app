@@ -31,7 +31,8 @@ class DemoScreen extends React.Component {
     )
   }
 
-  animatedValue = new Animated.Value(0)
+  headerColor = new Animated.Value(0)
+  labelPosition = new Animated.Value(0)
 
   constructor() {
     super()
@@ -60,18 +61,24 @@ class DemoScreen extends React.Component {
   }
 
   focusHandler() {
-    Animated.timing(this.animatedValue, {
+    Animated.timing(this.labelPosition, {
       toValue: 100,
-      duration: 1000
+      duration: 300
     }).start()
     console.log('focused')
   }
 
   blurHandler(){
-    Animated.timing(this.animatedValue, {
+    Animated.timing(this.headerColor, {
       toValue: 0,
-      duration: 1000
+      duration: 500
     }).start()
+    if (this.state.text.length === 0) {
+      Animated.timing(this.labelPosition, {
+        toValue: 0,
+        duration: 300
+      }).start()
+    }
     console.log('blurred')
   }
 
@@ -81,15 +88,24 @@ class DemoScreen extends React.Component {
   }
 
   changeTextHandler(text) {
+    if (text.length > 5) {
+      Animated.timing(this.headerColor, {
+        toValue: 100,
+        duration: 500
+      }).start()
+    }
     this.setState({text})
   }
 
 // Scrollview will not display "flexed views without a height"
   render() {
-    console.log('title color',this.state.titleColor)
-    const titleColor = this.animatedValue.interpolate({
+    const titleColor = this.headerColor.interpolate({
       inputRange: [0, 100],
       outputRange: ['rgba(64, 77, 91, 0.1)', 'rgba(223, 102, 89, 1.0)']
+    })
+    const labelPosition = this.labelPosition.interpolate({
+      inputRange: [0, 100],
+      outputRange: [-42, 0]
     })
 
     return (
@@ -100,10 +116,12 @@ class DemoScreen extends React.Component {
         >
           <View style={{ flex: 1, justifyContent: 'space-around'}}>
             <View style={{ borderBottomWidth: 3, borderBottomColor: COLORS.gray3 }}>
+              <Animated.Text style={{ fontFamily: 'rubik-medium', fontSize: 36, color: COLORS.gray3, marginBottom: labelPosition}}>
+                Name
+              </Animated.Text>
               <TextInput
                 ref={(element) => { this.textInput = element }}
                 style={styles.input}
-                placeholder='72 reps'
                 value={this.state.text}
                 onFocus={this.focusHandler}
                 onEndEditing={this.blurHandler}
@@ -129,7 +147,6 @@ const styles = StyleSheet.create({
   input: {
     fontFamily: 'rubik-medium',
     fontSize: 36,
-    backgroundColor: COLORS.white,
   },
   content: {
     flex: 1,
