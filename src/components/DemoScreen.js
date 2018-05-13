@@ -106,6 +106,7 @@ class DemoScreen extends React.Component {
 // UI lessons:
 // Scrollview will not display "flexed views without a height"
 // TouchableWithoutFeedback does not impact layout and cannot be styled
+// style can be passed an array of objects
   render() {
     const titleColor = this.headerColor.interpolate({
       inputRange: [0, 100],
@@ -137,10 +138,19 @@ class DemoScreen extends React.Component {
           </View>
         </TouchableWithoutFeedback>
         <TouchableWithoutFeedback onPress={this.handleOnTouch}>
-          <View style={{flex: 2}}>
+          <View style={{flex: 2, justifyContent: 'space-around'}}>
             <View style={{flexDirection: 'row', justifyContent: 'space-around'}}>
               <TouchableWithoutFeedback onPress={this.handleButtonOnPress}>
-                <View style={styleButton()}>
+                <View style={styles.button}>
+                  <Text style={{fontSize: 36, fontFamily: 'rubik-medium', color: COLORS.gray10, textAlign: 'center'}}>
+                    Add exercise
+                  </Text>
+                </View>
+              </TouchableWithoutFeedback>
+            </View>
+            <View style={{flexDirection: 'row', justifyContent: 'space-around'}}>
+              <TouchableWithoutFeedback onPress={this.handleButtonOnPress}>
+                <View style={[styles.button, styles.bordered]}>
                   <Text style={{fontSize: 36, fontFamily: 'rubik-medium', color: COLORS.gray10, textAlign: 'center'}}>
                     Add exercise
                   </Text>
@@ -157,22 +167,6 @@ class DemoScreen extends React.Component {
   }
 }
 
-function styleButton() {
-  return {
-    backgroundColor: COLORS.white,
-    borderTopWidth: 4,
-    borderBottomWidth: 4,
-    borderLeftWidth: 4,
-    borderRightWidth: 4,
-    borderTopColor: COLORS.gray10,
-    borderBottomColor: COLORS.gray10,
-    borderLeftColor: COLORS.gray10,
-    borderRightColor: COLORS.gray10,
-    padding: 10,
-    alignSelf: 'flex-start' // critical to create view width of contents
-  }
-}
-
 function styleLabel(labelPosition) {
   return {
     position: 'absolute',
@@ -184,6 +178,22 @@ function styleLabel(labelPosition) {
 }
 
 const styles = StyleSheet.create({
+  button: {
+    backgroundColor: COLORS.gray5,
+    padding: 10,
+    alignSelf: 'flex-start' // critical to create view width of contents
+  },
+  bordered: {
+    backgroundColor: COLORS.white,
+    borderTopWidth: 4,
+    borderBottomWidth: 4,
+    borderLeftWidth: 4,
+    borderRightWidth: 4,
+    borderTopColor: COLORS.gray10,
+    borderBottomColor: COLORS.gray10,
+    borderLeftColor: COLORS.gray10,
+    borderRightColor: COLORS.gray10,
+  },
   input: {
     fontFamily: 'rubik-medium',
     fontSize: 36,
