@@ -36,6 +36,13 @@ class DemoScreen extends React.Component {
   headerColor = new Animated.Value(0)
   labelPosition = new Animated.Value(0)
   buttonColor = new Animated.Value(0)
+  borderColors = {
+    top: new Animated.Value(0),
+    bottom: new Animated.Value(0),
+    left: new Animated.Value(0),
+    right: new Animated.Value(0),
+    text: new Animated.Value(0)
+  }
 
   constructor() {
     super()
@@ -82,10 +89,29 @@ class DemoScreen extends React.Component {
         toValue: 0,
         duration: 300
       }).start()
-      Animated.timing(this.buttonColor, {
-        toValue: 0,
-        duration: 500
-      }).start()
+
+      Animated.parallel([
+        Animated.timing(this.borderColors.top, {
+          toValue: 0,
+          duration: 300
+        }),
+        Animated.timing(this.borderColors.right, {
+          toValue: 0,
+          duration: 300
+        }),
+        Animated.timing(this.borderColors.bottom, {
+          toValue: 0,
+          duration: 300
+        }),
+        Animated.timing(this.borderColors.left, {
+          toValue: 0,
+          duration: 300
+        }),
+        Animated.timing(this.borderColors.text, {
+          toValue: 0,
+          duration: 300
+        })
+      ]).start()
     }
     console.log('blurred')
   }
@@ -101,10 +127,30 @@ class DemoScreen extends React.Component {
 
   changeTextHandler(text) {
     if (text.length > 5) {
-      Animated.timing(this.buttonColor, {
-        toValue: 100,
-        duration: 500
-      }).start()
+      Animated.sequence([
+        Animated.parallel([
+          Animated.timing(this.borderColors.top, {
+            toValue: 100,
+            duration: 300
+          }),
+          Animated.timing(this.borderColors.right, {
+            toValue: 100,
+            duration: 300
+          }),
+          Animated.timing(this.borderColors.bottom, {
+            toValue: 100,
+            duration: 300
+          }),
+          Animated.timing(this.borderColors.left, {
+            toValue: 100,
+            duration: 300
+          })
+        ]),
+        Animated.timing(this.borderColors.text, {
+          toValue: 100,
+          duration: 200
+        })
+      ]).start()
       Animated.timing(this.headerColor, {
         toValue: 100,
         duration: 500
@@ -129,9 +175,17 @@ class DemoScreen extends React.Component {
       inputRange: [0, 100],
       outputRange: [0, 42]
     })
-    console.log('title', titleColor)
-    console.log('button', buttonColor)
-
+    const borderInterpolation = {
+      inputRange: [0, 100],
+      outputRange: ['rgba(64, 77, 91, 0)', 'rgba(64, 77, 91, 1.0)']
+    }
+    const borderColors = {
+      top: this.borderColors.top.interpolate(borderInterpolation),
+      right: this.borderColors.right.interpolate(borderInterpolation),
+      left: this.borderColors.left.interpolate(borderInterpolation),
+      bottom: this.borderColors.bottom.interpolate(borderInterpolation),
+      text: this.borderColors.text.interpolate(borderInterpolation)
+    }
 
     return (
       <View style={{backgroundColor: COLORS.white, flex: 1, padding: 10}}>
@@ -157,10 +211,10 @@ class DemoScreen extends React.Component {
           <View style={{flex: 2, justifyContent: 'space-around'}}>
             <View style={{flexDirection: 'row', justifyContent: 'space-around'}}>
               <TouchableWithoutFeedback onPress={this.handleButtonOnPress}>
-                <Animated.View style={styleButton(buttonColor)}>
-                  <Text style={{fontSize: 36, fontFamily: 'rubik-medium', color: COLORS.gray10, textAlign: 'center'}}>
+                <Animated.View style={styleButton(borderColors)}>
+                  <Animated.Text style={{fontSize: 36, fontFamily: 'rubik-medium', color: borderColors.text, textAlign: 'center'}}>
                     Add exercise
-                  </Text>
+                  </Animated.Text>
                 </Animated.View>
               </TouchableWithoutFeedback>
             </View>
@@ -183,16 +237,17 @@ class DemoScreen extends React.Component {
   }
 }
 
-function styleButton(buttonColor) {
+function styleButton(borderColors) {
+  console.log('whats up', borderColors)
   return {
     borderTopWidth: 4,
     borderBottomWidth: 4,
     borderLeftWidth: 4,
     borderRightWidth: 4,
-    borderTopColor: buttonColor,
-    borderBottomColor: buttonColor,
-    borderLeftColor: buttonColor,
-    borderRightColor: buttonColor,
+    borderTopColor: borderColors.top,
+    borderBottomColor: borderColors.bottom,
+    borderLeftColor: borderColors.left,
+    borderRightColor: borderColors.right,
     padding: 10,
     alignSelf: 'flex-start' // critical to create view width of contents
   }
