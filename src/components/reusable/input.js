@@ -19,8 +19,13 @@ class Input extends React.Component {
     this.blurHandler = this.blurHandler.bind(this)
   }
 
-  componentDidUpdate() {
-    // console.log('props', this.props)
+  componentDidMount() {
+    if (this.props.value && this.props.value.length > 0) {
+      Animated.timing(this.labelPosition, {
+        toValue: 100,
+        duration: 300
+      }).start()
+    }
   }
 
   focus() {

@@ -36,6 +36,7 @@ class LoginScreen extends Component {
       this.state.email = 'admin@gmail.com'
       this.state.password = 'password'
     }
+    this.handleCapture = this.handleCapture.bind(this)
   }
 
   onLogin(e) {
@@ -101,17 +102,11 @@ class LoginScreen extends Component {
     this.setState({ action: this.state.action === LOGIN ? SIGNUP : LOGIN })
   }
 
-  altRender() {
-    return (
-      <View style={{backgroundColor: COLORS.white, flex: 1, padding: 10}}>
-        <TouchableWithoutFeedback onPress={this.handleOnTouch}>
-          <View style={{ flex: 1, justifyContent: 'space-around'}}>
-
-          </View>
-        </TouchableWithoutFeedback>
-      </View>
-    )
+  handleCapture() {
+    this.emailInput && this.emailInput.blur()
+    this.passwordInput && this.passwordInput.blur()
   }
+
   // <TextInput
   //   style={styles.input}
   //   placeholder="Email Address"
@@ -125,38 +120,46 @@ class LoginScreen extends Component {
 
   render() {
     return (
-      <View style={commonStyles.staticView}>
-        <Text style={styles.title}>{this.state.action}</Text>
-        <View style={{ flex: 1, justifyContent: 'space-around'}}>
-          <Input
-            labelText={'Email'}
-            value={this.state.email}
-            onChangeText={ text => this.setState({ email: text })}
-            autoFocus={true}
-          />
-        </View>
+      <View style={[commonStyles.staticView, {backgroundColor: COLORS.gray5}]}>
+        <PressCapture onPress={this.handleCapture}>
+          <View style={{ flex: 1, justifyContent: 'space-around'}}>
+            <View style={{ flex: 1, justifyContent: 'space-around'}}>
+              <Text>LOGIN</Text>
+            </View>
 
-        <TextInput
-          style={styles.input}
-          placeholder="Password"
-          autoCapitalize="none"
-          autoCorrect={false}
-          secureTextEntry={true}
-          value={this.state.password}
-          onChangeText={text => this.setState({ password: text })}
-        />
-        <View style={styles.buttonContainer}>
-          <Button
-            color='dodgerblue'
-            onPress={e => this.onSubmitForm(e)}
-            title={this.state.action}
-          />
-          <Button
-            color='dodgerblue'
-            onPress={e => this.onToggleAction(e)}
-            title={this.state.action === LOGIN ? SIGNUP : LOGIN}
-          />
-        </View>
+            <View style={{ flex: 2, justifyContent: 'space-around'}}>
+              <Input
+                labelText={'Email'}
+                value={this.state.email}
+                onChangeText={ text => this.setState({ email: text })}
+                autoFocus={true}
+                ref={(element) => { this.emailInput = element }}
+              />
+              <Input
+                labelText={'Password'}
+                value={this.state.password}
+                onChangeText={ text => this.setState({ password: text })}
+                secureTextEntry={true}
+                ref={(element) => { this.passwordInput = element }}
+              />
+            </View>
+
+            <View style={{flex: 1, justifyContent: 'space-around'}}>
+              <View style={{flexDirection: 'row'}}>
+                <Button
+                  color='dodgerblue'
+                  onPress={e => this.onSubmitForm(e)}
+                  title={this.state.action}
+                />
+                <Button
+                  color='dodgerblue'
+                  onPress={e => this.onToggleAction(e)}
+                  title={this.state.action === LOGIN ? SIGNUP : LOGIN}
+                />
+              </View>
+            </View>
+          </View>
+        </PressCapture>
       </View>
     )
   }

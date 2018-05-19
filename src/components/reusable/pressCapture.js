@@ -10,7 +10,7 @@ class PressCapture extends React.Component {
   }
 
   handleOnPress() {
-    console.log('pressed!')
+    console.log('pressCapture pressed!')
     this.props.onPress && this.props.onPress()
   }
 
