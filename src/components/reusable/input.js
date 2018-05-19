@@ -46,8 +46,9 @@ class Input extends React.Component {
         duration: 300
       }).start()
     }
+    this.props.onEndEditing && this.props.onEndEditing()
+    this.blur()
     console.log('blurred')
-    this.props.onEndEditing()
   }
 
   changeHandler(text) {
@@ -73,6 +74,8 @@ class Input extends React.Component {
           onFocus={this.focusHandler}
           onEndEditing={this.blurHandler}
           onChangeText={this.changeHandler}
+          placeholder={this.props.placeholder}
+          autoFocus={this.props.autoFocus}
         />
       </View>
     )

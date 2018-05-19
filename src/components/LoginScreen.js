@@ -9,6 +9,7 @@ import {
   Button
 } from 'react-native'
 import Input from './reusable/input'
+import { commonStyles, COLORS } from './reusable/styles'
 import firebase from 'firebase'
 import { login, loginFailed } from '../redux/actions/authActions.js'
 import { addWorkoutSuccess, removeWorkoutSuccess, recievedWorkouts } from '../redux/actions/workoutActions'
@@ -110,22 +111,30 @@ class LoginScreen extends Component {
       </View>
     )
   }
+  // <TextInput
+  //   style={styles.input}
+  //   placeholder="Email Address"
+  //   autoCapitalize="none"
+  //   autoCorrect={false}
+  //   autoFocus={true}
+  //   keyboardType="email-address"
+  //   value={this.state.email}
+  //   onChangeText={text => this.setState({ email: text })}
+  // />
 
   render() {
     return (
-      <ScrollView contentContainerStyle={styles.container}>
+      <View style={commonStyles.staticView}>
         <Text style={styles.title}>{this.state.action}</Text>
-        <Input value={'panda sugar'} labelText={'Username'}></Input>
-        <TextInput
-          style={styles.input}
-          placeholder="Email Address"
-          autoCapitalize="none"
-          autoCorrect={false}
-          autoFocus={true}
-          keyboardType="email-address"
-          value={this.state.email}
-          onChangeText={text => this.setState({ email: text })}
-        />
+        <View style={{ flex: 1, justifyContent: 'space-around'}}>
+          <Input
+            labelText={'Email'}
+            value={this.state.email}
+            onChangeText={ text => this.setState({ email: text })}
+            autoFocus={true}
+          />
+        </View>
+
         <TextInput
           style={styles.input}
           placeholder="Password"
@@ -147,7 +156,7 @@ class LoginScreen extends Component {
             title={this.state.action === LOGIN ? SIGNUP : LOGIN}
           />
         </View>
-      </ScrollView>
+      </View>
     )
   }
 }
