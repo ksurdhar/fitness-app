@@ -68,14 +68,15 @@ class Input extends React.Component {
           {this.props.labelText}
         </Animated.Text>
         <TextInput
+          value={this.props.value}
+          placeholder={this.props.placeholder}
+          autoFocus={this.props.autoFocus}
+          secureTextEntry={this.props.secureTextEntry}
           ref={(element) => { this.textInput = element }}
           style={styles.input}
-          value={this.props.value}
           onFocus={this.focusHandler}
           onEndEditing={this.blurHandler}
           onChangeText={this.changeHandler}
-          placeholder={this.props.placeholder}
-          autoFocus={this.props.autoFocus}
         />
       </View>
     )

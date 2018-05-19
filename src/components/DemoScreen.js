@@ -12,6 +12,7 @@ import {
 } from 'react-native'
 
 import Input from './reusable/input'
+import PressCapture from './reusable/pressCapture'
 import { commonStyles, COLORS, styleButton } from './reusable/styles'
 
 INITIAL_STATE = {
@@ -164,7 +165,7 @@ class DemoScreen extends React.Component {
 
     return (
       <View style={commonStyles.staticView}>
-        <TouchableWithoutFeedback onPress={this.handleOnTouch}>
+        <PressCapture onPress={this.handleOnTouch}>
           <View style={{ flex: 1, justifyContent: 'space-around'}}>
             <Input
               value={this.state.text}
@@ -174,8 +175,8 @@ class DemoScreen extends React.Component {
               ref={(element) => { this.textInput = element }}
             />
           </View>
-        </TouchableWithoutFeedback>
-        <TouchableWithoutFeedback onPress={this.handleOnTouch}>
+        </PressCapture>
+        <PressCapture onPress={this.handleOnTouch}>
           <View style={{flex: 2, justifyContent: 'space-around'}}>
             <View style={{flexDirection: 'row', justifyContent: 'space-around'}}>
               <TouchableWithoutFeedback onPress={this.handleButtonOnPress}>
@@ -199,7 +200,7 @@ class DemoScreen extends React.Component {
               Craft Workout
             </Animated.Text>
           </View>
-        </TouchableWithoutFeedback>
+        </PressCapture>
       </View>
     )
   }

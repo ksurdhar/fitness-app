@@ -9,6 +9,7 @@ import {
   Button
 } from 'react-native'
 import Input from './reusable/input'
+import PressCapture from './reusable/pressCapture'
 import { commonStyles, COLORS } from './reusable/styles'
 import firebase from 'firebase'
 import { login, loginFailed } from '../redux/actions/authActions.js'

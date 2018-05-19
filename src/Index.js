@@ -34,7 +34,7 @@ class Index extends Component {
     } else if (this.state.fontLoaded) {
       return (
         <Provider store={store}>
-          <LoginScreen />
+          <DemoScreen />
         </Provider>
       )
     } else {
