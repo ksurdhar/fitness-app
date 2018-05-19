@@ -120,20 +120,21 @@ class LoginScreen extends Component {
 
   render() {
     return (
-      <View style={[commonStyles.staticView, {backgroundColor: COLORS.gray5}]}>
+      <View style={[commonStyles.staticView]}>
         <PressCapture onPress={this.handleCapture}>
           <View style={{ flex: 1, justifyContent: 'space-around'}}>
             <View style={{ flex: 1, justifyContent: 'space-around'}}>
               <Text>LOGIN</Text>
             </View>
 
-            <View style={{ flex: 2, justifyContent: 'space-around'}}>
+            <View style={{ flex: 2, justifyContent: 'flex-start'}}>
               <Input
                 labelText={'Email'}
                 value={this.state.email}
                 onChangeText={ text => this.setState({ email: text })}
                 autoFocus={true}
                 ref={(element) => { this.emailInput = element }}
+                small={true}
               />
               <Input
                 labelText={'Password'}
@@ -141,6 +142,7 @@ class LoginScreen extends Component {
                 onChangeText={ text => this.setState({ password: text })}
                 secureTextEntry={true}
                 ref={(element) => { this.passwordInput = element }}
+                small={true}
               />
             </View>
 

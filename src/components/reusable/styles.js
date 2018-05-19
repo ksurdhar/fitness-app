@@ -26,16 +26,6 @@ function styleButton(borderColors) {
   }
 }
 
-function styleLabel(labelPosition) {
-  return {
-    position: 'absolute',
-    fontFamily: 'rubik-medium',
-    fontSize: 36,
-    color: COLORS.gray3,
-    bottom: labelPosition
-  }
-}
-
 const commonStyles = StyleSheet.create({
   content: {
     flex: 1,
@@ -50,7 +40,6 @@ const commonStyles = StyleSheet.create({
 
 export {
   commonStyles,
-  styleLabel,
   styleButton,
   COLORS
 }

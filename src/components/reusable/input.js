@@ -5,7 +5,7 @@ import {
   TextInput,
   View,
 } from 'react-native'
-import { COLORS, styleLabel } from './styles'
+import { COLORS } from './styles'
 
 // DIFFERENT INPUT STATES
 // focused, blurred, valid, invalid, filled, empty
@@ -66,19 +66,25 @@ class Input extends React.Component {
       inputRange: [0, 100],
       outputRange: [0, 42]
     })
+    const size = this.props.small === true ? 'small' : 'large'
+    const labelConfig = {
+      fontSize: size === 'small' ? 24 : 36,
+      labelPosition
+    }
+    const inputHeight = size === 'small' ? 74 : 90
 
     return (
-      <View style={{ borderBottomWidth: 3, borderBottomColor: COLORS.gray3 }}>
-        <Animated.Text style={styleLabel(labelPosition)}>
+      <View style={{ borderBottomWidth: 3, borderBottomColor: COLORS.gray3, height: inputHeight, marginTop:10, marginBottom: 10 }}>
+        <Animated.Text style={styleLabel(labelConfig)}>
           {this.props.labelText}
         </Animated.Text>
         <TextInput
           value={this.props.value}
+          style={[styles[size], styles.base]}
           placeholder={this.props.placeholder}
           autoFocus={this.props.autoFocus}
           secureTextEntry={this.props.secureTextEntry}
           ref={(element) => { this.textInput = element }}
-          style={styles.input}
           onFocus={this.focusHandler}
           onEndEditing={this.blurHandler}
           onChangeText={this.changeHandler}
@@ -88,11 +94,28 @@ class Input extends React.Component {
   }
 }
 
-const styles = StyleSheet.create({
-  input: {
+function styleLabel(config) {
+  return {
+    position: 'absolute',
     fontFamily: 'rubik-medium',
-    fontSize: 36,
+    fontSize: config.fontSize,
+    color: COLORS.gray3,
+    bottom: config.labelPosition
+  }
+}
+
+const styles = StyleSheet.create({
+  base: {
+    fontFamily: 'rubik-medium',
   },
+  large: {
+    fontSize: 36,
+    top: 44
+  },
+  small: {
+    fontSize: 24,
+    top: 40
+  }
 })
 
 export default Input
