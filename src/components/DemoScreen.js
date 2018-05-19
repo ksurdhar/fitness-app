@@ -11,17 +11,11 @@ import {
   TouchableWithoutFeedback
 } from 'react-native'
 
+import Input from './reusable/input'
+import { commonStyles, COLORS, styleButton } from './reusable/styles'
+
 INITIAL_STATE = {
   text: ''
-}
-
-COLORS = {
-  white: 'ghostwhite',
-  orange: 'rgb(223, 102, 89)',
-  gray1: 'rgba(64, 77, 91, 0.1)',
-  gray3: 'rgba(64, 77, 91, 0.3)',
-  gray5: 'rgba(64, 77, 91, 0.5)',
-  gray10: 'rgba(64, 77, 91, 1.0)'
 }
 
 class DemoScreen extends React.Component {
@@ -34,7 +28,6 @@ class DemoScreen extends React.Component {
   }
 
   headerColor = new Animated.Value(0)
-  labelPosition = new Animated.Value(0)
   buttonColor = new Animated.Value(0)
   borderColors = {
     top: new Animated.Value(0),
@@ -49,7 +42,6 @@ class DemoScreen extends React.Component {
     this.state = INITIAL_STATE
 
     this.changeTextHandler = this.changeTextHandler.bind(this)
-    this.focusHandler = this.focusHandler.bind(this)
     this.blurHandler = this.blurHandler.bind(this)
     this.handleOnTouch = this.handleOnTouch.bind(this)
     this.handleButtonOnPress = this.handleButtonOnPress.bind(this)
@@ -71,25 +63,12 @@ class DemoScreen extends React.Component {
     console.log('FIRING SUBMIT')
   }
 
-  focusHandler() {
-    Animated.timing(this.labelPosition, {
-      toValue: 100,
-      duration: 300
-    }).start()
-    console.log('focused')
-  }
-
   blurHandler(){
     Animated.timing(this.headerColor, {
       toValue: 0,
       duration: 500
     }).start()
     if (!this.state.text || this.state.text.length === 0) {
-      Animated.timing(this.labelPosition, {
-        toValue: 0,
-        duration: 300
-      }).start()
-
       Animated.parallel([
         Animated.timing(this.borderColors.top, {
           toValue: 0,
@@ -171,10 +150,6 @@ class DemoScreen extends React.Component {
       inputRange: [0, 100],
       outputRange: ['rgba(64, 77, 91, 0)', 'rgba(64, 77, 91, 1.0)']
     })
-    const labelPosition = this.labelPosition.interpolate({
-      inputRange: [0, 100],
-      outputRange: [0, 42]
-    })
     const borderInterpolation = {
       inputRange: [0, 100],
       outputRange: ['rgba(64, 77, 91, 0)', 'rgba(64, 77, 91, 1.0)']
@@ -188,23 +163,16 @@ class DemoScreen extends React.Component {
     }
 
     return (
-      <View style={{backgroundColor: COLORS.white, flex: 1, padding: 10}}>
+      <View style={commonStyles.staticView}>
         <TouchableWithoutFeedback onPress={this.handleOnTouch}>
           <View style={{ flex: 1, justifyContent: 'space-around'}}>
-            <View style={{ borderBottomWidth: 3, borderBottomColor: COLORS.gray3 }}>
-              <Animated.Text style={styleLabel(labelPosition)}>
-                Name
-              </Animated.Text>
-              <TextInput
-                ref={(element) => { this.textInput = element }}
-                style={styles.input}
-                value={this.state.text}
-                onFocus={this.focusHandler}
-                onEndEditing={this.blurHandler}
-                onChangeText={this.changeTextHandler}
-                onSubmitEditing={this.submitHandler.bind(this)}
-              />
-            </View>
+            <Input
+              value={this.state.text}
+              labelText='name'
+              onChangeText={this.changeTextHandler}
+              onEndEditing={this.blurHandler}
+              ref={(element) => { this.textInput = element }}
+            />
           </View>
         </TouchableWithoutFeedback>
         <TouchableWithoutFeedback onPress={this.handleOnTouch}>
@@ -237,32 +205,6 @@ class DemoScreen extends React.Component {
   }
 }
 
-function styleButton(borderColors) {
-  console.log('whats up', borderColors)
-  return {
-    borderTopWidth: 4,
-    borderBottomWidth: 4,
-    borderLeftWidth: 4,
-    borderRightWidth: 4,
-    borderTopColor: borderColors.top,
-    borderBottomColor: borderColors.bottom,
-    borderLeftColor: borderColors.left,
-    borderRightColor: borderColors.right,
-    padding: 10,
-    alignSelf: 'flex-start' // critical to create view width of contents
-  }
-}
-
-function styleLabel(labelPosition) {
-  return {
-    position: 'absolute',
-    fontFamily: 'rubik-medium',
-    fontSize: 36,
-    color: COLORS.gray3,
-    bottom: labelPosition
-  }
-}
-
 const styles = StyleSheet.create({
   button: {
     backgroundColor: COLORS.gray5,
@@ -285,14 +227,6 @@ const styles = StyleSheet.create({
     borderBottomColor: COLORS.gray10,
     borderLeftColor: COLORS.gray10,
     borderRightColor: COLORS.gray10,
-  },
-  input: {
-    fontFamily: 'rubik-medium',
-    fontSize: 36,
-  },
-  content: {
-    flex: 1,
-    justifyContent: "flex-start",
   },
 })
 

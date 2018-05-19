@@ -1,5 +1,5 @@
-import React, { Component } from "react";
-import { connect } from "react-redux";
+import React, { Component } from 'react'
+import { connect } from 'react-redux'
 import {
   ScrollView,
   StyleSheet,
@@ -7,27 +7,28 @@ import {
   TextInput,
   View,
   Button
-} from "react-native";
-import firebase from "firebase";
-import { login, loginFailed } from "../redux/actions/authActions.js";
-import { addWorkoutSuccess, removeWorkoutSuccess, recievedWorkouts } from '../redux/actions/workoutActions';
-import { addSessionSuccess, removeSessionSuccess, recievedSessions } from '../redux/actions/sessionActions';
+} from 'react-native'
+import Input from './reusable/input'
+import firebase from 'firebase'
+import { login, loginFailed } from '../redux/actions/authActions.js'
+import { addWorkoutSuccess, removeWorkoutSuccess, recievedWorkouts } from '../redux/actions/workoutActions'
+import { addSessionSuccess, removeSessionSuccess, recievedSessions } from '../redux/actions/sessionActions'
 
-import config from '../../config.js';
+import config from '../../config.js'
 import store from '../redux/store.js'
 import { firebaseApp, rootRef } from '../firebase.js'
 
-const LOGIN = "Login";
-const SIGNUP = "Sign Up";
+const LOGIN = "Login"
+const SIGNUP = "Sign Up"
 
 class LoginScreen extends Component {
   constructor(props) {
-    super(props);
+    super(props)
     this.state = {
       action: LOGIN,
       email: "",
       password: ""
-    };
+    }
 
     if (config.DEV_MODE) {
       this.state.email = 'admin@gmail.com'
@@ -62,11 +63,11 @@ class LoginScreen extends Component {
         sessionsRef.once('value', (snapshot) => {
           store.dispatch(recievedSessions(snapshot.val()))
         })
-        this.props.dispatchLogin(user);
+        this.props.dispatchLogin(user)
       })
       .catch(error => {
-        console.log("login failed: " + error);
-      });
+        console.log("login failed: " + error)
+      })
   }
 
   onSignUp(e) {
@@ -74,34 +75,47 @@ class LoginScreen extends Component {
       .auth()
       .createUserWithEmailAndPassword(this.state.email, this.state.password)
       .then(user => {
-        this.props.dispatchLogin(user);
+        this.props.dispatchLogin(user)
       })
       .catch(error => {
-        console.log("signup failed: " + error);
-      });
+        console.log("signup failed: " + error)
+      })
   }
 
   onSubmitForm(e) {
-    e.preventDefault();
+    e.preventDefault()
 
     switch (this.state.action) {
       case LOGIN:
-        return this.onLogin(e);
+        return this.onLogin(e)
       case SIGNUP:
-        return this.onSignUp(e);
+        return this.onSignUp(e)
     }
   }
 
   onToggleAction(e) {
-    e.preventDefault();
+    e.preventDefault()
 
-    this.setState({ action: this.state.action === LOGIN ? SIGNUP : LOGIN });
+    this.setState({ action: this.state.action === LOGIN ? SIGNUP : LOGIN })
+  }
+
+  altRender() {
+    return (
+      <View style={{backgroundColor: COLORS.white, flex: 1, padding: 10}}>
+        <TouchableWithoutFeedback onPress={this.handleOnTouch}>
+          <View style={{ flex: 1, justifyContent: 'space-around'}}>
+
+          </View>
+        </TouchableWithoutFeedback>
+      </View>
+    )
   }
 
   render() {
     return (
       <ScrollView contentContainerStyle={styles.container}>
         <Text style={styles.title}>{this.state.action}</Text>
+        <Input value={'panda sugar'} labelText={'Username'}></Input>
         <TextInput
           style={styles.input}
           placeholder="Email Address"
@@ -134,7 +148,7 @@ class LoginScreen extends Component {
           />
         </View>
       </ScrollView>
-    );
+    )
   }
 }
 
@@ -165,20 +179,20 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between'
   }
-});
+})
 
 const mapStateToProps = (state, ownProps) => {
   return {
     isLoggedIn: state.auth.isLoggedIn
-  };
-};
+  }
+}
 
 const mapDispatchToProps = dispatch => {
   return {
     dispatchLogin: user => {
-      dispatch(login(user));
+      dispatch(login(user))
     }
-  };
-};
+  }
+}
 
-export default connect(mapStateToProps, mapDispatchToProps)(LoginScreen);
+export default connect(mapStateToProps, mapDispatchToProps)(LoginScreen)

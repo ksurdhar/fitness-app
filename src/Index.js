@@ -9,7 +9,6 @@ import DemoScreen from './components/DemoScreen'
 import { Font } from 'expo'
 
 import Config from 'react-native-config'
-
 import config from '../config'
 
 INITIAL_STATE = {
@@ -26,27 +25,21 @@ class Index extends Component {
     // console.log('Config', Config)
     // console.log('env value', process.env)
     // console.log('process value', process)
-    if (this.state.fontLoaded) {
-      return (
-        <Provider store={store}>
-          <DemoScreen/>
-        </Provider>
-      )
-    }
-    if (this.props.isLoggedIn) {
+    if (this.state.fontLoaded && this.props.isLoggedIn) {
       return (
         <Provider store={store}>
           <Navigator />
         </Provider>
       )
-    } else {
+    } else if (this.state.fontLoaded) {
       return (
         <Provider store={store}>
-          <LoginScreen />
+          <DemoScreen />
         </Provider>
       )
+    } else {
+      return null
     }
-    return null
   }
 
   async componentDidMount() {
@@ -54,7 +47,6 @@ class Index extends Component {
       'raleway-bold': require('../assets/fonts/Raleway-Bold.ttf'),
       'rubik-medium': require('../assets/fonts/Rubik-Medium.ttf')
     })
-    console.log('loaded font!')
     this.setState({
       fontLoaded: true
     })
