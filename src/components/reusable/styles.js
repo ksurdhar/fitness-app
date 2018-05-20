@@ -21,11 +21,28 @@ const commonStyles = StyleSheet.create({
     backgroundColor: COLORS.white,
     flex: 1,
     padding: 10,
-    justifyContent: "flex-start",
+    justifyContent: 'flex-start',
   },
   headerFont: {
     fontFamily: 'raleway-bold',
     fontSize: 42
+  },
+  baseFont: {
+    fontFamily: 'rubik-medium',
+    fontSize: 24
+  },
+  smFont: {
+    fontSize: 12
+  },
+  mdFont: {
+    fontSize: 24
+  },
+  lgFont: {
+    fontSize: 36
+  },
+  row: {
+    flexDirection: 'row',
+    justifyContent: 'center'
   }
 })
 

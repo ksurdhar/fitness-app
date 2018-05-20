@@ -120,7 +120,7 @@ class LoginScreen extends Component {
       <PressCapture onPress={this.handleCapture}>
         <View style={[commonStyles.staticView]}>
           <Text style={[commonStyles.headerFont, { marginTop: 70, marginBottom: 50, textAlign:'center', color: COLORS.gray5 }]}>
-            wizard fitness
+            MIGHTY
           </Text>
           <Input
             labelText={'Email'}
@@ -139,10 +139,10 @@ class LoginScreen extends Component {
             small={true}
           />
 
-          <View style={{flexDirection: 'row', justifyContent: 'center', marginTop: 50}}>
+          <View style={[commonStyles.row, {marginTop: 50}]}>
             <Button
-              style={{marginRight: 10, width: 300}}
-              onPress={e => this.onSubmit(e)}
+              style={{width: 300}}
+              onPress={() => this.onSubmit()}
               value={this.state.action}
             />
           </View>

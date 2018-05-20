@@ -5,13 +5,14 @@ import {
   StyleSheet,
   Text,
   ScrollView,
-  Button,
   TextInput,
   Keyboard,
   View,
+  Picker
 } from 'react-native'
+import { commonStyles } from './reusable/styles'
+import Button from './reusable/button'
 import * as workoutActions from '../redux/actions/workoutActions'
-import { Dropdown } from 'react-native-material-dropdown'
 
 INITIAL_STATE = {
   workoutName: '',
@@ -39,6 +40,7 @@ class PromptScreen extends React.Component {
   constructor() {
     super()
     this.state = INITIAL_STATE
+    this.renderPicker = this.renderPicker.bind(this)
   }
 
   resetState() {
@@ -78,55 +80,72 @@ class PromptScreen extends React.Component {
     }
   }
 
-  renderWorkoutDropdown() {
-    const workoutNames = Object.entries(this.props.workouts).map((workoutEntry, workoutIdx) => {
-      return { value: workoutEntry[1].name }
+  // renderWorkoutDropdown() {
+  //   const workoutNames = Object.entries(this.props.workouts).map((workoutEntry, workoutIdx) => {
+  //     return { value: workoutEntry[1].name }
+  //   })
+  //   workoutNames.push({ value: 'Add New Workout'})
+  //
+  //   if (workoutNames.length > 0) {
+  //     const dropDown = (
+  //       <View style={{ flexDirection: 'row', paddingTop: 80 }}>
+  //         <View style={{ flex: 1, marginLeft: 15, marginRight: 15 }}>
+  //           <Dropdown
+  //             animationDuration={50}
+  //             rippleOpacity={.3}
+  //             dropdownOffset={{top:110, left:0}}
+  //             label='Workout Type'
+  //             data={workoutNames}
+  //             onChangeText={ this.recordSession.bind(this) }
+  //           />
+  //         </View>
+  //       </View>
+  //     )
+  //     return dropDown
+  //   }
+  //
+  //   return null
+  // }
+
+  renderPicker() {
+    const workoutItems = Object.entries(this.props.workouts).map((workoutEntry, workoutIdx) => {
+      const name = workoutEntry[1].name
+      return <Picker.Item label={name} value={name} />
     })
-    workoutNames.push({ value: 'Add New Workout'})
-
-    if (workoutNames.length > 0) {
-      const dropDown = (
-        <View style={{ flexDirection: 'row', paddingTop: 80 }}>
-          <View style={{ flex: 1, marginLeft: 15, marginRight: 15 }}>
-            <Dropdown
-              animationDuration={50}
-              rippleOpacity={.3}
-              dropdownOffset={{top:110, left:0}}
-              label='Workout Type'
-              data={workoutNames}
-              onChangeText={ this.recordSession.bind(this) }
-            />
-          </View>
-        </View>
-      )
-      return dropDown
-    }
-
-    return null
+    return (
+      <View style={[commonStyles.row]}>
+        <Picker style={{ height: 50, width: 300, paddingBottom: 200 }}
+          itemStyle={[commonStyles.baseFont, {fontSize: 30}]}>
+          {workoutItems}
+        </Picker>
+      </View>
+    )
   }
 
   render() {
     return (
-      <View style={{flex: 1}}>
-        <ScrollView style={{flex: 1}} contentContainerStyle={styles.container}>
-          <Text>Choose a workout</Text>
-          { this.renderWorkoutDropdown() }
-        </ScrollView>
+      <View style={commonStyles.staticView}>
+        <View style={[commonStyles.row, { marginTop: 40 }]}>
+          <Text style={[commonStyles.baseFont, {color: COLORS.gray5}]}>
+            Choose a workout
+          </Text>
+        </View>
+        { this.renderPicker() }
+        <View style={[commonStyles.row, { marginTop: 40 }]}>
+          <Button
+            style={{width: 200}}
+            onPress={(val) => console.log('pressed: ' + val)}
+            value={'record'}
+          />
+        </View>
+        <View style={[commonStyles.row, { marginTop: 40 }]}>
+          <Text style={[commonStyles.baseFont, {color: COLORS.gray5}]}>
+            Or create a workout
+          </Text>
+        </View>
       </View>
     )
   }
 }
-
-const styles = StyleSheet.create({
-  container: {
-    alignItems: 'center',
-    justifyContent: 'flex-start',
-  },
-  title: {
-    fontSize: 40,
-    marginTop: 60,
-    marginBottom: 60,
-  },
-})
 
 export default connect(mapStateToProps)(PromptScreen)
