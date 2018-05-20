@@ -6,11 +6,13 @@ import {
   Text,
   TextInput,
   View,
-  Button
 } from 'react-native'
+
+import Button from './reusable/button'
 import Input from './reusable/input'
 import PressCapture from './reusable/pressCapture'
 import { commonStyles, COLORS } from './reusable/styles'
+
 import firebase from 'firebase'
 import { login, loginFailed } from '../redux/actions/authActions.js'
 import { addWorkoutSuccess, removeWorkoutSuccess, recievedWorkouts } from '../redux/actions/workoutActions'
@@ -37,9 +39,12 @@ class LoginScreen extends Component {
       this.state.password = 'password'
     }
     this.handleCapture = this.handleCapture.bind(this)
+    this.onLogin = this.onLogin.bind(this)
+    this.onSignUp = this.onSignUp.bind(this)
+    this.onSubmit = this.onSubmit.bind(this)
   }
 
-  onLogin(e) {
+  onLogin() {
     firebase
       .auth()
       .signInWithEmailAndPassword(this.state.email, this.state.password)
@@ -73,7 +78,7 @@ class LoginScreen extends Component {
       })
   }
 
-  onSignUp(e) {
+  onSignUp() {
     firebase
       .auth()
       .createUserWithEmailAndPassword(this.state.email, this.state.password)
@@ -85,20 +90,16 @@ class LoginScreen extends Component {
       })
   }
 
-  onSubmitForm(e) {
-    e.preventDefault()
-
+  onSubmit() {
     switch (this.state.action) {
       case LOGIN:
-        return this.onLogin(e)
+        return this.onLogin()
       case SIGNUP:
-        return this.onSignUp(e)
+        return this.onSignUp()
     }
   }
 
-  onToggleAction(e) {
-    e.preventDefault()
-
+  onToggleAction() {
     this.setState({ action: this.state.action === LOGIN ? SIGNUP : LOGIN })
   }
 
@@ -107,11 +108,18 @@ class LoginScreen extends Component {
     this.passwordInput && this.passwordInput.blur()
   }
 
+  // TODO REPLACE SIGN UP BUTTON WITH LINK
+  // <Button
+  //   style={{marginLeft: 10}}
+  //   onPress={e => this.onToggleAction(e)}
+  //   value={this.state.action === LOGIN ? SIGNUP : LOGIN}
+  // />
+
   render() {
     return (
       <PressCapture onPress={this.handleCapture}>
         <View style={[commonStyles.staticView]}>
-          <Text style={[commonStyles.headerFont, { marginTop: 70, marginBottom: 40, textAlign:'center', color: COLORS.gray5 }]}>
+          <Text style={[commonStyles.headerFont, { marginTop: 70, marginBottom: 50, textAlign:'center', color: COLORS.gray5 }]}>
             wizard fitness
           </Text>
           <Input
@@ -131,16 +139,11 @@ class LoginScreen extends Component {
             small={true}
           />
 
-          <View style={{flexDirection: 'row'}}>
+          <View style={{flexDirection: 'row', justifyContent: 'center', marginTop: 50}}>
             <Button
-              color='dodgerblue'
-              onPress={e => this.onSubmitForm(e)}
-              title={this.state.action}
-            />
-            <Button
-              color='dodgerblue'
-              onPress={e => this.onToggleAction(e)}
-              title={this.state.action === LOGIN ? SIGNUP : LOGIN}
+              style={{marginRight: 10, width: 300}}
+              onPress={e => this.onSubmit(e)}
+              value={this.state.action}
             />
           </View>
         </View>

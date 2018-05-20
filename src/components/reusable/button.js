@@ -1,34 +1,12 @@
 import React from 'react'
-import { connect } from 'react-redux'
 import {
-  ScrollView,
   Animated,
-  Button,
   StyleSheet,
-  TextInput,
-  View,
-  Text,
   TouchableWithoutFeedback
 } from 'react-native'
 
-import Input from './reusable/input'
-import PressCapture from './reusable/pressCapture'
-import { commonStyles, COLORS, styleButton } from './reusable/styles'
-
-INITIAL_STATE = {
-  text: ''
-}
-
-class DemoScreen extends React.Component {
-  static navigationOptions = {
-    title: 'DEMO SCREEN',
-    tabBarLabel: 'Record',
-    tabBarIcon: ({ tintColor }) => (
-      <Text>Record</Text>
-    )
-  }
-
-  headerColor = new Animated.Value(0)
+import { commonStyles, COLORS } from './styles'
+class Button extends React.Component {
   borderColors = {
     top: new Animated.Value(0),
     bottom: new Animated.Value(0),
@@ -39,120 +17,22 @@ class DemoScreen extends React.Component {
 
   constructor() {
     super()
-    this.state = INITIAL_STATE
-
-    this.changeTextHandler = this.changeTextHandler.bind(this)
-    this.blurHandler = this.blurHandler.bind(this)
-    this.handleOnTouch = this.handleOnTouch.bind(this)
-    this.handleButtonOnPress = this.handleButtonOnPress.bind(this)
-  }
-
-  resetState() {
-    this.setState(INITIAL_STATE)
+    this.handleOnPress = this.handleOnPress.bind(this)
   }
 
   componentDidMount() {
     // console.log('component did mount')
   }
 
-  componentDidUpdate() {
-    // console.log('props', this.props)
-  }
-
-  submitHandler() {
-    console.log('FIRING SUBMIT')
-  }
-
-  blurHandler(){
-    Animated.timing(this.headerColor, {
-      toValue: 0,
-      duration: 500
-    }).start()
-    if (!this.state.text || this.state.text.length === 0) {
-      Animated.parallel([
-        Animated.timing(this.borderColors.top, {
-          toValue: 0,
-          duration: 300
-        }),
-        Animated.timing(this.borderColors.right, {
-          toValue: 0,
-          duration: 300
-        }),
-        Animated.timing(this.borderColors.bottom, {
-          toValue: 0,
-          duration: 300
-        }),
-        Animated.timing(this.borderColors.left, {
-          toValue: 0,
-          duration: 300
-        }),
-        Animated.timing(this.borderColors.text, {
-          toValue: 0,
-          duration: 300
-        })
-      ]).start()
-    }
-    console.log('blurred')
-  }
-
-  handleOnTouch() {
-    console.log('on touch!')
-    this.textInput && this.textInput.blur()
-  }
-
-  handleButtonOnPress() {
+  handleOnPress() {
     console.log('pressed!')
+    this.props.onPress && this.props.onPress()
   }
 
-  changeTextHandler(text) {
-    if (text.length > 5) {
-      Animated.sequence([
-        Animated.parallel([
-          Animated.timing(this.borderColors.top, {
-            toValue: 100,
-            duration: 300
-          }),
-          Animated.timing(this.borderColors.right, {
-            toValue: 100,
-            duration: 300
-          }),
-          Animated.timing(this.borderColors.bottom, {
-            toValue: 100,
-            duration: 300
-          }),
-          Animated.timing(this.borderColors.left, {
-            toValue: 100,
-            duration: 300
-          })
-        ]),
-        Animated.timing(this.borderColors.text, {
-          toValue: 100,
-          duration: 200
-        })
-      ]).start()
-      Animated.timing(this.headerColor, {
-        toValue: 100,
-        duration: 500
-      }).start()
-    }
-    this.setState({text})
-  }
-// UI lessons:
-// Scrollview will not display "flexed views without a height"
-// TouchableWithoutFeedback does not impact layout and cannot be styled
-// style can be passed an array of objects
   render() {
-    const titleColor = this.headerColor.interpolate({
-      inputRange: [0, 100],
-      outputRange: ['rgba(64, 77, 91, 0.1)', 'rgba(223, 102, 89, 1.0)']
-    })
-    const buttonColor = this.buttonColor.interpolate({
-      inputRange: [0, 100],
-      outputRange: ['rgba(64, 77, 91, 0)', 'rgba(64, 77, 91, 1.0)']
-    })
     const borderInterpolation = {
       inputRange: [0, 100],
-      outputRange: ['rgba(64, 77, 91, 0)', 'rgba(64, 77, 91, 1.0)']
+      outputRange: [COLORS.gray5, COLORS.gray0]
     }
     const borderColors = {
       top: this.borderColors.top.interpolate(borderInterpolation),
@@ -163,21 +43,33 @@ class DemoScreen extends React.Component {
     }
 
     return (
-      <Animated.View style={styleButton(borderColors)}>
-        <Animated.Text style={{fontSize: 36, fontFamily: 'rubik-medium', color: borderColors.text, textAlign: 'center'}}>
-          Add exercise
-        </Animated.Text>
-      </Animated.View>
+      <TouchableWithoutFeedback onPress={this.handleOnPress}>
+        <Animated.View style={[styleButton(borderColors), this.props.style]}>
+          <Animated.Text style={{fontSize: 24, fontFamily: 'rubik-medium', color: borderColors.text, textAlign: 'center'}}>
+            { this.props.value }
+          </Animated.Text>
+        </Animated.View>
+      </TouchableWithoutFeedback>
     )
   }
 }
 
-const styles = StyleSheet.create({
-  button: {
-    backgroundColor: COLORS.gray5,
+function styleButton(borderColors) {
+  return {
+    borderTopWidth: 4,
+    borderBottomWidth: 4,
+    borderLeftWidth: 4,
+    borderRightWidth: 4,
+    borderTopColor: borderColors.top,
+    borderBottomColor: borderColors.bottom,
+    borderLeftColor: borderColors.left,
+    borderRightColor: borderColors.right,
     padding: 10,
     alignSelf: 'flex-start' // critical to create view width of contents
-  },
+  }
+}
+
+const styles = StyleSheet.create({
   border: {
     borderTopWidth: 4,
     borderBottomWidth: 4,
@@ -197,4 +89,4 @@ const styles = StyleSheet.create({
   },
 })
 
-export default connect(null, null)(DemoScreen)
+export default Button
