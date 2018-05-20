@@ -8,6 +8,10 @@ COLORS = {
   gray1: 'rgba(64, 77, 91, 0.1)',
   gray3: 'rgba(64, 77, 91, 0.3)',
   gray5: 'rgba(64, 77, 91, 0.5)',
+  gray6: 'rgba(64, 77, 91, 0.6)',
+  gray7: 'rgba(64, 77, 91, 0.7)',
+  gray8: 'rgba(64, 77, 91, 0.8)',
+  gray9: 'rgba(64, 77, 91, 0.9)',
   gray10: 'rgba(64, 77, 91, 1.0)'
 }
 
@@ -27,19 +31,20 @@ function styleButton(borderColors) {
 }
 
 const commonStyles = StyleSheet.create({
-  content: {
-    flex: 1,
-    justifyContent: "flex-start",
-  },
   staticView: {
     backgroundColor: COLORS.white,
     flex: 1,
-    padding: 10
+    padding: 10,
+    justifyContent: "flex-start",
+  },
+  headerFont: {
+    fontFamily: 'raleway-bold',
+    fontSize: 42
   }
 })
 
 export {
   commonStyles,
   styleButton,
-  COLORS
+  COLORS,
 }

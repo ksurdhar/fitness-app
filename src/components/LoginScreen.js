@@ -107,86 +107,49 @@ class LoginScreen extends Component {
     this.passwordInput && this.passwordInput.blur()
   }
 
-  // <TextInput
-  //   style={styles.input}
-  //   placeholder="Email Address"
-  //   autoCapitalize="none"
-  //   autoCorrect={false}
-  //   autoFocus={true}
-  //   keyboardType="email-address"
-  //   value={this.state.email}
-  //   onChangeText={text => this.setState({ email: text })}
-  // />
-
   render() {
     return (
-      <View style={[commonStyles.staticView]}>
-        <PressCapture onPress={this.handleCapture}>
-          <View style={{ flex: 1, justifyContent: 'space-around'}}>
-            <View style={{ flex: 1, justifyContent: 'space-around'}}>
-              <Text>LOGIN</Text>
-            </View>
+      <PressCapture onPress={this.handleCapture}>
+        <View style={[commonStyles.staticView]}>
+          <Text style={[commonStyles.headerFont, { marginTop: 70, marginBottom: 40, textAlign:'center', color: COLORS.gray5 }]}>
+            wizard fitness
+          </Text>
+          <Input
+            labelText={'Email'}
+            value={this.state.email}
+            onChangeText={ text => this.setState({ email: text })}
+            autoFocus={true}
+            ref={(element) => { this.emailInput = element }}
+            small={true}
+          />
+          <Input
+            labelText={'Password'}
+            value={this.state.password}
+            onChangeText={ text => this.setState({ password: text })}
+            secureTextEntry={true}
+            ref={(element) => { this.passwordInput = element }}
+            small={true}
+          />
 
-            <View style={{ flex: 2, justifyContent: 'flex-start'}}>
-              <Input
-                labelText={'Email'}
-                value={this.state.email}
-                onChangeText={ text => this.setState({ email: text })}
-                autoFocus={true}
-                ref={(element) => { this.emailInput = element }}
-                small={true}
-              />
-              <Input
-                labelText={'Password'}
-                value={this.state.password}
-                onChangeText={ text => this.setState({ password: text })}
-                secureTextEntry={true}
-                ref={(element) => { this.passwordInput = element }}
-                small={true}
-              />
-            </View>
-
-            <View style={{flex: 1, justifyContent: 'space-around'}}>
-              <View style={{flexDirection: 'row'}}>
-                <Button
-                  color='dodgerblue'
-                  onPress={e => this.onSubmitForm(e)}
-                  title={this.state.action}
-                />
-                <Button
-                  color='dodgerblue'
-                  onPress={e => this.onToggleAction(e)}
-                  title={this.state.action === LOGIN ? SIGNUP : LOGIN}
-                />
-              </View>
-            </View>
+          <View style={{flexDirection: 'row'}}>
+            <Button
+              color='dodgerblue'
+              onPress={e => this.onSubmitForm(e)}
+              title={this.state.action}
+            />
+            <Button
+              color='dodgerblue'
+              onPress={e => this.onToggleAction(e)}
+              title={this.state.action === LOGIN ? SIGNUP : LOGIN}
+            />
           </View>
-        </PressCapture>
-      </View>
+        </View>
+      </PressCapture>
     )
   }
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "flex-start",
-  },
-  title: {
-    fontSize: 40,
-    marginTop: 80,
-    marginBottom: 40,
-  },
-  input: {
-    height: 40,
-    width: 300,
-    borderBottomWidth: StyleSheet.hairlineWidth,
-    borderBottomColor: 'black',
-    marginTop: 20,
-    marginBottom: 10,
-  },
   buttonContainer: {
     marginTop: 30,
     width: 300,
