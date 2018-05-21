@@ -13,7 +13,7 @@ import {
 
 import Input from './reusable/input'
 import PressCapture from './reusable/pressCapture'
-import { commonStyles, COLORS, styleButton } from './reusable/styles'
+import { common, COLORS, styleButton } from './reusable/styles'
 
 INITIAL_STATE = {
   text: ''
@@ -164,7 +164,7 @@ class DemoScreen extends React.Component {
     }
 
     return (
-      <View style={commonStyles.staticView}>
+      <View style={common.staticView}>
         <PressCapture onPress={this.handleOnTouch}>
           <View style={{ flex: 1, justifyContent: 'space-around'}}>
             <Input

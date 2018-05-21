@@ -11,7 +11,7 @@ import {
 import Button from './reusable/button'
 import Input from './reusable/input'
 import PressCapture from './reusable/pressCapture'
-import { commonStyles, COLORS } from './reusable/styles'
+import { common, COLORS } from './reusable/styles'
 
 import firebase from 'firebase'
 import { login, loginFailed } from '../redux/actions/authActions.js'
@@ -118,8 +118,8 @@ class LoginScreen extends Component {
   render() {
     return (
       <PressCapture onPress={this.handleCapture}>
-        <View style={[commonStyles.staticView]}>
-          <Text style={[commonStyles.headerFont, { marginTop: 70, marginBottom: 50, textAlign:'center', color: COLORS.gray5 }]}>
+        <View style={[common.staticView]}>
+          <Text style={[common.headerFont, { marginTop: 70, marginBottom: 50, textAlign:'center', color: COLORS.gray5 }]}>
             MIGHTY
           </Text>
           <Input
@@ -139,7 +139,7 @@ class LoginScreen extends Component {
             small={true}
           />
 
-          <View style={[commonStyles.row, {marginTop: 50}]}>
+          <View style={[common.row, {marginTop: 50}]}>
             <Button
               style={{width: 300}}
               onPress={() => this.onSubmit()}

@@ -16,7 +16,7 @@ COLORS = {
   gray10: 'rgba(64, 77, 91, 1.0)'
 }
 
-const commonStyles = StyleSheet.create({
+const common = StyleSheet.create({
   staticView: {
     backgroundColor: COLORS.white,
     flex: 1,
@@ -32,7 +32,7 @@ const commonStyles = StyleSheet.create({
     fontSize: 24
   },
   smFont: {
-    fontSize: 12
+    fontSize: 18
   },
   mdFont: {
     fontSize: 24
@@ -47,6 +47,6 @@ const commonStyles = StyleSheet.create({
 })
 
 export {
-  commonStyles,
+  common,
   COLORS,
 }

@@ -5,7 +5,7 @@ import {
   TouchableWithoutFeedback
 } from 'react-native'
 
-import { commonStyles, COLORS } from './styles'
+import { common, COLORS } from './styles'
 class Button extends React.Component {
   borderColors = {
     top: new Animated.Value(0),

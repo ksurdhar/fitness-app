@@ -59,6 +59,7 @@ class AddSessionScreen extends React.Component {
 
   componentDidMount() {
     const params = this.props.navigation.state.params
+    console.log('PARAMS', params)
     this.setState({
       workoutID: params.workoutID,
       workoutName: params.workoutName,
@@ -113,6 +114,7 @@ class AddSessionScreen extends React.Component {
   }
 
   renderExercises() {
+    console.log('rendering exercises', this.state.exerciseNames)
     return this.state.exerciseNames.map((val, exIdx) => {
       return (
         <Card key={exIdx}>
