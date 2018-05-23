@@ -49,9 +49,8 @@ class PromptScreen extends React.Component {
     // console.log('RECORD STATE',this.state)
   }
 
-  recordSession(workoutName, idx) {
+  recordSession() {
     const workout = this.props.workouts.find((workout) => workout.name === this.state.selectedWorkout)
-    console.log('WORKOUT', workout)
     const exerciseData = {}
     const exerciseNames = []
     Object.entries(workout.exercises).forEach((exerciseEntry, eIdx) => {
@@ -62,8 +61,6 @@ class PromptScreen extends React.Component {
       })
       exerciseNames.push(exercise.name)
     })
-    // console.log('EXCERCISE DATA', exerciseData)
-    // console.log('EXCERCISE NAMES', exerciseNames)
 
     this.props.navigation.navigate('AddSession', {
       workoutID: workout.id,

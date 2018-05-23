@@ -114,17 +114,20 @@ class AddSessionScreen extends React.Component {
   }
 
   renderExercises() {
-    console.log('rendering exercises', this.state.exerciseNames)
-    return this.state.exerciseNames.map((val, exIdx) => {
-      return (
-        <Card key={exIdx}>
+    if (this.state.exerciseNames) {
+      return this.state.exerciseNames.map((val, exIdx) => {
+        return (
+          <Card key={exIdx}>
           <CardItem header bordered>
-            <Text>{val}</Text>
+          <Text>{val}</Text>
           </CardItem>
           { this.renderAttrInputs(exIdx) }
-        </Card>
-      )
-    })
+          </Card>
+        )
+      })
+    } else {
+      return null
+    }
   }
 
   render() {
