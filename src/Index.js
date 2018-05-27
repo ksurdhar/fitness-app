@@ -1,5 +1,6 @@
+// this file is the entry point for web development
 import React from "react";
 import ReactDOM from 'react-dom';
-import ReduxWrapper from './reduxWrapper.js';
+import WebApp from './webApp.js';
 
-ReactDOM.render(<ReduxWrapper />, document.getElementById('root'));
+ReactDOM.render(<WebApp />, document.getElementById('root'));

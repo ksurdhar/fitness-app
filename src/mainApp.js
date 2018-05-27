@@ -40,9 +40,17 @@ class Index extends Component {
     // } else {
     //   return null
     // }
-    return (
-      <Text>Hello world</Text>
-    )
+    if (this.state.fontLoaded) {
+      return (
+        <Provider store={store}>
+          <LoginScreen />
+        </Provider>
+      )
+    } else {
+      return (
+        <Text>Hello world</Text>
+      )
+    }
   }
 
   async componentDidMount() {

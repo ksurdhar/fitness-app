@@ -143,7 +143,7 @@ class LoginScreen extends Component {
             <Button
               style={{width: 300}}
               onPress={() => this.onSubmit()}
-              value={this.state.action}
+              value={this.state.action + "!"}
             />
           </View>
         </View>
