@@ -25,21 +25,22 @@ class Index extends Component {
     // console.log('Config', Config)
     // console.log('env value', process.env)
     // console.log('process value', process)
-    if (this.state.fontLoaded && this.props.isLoggedIn) {
-      return (
-        <Provider store={store}>
-          <LoginScreen />
-        </Provider>
-      )
-    } else if (this.state.fontLoaded) {
-      return (
-        <Provider store={store}>
-          <LoginScreen />
-        </Provider>
-      )
-    } else {
-      return null
-    }
+    // if (this.state.fontLoaded && this.props.isLoggedIn) {
+    //   return (
+    //     <Provider store={store}>
+    //       <LoginScreen />
+    //     </Provider>
+    //   )
+    // } else if (this.state.fontLoaded) {
+    //   return (
+    //     <Provider store={store}>
+    //       <LoginScreen />
+    //     </Provider>
+    //   )
+    // } else {
+    //   return null
+    // }
+    <Text>Hello world</Text>
   }
 
   async componentDidMount() {

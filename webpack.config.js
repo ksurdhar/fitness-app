@@ -49,7 +49,7 @@ const cssLoaderConfiguration = {
 };
 
 const imageLoaderConfiguration = {
-  test: /\.(gif|jpe?g|png|svg)$/,
+  test: /\.(gif|jpe?g|png|svg|ttf)$/,
   use: {
     loader: 'file-loader',
     options: {
