@@ -1,5 +1,5 @@
 import React from "react";
 import ReactDOM from 'react-dom';
-import App from './mainApp.js';
+import ReduxWrapper from './reduxWrapper.js';
 
-ReactDOM.render(<App />, document.getElementById('root'));
+ReactDOM.render(<ReduxWrapper />, document.getElementById('root'));

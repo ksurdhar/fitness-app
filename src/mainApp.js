@@ -40,7 +40,9 @@ class Index extends Component {
     // } else {
     //   return null
     // }
-    <Text>Hello world</Text>
+    return (
+      <Text>Hello world</Text>
+    )
   }
 
   async componentDidMount() {
