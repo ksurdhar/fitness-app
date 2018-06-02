@@ -55,8 +55,8 @@ class Button extends React.Component {
 
   render() {
     const defaultBackgroundColors = [COLORS.gray0, COLORS.peach]
-    const defaultBorderColors = [COLORS.gray2, COLORS.peach]
-    const defaultTextColors = [COLORS.gray2, COLORS.gray10]
+    const defaultBorderColors = [COLORS.gray1, COLORS.peach]
+    const defaultTextColors = [COLORS.gray1, COLORS.gray10]
     const animations = {
       background: this.animations.background.interpolate(
         this.basicInterpolation(defaultBackgroundColors)
@@ -97,25 +97,5 @@ function styleButton(animations) {
     alignSelf: 'flex-start' // critical to create view width of contents
   }
 }
-
-const styles = StyleSheet.create({
-  border: {
-    borderTopWidth: 4,
-    borderBottomWidth: 4,
-    borderLeftWidth: 4,
-    borderRightWidth: 4,
-  },
-  bordered: {
-    backgroundColor: COLORS.white,
-    borderTopWidth: 4,
-    borderBottomWidth: 4,
-    borderLeftWidth: 4,
-    borderRightWidth: 4,
-    borderTopColor: COLORS.gray10,
-    borderBottomColor: COLORS.gray10,
-    borderLeftColor: COLORS.gray10,
-    borderRightColor: COLORS.gray10,
-  },
-})
 
 export default Button

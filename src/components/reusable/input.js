@@ -74,7 +74,7 @@ class Input extends React.Component {
     const inputHeight = size === 'small' ? 74 : 90
 
     return (
-      <View style={{ borderBottomWidth: 3, borderBottomColor: COLORS.gray3, height: inputHeight, marginTop:10, marginBottom: 10 }}>
+      <View style={{ borderBottomWidth: 3, borderBottomColor: COLORS.gray1, height: inputHeight, marginTop:10, marginBottom: 10 }}>
         <Animated.Text style={styleLabel(labelConfig)}>
           {this.props.labelText}
         </Animated.Text>
@@ -99,7 +99,7 @@ function styleLabel(config) {
     position: 'absolute',
     fontFamily: 'rubik-medium',
     fontSize: config.fontSize,
-    color: COLORS.gray3,
+    color: COLORS.gray7,
     bottom: config.labelPosition
   }
 }

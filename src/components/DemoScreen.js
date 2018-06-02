@@ -45,6 +45,7 @@ class DemoScreen extends React.Component {
 
     this.changeTextHandler = this.changeTextHandler.bind(this)
     this.isButtonEnabled = this.isButtonEnabled.bind(this)
+    this.handleCapture = this.handleCapture.bind(this)
   }
 
   resetState() {
@@ -63,20 +64,22 @@ class DemoScreen extends React.Component {
     this.setState({text})
   }
 
+  handleCapture() {
+    this.textInput && this.textInput.blur()
+  }
+
   isButtonEnabled() {
     return this.state.text && this.state.text.length > 0
   }
 
-// UI lessons:
   render() {
     return (
-      <PressCapture onPress={this.handleOnTouch}>
+      <PressCapture onPress={this.handleCapture}>
         <View style={[common.staticView, {marginTop: 70}]}>
           <Input
             value={this.state.text}
             labelText='Name Your Workout:'
             onChangeText={this.changeTextHandler}
-            onEndEditing={this.blurHandler}
             ref={(element) => { this.textInput = element }}
             small={true}
             fixedLabel={true}
