@@ -7,38 +7,38 @@ import {
 
 import { common, COLORS } from './styles'
 class Button extends React.Component {
-  borderColors = {
-    top: new Animated.Value(0),
-    bottom: new Animated.Value(0),
-    left: new Animated.Value(0),
-    right: new Animated.Value(0),
-    text: new Animated.Value(0)
+  animations = {
+    border: new Animated.Value(0),
+    text: new Animated.Value(0),
+    background: new Animated.Value(0)
   }
-  backgroundColor = new Animated.Value(0)
 
   constructor() {
     super()
     this.handleOnPress = this.handleOnPress.bind(this)
     this.animateButton = this.animateButton.bind(this)
+    this.basicInterpolation = this.basicInterpolation.bind(this)
   }
 
   componentDidMount() {
     // console.log('component did mount')
-    // if (this.props.isEnabled) {
-    //   console.log('is enabled! animating!')
-    //   console.log('this backgroundColor', this.backgroundColor)
-    //   Animated.timing(this.backgroundColor, {
-    //     toValue: 100,
-    //     duration: 200
-    //   }).start()
-    // }
   }
 
   animateButton() {
-    Animated.timing(this.backgroundColor, {
-      toValue: this.props.isEnabled? 100 : 0,
-      duration: 200
-    }).start()
+    Animated.parallel([
+      Animated.timing(this.animations.background, {
+        toValue: this.props.isEnabled? 100 : 0,
+        duration: 200
+      }),
+      Animated.timing(this.animations.text, {
+        toValue: this.props.isEnabled? 100 : 0,
+        duration: 200
+      }),
+      Animated.timing(this.animations.border, {
+        toValue: this.props.isEnabled? 100 : 0,
+        duration: 200
+      })
+    ]).start()
   }
 
   handleOnPress() {
@@ -46,31 +46,34 @@ class Button extends React.Component {
     this.props.isEnabled && this.props.onPress && this.props.onPress()
   }
 
-  render() {
-    const defaultBorderColors = [COLORS.gray5, COLORS.orange]
-    const borderInterpolation = {
+  basicInterpolation(colors) {
+    return {
       inputRange: [0, 100],
-      outputRange: defaultBorderColors
+      outputRange: colors
     }
-    const borderColors = {
-      top: this.borderColors.top.interpolate(borderInterpolation),
-      right: this.borderColors.right.interpolate(borderInterpolation),
-      left: this.borderColors.left.interpolate(borderInterpolation),
-      bottom: this.borderColors.bottom.interpolate(borderInterpolation),
-      text: this.borderColors.text.interpolate(borderInterpolation)
-    }
-    const defaultBackgroundColors = [COLORS.gray0, COLORS.orange]
-    const backgroundColor = this.backgroundColor.interpolate({
-      inputRange: [0, 100],
-      outputRange: defaultBackgroundColors
-    })
+  }
 
+  render() {
+    const defaultBackgroundColors = [COLORS.gray0, COLORS.orange]
+    const defaultBorderColors = [COLORS.gray3, COLORS.orange]
+    const defaultTextColors = [COLORS.gray3, COLORS.gray10]
+    const animations = {
+      background: this.animations.background.interpolate(
+        this.basicInterpolation(defaultBackgroundColors)
+      ),
+      border: this.animations.border.interpolate(
+        this.basicInterpolation(defaultBorderColors)
+      ),
+      text: this.animations.text.interpolate(
+        this.basicInterpolation(defaultTextColors)
+      )
+    }
     this.animateButton()
 
     return (
       <TouchableWithoutFeedback onPress={this.handleOnPress}>
-        <Animated.View style={[styleButton(borderColors, backgroundColor), this.props.style]}>
-          <Animated.Text style={{fontSize: 24, fontFamily: 'rubik-medium', color: borderColors.text, textAlign: 'center'}}>
+        <Animated.View style={[styleButton(animations), this.props.style]}>
+          <Animated.Text style={{fontSize: 24, fontFamily: 'rubik-medium', color: animations.text, textAlign: 'center'}}>
             { this.props.value }
           </Animated.Text>
         </Animated.View>
@@ -79,17 +82,17 @@ class Button extends React.Component {
   }
 }
 
-function styleButton(borderColors, backgroundColor) {
+function styleButton(animations) {
   return {
-    backgroundColor,
+    backgroundColor: animations.background,
     borderTopWidth: 4,
     borderBottomWidth: 4,
     borderLeftWidth: 4,
     borderRightWidth: 4,
-    borderTopColor: borderColors.top,
-    borderBottomColor: borderColors.bottom,
-    borderLeftColor: borderColors.left,
-    borderRightColor: borderColors.right,
+    borderTopColor: animations.border,
+    borderBottomColor: animations.border,
+    borderLeftColor: animations.border,
+    borderRightColor: animations.border,
     padding: 10,
     alignSelf: 'flex-start' // critical to create view width of contents
   }

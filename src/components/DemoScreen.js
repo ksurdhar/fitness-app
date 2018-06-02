@@ -142,7 +142,6 @@ class DemoScreen extends React.Component {
   }
 
   isButtonEnabled() {
-    console.log('isButtonEnabled:', this.state.text && this.state.text.length > 0)
     return this.state.text && this.state.text.length > 0
   }
 
