@@ -8,10 +8,11 @@ import {
   TextInput,
   Keyboard,
   View,
-  Picker
+  Picker,
+  Button
 } from 'react-native'
 import { common } from './reusable/styles'
-import Button from './reusable/button'
+import KButton from './reusable/button'
 import * as workoutActions from '../redux/actions/workoutActions'
 
 INITIAL_STATE = {
@@ -39,6 +40,7 @@ class PromptScreen extends React.Component {
     this.state = INITIAL_STATE
     this.renderPicker = this.renderPicker.bind(this)
     this.recordSession = this.recordSession.bind(this)
+    this.toAddWorkoutScreen = this.toAddWorkoutScreen.bind(this)
   }
 
   resetState() {
@@ -47,6 +49,10 @@ class PromptScreen extends React.Component {
 
   componentDidUpdate() {
     // console.log('RECORD STATE',this.state)
+  }
+
+  toAddWorkoutScreen() {
+    this.props.navigation.navigate('NameWorkout')
   }
 
   recordSession() {
@@ -98,16 +104,16 @@ class PromptScreen extends React.Component {
         </View>
         { this.renderPicker() }
         <View style={[common.row, { marginTop: 40 }]}>
-          <Button
+          <KButton
             style={{width: 200}}
             onPress={this.recordSession}
             value={'record'}
           />
         </View>
         <View style={[common.row, { marginTop: 100 }]}>
-          <Text style={[common.baseFont, common.smFont, {color: COLORS.gray5}]}>
-            Or create a new workout
-          </Text>
+          <Button
+            onPress={this.toAddWorkoutScreen}
+            title="Or Create New Workout"/>
         </View>
       </View>
     )
