@@ -47,6 +47,7 @@ class DemoScreen extends React.Component {
     this.blurHandler = this.blurHandler.bind(this)
     this.handleOnTouch = this.handleOnTouch.bind(this)
     this.handleButtonOnPress = this.handleButtonOnPress.bind(this)
+    this.isButtonEnabled = this.isButtonEnabled.bind(this)
   }
 
   resetState() {
@@ -139,6 +140,12 @@ class DemoScreen extends React.Component {
     }
     this.setState({text})
   }
+
+  isButtonEnabled() {
+    console.log('isButtonEnabled:', this.state.text && this.state.text.length > 0)
+    return this.state.text && this.state.text.length > 0
+  }
+
 // UI lessons:
 // Scrollview will not display "flexed views without a height"
 // TouchableWithoutFeedback does not impact layout and cannot be styled
@@ -185,6 +192,7 @@ class DemoScreen extends React.Component {
               <KButton
                 style={{width: 130}}
                 value={'>'}
+                isEnabled={this.isButtonEnabled()}
               />
             </View>
             <Animated.Text style={{fontFamily: 'raleway-bold', fontSize: 48, color: titleColor}}>

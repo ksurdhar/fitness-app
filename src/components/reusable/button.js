@@ -14,25 +14,43 @@ class Button extends React.Component {
     right: new Animated.Value(0),
     text: new Animated.Value(0)
   }
+  backgroundColor = new Animated.Value(0)
 
   constructor() {
     super()
     this.handleOnPress = this.handleOnPress.bind(this)
+    this.animateButton = this.animateButton.bind(this)
   }
 
   componentDidMount() {
     // console.log('component did mount')
+    // if (this.props.isEnabled) {
+    //   console.log('is enabled! animating!')
+    //   console.log('this backgroundColor', this.backgroundColor)
+    //   Animated.timing(this.backgroundColor, {
+    //     toValue: 100,
+    //     duration: 200
+    //   }).start()
+    // }
+  }
+
+  animateButton() {
+    Animated.timing(this.backgroundColor, {
+      toValue: this.props.isEnabled? 100 : 0,
+      duration: 200
+    }).start()
   }
 
   handleOnPress() {
     console.log('pressed!')
-    this.props.onPress && this.props.onPress()
+    this.props.isEnabled && this.props.onPress && this.props.onPress()
   }
 
   render() {
+    const defaultBorderColors = [COLORS.gray5, COLORS.orange]
     const borderInterpolation = {
       inputRange: [0, 100],
-      outputRange: [COLORS.gray5, COLORS.gray0]
+      outputRange: defaultBorderColors
     }
     const borderColors = {
       top: this.borderColors.top.interpolate(borderInterpolation),
@@ -41,10 +59,17 @@ class Button extends React.Component {
       bottom: this.borderColors.bottom.interpolate(borderInterpolation),
       text: this.borderColors.text.interpolate(borderInterpolation)
     }
+    const defaultBackgroundColors = [COLORS.gray0, COLORS.orange]
+    const backgroundColor = this.backgroundColor.interpolate({
+      inputRange: [0, 100],
+      outputRange: defaultBackgroundColors
+    })
+
+    this.animateButton()
 
     return (
       <TouchableWithoutFeedback onPress={this.handleOnPress}>
-        <Animated.View style={[styleButton(borderColors), this.props.style]}>
+        <Animated.View style={[styleButton(borderColors, backgroundColor), this.props.style]}>
           <Animated.Text style={{fontSize: 24, fontFamily: 'rubik-medium', color: borderColors.text, textAlign: 'center'}}>
             { this.props.value }
           </Animated.Text>
@@ -54,8 +79,9 @@ class Button extends React.Component {
   }
 }
 
-function styleButton(borderColors) {
+function styleButton(borderColors, backgroundColor) {
   return {
+    backgroundColor,
     borderTopWidth: 4,
     borderBottomWidth: 4,
     borderLeftWidth: 4,
