@@ -54,9 +54,9 @@ class Button extends React.Component {
   }
 
   render() {
-    const defaultBackgroundColors = [COLORS.gray0, COLORS.orange]
-    const defaultBorderColors = [COLORS.gray3, COLORS.orange]
-    const defaultTextColors = [COLORS.gray3, COLORS.gray10]
+    const defaultBackgroundColors = [COLORS.gray0, COLORS.peach]
+    const defaultBorderColors = [COLORS.gray2, COLORS.peach]
+    const defaultTextColors = [COLORS.gray2, COLORS.gray10]
     const animations = {
       background: this.animations.background.interpolate(
         this.basicInterpolation(defaultBackgroundColors)
