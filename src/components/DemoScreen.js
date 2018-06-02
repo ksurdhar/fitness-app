@@ -11,9 +11,10 @@ import {
   TouchableWithoutFeedback
 } from 'react-native'
 
+import KButton from './reusable/button'
 import Input from './reusable/input'
 import PressCapture from './reusable/pressCapture'
-import { common, COLORS, styleButton } from './reusable/styles'
+import { common, COLORS } from './reusable/styles'
 
 INITIAL_STATE = {
   text: ''
@@ -169,32 +170,22 @@ class DemoScreen extends React.Component {
           <View style={{ flex: 1, justifyContent: 'space-around'}}>
             <Input
               value={this.state.text}
-              labelText='name'
+              labelText='Name Your Workout:'
               onChangeText={this.changeTextHandler}
               onEndEditing={this.blurHandler}
               ref={(element) => { this.textInput = element }}
+              small={true}
+              fixedLabel={true}
             />
           </View>
         </PressCapture>
         <PressCapture onPress={this.handleOnTouch}>
           <View style={{flex: 2, justifyContent: 'space-around'}}>
             <View style={{flexDirection: 'row', justifyContent: 'space-around'}}>
-              <TouchableWithoutFeedback onPress={this.handleButtonOnPress}>
-                <Animated.View style={styleButton(borderColors)}>
-                  <Animated.Text style={{fontSize: 36, fontFamily: 'rubik-medium', color: borderColors.text, textAlign: 'center'}}>
-                    Add exercise
-                  </Animated.Text>
-                </Animated.View>
-              </TouchableWithoutFeedback>
-            </View>
-            <View style={{flexDirection: 'row', justifyContent: 'space-around'}}>
-              <TouchableWithoutFeedback onPress={this.handleButtonOnPress}>
-                <View style={[styles.button, styles.bordered]}>
-                  <Text style={{fontSize: 36, fontFamily: 'rubik-medium', color: COLORS.gray10, textAlign: 'center'}}>
-                    Add exercise
-                  </Text>
-                </View>
-              </TouchableWithoutFeedback>
+              <KButton
+                style={{width: 130}}
+                value={'>'}
+              />
             </View>
             <Animated.Text style={{fontFamily: 'raleway-bold', fontSize: 48, color: titleColor}}>
               Craft Workout

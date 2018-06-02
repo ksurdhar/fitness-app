@@ -62,7 +62,7 @@ class Input extends React.Component {
   }
 
   render() {
-    const labelPosition = this.labelPosition.interpolate({
+    const labelPosition = this.props.fixedLabel ? 42 : this.labelPosition.interpolate({
       inputRange: [0, 100],
       outputRange: [0, 42]
     })
