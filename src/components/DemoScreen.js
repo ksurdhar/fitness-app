@@ -19,8 +19,9 @@ import PressCapture from './reusable/pressCapture'
 import { common, COLORS } from './reusable/styles'
 
 DEMO_STATE = {
-  text: '',
-  carouselIdx: 0
+  carouselIdx: 0,
+  workoutName: '',
+  exerciseName: ''
 }
 
 DATA = [{name: 'name exercise'}, {name: 'select attributes'}, {name: 'add or finish'}]
@@ -34,27 +35,18 @@ class DemoScreen extends React.Component {
     )
   }
 
-  headerColor = new Animated.Value(0)
-  buttonColor = new Animated.Value(0)
-  borderColors = {
-    top: new Animated.Value(0),
-    bottom: new Animated.Value(0),
-    left: new Animated.Value(0),
-    right: new Animated.Value(0),
-    text: new Animated.Value(0)
-  }
-
   constructor() {
     super()
     this.state = DEMO_STATE
 
-    this.changeTextHandler = this.changeTextHandler.bind(this)
     this.isButtonEnabled = this.isButtonEnabled.bind(this)
     this.handleCapture = this.handleCapture.bind(this)
     this.renderCarousel = this.renderCarousel.bind(this)
     this.incrementCarousel = this.incrementCarousel.bind(this)
     this.decrementCarousel = this.decrementCarousel.bind(this)
     this.renderCurrentPrompt = this.renderCurrentPrompt.bind(this)
+    this.changeWorkoutNameHandler = this.changeWorkoutNameHandler.bind(this)
+    this.changeExerciseNameHandler = this.changeExerciseNameHandler.bind(this)
   }
 
   resetState() {
@@ -69,16 +61,33 @@ class DemoScreen extends React.Component {
     // console.log('props', this.props)
   }
 
-  changeTextHandler(text) {
-    this.setState({text})
+  changeWorkoutNameHandler(value) {
+    this.setState({workoutName: value})
+  }
+
+  changeExerciseNameHandler(value) {
+    this.setState({exerciseName: value})
   }
 
   handleCapture() {
     this.textInput && this.textInput.blur()
   }
 
-  isButtonEnabled() {
-    return this.state.text && this.state.text.length > 0
+  isButtonEnabled(direction) {
+    const spaceLeft = this.state.carouselIdx - 1 >= 0
+    const spaceRight = this.state.carouselIdx + 1 < DATA.length
+    const withinBoundary = direction === 'next' ? spaceRight : spaceLeft
+    let indexCondition
+    if (this.state.carouselIdx === 0) {
+      indexCondition = this.state.workoutName && this.state.workoutName.length > 0
+    }
+    if (this.state.carouselIdx === 1) {
+      indexCondition = this.state.exerciseName && this.state.exerciseName.length
+    }
+    if (this.state.carouselIdx === 2) {
+      indexCondition = true
+    }
+    return direction === 'next' ? indexCondition && withinBoundary : withinBoundary
   }
 
   incrementCarousel() {
@@ -101,16 +110,28 @@ class DemoScreen extends React.Component {
     switch (idx) {
       case 0:
         return (
-          <Text style={{color: COLORS.chill}}>
-            { item.name }
-          </Text>
+          <Input
+            value={this.state.workoutName}
+            labelText='Name Your Workout:'
+            onChangeText={this.changeWorkoutNameHandler}
+            ref={(element) => { this.input1 = element }}
+            small={true}
+            fixedLabel={true}
+            style={{marginBottom: 20}}
+          />
         )
         break;
       case 1:
         return (
-          <Text style={{color: COLORS.orange}}>
-          { item.name }
-          </Text>
+          <Input
+            value={this.state.exerciseName}
+            labelText='Name An Exercise:'
+            onChangeText={this.changeExerciseNameHandler}
+            ref={(element) => { this.input2 = element }}
+            small={true}
+            fixedLabel={true}
+            style={{marginBottom: 20}}
+          />
         )
         break;
       case 2:
@@ -136,7 +157,7 @@ class DemoScreen extends React.Component {
           this.setState(() => ({ carouselIdx: index }))
         }}
         renderItem={({ itemIndex, currentIndex, item, animatedValue }) => (
-          <View style={[{ width: width - 20, marginRight: 20, height: 100, backgroundColor: COLORS.gray7}]}>
+          <View style={[{ width: width - 20, marginRight: 20, height: 100}]}>
             { this.renderCurrentPrompt(itemIndex, item) }
           </View>
         )}
@@ -146,52 +167,36 @@ class DemoScreen extends React.Component {
 
   render() {
     return (
-        <View style={[common.staticView, {marginTop: 70}]}>
-          <View style={{
-            height: 220,
-            borderBottomWidth: 2,
-            borderTopWidth: 2,
-            borderTopColor: COLORS.gray1,
-            borderBottomColor: COLORS.gray1,
-            marginTop: 150,
-            paddingTop: 20
-          }}>
-            <Input
-              value={this.state.text}
-              labelText='Name Your Workout:'
-              onChangeText={this.changeTextHandler}
-              ref={(element) => { this.textInput = element }}
-              small={true}
-              fixedLabel={true}
-              style={{marginBottom: 20}}
-            />
-            <View style={[common.row, {justifyContent: 'space-around'}]}>
-              <KButton
-                style={{width: 100, padding: 4}}
-                value={'<'}
-                isEnabled={this.isButtonEnabled()}
-                onPress={ () => this.decrementCarousel() }
-              />
-              <KButton
-                style={{width: 100, padding: 4}}
-                value={'>'}
-                isEnabled={this.isButtonEnabled()}
-                onPress={ () => this.incrementCarousel() }
-              />
-            </View>
-          </View>
+      <View style={[common.staticView, {marginTop: 70}]}>
+        <View style={{
+          height: 220,
+          borderBottomWidth: 2,
+          borderTopWidth: 2,
+          borderTopColor: COLORS.gray1,
+          borderBottomColor: COLORS.gray1,
+          marginTop: 150,
+          paddingTop: 20
+        }}>
           { this.renderCarousel() }
+          <View style={[common.row, {justifyContent: 'space-around'}]}>
+            <KButton
+              style={{width: 100, padding: 4}}
+              value={'<'}
+              isEnabled={this.isButtonEnabled('back')}
+              onPress={ () => this.decrementCarousel() }
+            />
+            <KButton
+              style={{width: 100, padding: 4}}
+              value={'>'}
+              isEnabled={this.isButtonEnabled('next')}
+              onPress={ () => this.incrementCarousel() }
+            />
+          </View>
         </View>
+
+      </View>
     )
   }
 }
-
-const styles = StyleSheet.create({
-  button: {
-    backgroundColor: COLORS.gray5,
-    padding: 10,
-    alignSelf: 'flex-start' // critical to create view width of contents
-  }
-})
 
 export default connect(null, null)(DemoScreen)
