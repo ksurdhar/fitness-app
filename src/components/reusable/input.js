@@ -74,7 +74,13 @@ class Input extends React.Component {
     const inputHeight = size === 'small' ? 74 : 90
 
     return (
-      <View style={{ borderBottomWidth: 3, borderBottomColor: COLORS.gray1, height: inputHeight, marginTop:10, marginBottom: 10 }}>
+      <View style={[{
+        borderBottomWidth: 3,
+        borderBottomColor: COLORS.gray1,
+        height: inputHeight,
+        marginTop:10,
+        marginBottom: 10
+      }, this.props.style]}>
         <Animated.Text style={styleLabel(labelConfig)}>
           {this.props.labelText}
         </Animated.Text>

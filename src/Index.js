@@ -11,14 +11,14 @@ import { Font } from 'expo'
 import Config from 'react-native-config'
 import config from '../config'
 
-INITIAL_STATE = {
+INDEX_STATE = {
   fontLoaded: false
 }
 
 class Index extends Component {
   constructor(props) {
     super(props)
-    this.state = INITIAL_STATE
+    this.state = INDEX_STATE
   }
 
   render() {

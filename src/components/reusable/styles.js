@@ -5,7 +5,7 @@ import {
 COLORS = {
   white: 'ghostwhite',
   orange: 'rgb(223, 102, 89)',
-  peach: 'rgba(253, 114, 114,1.0)',
+  peach: 'rgba(253, 114, 114, 1.0)',
   fuchsia: 'rgba(179, 55, 113,1.0)',
   chill: 'rgba(27, 156, 252,1.0)',
   spiro: 'rgba(37, 204, 247,1.0)',
