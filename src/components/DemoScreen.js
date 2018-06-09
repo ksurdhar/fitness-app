@@ -81,9 +81,7 @@ class DemoScreen extends React.Component {
   }
 
   incrementCarousel() {
-    console.log('incrementing')
     if (this.state.carouselIdx + 1 < DATA.length) {
-      console.log('safe to increment')
       this.setState({
         carouselIdx: this.state.carouselIdx + 1
       })
@@ -91,37 +89,38 @@ class DemoScreen extends React.Component {
   }
 
   decrementCarousel() {
-    console.log('decrementing')
     if (this.state.carouselIdx - 1 >= 0) {
-      console.log('safe to decrement')
       this.setState({
         carouselIdx: this.state.carouselIdx - 1
       })
     }
   }
 
-  renderCarousel() {
+  renderCarousel() { // carousel does not work with pressCapture component
     const { width } = Dimensions.get('window');
-    // const contentOffset = (width - CustomComponent.WIDTH) / 2;
-    console.log('THIS STATE', this.state)
 
     return (
       <SideSwipe
         index={this.state.carouselIdx}
-        itemWidth={300}
-        style={{ width: width, maxHeight: 255}}
+        itemWidth={width}
+        style={{ width: width }}
         data={DATA}
-        contentOffset={20}
         useNativeDriver={true}
         onIndexChange={index => {
-          console.log('changing state!', index)
           this.setState(() => ({ carouselIdx: index }))
         }}
         renderItem={({ itemIndex, currentIndex, item, animatedValue }) => (
-          <View style={{width: 300, height: 100, backgroundColor: COLORS.gray7}}>
-            <Text style={{color: COLORS.white}}>
-            { item.name }
-            </Text>
+          <View style={[{ width: width - 20, marginRight: 20, height: 100, backgroundColor: COLORS.gray7}]}>
+            {
+              itemIndex === 1 ?
+              <Text style={{color: COLORS.orange}}>
+              { item.name }
+              </Text> :
+              <Text style={{color: COLORS.white}}>
+              { item.name }
+              </Text>
+            }
+
           </View>
         )}
       />

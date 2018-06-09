@@ -50,6 +50,26 @@ const common = StyleSheet.create({
   row: {
     flexDirection: 'row',
     justifyContent: 'center'
+  },
+  borders: {
+    borderTopWidth: 2,
+    borderRightWidth: 2,
+    borderBottomWidth: 2,
+    borderLeftWidth: 2,
+    borderTopColor: 'black',
+    borderRightColor: 'black',
+    borderBottomColor: 'black',
+    borderLeftColor: 'black',
+  },
+  whiteBorders: {
+    borderTopWidth: 2,
+    borderRightWidth: 2,
+    borderBottomWidth: 2,
+    borderLeftWidth: 2,
+    borderTopColor: 'black',
+    borderRightColor: 'black',
+    borderBottomColor: 'black',
+    borderLeftColor: 'black',
   }
 })
 
