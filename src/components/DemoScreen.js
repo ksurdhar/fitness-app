@@ -54,6 +54,7 @@ class DemoScreen extends React.Component {
     this.renderCarousel = this.renderCarousel.bind(this)
     this.incrementCarousel = this.incrementCarousel.bind(this)
     this.decrementCarousel = this.decrementCarousel.bind(this)
+    this.renderCurrentPrompt = this.renderCurrentPrompt.bind(this)
   }
 
   resetState() {
@@ -96,6 +97,31 @@ class DemoScreen extends React.Component {
     }
   }
 
+  renderCurrentPrompt(idx, item) {
+    switch (idx) {
+      case 0:
+        return (
+          <Text style={{color: COLORS.chill}}>
+            { item.name }
+          </Text>
+        )
+        break;
+      case 1:
+        return (
+          <Text style={{color: COLORS.orange}}>
+          { item.name }
+          </Text>
+        )
+        break;
+      case 2:
+      return (
+        <Text style={{color: COLORS.white}}>
+        { item.name }
+        </Text>
+      )
+    }
+  }
+
   renderCarousel() { // carousel does not work with pressCapture component
     const { width } = Dimensions.get('window');
 
@@ -111,16 +137,7 @@ class DemoScreen extends React.Component {
         }}
         renderItem={({ itemIndex, currentIndex, item, animatedValue }) => (
           <View style={[{ width: width - 20, marginRight: 20, height: 100, backgroundColor: COLORS.gray7}]}>
-            {
-              itemIndex === 1 ?
-              <Text style={{color: COLORS.orange}}>
-              { item.name }
-              </Text> :
-              <Text style={{color: COLORS.white}}>
-              { item.name }
-              </Text>
-            }
-
+            { this.renderCurrentPrompt(itemIndex, item) }
           </View>
         )}
       />
