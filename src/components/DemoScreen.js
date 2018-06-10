@@ -15,6 +15,7 @@ import SideSwipe from 'react-native-sideswipe'
 
 import KButton from './reusable/button'
 import Input from './reusable/input'
+import Switch from './reusable/switch'
 import PressCapture from './reusable/pressCapture'
 import { common, COLORS } from './reusable/styles'
 
@@ -79,13 +80,14 @@ class DemoScreen extends React.Component {
     const withinBoundary = direction === 'next' ? spaceRight : spaceLeft
     let indexCondition
     if (this.state.carouselIdx === 0) {
-      indexCondition = this.state.workoutName && this.state.workoutName.length > 0
+      indexCondition = true
     }
     if (this.state.carouselIdx === 1) {
-      indexCondition = this.state.exerciseName && this.state.exerciseName.length
+      indexCondition = this.state.workoutName && this.state.workoutName.length > 0
     }
     if (this.state.carouselIdx === 2) {
-      indexCondition = true
+      indexCondition = this.state.exerciseName && this.state.exerciseName.length
+
     }
     return direction === 'next' ? indexCondition && withinBoundary : withinBoundary
   }
@@ -110,6 +112,10 @@ class DemoScreen extends React.Component {
     switch (idx) {
       case 0:
         return (
+          <Switch label={'sets'}/>
+        )
+      case 1:
+        return (
           <Input
             value={this.state.workoutName}
             labelText='Name Your Workout:'
@@ -121,7 +127,7 @@ class DemoScreen extends React.Component {
           />
         )
         break;
-      case 1:
+      case 2:
         return (
           <Input
             value={this.state.exerciseName}
@@ -134,12 +140,6 @@ class DemoScreen extends React.Component {
           />
         )
         break;
-      case 2:
-      return (
-        <Text style={{color: COLORS.white}}>
-        { item.name }
-        </Text>
-      )
     }
   }
 
@@ -169,31 +169,31 @@ class DemoScreen extends React.Component {
     return (
       <View style={[common.staticView, {marginTop: 70}]}>
         <View style={{
-          height: 220,
+          height: 180,
           borderBottomWidth: 2,
           borderTopWidth: 2,
           borderTopColor: COLORS.gray1,
           borderBottomColor: COLORS.gray1,
           marginTop: 150,
+          marginBottom: 20,
           paddingTop: 20
         }}>
           { this.renderCarousel() }
-          <View style={[common.row, {justifyContent: 'space-around'}]}>
-            <KButton
-              style={{width: 100, padding: 4}}
-              value={'<'}
-              isEnabled={this.isButtonEnabled('back')}
-              onPress={ () => this.decrementCarousel() }
-            />
-            <KButton
-              style={{width: 100, padding: 4}}
-              value={'>'}
-              isEnabled={this.isButtonEnabled('next')}
-              onPress={ () => this.incrementCarousel() }
-            />
-          </View>
         </View>
-
+        <View style={[common.row, {justifyContent: 'space-around'}]}>
+          <KButton
+            style={{width: 100, padding: 4}}
+            value={'<'}
+            isEnabled={this.isButtonEnabled('back')}
+            onPress={ () => this.decrementCarousel() }
+          />
+          <KButton
+            style={{width: 100, padding: 4}}
+            value={'>'}
+            isEnabled={this.isButtonEnabled('next')}
+            onPress={ () => this.incrementCarousel() }
+          />
+        </View>
       </View>
     )
   }
