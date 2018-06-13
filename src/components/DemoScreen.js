@@ -112,7 +112,12 @@ class DemoScreen extends React.Component {
     switch (idx) {
       case 0:
         return (
-          <Switch label={'sets'}/>
+          <View>
+            <Switch label={'sets'}/>
+            <Switch label={'reps'}/>
+            <Switch label={'weight'}/>
+            <Switch label={'seconds'}/>
+          </View>
         )
       case 1:
         return (
@@ -157,7 +162,7 @@ class DemoScreen extends React.Component {
           this.setState(() => ({ carouselIdx: index }))
         }}
         renderItem={({ itemIndex, currentIndex, item, animatedValue }) => (
-          <View style={[{ width: width - 20, marginRight: 20, height: 100}]}>
+          <View style={[{ width: width - 20, marginRight: 20, height: 140}]}>
             { this.renderCurrentPrompt(itemIndex, item) }
           </View>
         )}
