@@ -144,6 +144,7 @@ class LoginScreen extends Component {
               style={{width: 300}}
               onPress={() => this.onSubmit()}
               value={this.state.action}
+              isEnabled={true}
             />
           </View>
         </View>
