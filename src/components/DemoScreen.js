@@ -104,6 +104,7 @@ class DemoScreen extends React.Component {
   }
 
   incrementCarousel() {
+    // this should additionally fire an action based upon the index we are currently on
     if (this.state.carouselIdx + 1 < DATA.length) {
       this.setState({
         carouselIdx: this.state.carouselIdx + 1
@@ -196,6 +197,33 @@ class DemoScreen extends React.Component {
     }
   }
 
+  renderSummary = () => {
+    let workoutName
+    let exerciseEls = []
+
+    if (this.state.carouselIdx > 0) {
+      workoutName = <Text style={[common.baseFont, common.smFont]}>{this.state.workoutName}</Text>
+    }
+    if (this.state.carouselIdx > 1) {
+      const exercises = Object.values(this.state.exerciseData)
+      if (exercises.length > 0) {
+        exerciseEls = exercises.map((exercise) => {
+          return <Text style={[common.baseFont, common.smFont]}>{exercise.name}</Text>
+        })
+      }
+    }
+
+    return (
+      <View style={{
+        height: 180,
+        paddingTop: 20
+      }}>
+        { workoutName }
+        { exerciseEls }
+      </View>
+    )
+  }
+
   renderCarousel() { // carousel does not work with pressCapture component
     const { width } = Dimensions.get('window');
 
@@ -221,13 +249,14 @@ class DemoScreen extends React.Component {
   render() {
     return (
       <View style={[common.staticView, {marginTop: 70}]}>
+
+        { this.renderSummary() }
         <View style={{
           height: 180,
           borderBottomWidth: 2,
           borderTopWidth: 2,
           borderTopColor: COLORS.gray1,
           borderBottomColor: COLORS.gray1,
-          marginTop: 150,
           marginBottom: 20,
           paddingTop: 20
         }}>
