@@ -24,6 +24,7 @@ DEMO_STATE = {
   carouselIdx: 0,
   exerciseIdx: 0,
   workoutName: '',
+  tempEName: '',
   exerciseData: {},
 }
 
@@ -61,7 +62,8 @@ class DemoScreen extends React.Component {
 
   componentDidUpdate() {
     // console.log('props', this.props)
-    console.log('EXERCISE STATE', this.state.exerciseData)
+    console.log('state', this.state)
+    // console.log('EXERCISE STATE', this.state.exerciseData)
   }
 
   changeWorkoutNameHandler(value) {
@@ -69,15 +71,7 @@ class DemoScreen extends React.Component {
   }
 
   changeExerciseNameHandler = (value) => {
-    this.setState((prevState) => {
-      return produce(prevState, (draftState) => {
-        const exerciseObj = {
-          name: value,
-          attributes: []
-        }
-        draftState.exerciseData[this.state.exerciseIdx] = exerciseObj
-      })
-    })
+    this.setState({tempEName: value})
   }
 
   handleCapture() {
@@ -94,7 +88,8 @@ class DemoScreen extends React.Component {
     }
     if (this.state.carouselIdx === 1) {
       // if the entry exists, a name has been set
-      indexCondition = !!this.state.exerciseData[this.state.exerciseIdx]
+      // indexCondition = !!this.state.exerciseData[this.state.exerciseIdx]
+      indexCondition = this.state.tempEName && this.state.tempEName.length > 0
     }
     if (this.state.carouselIdx === 2) {
       // one attribute must be set
@@ -108,6 +103,18 @@ class DemoScreen extends React.Component {
     if (this.state.carouselIdx + 1 < DATA.length) {
       this.setState({
         carouselIdx: this.state.carouselIdx + 1
+      })
+    }
+    if (this.state.carouselIdx === 1) {
+      this.setState((prevState) => {
+        return produce(prevState, (draftState) => {
+          const exerciseObj = {
+            name: prevState.tempEName,
+            attributes: []
+          }
+          draftState.exerciseData[this.state.exerciseIdx] = exerciseObj
+          draftState.tempEName = ''
+        })
       })
     }
   }
@@ -166,7 +173,7 @@ class DemoScreen extends React.Component {
       case 1:
         return (
           <Input
-            value={this.state.exerciseName}
+            value={this.state.tempEName}
             labelText='Name An Exercise:'
             onChangeText={this.changeExerciseNameHandler}
             ref={(element) => { this.input2 = element }}
@@ -204,13 +211,11 @@ class DemoScreen extends React.Component {
     if (this.state.carouselIdx > 0) {
       workoutName = <Text style={[common.baseFont, common.smFont]}>{this.state.workoutName}</Text>
     }
-    if (this.state.carouselIdx > 1) {
-      const exercises = Object.values(this.state.exerciseData)
-      if (exercises.length > 0) {
-        exerciseEls = exercises.map((exercise) => {
-          return <Text style={[common.baseFont, common.smFont]}>{exercise.name}</Text>
-        })
-      }
+    const exercises = Object.values(this.state.exerciseData)
+    if (exercises.length > 0) {
+      exerciseEls = exercises.map((exercise) => {
+        return <Text style={[common.baseFont, common.smFont]}>{exercise.name}</Text>
+      })
     }
 
     return (
