@@ -27,7 +27,7 @@ DEMO_STATE = {
   exerciseData: {},
 }
 
-DATA = [{name: 'name exercise'}, {name: 'select attributes'}, {name: 'add or finish'}]
+DATA = [{name: 'name exercise'}, {name: 'select attributes'}, {name: 'add or finish'}, {name: 'blah blah'}]
 
 class DemoScreen extends React.Component {
   static navigationOptions = {
@@ -98,8 +98,7 @@ class DemoScreen extends React.Component {
     }
     if (this.state.carouselIdx === 2) {
       // one attribute must be set
-      // this.state.exerciseData[this.state.exerciseIdx] <-- needs name of exercise .length > 0
-      indexCondition = true
+      indexCondition = this.state.exerciseData[this.state.exerciseIdx].attributes.length > 0
     }
     return direction === 'next' ? indexCondition && withinBoundary : withinBoundary
   }
@@ -140,6 +139,14 @@ class DemoScreen extends React.Component {
     return eData && eData.attributes.indexOf(attrVal) > -1
   }
 
+  addExercise = () => {
+    // this should also clear out the value of the exercise name input
+    this.setState({
+      exerciseIdx: this.state.exerciseIdx + 1,
+      carouselIdx: 1
+    })
+  }
+
   renderCurrentPrompt(idx, item) {
     switch (idx) {
       case 0:
@@ -178,6 +185,14 @@ class DemoScreen extends React.Component {
           </View>
         )
         break;
+        case 3:
+          return (
+            <View>
+              <Button title='Add Another Exercise' onPress={this.addExercise}/>
+              <Button title='Submit Workout'/>
+            </View>
+          )
+          break;
     }
   }
 
