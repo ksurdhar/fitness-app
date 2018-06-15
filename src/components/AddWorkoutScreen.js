@@ -34,6 +34,7 @@ ATTRIBUTE_TYPES = [
 ADD_WORKOUT_STATE = {
   carouselIdx: 0,
   workoutName: '',
+  exerciseNames: [],
   exerciseData: {},
 }
 
@@ -96,12 +97,12 @@ class AddWorkoutScreen extends React.Component {
   //   if (Object.keys(this.state.exerciseData).length > 0) {
   //     newEIdx = Object.keys(this.state.exerciseData).length
   //   }
-  //   this.setState((prevState) => {
-  //     return produce(prevState, (draftState) => {
-  //       draftState.exerciseNames.push('')
-  //       draftState.exerciseData[newEIdx] = {0: {type: null, val: null}}
-  //     })
-  //   })
+    // this.setState((prevState) => {
+    //   return produce(prevState, (draftState) => {
+    //     draftState.exerciseNames.push('')
+    //     draftState.exerciseData[newEIdx] = {0: {type: null, val: null}}
+    //   })
+    // })
   // }
   //
   // handleInputChange(idx, value) {

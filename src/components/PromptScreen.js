@@ -108,6 +108,7 @@ class PromptScreen extends React.Component {
             style={{width: 200}}
             onPress={this.recordSession}
             value={'record'}
+            isEnabled={true}
           />
         </View>
         <View style={[common.row, { marginTop: 100 }]}>

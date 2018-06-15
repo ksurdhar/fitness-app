@@ -1,5 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
+import produce from 'immer'
 import {
   ScrollView,
   Dimensions,
@@ -21,8 +22,9 @@ import { common, COLORS } from './reusable/styles'
 
 DEMO_STATE = {
   carouselIdx: 0,
+  exerciseIdx: 0,
   workoutName: '',
-  exerciseName: ''
+  exerciseData: {},
 }
 
 DATA = [{name: 'name exercise'}, {name: 'select attributes'}, {name: 'add or finish'}]
@@ -47,7 +49,6 @@ class DemoScreen extends React.Component {
     this.decrementCarousel = this.decrementCarousel.bind(this)
     this.renderCurrentPrompt = this.renderCurrentPrompt.bind(this)
     this.changeWorkoutNameHandler = this.changeWorkoutNameHandler.bind(this)
-    this.changeExerciseNameHandler = this.changeExerciseNameHandler.bind(this)
   }
 
   resetState() {
@@ -60,14 +61,23 @@ class DemoScreen extends React.Component {
 
   componentDidUpdate() {
     // console.log('props', this.props)
+    console.log('EXERCISE STATE', this.state.exerciseData)
   }
 
   changeWorkoutNameHandler(value) {
     this.setState({workoutName: value})
   }
 
-  changeExerciseNameHandler(value) {
-    this.setState({exerciseName: value})
+  changeExerciseNameHandler = (value) => {
+    this.setState((prevState) => {
+      return produce(prevState, (draftState) => {
+        const exerciseObj = {
+          name: value,
+          attributes: []
+        }
+        draftState.exerciseData[this.state.exerciseIdx] = exerciseObj
+      })
+    })
   }
 
   handleCapture() {
@@ -78,16 +88,18 @@ class DemoScreen extends React.Component {
     const spaceLeft = this.state.carouselIdx - 1 >= 0
     const spaceRight = this.state.carouselIdx + 1 < DATA.length
     const withinBoundary = direction === 'next' ? spaceRight : spaceLeft
-    let indexCondition
+    let indexCondition = false
     if (this.state.carouselIdx === 0) {
-      indexCondition = true
-    }
-    if (this.state.carouselIdx === 1) {
       indexCondition = this.state.workoutName && this.state.workoutName.length > 0
     }
+    if (this.state.carouselIdx === 1) {
+      // if the entry exists, a name has been set
+      indexCondition = !!this.state.exerciseData[this.state.exerciseIdx]
+    }
     if (this.state.carouselIdx === 2) {
-      indexCondition = this.state.exerciseName && this.state.exerciseName.length
-
+      // one attribute must be set
+      // this.state.exerciseData[this.state.exerciseIdx] <-- needs name of exercise .length > 0
+      indexCondition = true
     }
     return direction === 'next' ? indexCondition && withinBoundary : withinBoundary
   }
@@ -108,18 +120,29 @@ class DemoScreen extends React.Component {
     }
   }
 
+  handleTogglePress = (label) => {
+    this.setState((prevState) => {
+      return produce(prevState, (draftState) => {
+        const attrs = prevState.exerciseData[this.state.exerciseIdx].attributes
+        const idx = attrs.indexOf(label)
+        if (idx === -1) {
+          attrs.push(label)
+        } else {
+          attrs.splice(idx, 1)
+        }
+        draftState.exerciseData[this.state.exerciseIdx].attributes = attrs
+      })
+    })
+  }
+
+  determineIfToggled = (attrVal) => {
+    const eData = this.state.exerciseData[this.state.exerciseIdx]
+    return eData && eData.attributes.indexOf(attrVal) > -1
+  }
+
   renderCurrentPrompt(idx, item) {
     switch (idx) {
       case 0:
-        return (
-          <View>
-            <Switch label={'sets'}/>
-            <Switch label={'reps'}/>
-            <Switch label={'weight'}/>
-            <Switch label={'seconds'}/>
-          </View>
-        )
-      case 1:
         return (
           <Input
             value={this.state.workoutName}
@@ -132,7 +155,7 @@ class DemoScreen extends React.Component {
           />
         )
         break;
-      case 2:
+      case 1:
         return (
           <Input
             value={this.state.exerciseName}
@@ -143,6 +166,16 @@ class DemoScreen extends React.Component {
             fixedLabel={true}
             style={{marginBottom: 20}}
           />
+        )
+        break
+      case 2:
+        return (
+          <View>
+            <Switch label={'sets'} onPress={this.handleTogglePress} enabled={this.determineIfToggled('sets')}/>
+            <Switch label={'reps'} onPress={this.handleTogglePress} enabled={this.determineIfToggled('reps')}/>
+            <Switch label={'weight'} onPress={this.handleTogglePress} enabled={this.determineIfToggled('weight')}/>
+            <Switch label={'seconds'}/>
+          </View>
         )
         break;
     }

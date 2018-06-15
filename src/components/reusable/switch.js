@@ -16,9 +16,6 @@ class Switch extends React.Component {
 
   constructor() {
     super()
-    this.state = {
-      enabled: false
-    }
 
     this.handleOnPress = this.handleOnPress.bind(this)
     this.animateSwitch = this.animateSwitch.bind(this)
@@ -32,20 +29,18 @@ class Switch extends React.Component {
   animateSwitch() {
     Animated.parallel([
       Animated.timing(this.animations.background, {
-        toValue: this.state.enabled? 100 : 0,
+        toValue: this.props.enabled? 100 : 0,
         duration: 200
       }),
       Animated.timing(this.animations.border, {
-        toValue: this.state.enabled? 100 : 0,
+        toValue: this.props.enabled? 100 : 0,
         duration: 200
       })
     ]).start()
   }
 
   handleOnPress() {
-    this.setState({
-      enabled: !this.state.enabled
-    })
+    this.props.onPress(this.props.label)
   }
 
   basicInterpolation(colors) {
