@@ -18,6 +18,7 @@ import KButton from './reusable/button'
 import Input from './reusable/input'
 import Switch from './reusable/switch'
 import PressCapture from './reusable/pressCapture'
+import Fade from './reusable/fade'
 import { common, COLORS } from './reusable/styles'
 
 DEMO_STATE = {
@@ -209,12 +210,20 @@ class DemoScreen extends React.Component {
     let exerciseEls = []
 
     if (this.state.carouselIdx > 0) {
-      workoutName = <Text style={[common.baseFont, common.smFont]}>{this.state.workoutName}</Text>
+      workoutName = (
+        <Fade>
+          <Text style={[common.baseFont, {fontSize: 24, textDecorationLine: 'underline', textDecorationColor: COLORS.gray5}]}>{this.state.workoutName}</Text>
+        </Fade>
+      )
     }
     const exercises = Object.values(this.state.exerciseData)
     if (exercises.length > 0) {
       exerciseEls = exercises.map((exercise) => {
-        return <Text style={[common.baseFont, common.smFont]}>{exercise.name}</Text>
+        return (
+          <Fade>
+            <Text style={[common.baseFont, common.smFont]}>{exercise.name}</Text>
+          </Fade>
+        )
       })
     }
 
