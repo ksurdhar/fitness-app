@@ -113,13 +113,13 @@ class PromptScreen extends React.Component {
   }
   // add icon below content
   render() {
-    const isEmpty = this.props.workouts.length === 0 
+    const isEmpty = this.props.workouts.length === 0
     return (
       <View style={common.staticView, {marginLeft: 10, marginRight: 10}}>
         <View style={[common.row,  { marginTop: 20, justifyContent: 'space-between' }]}>
-            <Text style={[common.baseFont, common.lgFont, {marginLeft: 10, color: COLORS.gray10}]}>
-              Record
-            </Text>
+          <Text style={[common.baseFont, common.lgFont, {marginLeft: 10, color: COLORS.gray10}]}>
+            Record
+          </Text>
           <KButton
             style={{width: 120, top: 9}}
             textColor={COLORS.chill}
