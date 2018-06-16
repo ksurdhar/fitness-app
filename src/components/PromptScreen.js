@@ -52,7 +52,7 @@ class PromptScreen extends React.Component {
   }
 
   toAddWorkoutScreen() {
-    this.props.navigation.navigate('NameWorkout')
+    this.props.navigation.navigate('AddWorkout')
   }
 
   recordSession() {

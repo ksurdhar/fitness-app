@@ -67,7 +67,7 @@ class DemoScreen extends React.Component {
     // console.log('EXERCISE STATE', this.state.exerciseData)
   }
 
-  changeWorkoutNameHandler(value) {
+  changeWorkoutNameHandler = (value) => {
     this.setState({workoutName: value})
   }
 
@@ -75,11 +75,11 @@ class DemoScreen extends React.Component {
     this.setState({tempEName: value})
   }
 
-  handleCapture() {
+  handleCapture = () => {
     this.textInput && this.textInput.blur()
   }
 
-  isButtonEnabled(direction) {
+  isButtonEnabled = (direction) => {
     const spaceLeft = this.state.carouselIdx - 1 >= 0
     const spaceRight = this.state.carouselIdx + 1 < DATA.length
     const withinBoundary = direction === 'next' ? spaceRight : spaceLeft
@@ -99,7 +99,7 @@ class DemoScreen extends React.Component {
     return direction === 'next' ? indexCondition && withinBoundary : withinBoundary
   }
 
-  incrementCarousel() {
+  incrementCarousel = () => {
     // this should additionally fire an action based upon the index we are currently on
     if (this.state.carouselIdx + 1 < DATA.length) {
       this.setState({
@@ -120,7 +120,7 @@ class DemoScreen extends React.Component {
     }
   }
 
-  decrementCarousel() {
+  decrementCarousel = () => {
     if (this.state.carouselIdx - 1 >= 0) {
       this.setState({
         carouselIdx: this.state.carouselIdx - 1
@@ -156,7 +156,7 @@ class DemoScreen extends React.Component {
     })
   }
 
-  renderCurrentPrompt(idx, item) {
+  renderCurrentPrompt = (idx, item) => {
     switch (idx) {
       case 0:
         return (
@@ -238,7 +238,7 @@ class DemoScreen extends React.Component {
     )
   }
 
-  renderCarousel() { // carousel does not work with pressCapture component
+  renderCarousel = () => { // carousel does not work with pressCapture component
     const { width } = Dimensions.get('window');
 
     return (

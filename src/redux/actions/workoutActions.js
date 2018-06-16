@@ -7,22 +7,30 @@ export function recievedWorkouts(workouts) {
   }
 }
 
-export function addWorkout(workoutName, exerciseNames, exerciseData, userID) {
+// turns array into object where [apple, orange] -> {0: apple, 1: orange}
+Array.prototype.toObj = function () {
+  const obj = {}
+  this.forEach((entry, idx) => {
+    obj[idx] = entry
+  })
+  return obj
+}
+
+export function addWorkout(workoutName, exerciseData, userID) {
   const id = Math.random().toString(36).substring(7)
   const workoutRef = rootRef.child(`workouts/${id}`)
 
   const exercises = {}
-  exerciseNames.forEach((name, eIdx) => {
+  const ePairs = Object.entries(exerciseData)
+  ePairs.forEach((pair, eIdx) => {
+    const data = pair[1]
     const exerciseID = Math.random().toString(36).substring(7)
-    const attributes = {}
-    Object.entries(exerciseData[eIdx]).forEach((exercise, attrIdx) => {
-      attributes[attrIdx] = exercise[1] // {type, val}
-    })
+    const attrs = data.attributes.map((attr) => { return {type: attr} })
 
     exercises[exerciseID] = {
       id: exerciseID,
-      name: name,
-      attributes: attributes
+      name: data.name,
+      attributes: attrs.toObj()
     }
   })
 
