@@ -71,11 +71,11 @@ class Button extends React.Component {
     this.animateButton()
 
     const internalStyle = this.props.transparent ? {
-      backgroundColor: 'white',
-      borderTopColor: 'white',
-      borderBottomColor: 'white',
-      borderLeftColor: 'white',
-      borderRightColor: 'white',
+      backgroundColor: 'transparent',
+      borderTopColor: 'transparent',
+      borderBottomColor: 'transparent',
+      borderLeftColor: 'transparent',
+      borderRightColor: 'transparent',
     } : styleButton(animations)
 
     return (

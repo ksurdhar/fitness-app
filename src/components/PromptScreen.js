@@ -28,7 +28,6 @@ const mapStateToProps = (state, ownProps) => {
 
 class PromptScreen extends React.Component {
   static navigationOptions = {
-    title: 'Record',
     tabBarLabel: 'Record',
     tabBarIcon: ({ tintColor }) => (
       <Text>Record</Text>
@@ -38,9 +37,6 @@ class PromptScreen extends React.Component {
   constructor() {
     super()
     this.state = INITIAL_STATE
-    this.renderPicker = this.renderPicker.bind(this)
-    this.recordSession = this.recordSession.bind(this)
-    this.toAddWorkoutScreen = this.toAddWorkoutScreen.bind(this)
   }
 
   resetState() {
@@ -48,15 +44,16 @@ class PromptScreen extends React.Component {
   }
 
   componentDidUpdate() {
-    // console.log('RECORD STATE',this.state)
+    // console.log('PROMPT STATE',this.state)
+    console.log('PROMPT WORKOUT PROPS', this.props.workouts)
   }
 
-  toAddWorkoutScreen() {
+  toAddWorkoutScreen = () => {
     this.props.navigation.navigate('AddWorkout')
   }
 
-  recordSession() {
-    const workout = this.props.workouts.find((workout) => workout.name === this.state.selectedWorkout)
+  recordSession = (name) => {
+    const workout = this.props.workouts.find((workout) => workout.name === name)
     const exerciseData = {}
     const exerciseNames = []
     Object.entries(workout.exercises).forEach((exerciseEntry, eIdx) => {
@@ -77,45 +74,62 @@ class PromptScreen extends React.Component {
     })
   }
 
-  renderPicker() {
-    const workoutItems = Object.entries(this.props.workouts).map((workoutEntry, workoutIdx) => {
-      const name = workoutEntry[1].name
-      return <Picker.Item label={name} value={name} key={name}/>
+  // needs a limit how how many can be rendered
+  renderWorkoutButtons = () => {
+    // add logic of where to go w workout ID
+    const workoutButtons = this.props.workouts.map((workout) => {
+      const name = workout.name
+      return (
+        <View style={{
+          height: 60,
+          borderTopColor: COLORS.gray1, borderTopWidth: 1,
+        }}>
+          <KButton
+            style={{marginTop: 14}}
+            textColor={COLORS.chill}
+            value={name}
+            isEnabled={true}
+            transparent={true}
+            onPress={this.recordSession.bind(this, name)}
+          />
+        </View>
+      )
     })
     return (
-      <View style={[common.row]}>
-        <Picker style={{ height: 50, width: 300, paddingBottom: 200 }}
-          selectedValue={this.state.selectedWorkout}
-          onValueChange={(val, idx) => this.setState({selectedWorkout: val})}
-          itemStyle={[common.baseFont, {fontSize: 30}]}>
-          {workoutItems}
-        </Picker>
+      <View style={[{ marginTop: 60, borderBottomColor: COLORS.gray1, borderBottomWidth: 1, }]}>
+        { workoutButtons }
       </View>
     )
   }
 
-  render() {
+  renderEmptyMessage = () => {
     return (
-      <View style={common.staticView}>
-        <View style={[common.row, { marginTop: 20 }]}>
-          <Text style={[common.baseFont, {color: COLORS.gray5}]}>
-            Choose a workout
-          </Text>
-        </View>
-        { this.renderPicker() }
-        <View style={[common.row, { marginTop: 40 }]}>
+      <View style={[common.row, { marginTop: 160 }]}>
+        <Text style={[{ fontFamily: 'rubik-medium', fontSize: 24, textAlign: 'center', color: COLORS.gray9 }]}>
+          {'You have no workouts to record. Try adding one!'}
+        </Text>
+      </View>
+    )
+  }
+  // add icon below content
+  render() {
+    const isEmpty = this.props.workouts.length === 0 
+    return (
+      <View style={common.staticView, {marginLeft: 10, marginRight: 10}}>
+        <View style={[common.row,  { marginTop: 20, justifyContent: 'space-between' }]}>
+            <Text style={[common.baseFont, common.lgFont, {marginLeft: 10, color: COLORS.gray10}]}>
+              Record
+            </Text>
           <KButton
-            style={{width: 200}}
-            onPress={this.recordSession}
-            value={'record'}
+            style={{width: 120, top: 9}}
+            textColor={COLORS.chill}
+            onPress={this.toAddWorkoutScreen}
+            value={'Add +'}
             isEnabled={true}
+            transparent={true}
           />
         </View>
-        <View style={[common.row, { marginTop: 100 }]}>
-          <Button
-            onPress={this.toAddWorkoutScreen}
-            title="Or Create New Workout"/>
-        </View>
+        { isEmpty ? this.renderEmptyMessage() : this.renderWorkoutButtons() }
       </View>
     )
   }

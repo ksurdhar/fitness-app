@@ -104,7 +104,7 @@ class AddWorkoutScreen extends React.Component {
 
   incrementCarousel = () => {
     // additionally fires an action based upon the index we are currently on
-    if (this.state.carouselIdx + 1 < DATA.length) {
+    if (this.state.carouselIdx + 1 < CAROUSEL_LENGTH) {
       this.setState({
         carouselIdx: this.state.carouselIdx + 1
       })
@@ -246,7 +246,7 @@ class AddWorkoutScreen extends React.Component {
         index={this.state.carouselIdx}
         itemWidth={width}
         style={{ width: width }}
-        data={DATA}
+        data={[1,2,3,4]}
         useNativeDriver={true}
         onIndexChange={index => {
           this.setState(() => ({ carouselIdx: index }))
