@@ -6,7 +6,6 @@ import PromptScreen from "./components/PromptScreen"
 import WorkoutsScreen from "./components/WorkoutsScreen"
 import WorkoutScreen from "./components/WorkoutScreen"
 import ProfileScreen from "./components/ProfileScreen"
-import NameWorkoutScreen from './components/NameWorkoutScreen'
 import AddWorkoutScreen from './components/AddWorkoutScreen'
 import AddSessionScreen from './components/AddSessionScreen'
 
@@ -23,9 +22,6 @@ const WorkoutStack = StackNavigator({
 const RecordStack = StackNavigator({
   Record: {
     screen: PromptScreen
-  },
-  NameWorkout: {
-    screen: NameWorkoutScreen
   },
   AddWorkout: {
     screen: AddWorkoutScreen

@@ -70,10 +70,18 @@ class Button extends React.Component {
     }
     this.animateButton()
 
+    const internalStyle = this.props.transparent ? {
+      backgroundColor: 'white',
+      borderTopColor: 'white',
+      borderBottomColor: 'white',
+      borderLeftColor: 'white',
+      borderRightColor: 'white',
+    } : styleButton(animations)
+
     return (
       <TouchableWithoutFeedback onPress={this.handleOnPress}>
-        <Animated.View style={[styleButton(animations), this.props.style]}>
-          <Animated.Text style={{fontSize: 24, fontFamily: 'rubik-medium', color: animations.text, textAlign: 'center'}}>
+        <Animated.View style={[internalStyle, this.props.style]}>
+          <Animated.Text style={[{fontSize: 24, fontFamily: 'rubik-medium', color: animations.text, textAlign: 'center'}, {color: this.props.textColor}]}>
             { this.props.value }
           </Animated.Text>
         </Animated.View>
