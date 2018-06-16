@@ -21,7 +21,7 @@ import Fade from './reusable/fade'
 import { common, COLORS } from './reusable/styles'
 
 DEMO_STATE = {
-  mockWorkouts: ['Leg Blasters', 'Ab Destroyers', 'Arm Sculpters'],
+  mockWorkouts: ['Leg Blasters', 'Ab Crunches', 'Arm Destroyer'],
   selectedWorkout: null
 }
 
@@ -51,42 +51,53 @@ class DemoScreen extends React.Component {
     console.log('state', this.state)
   }
 
-  // renderPicker() {
-  //   const workoutItems = this.state.mockWorkouts.map((name) => {
-  //     return <Picker.Item label={name} value={name} key={name}/>
-  //   })
-  //   return (
-  //     <View style={[common.row]}>
-  //       <Picker style={{ height: 50, width: 300, paddingBottom: 200 }}
-  //         selectedValue={this.state.selectedWorkout}
-  //         onValueChange={(val, idx) => this.setState({selectedWorkout: val})}
-  //         itemStyle={[common.baseFont, {fontSize: 30}]}>
-  //         {workoutItems}
-  //       </Picker>
-  //     </View>
-  //   )
-  // }
-
-  renderEmptyMessage = () => {
+  // needs a limit how how many can be rendered
+  renderWorkoutButtons = () => {
+    // add logic of where to go w workout ID
+    const workoutButtons = DEMO_STATE.mockWorkouts.map((name) => {
+      return (
+        <View style={{
+          height: 60,
+          borderTopColor: COLORS.gray1, borderTopWidth: 1,
+        }}>
+          <KButton
+            style={{marginTop: 14}}
+            textColor={COLORS.chill}
+            value={name}
+            isEnabled={true}
+            transparent={true}
+            onPress={() => {console.log('you pressed ' + name)}}
+          />
+        </View>
+      )
+    })
     return (
-      <View style={[common.row, { marginTop: 200 }]}>
-        <Text style={[{ fontFamily: 'rubik-medium', fontSize: 24, textAlign: 'center', color: COLORS.gray9 }]}>
-          {'You have no workouts yet. \n Try making one!'}
-        </Text>
+      <View style={[{ marginTop: 60, borderBottomColor: COLORS.gray1, borderBottomWidth: 1, }]}>
+        { workoutButtons }
       </View>
     )
   }
 
-  render() {
-    const isEmpty = true // replace with state condition
+  renderEmptyMessage = () => {
     return (
-      <View style={common.staticView, {marginTop: 70}}>
+      <View style={[common.row, { marginTop: 160 }]}>
+        <Text style={[{ fontFamily: 'rubik-medium', fontSize: 24, textAlign: 'center', color: COLORS.gray9 }]}>
+          {'You have no workouts to record. Try adding one!'}
+        </Text>
+      </View>
+    )
+  }
+  // add icon below content
+  render() {
+    const isEmpty = false // replace with state condition
+    return (
+      <View style={common.staticView, {marginTop: 70, marginLeft: 10, marginRight: 10}}>
         <View style={[common.row,  { marginTop: 20, justifyContent: 'space-between' }]}>
-            <Text style={[common.baseFont, common.lgFont, {marginLeft: 20, color: COLORS.gray10}]}>
+            <Text style={[common.baseFont, common.lgFont, {marginLeft: 10, color: COLORS.gray10}]}>
               Record
             </Text>
           <KButton
-            style={{width: 120, marginRight: 10, top: 9}}
+            style={{width: 120, top: 9}}
             textColor={COLORS.chill}
             onPress={this.recordSession}
             value={'Add +'}
@@ -94,7 +105,7 @@ class DemoScreen extends React.Component {
             transparent={true}
           />
         </View>
-        { isEmpty ? this.renderEmptyMessage() : null }
+        { isEmpty ? this.renderEmptyMessage() : this.renderWorkoutButtons() }
       </View>
     )
   }
