@@ -21,8 +21,7 @@ import Fade from './reusable/fade'
 import { common, COLORS } from './reusable/styles'
 
 DEMO_STATE = {
-  mockWorkouts: ['Leg Blasters', 'Ab Crunches', 'Arm Destroyer'],
-  selectedWorkout: null
+  mockWorkouts: ['Leg Blasters', 'Ab Crunches', 'Arm Destroyer', 'Leg Blasters', 'Ab Crunches', 'Arm Destroyer'],
 }
 
 class DemoScreen extends React.Component {
@@ -51,61 +50,35 @@ class DemoScreen extends React.Component {
     console.log('state', this.state)
   }
 
-  // needs a limit how how many can be rendered
-  renderWorkoutButtons = () => {
-    // add logic of where to go w workout ID
-    const workoutButtons = DEMO_STATE.mockWorkouts.map((name) => {
+  renderWorkoutCards = () => {
+    const { width } = Dimensions.get('window')
+
+    const cards = this.state.mockWorkouts.map((workoutName) => {
       return (
-        <View style={{
-          height: 60,
-          borderTopColor: COLORS.gray1, borderTopWidth: 1,
-        }}>
-          <KButton
-            style={{marginTop: 14}}
-            textColor={COLORS.chill}
-            value={name}
-            isEnabled={true}
-            transparent={true}
-            onPress={() => {console.log('you pressed ' + name)}}
-          />
+        <View style={{width: width, height: 160, backgroundColor: COLORS.gray2, marginBottom: 20}}>
+          <Text>{workoutName}</Text>
+          <Text>{'blah blah blah'}</Text>
+          <Text>{'blah blah blah'}</Text>
+          <Text>{'blah blah blah'}</Text>
         </View>
       )
     })
-    return (
-      <View style={[{ marginTop: 60, borderBottomColor: COLORS.gray1, borderBottomWidth: 1, }]}>
-        { workoutButtons }
-      </View>
-    )
+
+    return cards
   }
 
-  renderEmptyMessage = () => {
-    return (
-      <View style={[common.row, { marginTop: 160 }]}>
-        <Text style={[{ fontFamily: 'rubik-medium', fontSize: 24, textAlign: 'center', color: COLORS.gray9 }]}>
-          {'You have no workouts to record. Try adding one!'}
-        </Text>
-      </View>
-    )
-  }
-  // add icon below content
   render() {
-    const isEmpty = false // replace with state condition
+
     return (
       <View style={common.staticView, {marginTop: 70, marginLeft: 10, marginRight: 10}}>
         <View style={[common.row,  { marginTop: 20, justifyContent: 'space-between' }]}>
-            <Text style={[common.baseFont, common.lgFont, {marginLeft: 10, color: COLORS.gray10}]}>
-              Record
-            </Text>
-          <KButton
-            style={{width: 120, top: 9}}
-            textColor={COLORS.chill}
-            onPress={this.recordSession}
-            value={'Add +'}
-            isEnabled={true}
-            transparent={true}
-          />
+          <Text style={[common.baseFont, common.lgFont, {marginLeft: 10, color: COLORS.gray10}]}>
+            Workouts
+          </Text>
         </View>
-        { isEmpty ? this.renderEmptyMessage() : this.renderWorkoutButtons() }
+        <ScrollView>
+          { this.renderWorkoutCards() }
+        </ScrollView>
       </View>
     )
   }
