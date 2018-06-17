@@ -12,6 +12,7 @@ import {
   Text,
   TouchableWithoutFeedback
 } from 'react-native'
+import { format } from 'date-fns'
 
 import KButton from './reusable/button'
 import Input from './reusable/input'
@@ -21,7 +22,7 @@ import Fade from './reusable/fade'
 import { common, COLORS } from './reusable/styles'
 
 DEMO_STATE = {
-  mockWorkouts: ['Leg Blasters', 'Ab Crunches', 'Arm Destroyer', 'Leg Blasters', 'Ab Crunches', 'Arm Destroyer'],
+  mockWorkouts: ['Leg Blasters', 'Ab Crunches', 'Arm Destroyer', 'Leg Blasters', 'Ab Crunches', 'Arm Destroyer']
 }
 
 class DemoScreen extends React.Component {
@@ -50,16 +51,32 @@ class DemoScreen extends React.Component {
     console.log('state', this.state)
   }
 
+  // drop shadow requires there to be a background color
   renderWorkoutCards = () => {
     const { width } = Dimensions.get('window')
 
     const cards = this.state.mockWorkouts.map((workoutName) => {
+      const date = new Date()
       return (
-        <View style={{width: width, height: 160, backgroundColor: COLORS.gray2, marginBottom: 20}}>
+        <View style={{
+          width: width - 30, height: 180,
+          backgroundColor: COLORS.white,
+          marginBottom: 16,
+          paddingLeft: 16,
+          paddingRight: 16,
+          paddingTop: 16,
+          marginLeft: 6,
+          shadowColor: COLORS.gray10,
+          shadowOpacity: 0.3,
+          shadowOffset: { width: 1, height: 1 },
+          shadowRadius: 2,
+        }}>
+          <Text>{format(date, 'MMM D, YYYY')}</Text>
           <Text>{workoutName}</Text>
-          <Text>{'blah blah blah'}</Text>
-          <Text>{'blah blah blah'}</Text>
-          <Text>{'blah blah blah'}</Text>
+          <Text>{format(date, '[at] h:mm A')}</Text>
+          <Text>{'Pushups - 5 sets / 6 reps / 20 seconds'}</Text>
+          <Text>{'Body Squats - 5 sets / 6 reps / 20 seconds'}</Text>
+          <Text>{'Dips  - 10 reps / 25 lbs'}</Text>
         </View>
       )
     })
@@ -70,13 +87,13 @@ class DemoScreen extends React.Component {
   render() {
 
     return (
-      <View style={common.staticView, {marginTop: 70, marginLeft: 10, marginRight: 10}}>
-        <View style={[common.row,  { marginTop: 20, justifyContent: 'space-between' }]}>
-          <Text style={[common.baseFont, common.lgFont, {marginLeft: 10, color: COLORS.gray10}]}>
+      <View style={common.staticView, {marginTop: 70, marginLeft: 10, marginRight: 10, backgroundColor: COLORS.white}}>
+        <View style={[common.row,  { marginTop: 20, marginBottom: 5, justifyContent: 'space-between' }]}>
+          <Text style={[common.baseFont, common.lgFont, {marginLeft: 5, color: COLORS.gray10}]}>
             Workouts
           </Text>
         </View>
-        <ScrollView>
+        <ScrollView style={{paddingTop: 10}}>
           { this.renderWorkoutCards() }
         </ScrollView>
       </View>
