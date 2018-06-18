@@ -59,24 +59,31 @@ class DemoScreen extends React.Component {
       const date = new Date()
       return (
         <View style={{
-          width: width - 30, height: 180,
+          width: width - 30,
+          minHeight: 180,
           backgroundColor: COLORS.white,
           marginBottom: 16,
-          paddingLeft: 16,
-          paddingRight: 16,
-          paddingTop: 16,
           marginLeft: 6,
           shadowColor: COLORS.gray10,
           shadowOpacity: 0.3,
           shadowOffset: { width: 1, height: 1 },
           shadowRadius: 2,
+          paddingTop: 8,
+          paddingBottom: 8,
         }}>
-          <Text>{format(date, 'MMM D, YYYY')}</Text>
-          <Text>{workoutName}</Text>
-          <Text>{format(date, '[at] h:mm A')}</Text>
-          <Text>{'Pushups - 5 sets / 6 reps / 20 seconds'}</Text>
-          <Text>{'Body Squats - 5 sets / 6 reps / 20 seconds'}</Text>
-          <Text>{'Dips  - 10 reps / 25 lbs'}</Text>
+          <View style={{borderBottomColor: COLORS.gray1, borderBottomWidth: 1, marginBottom: 10, top: 64, zIndex: 2}} />
+          <View style={{
+            paddingLeft: 16,
+            paddingRight: 16,
+          }}>
+            <Text style={[common.tajawal3, {fontSize: 18, color: COLORS.gray8}]}>{format(date, 'dddd, MMM D [at] h:mm A')}</Text>
+            <Text style={[common.tajawal5, {fontSize: 26, color: COLORS.gray10, paddingBottom: 10}]}>{workoutName}</Text>
+            <Text style={[common.tajawal3, {fontSize: 18, color: COLORS.gray8}]}>{'Pushups - 5 sets / 6 reps / 20 secs'}</Text>
+            <Text style={[common.tajawal3, {fontSize: 18, color: COLORS.gray8}]}>{'Body Squats - 5 sets / 6 reps / 20 secs'}</Text>
+            <Text style={[common.tajawal3, {fontSize: 18, color: COLORS.gray8}]}>{'Dips  - 10 reps / 25 lbs'}</Text>
+            <Text style={[common.tajawal3, {fontSize: 18, color: COLORS.gray8}]}>{'Pushups - 5 sets / 6 reps / 20 secs'}</Text>
+            <Text style={[common.tajawal3, {fontSize: 18, color: COLORS.gray8}]}>{'Body Squats - 5 sets / 6 reps / 20 secs'}</Text>
+          </View>
         </View>
       )
     })

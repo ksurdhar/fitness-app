@@ -2,6 +2,7 @@ import {
   StyleSheet,
 } from 'react-native'
 // https://flatuicolors.com/palette/in
+// https://digitalsynopsis.com/design/minimal-web-color-palettes-combination-hex-code/
 COLORS = {
   white: 'ghostwhite',
   orange: 'rgb(223, 102, 89)',
@@ -50,6 +51,12 @@ const common = StyleSheet.create({
   row: {
     flexDirection: 'row',
     justifyContent: 'center'
+  },
+  tajawal3: {
+    fontFamily: 'tajawal3',
+  },
+  tajawal5: {
+    fontFamily: 'tajawal5',
   },
   borders: {
     borderTopWidth: 2,

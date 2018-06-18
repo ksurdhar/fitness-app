@@ -53,7 +53,9 @@ class Index extends Component {
   async componentDidMount() {
     await Font.loadAsync({
       'raleway-bold': require('../assets/fonts/Raleway-Bold.ttf'),
-      'rubik-medium': require('../assets/fonts/Rubik-Medium.ttf')
+      'rubik-medium': require('../assets/fonts/Rubik-Medium.ttf'),
+      'tajawal3': require('../assets/fonts/tajawal/tajawal3.ttf'),
+      'tajawal5': require('../assets/fonts/tajawal/tajawal5.ttf'),
     })
     this.setState({
       fontLoaded: true
