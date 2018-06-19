@@ -92,7 +92,6 @@ class DemoScreen extends React.Component {
   }
 
   render() {
-
     return (
       <View style={common.staticView, {marginTop: 70, marginLeft: 10, marginRight: 10, backgroundColor: COLORS.white}}>
         <View style={[common.row,  { marginTop: 20, marginBottom: 5, justifyContent: 'space-between' }]}>

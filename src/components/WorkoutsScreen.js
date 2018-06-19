@@ -1,8 +1,16 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { StyleSheet, Text, View, Button, FlatList } from 'react-native'
+import {
+  ScrollView,
+  Dimensions,
+  StyleSheet,
+  View,
+  Text,
+} from 'react-native'
+import { format } from 'date-fns'
+
+import { common, COLORS } from './reusable/styles'
 import * as workoutActions from '../redux/actions/workoutActions'
-import {format} from 'date-fns'
 
 const mapStateToProps = (state, ownProps) => {
   return {
@@ -21,10 +29,6 @@ class WorkoutsScreen extends React.Component {
     ),
   }
 
-  _keyExtractor(item, index) {
-    return item.id
-  }
-
   componentDidUpdate() {
     // console.log('WORKOUTS STATE', this.state)
     // console.log('WORKOUTS PROPS', this.props)
@@ -37,42 +41,66 @@ class WorkoutsScreen extends React.Component {
     })
   }
 
-  renderRow({item}) {
-    const dateString = format(item.date, 'MMM D, YYYY [at] h:mm A')
-    return (
-      <View style={styles.row}>
-        <Text style={styles.rowText}>{`${item.workoutName} on ${dateString}`}</Text>
-        <Button
-          onPress={() => { this.navigateToSession(item) }}
-          title="Details"
-        />
-      </View>
-    )
+  renderExerciseTexts = (exercises) => {
+    return Object.values(exercises).map((exercise) => {
+      let attrString = ''
+      exercise.attributes.forEach((attr) => {
+        attrString = attrString + `${attr.val} ${attr.type} / `
+      })
+      return (
+        <Text style={[common.tajawal3, {fontSize: 18, color: COLORS.gray8}]}>
+        {`${exercise.name} - ${attrString}`}
+        </Text>
+      )
+    })
   }
 
-  renderWorkouts() {
-    if (this.props.sessions.length > 0) {
+  renderSessionCards = () => {
+    const { width } = Dimensions.get('window')
+
+    const cards = this.props.sessions.map((session) => {
+      const date = new Date()
       return (
-        <FlatList
-          style={styles.list}
-          data={this.props.sessions}
-          keyExtractor={this._keyExtractor}
-          renderItem={this.renderRow.bind(this)}
-        />
-      )
-    } else {
-      return (
-        <View style={styles.emptyMessage}>
-          <Text>No Workouts Defined Yet!</Text>
+        <View style={{
+          width: width - 30,
+          minHeight: 180,
+          backgroundColor: COLORS.white,
+          marginBottom: 16,
+          marginLeft: 6,
+          shadowColor: COLORS.gray10,
+          shadowOpacity: 0.3,
+          shadowOffset: { width: 1, height: 1 },
+          shadowRadius: 2,
+          paddingTop: 8,
+          paddingBottom: 8,
+        }}>
+          <View style={{borderBottomColor: COLORS.gray1, borderBottomWidth: 1, marginBottom: 10, top: 64, zIndex: 2}} />
+          <View style={{
+            paddingLeft: 16,
+            paddingRight: 16,
+          }}>
+            <Text style={[common.tajawal3, {fontSize: 18, color: COLORS.gray8}]}>{format(session.date, 'dddd, MMM D [at] h:mm A')}</Text>
+            <Text style={[common.tajawal5, {fontSize: 26, color: COLORS.gray10, paddingBottom: 10}]}>{session.workoutName}</Text>
+            { this.renderExerciseTexts(session.exercises) }
+          </View>
         </View>
       )
-    }
+    })
+
+    return cards
   }
 
   render() {
     return (
-      <View style={styles.container}>
-        {this.renderWorkouts()}
+      <View style={common.staticView, { marginLeft: 10, marginRight: 10, backgroundColor: COLORS.white }}>
+        <View style={[common.row,  { marginTop: 20, marginBottom: 5, justifyContent: 'space-between' }]}>
+          <Text style={[common.baseFont, common.lgFont, {marginLeft: 5, color: COLORS.gray10}]}>
+            Workouts
+          </Text>
+        </View>
+        <ScrollView style={{paddingTop: 10}}>
+          { this.renderSessionCards() }
+        </ScrollView>
       </View>
     )
   }
@@ -83,33 +111,5 @@ const mapDispatchToProps = (dispatch) => {
     removeWorkout: (id, userID) => { dispatch(workoutActions.removeWorkout(id, userID)) },
   }
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'flex-start',
-  },
-  list: {
-    flex: 1,
-    flexDirection: 'column',
-  },
-  row: {
-    backgroundColor: 'skyblue',
-    height: 40,
-    borderColor: 'white',
-    borderWidth: 1,
-    flex: 1,
-    flexDirection: 'row'
-  },
-  rowText: {
-    fontSize: 18,
-    paddingLeft: 20,
-    paddingTop: 7,
-  },
-  emptyMessage: {
-    alignItems: 'center',
-    marginTop: 150
-  }
-})
 
 export default connect(mapStateToProps, mapDispatchToProps)(WorkoutsScreen)
