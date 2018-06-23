@@ -21,8 +21,9 @@ import PressCapture from './reusable/pressCapture'
 import Fade from './reusable/fade'
 import { common, COLORS } from './reusable/styles'
 
+// ['Leg Blasters', 'Ab Crunches', 'Arm Destroyer', 'Leg Blasters', 'Ab Crunches', 'Arm Destroyer']
 DEMO_STATE = {
-  mockWorkouts: ['Leg Blasters', 'Ab Crunches', 'Arm Destroyer', 'Leg Blasters', 'Ab Crunches', 'Arm Destroyer']
+  mockWorkouts: []
 }
 
 class DemoScreen extends React.Component {
@@ -51,6 +52,18 @@ class DemoScreen extends React.Component {
     console.log('state', this.state)
   }
 
+  renderEmptyView = () => {
+    const { height } = Dimensions.get('window')
+
+    return (
+      <View style={[common.row, { marginTop: 160, height: height }]}>
+        <Text style={[{ fontFamily: 'rubik-medium', fontSize: 24, textAlign: 'center', color: COLORS.gray9 }]}>
+          {'You have not recorded any workouts yet.'}
+        </Text>
+      </View>
+    )
+  }
+
   // drop shadow requires there to be a background color
   renderWorkoutCards = () => {
     const { width } = Dimensions.get('window')
@@ -58,33 +71,35 @@ class DemoScreen extends React.Component {
     const cards = this.state.mockWorkouts.map((workoutName) => {
       const date = new Date()
       return (
-        <View style={{
-          width: width - 30,
-          minHeight: 180,
-          backgroundColor: COLORS.white,
-          marginBottom: 16,
-          marginLeft: 6,
-          shadowColor: COLORS.gray10,
-          shadowOpacity: 0.3,
-          shadowOffset: { width: 1, height: 1 },
-          shadowRadius: 2,
-          paddingTop: 8,
-          paddingBottom: 8,
-        }}>
-          <View style={{borderBottomColor: COLORS.gray1, borderBottomWidth: 1, marginBottom: 10, top: 64, zIndex: 2}} />
+        <ScrollView style={{paddingTop: 10}}>
           <View style={{
-            paddingLeft: 16,
-            paddingRight: 16,
+            width: width - 30,
+            minHeight: 180,
+            backgroundColor: COLORS.white,
+            marginBottom: 16,
+            marginLeft: 6,
+            shadowColor: COLORS.gray10,
+            shadowOpacity: 0.3,
+            shadowOffset: { width: 1, height: 1 },
+            shadowRadius: 2,
+            paddingTop: 8,
+            paddingBottom: 8,
           }}>
-            <Text style={[common.tajawal3, {fontSize: 18, color: COLORS.gray8}]}>{format(date, 'dddd, MMM D [at] h:mm A')}</Text>
-            <Text style={[common.tajawal5, {fontSize: 26, color: COLORS.gray10, paddingBottom: 10}]}>{workoutName}</Text>
-            <Text style={[common.tajawal3, {fontSize: 18, color: COLORS.gray8}]}>{'Pushups - 5 sets / 6 reps / 20 secs'}</Text>
-            <Text style={[common.tajawal3, {fontSize: 18, color: COLORS.gray8}]}>{'Body Squats - 5 sets / 6 reps / 20 secs'}</Text>
-            <Text style={[common.tajawal3, {fontSize: 18, color: COLORS.gray8}]}>{'Dips  - 10 reps / 25 lbs'}</Text>
-            <Text style={[common.tajawal3, {fontSize: 18, color: COLORS.gray8}]}>{'Pushups - 5 sets / 6 reps / 20 secs'}</Text>
-            <Text style={[common.tajawal3, {fontSize: 18, color: COLORS.gray8}]}>{'Body Squats - 5 sets / 6 reps / 20 secs'}</Text>
+            <View style={{borderBottomColor: COLORS.gray1, borderBottomWidth: 1, marginBottom: 10, top: 64, zIndex: 2}} />
+            <View style={{
+              paddingLeft: 16,
+              paddingRight: 16,
+            }}>
+              <Text style={[common.tajawal3, {fontSize: 18, color: COLORS.gray8}]}>{format(date, 'dddd, MMM D [at] h:mm A')}</Text>
+              <Text style={[common.tajawal5, {fontSize: 26, color: COLORS.gray10, paddingBottom: 10}]}>{workoutName}</Text>
+              <Text style={[common.tajawal3, {fontSize: 18, color: COLORS.gray8}]}>{'Pushups - 5 sets / 6 reps / 20 secs'}</Text>
+              <Text style={[common.tajawal3, {fontSize: 18, color: COLORS.gray8}]}>{'Body Squats - 5 sets / 6 reps / 20 secs'}</Text>
+              <Text style={[common.tajawal3, {fontSize: 18, color: COLORS.gray8}]}>{'Dips  - 10 reps / 25 lbs'}</Text>
+              <Text style={[common.tajawal3, {fontSize: 18, color: COLORS.gray8}]}>{'Pushups - 5 sets / 6 reps / 20 secs'}</Text>
+              <Text style={[common.tajawal3, {fontSize: 18, color: COLORS.gray8}]}>{'Body Squats - 5 sets / 6 reps / 20 secs'}</Text>
+            </View>
           </View>
-        </View>
+        </ScrollView>
       )
     })
 
@@ -99,9 +114,11 @@ class DemoScreen extends React.Component {
             Workouts
           </Text>
         </View>
-        <ScrollView style={{paddingTop: 10}}>
-          { this.renderWorkoutCards() }
-        </ScrollView>
+        {
+          this.state.mockWorkouts.length > 0 ?
+          this.renderWorkoutCards() :
+          this.renderEmptyView()
+        }
       </View>
     )
   }
