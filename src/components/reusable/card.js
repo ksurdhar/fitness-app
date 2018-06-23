@@ -32,14 +32,10 @@ class Card extends React.Component {
   renderCarouselIdx = (idx, item) => {
     switch (idx) {
       case 0:
-        return (
-          <Text>Hello Samm!</Text>
-        )
+        return this.props.view1
         break
       case 1:
-        return (
-          <Text>I wanna touch your butt!</Text>
-        )
+        return this.props.view2
         break
     }
   }
@@ -72,7 +68,7 @@ class Card extends React.Component {
                   this.setState(() => ({ carouselIdx: index }))
                 }}
                 renderItem={({ itemIndex, currentIndex, item, animatedValue }) => (
-                  <View style={[{ width: width - 20, marginRight: 20}]}>
+                  <View style={[{ width: width - 20, marginRight: 30}]}>
                     { this.renderCarouselIdx(itemIndex, item) }
                   </View>
                 )}

@@ -69,13 +69,21 @@ class DemoScreen extends React.Component {
   renderWorkoutCards = () => {
     const cards = this.state.mockWorkouts.map((workoutName) => {
       const dateString = format(new Date(), 'dddd, MMM D [at] h:mm A')
+      const view1 = (
+        <View>
+          <Text style={[common.tajawal3, {fontSize: 18, color: COLORS.gray8}]}>{'Pushups - 5 sets / 6 reps / 20 secs'}</Text>
+          <Text style={[common.tajawal3, {fontSize: 18, color: COLORS.gray8}]}>{'Pushups - 5 sets / 6 reps / 20 secs'}</Text>
+          <Text style={[common.tajawal3, {fontSize: 18, color: COLORS.gray8}]}>{'Pushups - 5 sets / 6 reps / 20 secs'}</Text>
+          <Text style={[common.tajawal3, {fontSize: 18, color: COLORS.gray8}]}>{'Pushups - 5 sets / 6 reps / 20 secs'}</Text>
+        </View>
+      )
+      const view2 = (
+        <Text style={[common.tajawal3, {fontSize: 18, color: COLORS.gray8}]}>
+          Felt pretty good today, but havent gotten to touch samms butt enough. This is likely making it harder to workout.
+        </Text>
+      )
       return (
-        <Card subHeader={dateString} header={workoutName}>
-          <Text style={[common.tajawal3, {fontSize: 18, color: COLORS.gray8}]}>{'Pushups - 5 sets / 6 reps / 20 secs'}</Text>
-          <Text style={[common.tajawal3, {fontSize: 18, color: COLORS.gray8}]}>{'Pushups - 5 sets / 6 reps / 20 secs'}</Text>
-          <Text style={[common.tajawal3, {fontSize: 18, color: COLORS.gray8}]}>{'Pushups - 5 sets / 6 reps / 20 secs'}</Text>
-          <Text style={[common.tajawal3, {fontSize: 18, color: COLORS.gray8}]}>{'Pushups - 5 sets / 6 reps / 20 secs'}</Text>
-        </Card>
+        <Card subHeader={dateString} header={workoutName} view1={view1} view2={view2}/>
       )
     })
 
