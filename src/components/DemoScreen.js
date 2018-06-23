@@ -14,6 +14,7 @@ import {
 } from 'react-native'
 import { format } from 'date-fns'
 
+import Card from './reusable/card'
 import KButton from './reusable/button'
 import Input from './reusable/input'
 import Switch from './reusable/switch'
@@ -23,7 +24,7 @@ import { common, COLORS } from './reusable/styles'
 
 // ['Leg Blasters', 'Ab Crunches', 'Arm Destroyer', 'Leg Blasters', 'Ab Crunches', 'Arm Destroyer']
 DEMO_STATE = {
-  mockWorkouts: []
+  mockWorkouts: ['Leg Blasters', 'Ab Crunches', 'Arm Destroyer', 'Leg Blasters', 'Ab Crunches', 'Arm Destroyer']
 }
 
 class DemoScreen extends React.Component {
@@ -57,8 +58,8 @@ class DemoScreen extends React.Component {
 
     return (
       <View style={[common.row, { marginTop: 160, height: height }]}>
-        <Text style={[{ fontFamily: 'rubik-medium', fontSize: 24, textAlign: 'center', color: COLORS.gray9 }]}>
-          {'You have not recorded any workouts yet.'}
+        <Text style={{ fontFamily: 'rubik-medium', fontSize: 24, textAlign: 'center', color: COLORS.gray5 }}>
+          {'You have no recorded workouts.'}
         </Text>
       </View>
     )
@@ -66,44 +67,23 @@ class DemoScreen extends React.Component {
 
   // drop shadow requires there to be a background color
   renderWorkoutCards = () => {
-    const { width } = Dimensions.get('window')
-
     const cards = this.state.mockWorkouts.map((workoutName) => {
-      const date = new Date()
+      const dateString = format(new Date(), 'dddd, MMM D [at] h:mm A')
       return (
-        <ScrollView style={{paddingTop: 10}}>
-          <View style={{
-            width: width - 30,
-            minHeight: 180,
-            backgroundColor: COLORS.white,
-            marginBottom: 16,
-            marginLeft: 6,
-            shadowColor: COLORS.gray10,
-            shadowOpacity: 0.3,
-            shadowOffset: { width: 1, height: 1 },
-            shadowRadius: 2,
-            paddingTop: 8,
-            paddingBottom: 8,
-          }}>
-            <View style={{borderBottomColor: COLORS.gray1, borderBottomWidth: 1, marginBottom: 10, top: 64, zIndex: 2}} />
-            <View style={{
-              paddingLeft: 16,
-              paddingRight: 16,
-            }}>
-              <Text style={[common.tajawal3, {fontSize: 18, color: COLORS.gray8}]}>{format(date, 'dddd, MMM D [at] h:mm A')}</Text>
-              <Text style={[common.tajawal5, {fontSize: 26, color: COLORS.gray10, paddingBottom: 10}]}>{workoutName}</Text>
-              <Text style={[common.tajawal3, {fontSize: 18, color: COLORS.gray8}]}>{'Pushups - 5 sets / 6 reps / 20 secs'}</Text>
-              <Text style={[common.tajawal3, {fontSize: 18, color: COLORS.gray8}]}>{'Body Squats - 5 sets / 6 reps / 20 secs'}</Text>
-              <Text style={[common.tajawal3, {fontSize: 18, color: COLORS.gray8}]}>{'Dips  - 10 reps / 25 lbs'}</Text>
-              <Text style={[common.tajawal3, {fontSize: 18, color: COLORS.gray8}]}>{'Pushups - 5 sets / 6 reps / 20 secs'}</Text>
-              <Text style={[common.tajawal3, {fontSize: 18, color: COLORS.gray8}]}>{'Body Squats - 5 sets / 6 reps / 20 secs'}</Text>
-            </View>
-          </View>
-        </ScrollView>
+        <Card subHeader={dateString} header={workoutName}>
+          <Text style={[common.tajawal3, {fontSize: 18, color: COLORS.gray8}]}>{'Pushups - 5 sets / 6 reps / 20 secs'}</Text>
+          <Text style={[common.tajawal3, {fontSize: 18, color: COLORS.gray8}]}>{'Pushups - 5 sets / 6 reps / 20 secs'}</Text>
+          <Text style={[common.tajawal3, {fontSize: 18, color: COLORS.gray8}]}>{'Pushups - 5 sets / 6 reps / 20 secs'}</Text>
+          <Text style={[common.tajawal3, {fontSize: 18, color: COLORS.gray8}]}>{'Pushups - 5 sets / 6 reps / 20 secs'}</Text>
+        </Card>
       )
     })
 
-    return cards
+    return (
+      <ScrollView style={{paddingTop: 10}}>
+        { cards }
+      </ScrollView>
+    )
   }
 
   render() {
