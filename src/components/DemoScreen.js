@@ -14,7 +14,7 @@ import {
 } from 'react-native'
 import { format } from 'date-fns'
 
-import Card from './reusable/card'
+import ExpandingCard from './reusable/expandingCard'
 import KButton from './reusable/button'
 import Input from './reusable/input'
 import Switch from './reusable/switch'
@@ -69,21 +69,22 @@ class DemoScreen extends React.Component {
   renderWorkoutCards = () => {
     const cards = this.state.mockWorkouts.map((workoutName) => {
       const dateString = format(new Date(), 'dddd, MMM D [at] h:mm A')
-      const view1 = (
+      const cardContent = (
         <View>
           <Text style={[common.tajawal3, {fontSize: 18, color: COLORS.gray8}]}>{'Pushups - 5 sets / 6 reps / 20 secs'}</Text>
           <Text style={[common.tajawal3, {fontSize: 18, color: COLORS.gray8}]}>{'Pushups - 5 sets / 6 reps / 20 secs'}</Text>
           <Text style={[common.tajawal3, {fontSize: 18, color: COLORS.gray8}]}>{'Pushups - 5 sets / 6 reps / 20 secs'}</Text>
           <Text style={[common.tajawal3, {fontSize: 18, color: COLORS.gray8}]}>{'Pushups - 5 sets / 6 reps / 20 secs'}</Text>
+          <Text style={[common.tajawal3, {fontSize: 18, color: COLORS.gray8}]}>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Id venenatis a condimentum vitae sapien pellentesque habitant morbi tristique. Id volutpat lacus laoreet non curabitur gravida arcu. Morbi tristique senectus et netus et malesuada fames ac turpis. Sociis natoque penatibus et magnis dis.
+          </Text>
         </View>
       )
-      const view2 = (
-        <Text style={[common.tajawal3, {fontSize: 18, color: COLORS.gray8}]}>
-          Felt pretty good today, but havent gotten to touch samms butt enough. This is likely making it harder to workout.
-        </Text>
-      )
+
       return (
-        <Card subHeader={dateString} header={workoutName} view1={view1} view2={view2}/>
+        <ExpandingCard subHeader={dateString} header={workoutName}>
+          { cardContent }
+        </ExpandingCard>
       )
     })
 
