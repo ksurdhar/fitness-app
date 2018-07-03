@@ -76,7 +76,7 @@ class DemoScreen extends React.Component {
           <Text style={[common.tajawal3, {fontSize: 18, color: COLORS.gray8}]}>{'Pushups - 5 sets / 6 reps / 20 secs'}</Text>
           <Text style={[common.tajawal3, {fontSize: 18, color: COLORS.gray8}]}>{'Pushups - 5 sets / 6 reps / 20 secs'}</Text>
           <Text style={[common.tajawal3, {fontSize: 18, color: COLORS.gray8}]}>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Id venenatis a condimentum vitae sapien pellentesque habitant morbi tristique. Id volutpat lacus laoreet non curabitur gravida arcu. Morbi tristique senectus et netus et malesuada fames ac turpis. Sociis natoque penatibus et magnis dis.
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Id venenatis a condimentum vitae sapien pellentesque habitant morbi tristique. Id volutpat lacus laoreet non curabitur gravida arcu. Morbi tristique senectus et netus et malesuada fames ac turpis. Sociis natoque penatibus et magnis dis. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore ma
           </Text>
         </View>
       )
