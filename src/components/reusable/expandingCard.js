@@ -7,7 +7,7 @@ import {
   View,
   Text
 } from 'react-native'
-import { Ionicons, MaterialIcons, Feather } from '@expo/vector-icons'
+import { Entypo } from '@expo/vector-icons'
 
 import { common, COLORS } from './styles'
 class ExpandingCard extends React.Component {
@@ -46,7 +46,7 @@ class ExpandingCard extends React.Component {
 
     const cardHeight = this.animations.height.interpolate({
       inputRange: [0, 100],
-      outputRange: [100, 800]
+      outputRange: [90, 800]
     })
 
     this.animateExpansion()
@@ -64,7 +64,7 @@ class ExpandingCard extends React.Component {
               </Animated.View>
               <View style={[common.row, {marginTop: 10}]}>
                 <TouchableWithoutFeedback onPress={this.handleOnPress}>
-                  <Feather name="plus-circle" size={32} color={COLORS.gray10}/>
+                  <Entypo name={this.state.expanded ? "chevron-up" : "chevron-down"} size={22} color={COLORS.gray5}/>
                 </TouchableWithoutFeedback>
               </View>
             </View>
@@ -80,9 +80,8 @@ function styleExpand(cardHeight, expanded) {
     return {}
   } else {
     return {
-      minHeight: 100,
       maxHeight: cardHeight,
-      overflow: 'hidden'
+      overflow: 'hidden',
     }
   }
 }

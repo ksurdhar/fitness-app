@@ -27,6 +27,15 @@ DEMO_STATE = {
   mockWorkouts: ['Leg Blasters', 'Ab Crunches', 'Arm Destroyer', 'Leg Blasters', 'Ab Crunches', 'Arm Destroyer']
 }
 
+SAMPLE_TEXT = [
+  'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Id venenatis a condimentum vitae sapien pellentesque habitant morbi tristique. Id volutpat lacus laoreet non curabitur gravida arcu. Morbi tristique senectus et netus et malesuada fames ac turpis. Sociis natoque penatibus et magnis dis. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore ma',
+  'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Id venenatis a condimentum vitae sapien pellentesque habitant morbi tristique. Id volutpat lacus laoreet non curabitur gravida arcu. Morbi tristique senectus et netus et malesuada fames ac turpis. Sociis natoque penatibus et magnis dis. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore ma Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Id venenatis a condimentum vitae sapien pellentesque habitant morbi tristique. Id volutpat lacus laoreet non curabitur gravida arcu. Morbi tristique senectus et netus et malesuada fames ac turpis. Sociis natoque penatibus et magnis dis. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore ma',
+  'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Id venenatis a condimentum',
+  'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Id venenatis a condimentum vitae sapien pellentesque habitant morbi tristique. Id volutpat lacus laoreet non curabitur gravida arcu. Morbi tristique senectus et netus et malesuada fames ac turpis. Sociis natoque penatibus et magnis dis. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore ma',
+  'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Id venenatis a condimentum vitae sapien pellentesque habitant morbi tristique. Id volutpat lacus laoreet non curabitur gravida arcu. Morbi tristique senectus et netus et malesuada fames ac turpis. Sociis natoque penatibus et magnis dis. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore ma Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Id venenatis a condimentum vitae sapien pellentesque habitant morbi tristique. Id volutpat lacus laoreet non curabitur gravida arcu. Morbi tristique senectus et netus et malesuada fames ac turpis. Sociis natoque penatibus et magnis dis. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore ma',
+  'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Id venenatis a condimentum'
+]
+
 class DemoScreen extends React.Component {
   static navigationOptions = {
     title: 'DEMO SCREEN',
@@ -67,17 +76,19 @@ class DemoScreen extends React.Component {
 
   // drop shadow requires there to be a background color
   renderWorkoutCards = () => {
-    const cards = this.state.mockWorkouts.map((workoutName) => {
+    const cards = this.state.mockWorkouts.map((workoutName, idx) => {
       const dateString = format(new Date(), 'dddd, MMM D [at] h:mm A')
       const cardContent = (
         <View>
-          <Text style={[common.tajawal3, {fontSize: 18, color: COLORS.gray8}]}>{'Pushups - 5 sets / 6 reps / 20 secs'}</Text>
-          <Text style={[common.tajawal3, {fontSize: 18, color: COLORS.gray8}]}>{'Pushups - 5 sets / 6 reps / 20 secs'}</Text>
-          <Text style={[common.tajawal3, {fontSize: 18, color: COLORS.gray8}]}>{'Pushups - 5 sets / 6 reps / 20 secs'}</Text>
-          <Text style={[common.tajawal3, {fontSize: 18, color: COLORS.gray8}]}>{'Pushups - 5 sets / 6 reps / 20 secs'}</Text>
-          <Text style={[common.tajawal3, {fontSize: 18, color: COLORS.gray8}]}>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Id venenatis a condimentum vitae sapien pellentesque habitant morbi tristique. Id volutpat lacus laoreet non curabitur gravida arcu. Morbi tristique senectus et netus et malesuada fames ac turpis. Sociis natoque penatibus et magnis dis. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore ma
-          </Text>
+          <Text style={[common.tajawal3, {fontSize: 18, color: COLORS.gray8, paddingBottom: 2}]}>{'Pushups - 5 sets / 6 reps / 20 secs'}</Text>
+          <Text style={[common.tajawal3, {fontSize: 18, color: COLORS.gray8, paddingBottom: 2}]}>{'Pushups - 5 sets / 6 reps / 20 secs'}</Text>
+          <Text style={[common.tajawal3, {fontSize: 18, color: COLORS.gray8, paddingBottom: 2}]}>{'Pushups - 5 sets / 6 reps / 20 secs'}</Text>
+          <Text style={[common.tajawal3, {fontSize: 18, color: COLORS.gray8, paddingBottom: 2}]}>{'Pushups - 5 sets / 6 reps / 20 secs'}</Text>
+          <View style={{paddingTop: 10, borderTopWidth: 1, borderTopColor: COLORS.gray1}}>
+            <Text style={[common.tajawal3, {fontSize: 18, color: COLORS.gray8}]}>
+            { SAMPLE_TEXT[idx] }
+            </Text>
+          </View>
         </View>
       )
 
