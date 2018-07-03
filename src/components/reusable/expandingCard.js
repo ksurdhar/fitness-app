@@ -7,9 +7,14 @@ import {
   View,
   Text
 } from 'react-native'
+import { Ionicons, MaterialIcons, Feather } from '@expo/vector-icons'
 
 import { common, COLORS } from './styles'
 class ExpandingCard extends React.Component {
+  animations = {
+    height: new Animated.Value(0),
+  }
+
   constructor() {
     super()
 
@@ -18,12 +23,19 @@ class ExpandingCard extends React.Component {
     }
   }
 
+  animateExpansion() {
+    Animated.timing(this.animations.height, {
+      toValue: this.state.expanded? 100 : 0,
+      duration: 350
+    }).start()
+  }
+
   componentDidMount() {
     // console.log('component did mount')
   }
 
   handleOnPress = () => {
-    console.log('toggling expand!')
+    console.log('toggling expand!', this.state.expanded)
     this.setState({
       expanded: !this.state.expanded
     })
@@ -32,29 +44,53 @@ class ExpandingCard extends React.Component {
   render() {
     const { width } = Dimensions.get('window')
 
+    const cardHeight = this.animations.height.interpolate({
+      inputRange: [0, 100],
+      outputRange: [0, 400]
+    })
+
+    this.animateExpansion()
+
     return (
-      <TouchableWithoutFeedback onPress={this.handleOnPress}>
-        <View style={styleCard(width)}>
-          <View>
-            <View style={{ borderBottomColor: COLORS.gray1, borderBottomWidth: 1, marginBottom: 10, top: 64, zIndex: 2}} />
-            <View style={{ paddingLeft: 16, paddingRight: 16 }}>
-              <Text style={[common.tajawal3, {fontSize: 18, color: COLORS.gray8}]}>{this.props.subHeader}</Text>
-              <Text style={[common.tajawal5, {fontSize: 26, color: COLORS.gray10, paddingBottom: 10}]}>{this.props.header}</Text>
-              <View>
+      <View style={styleCard(width, this.state.expanded)}>
+        <View>
+          <View style={{ borderBottomColor: COLORS.gray1, borderBottomWidth: 1, marginBottom: 10, top: 64, zIndex: 2}} />
+          <View style={{ paddingLeft: 16, paddingRight: 16 }}>
+            <Text style={[common.tajawal3, {fontSize: 18, color: COLORS.gray8}]}>{this.props.subHeader}</Text>
+            <Text style={[common.tajawal5, {fontSize: 26, color: COLORS.gray10, paddingBottom: 10}]}>{this.props.header}</Text>
+            <View style={{minHeight: 100}}>
+              <Animated.View style={styleExpand(cardHeight)}>
                 { this.props.children }
+              </Animated.View>
+              <View style={common.row}>
+                <TouchableWithoutFeedback onPress={this.handleOnPress}>
+                  <Feather name="plus-circle" size={32}/>
+                </TouchableWithoutFeedback>
               </View>
             </View>
           </View>
         </View>
-      </TouchableWithoutFeedback>
+      </View>
     )
+  }
+}
+
+function styleExpand(cardHeight, expanded) {
+  if (expanded) {
+    return {
+      backgroundColor: COLORS.orange
+    }
+  } else {
+    return {
+      maxHeight: cardHeight,
+      backgroundColor: COLORS.orange
+    }
   }
 }
 
 function styleCard(width) {
   return {
     width: width - 30,
-    minHeight: 180,
     backgroundColor: COLORS.white,
     marginBottom: 16,
     marginLeft: 6,
