@@ -9,6 +9,7 @@ import {
 } from 'react-native'
 import { format } from 'date-fns'
 
+import ExpandingCard from './reusable/expandingCard'
 import { common, COLORS } from './reusable/styles'
 import * as workoutActions from '../redux/actions/workoutActions'
 
@@ -48,7 +49,7 @@ class WorkoutsScreen extends React.Component {
         attrString = attrString + `${attr.val} ${attr.type} / `
       })
       return (
-        <Text style={[common.tajawal3, {fontSize: 18, color: COLORS.gray8}]}>
+        <Text style={[common.tajawal3, {fontSize: 18, color: COLORS.gray8, paddingBottom: 2}]}>
         {`${exercise.name} - ${attrString}`}
         </Text>
       )
@@ -56,38 +57,14 @@ class WorkoutsScreen extends React.Component {
   }
 
   renderSessionCards = () => {
-    const { width } = Dimensions.get('window')
-
-    const cards = this.props.sessions.map((session) => {
-      const date = new Date()
+    return this.props.sessions.map((session) => {
+      const dateString = format(session.date, 'dddd, MMM D [at] h:mm A')
       return (
-        <View style={{
-          width: width - 30,
-          minHeight: 180,
-          backgroundColor: COLORS.white,
-          marginBottom: 16,
-          marginLeft: 6,
-          shadowColor: COLORS.gray10,
-          shadowOpacity: 0.3,
-          shadowOffset: { width: 1, height: 1 },
-          shadowRadius: 2,
-          paddingTop: 8,
-          paddingBottom: 8,
-        }}>
-          <View style={{borderBottomColor: COLORS.gray1, borderBottomWidth: 1, marginBottom: 10, top: 64, zIndex: 2}} />
-          <View style={{
-            paddingLeft: 16,
-            paddingRight: 16,
-          }}>
-            <Text style={[common.tajawal3, {fontSize: 18, color: COLORS.gray8}]}>{format(session.date, 'dddd, MMM D [at] h:mm A')}</Text>
-            <Text style={[common.tajawal5, {fontSize: 26, color: COLORS.gray10, paddingBottom: 10}]}>{session.workoutName}</Text>
+        <ExpandingCard subHeader={dateString} header={session.workoutName}>
             { this.renderExerciseTexts(session.exercises) }
-          </View>
-        </View>
+        </ExpandingCard>
       )
     })
-
-    return cards
   }
 
   render() {
@@ -98,7 +75,7 @@ class WorkoutsScreen extends React.Component {
             Workouts
           </Text>
         </View>
-        <ScrollView style={{paddingTop: 10}}>
+        <ScrollView style={{paddingTop: 10, marginBottom: 70}}>
           { this.renderSessionCards() }
         </ScrollView>
       </View>

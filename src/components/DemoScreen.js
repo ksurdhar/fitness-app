@@ -81,9 +81,6 @@ class DemoScreen extends React.Component {
       const cardContent = (
         <View>
           <Text style={[common.tajawal3, {fontSize: 18, color: COLORS.gray8, paddingBottom: 2}]}>{'Pushups - 5 sets / 6 reps / 20 secs'}</Text>
-          <Text style={[common.tajawal3, {fontSize: 18, color: COLORS.gray8, paddingBottom: 2}]}>{'Pushups - 5 sets / 6 reps / 20 secs'}</Text>
-          <Text style={[common.tajawal3, {fontSize: 18, color: COLORS.gray8, paddingBottom: 2}]}>{'Pushups - 5 sets / 6 reps / 20 secs'}</Text>
-          <Text style={[common.tajawal3, {fontSize: 18, color: COLORS.gray8, paddingBottom: 2}]}>{'Pushups - 5 sets / 6 reps / 20 secs'}</Text>
           <View style={{paddingTop: 10, borderTopWidth: 1, borderTopColor: COLORS.gray1}}>
             <Text style={[common.tajawal3, {fontSize: 18, color: COLORS.gray8}]}>
             { SAMPLE_TEXT[idx] }
