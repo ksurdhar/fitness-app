@@ -44,42 +44,47 @@ class WorkoutsScreen extends React.Component {
   }
 
   renderExerciseTexts = (exercises) => {
-    return Object.values(exercises).map((exercise) => {
-      let attrString = ''
-      exercise.attributes.forEach((attr) => {
-        attrString = attrString + `${attr.val} ${attr.type} / `
+    if (exercises) {
+      return Object.values(exercises).map((exercise) => {
+        let attrString = ''
+        exercise.attributes.forEach((attr) => {
+          attrString = attrString + `${attr.val} ${attr.type} / `
+        })
+        return (
+          <Text style={[common.tajawal3, {fontSize: 18, color: COLORS.gray8, paddingBottom: 2}]}>
+          {`${exercise.name} - ${attrString}`}
+          </Text>
+        )
       })
-      return (
-        <Text style={[common.tajawal3, {fontSize: 18, color: COLORS.gray8, paddingBottom: 2}]}>
-        {`${exercise.name} - ${attrString}`}
-        </Text>
-      )
-    })
+    } else {
+      return null
+    }
   }
 
   removeSession = (id) => {
-    console.log('DELETEING:', id)
     const userID = this.props.userID
     this.props.removeSession(id, userID)
   }
 
   renderSessionCards = () => {
-    return this.props.sessions.map((session, idx) => {
+    return this.props.sessions.map((session) => {
       const dateString = format(session.date, 'dddd, MMM D [at] h:mm A')
       return (
         <ExpandingCard
-          key={idx}
+          key={session.id}
           subHeader={dateString}
           header={session.workoutName}
           deleteHandler={this.removeSession.bind(this, session.id)}
         >
-            { this.renderExerciseTexts(session.exercises) }
+          { this.renderExerciseTexts(session.exercises) }
         </ExpandingCard>
       )
     })
   }
 
   render() {
+    const { height } = Dimensions.get('window')
+
     return (
       <View style={common.staticView, { marginLeft: 10, marginRight: 10, backgroundColor: COLORS.white }}>
         <View style={[common.row,  { marginTop: 20, marginBottom: 5, justifyContent: 'space-between' }]}>
@@ -87,7 +92,7 @@ class WorkoutsScreen extends React.Component {
             Workouts
           </Text>
         </View>
-        <ScrollView style={{paddingTop: 10, marginBottom: 70}}>
+        <ScrollView style={{paddingTop: 10, marginBottom: 70, height: height - 240}}>
           { this.renderSessionCards() }
         </ScrollView>
       </View>
