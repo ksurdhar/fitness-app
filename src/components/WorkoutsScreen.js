@@ -64,10 +64,11 @@ class WorkoutsScreen extends React.Component {
   }
 
   renderSessionCards = () => {
-    return this.props.sessions.map((session) => {
+    return this.props.sessions.map((session, idx) => {
       const dateString = format(session.date, 'dddd, MMM D [at] h:mm A')
       return (
         <ExpandingCard
+          key={idx}
           subHeader={dateString}
           header={session.workoutName}
           deleteHandler={this.removeSession.bind(this, session.id)}
