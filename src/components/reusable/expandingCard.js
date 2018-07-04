@@ -7,7 +7,8 @@ import {
   View,
   Text
 } from 'react-native'
-import { Entypo } from '@expo/vector-icons'
+import { Entypo, Feather } from '@expo/vector-icons'
+import Swipeout from 'react-native-swipeout'
 
 import { common, COLORS } from './styles'
 class ExpandingCard extends React.Component {
@@ -51,23 +52,38 @@ class ExpandingCard extends React.Component {
 
     this.animateExpansion()
 
+    const deleteButton = (
+      <View style={[common.row, {paddingTop: 16}]}>
+        <Feather name={"trash"} size={28} color={COLORS.white}/>
+      </View>
+    )
+
+    var swipeoutBtns = [
+      {
+        component: deleteButton,
+        backgroundColor: COLORS.orange
+        onPress={this.props.deleteHandler}
+      }
+    ]
+
     return (
       <View style={styleCard(width, this.state.expanded)}>
-        <View>
-          <View style={{ borderBottomColor: COLORS.gray1, borderBottomWidth: 1, marginBottom: 10, top: 64, zIndex: 2}} />
-          <View style={{ paddingLeft: 16, paddingRight: 16 }}>
-            <Text style={[common.tajawal3, {fontSize: 18, color: COLORS.gray8}]}>{this.props.subHeader}</Text>
-            <Text style={[common.tajawal5, {fontSize: 26, color: COLORS.gray10, paddingBottom: 10}]}>{this.props.header}</Text>
-            <View>
-              <Animated.View style={styleExpand(cardHeight)}>
-                { this.props.children }
-              </Animated.View>
-              <View style={[common.row, {marginTop: 10}]}>
-                <TouchableWithoutFeedback onPress={this.handleOnPress}>
-                  <Entypo name={this.state.expanded ? "chevron-up" : "chevron-down"} size={22} color={COLORS.gray5}/>
-                </TouchableWithoutFeedback>
-              </View>
+        <View style={{borderBottomColor: COLORS.gray1, borderBottomWidth: 1}}>
+          <Swipeout right={swipeoutBtns} backgroundColor={COLORS.white}>
+            <View style={{ paddingLeft: 16, paddingRight: 16, paddingTop: 16}}>
+              <Text style={[common.tajawal3, {fontSize: 18, color: COLORS.gray8}]}>{this.props.subHeader}</Text>
+              <Text style={[common.tajawal5, {fontSize: 26, color: COLORS.gray10}]}>{this.props.header}</Text>
             </View>
+          </Swipeout>
+        </View>
+        <View style={{paddingTop: 10, paddingLeft: 16, paddingRight: 16}}>
+          <Animated.View style={styleExpand(cardHeight)}>
+            { this.props.children }
+          </Animated.View>
+          <View style={[common.row, {marginTop: 10}]}>
+            <TouchableWithoutFeedback onPress={this.handleOnPress}>
+              <Entypo name={this.state.expanded ? "chevron-up" : "chevron-down"} size={22} color={COLORS.gray3}/>
+            </TouchableWithoutFeedback>
           </View>
         </View>
       </View>
@@ -96,7 +112,6 @@ function styleCard(width) {
     shadowOpacity: 0.3,
     shadowOffset: { width: 1, height: 1 },
     shadowRadius: 2,
-    paddingTop: 8,
     paddingBottom: 8,
   }
 }
