@@ -20,7 +20,7 @@ import Input from './reusable/input'
 import Switch from './reusable/switch'
 import PressCapture from './reusable/pressCapture'
 import Fade from './reusable/fade'
-import { common, COLORS } from './reusable/styles'
+import { common, COLORS } from './reusable/common'
 
 // ['Leg Blasters', 'Ab Crunches', 'Arm Destroyer', 'Leg Blasters', 'Ab Crunches', 'Arm Destroyer']
 DEMO_STATE = {

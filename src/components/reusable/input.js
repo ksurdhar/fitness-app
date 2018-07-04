@@ -5,7 +5,7 @@ import {
   TextInput,
   View,
 } from 'react-native'
-import { COLORS } from './styles'
+import { COLORS } from './common'
 
 // DIFFERENT INPUT STATES
 // focused, blurred, valid, invalid, filled, empty

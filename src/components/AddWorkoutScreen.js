@@ -16,7 +16,7 @@ import Fade from './reusable/fade'
 import Input from './reusable/input'
 import Switch from './reusable/switch'
 import PressCapture from './reusable/pressCapture'
-import { common, COLORS } from './reusable/styles'
+import { common, COLORS } from './reusable/common'
 import * as workoutActions from '../redux/actions/workoutActions'
 
 // exerciseData = {} of exerciseNames -> attributes[]

@@ -10,7 +10,7 @@ import {
 
 import SideSwipe from 'react-native-sideswipe'
 
-import { common, COLORS } from './styles'
+import { common, COLORS } from './common'
 class CarouselCard extends React.Component {
   constructor() {
     super()

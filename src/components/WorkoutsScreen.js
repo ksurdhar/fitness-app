@@ -10,7 +10,7 @@ import {
 import { format } from 'date-fns'
 
 import ExpandingCard from './reusable/expandingCard'
-import { common, COLORS } from './reusable/styles'
+import { common, COLORS } from './reusable/common'
 import * as workoutActions from '../redux/actions/workoutActions'
 import * as sessionActions from '../redux/actions/sessionActions'
 
@@ -66,6 +66,19 @@ class WorkoutsScreen extends React.Component {
     this.props.removeSession(id, userID)
   }
 
+  renderEmptyMessage = () => {
+    const { height } = Dimensions.get('window')
+    return (
+      <View style={{ justifyContent: 'center', height: height/2 }}>
+        <View style={common.row}>
+          <Text style={[{ fontFamily: 'rubik-medium', fontSize: 24, textAlign: 'center', color: COLORS.gray9 }]}>
+            {'You have not recorded a workout. Try recording one!'}
+          </Text>
+        </View>
+      </View>
+    )
+  }
+
   renderSessionCards = () => {
     return this.props.sessions.map((session) => {
       const dateString = format(session.date, 'dddd, MMM D [at] h:mm A')
@@ -84,6 +97,7 @@ class WorkoutsScreen extends React.Component {
 
   render() {
     const { height } = Dimensions.get('window')
+    const isEmpty = this.props.sessions.length === 0
 
     return (
       <View style={common.staticView, { marginLeft: 10, marginRight: 10, backgroundColor: COLORS.white }}>
@@ -93,7 +107,7 @@ class WorkoutsScreen extends React.Component {
           </Text>
         </View>
         <ScrollView style={{paddingTop: 10, marginBottom: 70, height: height - 240}}>
-          { this.renderSessionCards() }
+          { isEmpty? this.renderEmptyMessage() : this.renderSessionCards() }
         </ScrollView>
       </View>
     )

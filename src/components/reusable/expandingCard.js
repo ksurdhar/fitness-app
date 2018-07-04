@@ -10,7 +10,7 @@ import {
 import { Entypo, Feather } from '@expo/vector-icons'
 import Swipeout from 'react-native-swipeout'
 
-import { common, COLORS } from './styles'
+import { common, COLORS } from './common'
 class ExpandingCard extends React.Component {
   animations = {
     height: new Animated.Value(0),
@@ -58,7 +58,7 @@ class ExpandingCard extends React.Component {
       </View>
     )
 
-    var swipeoutBtns = [
+    const swipeoutBtns = [
       {
         component: deleteButton,
         backgroundColor: COLORS.orange,

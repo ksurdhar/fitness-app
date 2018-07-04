@@ -11,7 +11,7 @@ import {
 import Button from './reusable/button'
 import Input from './reusable/input'
 import PressCapture from './reusable/pressCapture'
-import { common, COLORS } from './reusable/styles'
+import { common, COLORS } from './reusable/common'
 
 import firebase from 'firebase'
 import { login, loginFailed } from '../redux/actions/authActions.js'

@@ -7,7 +7,7 @@ import {
   View
 } from 'react-native'
 
-import { common, COLORS } from './styles'
+import { common, COLORS } from './common'
 class Switch extends React.Component {
   animations = {
     border: new Animated.Value(0),
