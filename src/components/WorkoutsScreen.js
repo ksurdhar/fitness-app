@@ -12,6 +12,7 @@ import { format } from 'date-fns'
 import ExpandingCard from './reusable/expandingCard'
 import { common, COLORS } from './reusable/styles'
 import * as workoutActions from '../redux/actions/workoutActions'
+import * as sessionActions from '../redux/actions/sessionActions'
 
 const mapStateToProps = (state, ownProps) => {
   return {
@@ -56,11 +57,21 @@ class WorkoutsScreen extends React.Component {
     })
   }
 
+  removeSession = (id) => {
+    console.log('DELETEING:', id)
+    const userID = this.props.userID
+    this.props.removeSession(id, userID)
+  }
+
   renderSessionCards = () => {
     return this.props.sessions.map((session) => {
       const dateString = format(session.date, 'dddd, MMM D [at] h:mm A')
       return (
-        <ExpandingCard subHeader={dateString} header={session.workoutName}>
+        <ExpandingCard
+          subHeader={dateString}
+          header={session.workoutName}
+          deleteHandler={this.removeSession.bind(this, session.id)}
+        >
             { this.renderExerciseTexts(session.exercises) }
         </ExpandingCard>
       )
@@ -85,7 +96,7 @@ class WorkoutsScreen extends React.Component {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    removeWorkout: (id, userID) => { dispatch(workoutActions.removeWorkout(id, userID)) },
+    removeSession: (id, userID) => { dispatch(sessionActions.removeSession(id, userID)) },
   }
 }
 

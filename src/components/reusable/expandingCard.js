@@ -61,8 +61,8 @@ class ExpandingCard extends React.Component {
     var swipeoutBtns = [
       {
         component: deleteButton,
-        backgroundColor: COLORS.orange
-        onPress={this.props.deleteHandler}
+        backgroundColor: COLORS.orange,
+        onPress: this.props.deleteHandler
       }
     ]
 
