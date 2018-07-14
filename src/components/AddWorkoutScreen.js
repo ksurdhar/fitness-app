@@ -11,6 +11,7 @@ import {
 } from 'react-native'
 import SideSwipe from 'react-native-sideswipe'
 import { StackActions, NavigationActions } from 'react-navigation'
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
 import KButton from './reusable/button'
 import Fade from './reusable/fade'
@@ -40,7 +41,7 @@ const mapStateToProps = (state, ownProps) => {
 class AddWorkoutScreen extends React.Component {
   static navigationOptions = ({navigation}) => {
     return {
-      title: `Defining Workout`,
+      title: `Define Workout`,
       tabBarLabel: 'Record',
       tabBarIcon: ({ tintColor }) => (
         <Text>Record</Text>
@@ -214,10 +215,28 @@ class AddWorkoutScreen extends React.Component {
     let workoutName
     let exerciseEls = []
 
+    function generateAttrStr(attrs) {
+      if (attrs.length && attrs.length > 0) {
+        let str = ' for '
+        attrs.forEach((attr, idx) => {
+          if (idx === attrs.length - 1) {
+            str = str + attr
+          } else {
+            str = str + `${attr}, `
+          }
+        })
+        return str
+      } else {
+        return ''
+      }
+    }
+
     if (this.state.carouselIdx > 0) {
       workoutName = (
         <Fade>
-          <Text style={[common.baseFont, {fontSize: 24, textDecorationLine: 'underline', textDecorationColor: COLORS.gray5}]}>{this.state.workoutName}</Text>
+          <View style={common.row}>
+            <Text style={[common.baseFont, {fontSize: 24, textDecorationLine: 'underline', textDecorationColor: COLORS.gray5}]}>{this.state.workoutName}</Text>
+          </View>
         </Fade>
       )
     }
@@ -226,7 +245,9 @@ class AddWorkoutScreen extends React.Component {
       exerciseEls = exercises.map((exercise) => {
         return (
           <Fade>
-            <Text style={[common.baseFont, common.smFont]}>{exercise.name}</Text>
+            <View style={common.row}>
+              <Text style={[common.baseFont, common.smFont]}>{exercise.name + generateAttrStr(exercise.attributes)}</Text>
+            </View>
           </Fade>
         )
       })
@@ -234,8 +255,8 @@ class AddWorkoutScreen extends React.Component {
 
     return (
       <View style={{
-        height: 180,
-        paddingTop: 20
+        minHeight: 130,
+        paddingBottom: 10
       }}>
         { workoutName }
         { exerciseEls }
@@ -268,32 +289,34 @@ class AddWorkoutScreen extends React.Component {
   render() {
     return (
       <View style={[common.staticView]}>
-        { this.renderSummary() }
-        <View style={{
-          height: 180,
-          borderBottomWidth: 2,
-          borderTopWidth: 2,
-          borderTopColor: COLORS.gray1,
-          borderBottomColor: COLORS.gray1,
-          marginBottom: 20,
-          paddingTop: 20
-        }}>
-          { this.renderCarousel() }
-        </View>
-        <View style={[common.row, {justifyContent: 'space-around'}]}>
-          <KButton
-            style={{width: 100, padding: 4}}
-            value={'<'}
-            isEnabled={this.isButtonEnabled('back')}
-            onPress={ () => this.decrementCarousel() }
-          />
-          <KButton
-            style={{width: 100, padding: 4}}
-            value={'>'}
-            isEnabled={this.isButtonEnabled('next')}
-            onPress={ () => this.incrementCarousel() }
-          />
-        </View>
+        <KeyboardAwareScrollView style={{flex:1, justifyContent: 'start'}}>
+          { this.renderSummary() }
+          <View style={{
+            height: 180,
+            borderBottomWidth: 2,
+            borderTopWidth: 2,
+            borderTopColor: COLORS.gray1,
+            borderBottomColor: COLORS.gray1,
+            marginBottom: 20,
+            paddingTop: 20
+          }}>
+            { this.renderCarousel() }
+          </View>
+          <View style={[common.row, {justifyContent: 'space-around'}]}>
+            <KButton
+              style={{width: 100, padding: 4}}
+              value={'<'}
+              isEnabled={this.isButtonEnabled('back')}
+              onPress={ () => this.decrementCarousel() }
+            />
+            <KButton
+              style={{width: 100, padding: 4}}
+              value={'>'}
+              isEnabled={this.isButtonEnabled('next')}
+              onPress={ () => this.incrementCarousel() }
+            />
+          </View>
+        </KeyboardAwareScrollView>
       </View>
     )
   }
