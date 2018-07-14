@@ -31,12 +31,19 @@ const mapStateToProps = (state, ownProps) => {
 }
 
 class PromptScreen extends React.Component {
-  static navigationOptions = {
-    title: 'Record',
-    tabBarLabel: 'Record',
-    tabBarIcon: ({ tintColor }) => (
-      <Text>Profile</Text>
-    ),
+  static navigationOptions = ({ navigation }) => {
+    return {
+      title: 'Record',
+      tabBarLabel: 'Record',
+      headerRight: (
+        <View style={{paddingRight: 10}}>
+          <Button
+            title="Add+"
+            onPress={navigation.getParam('toAddWorkoutScreen')}
+          />
+        </View>
+      )
+    }
   }
 
   constructor() {
@@ -49,8 +56,11 @@ class PromptScreen extends React.Component {
   }
 
   componentDidUpdate() {
-    // console.log('PROMPT STATE',this.state)
     console.log('PROMPT WORKOUT PROPS', this.props.workouts)
+  }
+
+  componentDidMount() {
+     this.props.navigation.setParams({ toAddWorkoutScreen: this.toAddWorkoutScreen })
   }
 
   toAddWorkoutScreen = () => {
@@ -120,7 +130,7 @@ class PromptScreen extends React.Component {
       )
     })
     return (
-      <View style={[{ marginTop: 60, borderBottomColor: COLORS.gray1, borderBottomWidth: 1, }]}>
+      <View style={[{ borderBottomColor: COLORS.gray1, borderBottomWidth: 1, }]}>
         { workoutButtons }
       </View>
     )
@@ -144,19 +154,6 @@ class PromptScreen extends React.Component {
 
     return (
       <View style={common.staticView, {marginLeft: 10, marginRight: 10, backgroundColor: COLORS.white, height: height}}>
-        <View style={[common.row,  { marginTop: 20, justifyContent: 'space-between' }]}>
-          <Text style={[common.baseFont, common.lgFont, {marginLeft: 10, color: COLORS.gray10}]}>
-            Record
-          </Text>
-          <KButton
-            style={{width: 120, top: 9}}
-            textColor={COLORS.chill}
-            onPress={this.toAddWorkoutScreen}
-            value={'Add +'}
-            isEnabled={true}
-            transparent={true}
-          />
-        </View>
         { isEmpty ? this.renderEmptyMessage() : this.renderWorkoutButtons() }
       </View>
     )

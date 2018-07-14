@@ -45,6 +45,7 @@ const Navigator = createBottomTabNavigator(
     Record: {
       screen: RecordStack,
       navigationOptions: {
+        tabBarLabel: 'Record',
         tabBarIcon: ({ tintColor }) => (
           <SimpleLineIcons name={"pencil"} size={24}/>
         )

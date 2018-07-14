@@ -10,6 +10,7 @@ import {
   Text,
 } from 'react-native'
 import SideSwipe from 'react-native-sideswipe'
+import { StackActions, NavigationActions } from 'react-navigation'
 
 import KButton from './reusable/button'
 import Fade from './reusable/fade'
@@ -18,6 +19,9 @@ import Switch from './reusable/switch'
 import PressCapture from './reusable/pressCapture'
 import { common, COLORS } from './reusable/common'
 import * as workoutActions from '../redux/actions/workoutActions'
+
+
+
 
 // exerciseData = {} of exerciseNames -> attributes[]
 ADD_WORKOUT_STATE = {
@@ -67,8 +71,12 @@ class AddWorkoutScreen extends React.Component {
       this.props.user.uid
     )
     this.resetState()
-    this.props.navigation.navigate('Workouts')
-    Keyboard.dismiss()
+
+    const resetAction = StackActions.reset({
+      index: 0,
+      actions: [NavigationActions.navigate({ routeName: 'Record' })],
+    })
+    this.props.navigation.dispatch(resetAction)
   }
 
   changeWorkoutNameHandler = (value) => {
