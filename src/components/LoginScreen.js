@@ -9,6 +9,8 @@ import {
   KeyboardAvoidingView
 } from 'react-native'
 
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
+
 import Button from './reusable/button'
 import Input from './reusable/input'
 import PressCapture from './reusable/pressCapture'
@@ -120,17 +122,12 @@ class LoginScreen extends Component {
     return (
       <PressCapture onPress={this.handleCapture}>
         <View style={[common.staticView]}>
-          <Text style={[common.headerFont, { marginTop: 70, marginBottom: 50, textAlign:'center', color: COLORS.gray5 }]}>
-            MIGHTY
-          </Text>
-          <KeyboardAvoidingView
-            behavior="padding"
-            enabled
-            style={{
-              flex: 1,
-              justifyContent: 'space-between',
-            }}
+          <KeyboardAwareScrollView
+            style={{flex:1, justifyContent: 'start'}}
           >
+            <Text style={[common.headerFont, { marginTop: 70, marginBottom: 50, textAlign:'center', color: COLORS.gray5 }]}>
+              MIGHTY
+            </Text>
             <Input
               labelText={'Email'}
               value={this.state.email}
@@ -147,7 +144,6 @@ class LoginScreen extends Component {
               ref={(element) => { this.passwordInput = element }}
               small={true}
             />
-
             <View style={[common.row, {marginTop: 50, marginBottom: 80}]}>
               <Button
                 style={{width: 300}}
@@ -156,7 +152,7 @@ class LoginScreen extends Component {
                 isEnabled={true}
               />
             </View>
-          </KeyboardAvoidingView>
+          </KeyboardAwareScrollView>
         </View>
       </PressCapture>
     )
