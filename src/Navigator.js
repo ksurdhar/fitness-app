@@ -1,6 +1,7 @@
 import React from "react"
 import { StyleSheet, Text, View, Button } from "react-native"
-import { TabNavigator, StackNavigator } from "react-navigation"
+import { createBottomTabNavigator, createStackNavigator } from "react-navigation"
+import { SimpleLineIcons } from '@expo/vector-icons'
 
 import PromptScreen from "./components/PromptScreen"
 import WorkoutsScreen from "./components/WorkoutsScreen"
@@ -10,7 +11,7 @@ import AddWorkoutScreen from './components/AddWorkoutScreen'
 import AddSessionScreen from './components/AddSessionScreen'
 
 
-const WorkoutStack = StackNavigator({
+const WorkoutStack = createStackNavigator({
   Workouts: {
     screen: WorkoutsScreen
   },
@@ -19,7 +20,7 @@ const WorkoutStack = StackNavigator({
   }
 })
 
-const RecordStack = StackNavigator({
+const RecordStack = createStackNavigator({
   Record: {
     screen: PromptScreen
   },
@@ -31,20 +32,35 @@ const RecordStack = StackNavigator({
   }
 })
 
-const Navigator = TabNavigator(
+const Navigator = createBottomTabNavigator(
   {
     Workouts: {
-      screen: WorkoutStack
+      screen: WorkoutStack,
+      navigationOptions: {
+        tabBarIcon: ({ tintColor }) => (
+          <SimpleLineIcons name={"notebook"} size={24}/>
+        )
+      }
     },
     Record: {
-      screen: RecordStack
+      screen: RecordStack,
+      navigationOptions: {
+        tabBarIcon: ({ tintColor }) => (
+          <SimpleLineIcons name={"pencil"} size={24}/>
+        )
+      }
     },
     Profile: {
-      screen: ProfileScreen
+      screen: ProfileScreen,
+      navigationOptions: {
+        tabBarLabel: 'Profile',
+        tabBarIcon: ({ tintColor }) => (
+          <SimpleLineIcons name={"user"} size={24}/>
+        ),
+      }
     }
   },
   {
-    tabBarPosition: "bottom",
     animationEnabled: true,
     tabBarOptions: {
       activeTintColor: "#e91e63"

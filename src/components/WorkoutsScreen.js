@@ -8,6 +8,7 @@ import {
   Text,
 } from 'react-native'
 import { format } from 'date-fns'
+import { Entypo, Feather } from '@expo/vector-icons'
 
 import ExpandingCard from './reusable/expandingCard'
 import { common, COLORS } from './reusable/common'
@@ -27,7 +28,7 @@ class WorkoutsScreen extends React.Component {
     title: 'Workouts',
     tabBarLabel: 'Workouts',
     tabBarIcon: ({ tintColor }) => (
-      <Text>Workouts</Text>
+      <Feather name={"trash"} size={28}/>
     ),
   }
 
@@ -101,11 +102,6 @@ class WorkoutsScreen extends React.Component {
 
     return (
       <View style={common.staticView, { marginLeft: 10, marginRight: 10, backgroundColor: COLORS.white }}>
-        <View style={[common.row,  { marginTop: 20, marginBottom: 5, justifyContent: 'space-between' }]}>
-          <Text style={[common.baseFont, common.lgFont, {marginLeft: 5, color: COLORS.gray10}]}>
-            Workouts
-          </Text>
-        </View>
         <ScrollView style={{paddingTop: 10, marginBottom: 70, height: height - 240}}>
           { isEmpty? this.renderEmptyMessage() : this.renderSessionCards() }
         </ScrollView>

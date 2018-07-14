@@ -32,10 +32,11 @@ const mapStateToProps = (state, ownProps) => {
 
 class PromptScreen extends React.Component {
   static navigationOptions = {
+    title: 'Record',
     tabBarLabel: 'Record',
     tabBarIcon: ({ tintColor }) => (
-      <Text>Record</Text>
-    )
+      <Text>Profile</Text>
+    ),
   }
 
   constructor() {

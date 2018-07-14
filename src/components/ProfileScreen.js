@@ -2,16 +2,14 @@ import React from 'react'
 import firebase from 'firebase'
 import { connect } from 'react-redux'
 import { StyleSheet, Text, View, Button } from 'react-native'
+import { Entypo, Feather } from '@expo/vector-icons'
+
 import * as authActions from '../redux/actions/authActions.js'
 import { firebaseApp } from '../firebase.js'
 
 class ProfileScreen extends React.Component {
   static navigationOptions = {
-    title: 'Profile',
-    tabBarLabel: 'Profile',
-    tabBarIcon: ({ tintColor }) => (
-      <Text>Profile</Text>
-    ),
+    title: 'Profile'
   }
 
   logout() {
