@@ -20,9 +20,6 @@ import PressCapture from './reusable/pressCapture'
 import { common, COLORS } from './reusable/common'
 import * as workoutActions from '../redux/actions/workoutActions'
 
-
-
-
 // exerciseData = {} of exerciseNames -> attributes[]
 ADD_WORKOUT_STATE = {
   carouselIdx: 0,

@@ -6,6 +6,7 @@ import {
   Text,
   TextInput,
   View,
+  KeyboardAvoidingView
 } from 'react-native'
 
 import Button from './reusable/button'
@@ -122,31 +123,40 @@ class LoginScreen extends Component {
           <Text style={[common.headerFont, { marginTop: 70, marginBottom: 50, textAlign:'center', color: COLORS.gray5 }]}>
             MIGHTY
           </Text>
-          <Input
-            labelText={'Email'}
-            value={this.state.email}
-            onChangeText={ text => this.setState({ email: text })}
-            autoFocus={true}
-            ref={(element) => { this.emailInput = element }}
-            small={true}
-          />
-          <Input
-            labelText={'Password'}
-            value={this.state.password}
-            onChangeText={ text => this.setState({ password: text })}
-            secureTextEntry={true}
-            ref={(element) => { this.passwordInput = element }}
-            small={true}
-          />
-
-          <View style={[common.row, {marginTop: 50}]}>
-            <Button
-              style={{width: 300}}
-              onPress={() => this.onSubmit()}
-              value={this.state.action}
-              isEnabled={true}
+          <KeyboardAvoidingView
+            behavior="padding"
+            enabled
+            style={{
+              flex: 1,
+              justifyContent: 'space-between',
+            }}
+          >
+            <Input
+              labelText={'Email'}
+              value={this.state.email}
+              onChangeText={ text => this.setState({ email: text })}
+              autoFocus={true}
+              ref={(element) => { this.emailInput = element }}
+              small={true}
             />
-          </View>
+            <Input
+              labelText={'Password'}
+              value={this.state.password}
+              onChangeText={ text => this.setState({ password: text })}
+              secureTextEntry={true}
+              ref={(element) => { this.passwordInput = element }}
+              small={true}
+            />
+
+            <View style={[common.row, {marginTop: 50, marginBottom: 80}]}>
+              <Button
+                style={{width: 300}}
+                onPress={() => this.onSubmit()}
+                value={this.state.action}
+                isEnabled={true}
+              />
+            </View>
+          </KeyboardAvoidingView>
         </View>
       </PressCapture>
     )

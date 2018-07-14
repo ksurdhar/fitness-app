@@ -30,6 +30,7 @@
     "react-native": "0.50.3",
     "react-native-config": "^0.11.5",
     "react-native-easy-grid": "^0.1.17",
+    "react-native-keyboard-aware-scroll-view": "^0.6.0",
     "react-native-material-dropdown": "^0.8.0",
     "react-native-sideswipe": "^1.4.2",
     "react-native-swipeout": "^2.3.3",
