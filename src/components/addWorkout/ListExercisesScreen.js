@@ -14,7 +14,6 @@ import { StackActions, NavigationActions } from 'react-navigation'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import { MaterialIcons } from '@expo/vector-icons'
 
-import KButton from '../reusable/button'
 import Input from '../reusable/input'
 import PressCapture from '../reusable/pressCapture'
 import { common, COLORS } from '../reusable/common'
@@ -22,7 +21,15 @@ import { common, COLORS } from '../reusable/common'
 class ListExercisesScreen extends React.Component {
   static navigationOptions = ({navigation}) => {
     return {
-      title: `List Exercises`,
+      title: `Exercises`,
+      headerRight: (
+        <View style={{paddingRight: 10}}>
+          <Button
+            title="Next"
+            onPress={navigation.getParam('toListAttributes')}
+          />
+        </View>
+      )
     }
   }
 
@@ -40,7 +47,14 @@ class ListExercisesScreen extends React.Component {
     })
   }
 
-  componentDidUpdate() {
+  componentDidMount() {
+    this.props.navigation.setParams({ toListAttributes: this.toListAttributes })
+  }
+
+  toListAttributes = () => {
+    this.props.navigation.navigate('ListAttributes', {
+      exerciseNames: this.state.exerciseNames
+    })
   }
 
   changeExerciseNameHandler = (value) => {
@@ -90,7 +104,7 @@ class ListExercisesScreen extends React.Component {
             <Text style={[common.tajawal3, {fontSize: 18, color: COLORS.gray8}]}>Hit next when you’ve added them all.</Text>
           </View>
           <View style={[common.row, {height: 100}]}>
-            <ScrollView horizontal={true} centerContent={true} onContentSizeChange={(e) => {console.log('CONTENT SIZE CHANGE', e)}} ref={(element) => { this.pillContainer = element }}>
+            <ScrollView horizontal={true} centerContent={true} ref={(element) => { this.pillContainer = element }}>
             { this.renderExercises() }
             </ScrollView>
           </View>

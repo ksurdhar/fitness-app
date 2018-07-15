@@ -38,7 +38,7 @@ class PromptScreen extends React.Component {
       headerRight: (
         <View style={{paddingRight: 10}}>
           <Button
-            title="Add+"
+            title="Add"
             onPress={navigation.getParam('toAddWorkoutFlow')}
           />
         </View>
@@ -56,11 +56,11 @@ class PromptScreen extends React.Component {
   }
 
   componentDidUpdate() {
-    console.log('PROMPT WORKOUT PROPS', this.props.workouts)
+    // console.log('PROMPT WORKOUT PROPS', this.props.workouts)
   }
 
   componentDidMount() {
-     this.props.navigation.setParams({ toAddWorkoutFlow: this.toAddWorkoutFlow })
+    this.props.navigation.setParams({ toAddWorkoutFlow: this.toAddWorkoutFlow })
   }
 
   toAddWorkoutFlow = () => {
