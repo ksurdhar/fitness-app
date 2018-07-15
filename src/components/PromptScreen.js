@@ -39,7 +39,7 @@ class PromptScreen extends React.Component {
         <View style={{paddingRight: 10}}>
           <Button
             title="Add+"
-            onPress={navigation.getParam('toAddWorkoutScreen')}
+            onPress={navigation.getParam('toAddWorkoutFlow')}
           />
         </View>
       )
@@ -60,11 +60,11 @@ class PromptScreen extends React.Component {
   }
 
   componentDidMount() {
-     this.props.navigation.setParams({ toAddWorkoutScreen: this.toAddWorkoutScreen })
+     this.props.navigation.setParams({ toAddWorkoutFlow: this.toAddWorkoutFlow })
   }
 
-  toAddWorkoutScreen = () => {
-    this.props.navigation.navigate('AddWorkout')
+  toAddWorkoutFlow = () => {
+    this.props.navigation.navigate('ListExercises')
   }
 
   removeWorkout = (workoutID) => {

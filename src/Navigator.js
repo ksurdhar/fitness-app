@@ -9,7 +9,10 @@ import WorkoutScreen from "./components/WorkoutScreen"
 import ProfileScreen from "./components/ProfileScreen"
 import AddWorkoutScreen from './components/AddWorkoutScreen'
 import AddSessionScreen from './components/AddSessionScreen'
-
+import ListExercisesScreen from './components/addWorkout/ListExercisesScreen'
+import ListAttributesScreen from './components/addWorkout/ListAttributesScreen'
+import NameWorkoutScreen from './components/addWorkout/NameWorkoutScreen'
+import SummaryScreen from './components/addWorkout/SummaryScreen'
 
 const WorkoutStack = createStackNavigator({
   Workouts: {
@@ -24,12 +27,13 @@ const RecordStack = createStackNavigator({
   Record: {
     screen: PromptScreen
   },
-  AddWorkout: {
-    screen: AddWorkoutScreen
-  },
   AddSession: {
     screen: AddSessionScreen
-  }
+  },
+  ListExercises: ListExercisesScreen,
+  ListAttributes: ListAttributesScreen,
+  NameWorkout: NameWorkoutScreen,
+  Summary: SummaryScreen
 })
 
 const Navigator = createBottomTabNavigator(

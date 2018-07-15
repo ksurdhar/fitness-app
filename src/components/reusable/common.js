@@ -52,6 +52,10 @@ const common = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center'
   },
+  col: {
+    flexDirection: 'column',
+    justifyContent: 'center'
+  },
   tajawal3: {
     fontFamily: 'tajawal3',
   },
