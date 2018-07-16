@@ -68,7 +68,7 @@ class Switch extends React.Component {
         <TouchableWithoutFeedback onPress={this.handleOnPress}>
           <Animated.View style={[styleSwitch(animations), this.props.style]} />
         </TouchableWithoutFeedback>
-        <Text style={{ position: 'absolute', left: 36, fontSize: 24, fontFamily: 'rubik-medium', color: COLORS.gray7, textAlign: 'center'}}>
+        <Text style={{ position: 'absolute', left: 36, bottom: 1, fontSize: 24, fontFamily: 'rubik-medium', color: COLORS.gray7, textAlign: 'center'}}>
           { this.props.label }
         </Text>
       </View>

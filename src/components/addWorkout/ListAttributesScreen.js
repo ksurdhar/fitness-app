@@ -12,6 +12,7 @@ import {
 import SideSwipe from 'react-native-sideswipe'
 import { StackActions, NavigationActions } from 'react-navigation'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
+import { Foundation } from '@expo/vector-icons'
 
 import KButton from '../reusable/button'
 import Fade from '../reusable/fade'
@@ -35,28 +36,22 @@ class AddWorkoutScreen extends React.Component {
     }
   }
 
-  constructor() {
-    super()
-    this.state = {
-      exerciseData: {},
-      exerciseNames: [],
-      exerciseIdx: 0
-    }
-  }
-
-  componentDidMount() {
+  constructor(props) {
+    super(props)
     const exerciseData = {}
     const exerciseNames = this.props.navigation.getParam('exerciseNames')
     exerciseNames.forEach((name, idx) => {
-      exerciseData[idx] = [{
+      exerciseData[idx] = {
         name,
         attributes: []
-      }]
+      }
     })
-    this.setState({
-      exerciseData,
-      exerciseNames
-    })
+
+    this.state = {
+      exerciseData: exerciseData,
+      exerciseNames: exerciseNames,
+      exerciseIdx: 0
+    }
   }
 
   resetState() {
@@ -103,54 +98,51 @@ class AddWorkoutScreen extends React.Component {
     return eData && eData.attributes && eData.attributes.indexOf(attrVal) > -1
   }
 
-  renderSummary = () => {
-    function generateAttrStr(attrs) {
-      if (attrs.length && attrs.length > 0) {
-        let str = ' for '
-        attrs.forEach((attr, idx) => {
-          if (idx === attrs.length - 1) {
-            str = str + attr
-          } else {
-            str = str + `${attr}, `
-          }
-        })
-        return str
-      } else {
-        return ''
-      }
-    }
-    const exercises = Object.values(this.state.exerciseData)
-    if (exercises.length > 0) {
-      exerciseEls = exercises.map((exercise) => {
-        return (
-          <Fade>
-            <View style={common.row}>
-              <Text style={[common.baseFont, common.smFont]}>{exercise.name + generateAttrStr(exercise.attributes)}</Text>
-            </View>
-          </Fade>
-        )
-      })
-    }
+  isButtonEnabled = (direction) => {
+    const spaceLeft = this.state.exerciseIdx > 0
+    const spaceRight = this.state.exerciseIdx + 1 < this.state.exerciseNames.length
+    const withinBoundary = direction === 'next' ? spaceRight : spaceLeft
+    const attrSet = this.state.exerciseData[this.state.exerciseIdx].attributes.length > 0
 
-    return (
-      <View style={{
-        minHeight: 130,
-        paddingBottom: 10
-      }}>
-        { workoutName }
-        { exerciseEls }
-      </View>
-    )
+    return direction === 'next' ? attrSet && withinBoundary : withinBoundary
+  }
+
+  goBack = () => {
+    this.setState((prevState) => {
+      return produce(prevState, (draftState) => {
+        draftState.exerciseIdx = prevState.exerciseIdx - 1
+      })
+    })
+  }
+
+  goForward = () => {
+    this.setState((prevState) => {
+      return produce(prevState, (draftState) => {
+        draftState.exerciseIdx = prevState.exerciseIdx + 1
+      })
+    })
   }
 
   renderSwitches = () => {
     if (this.state.exerciseNames.length > 0) {
       return (
-        <View>
-        <Switch label={'sets'} onPress={this.handleTogglePress} enabled={this.determineIfToggled('sets')}/>
-        <Switch label={'reps'} onPress={this.handleTogglePress} enabled={this.determineIfToggled('reps')}/>
-        <Switch label={'weight'} onPress={this.handleTogglePress} enabled={this.determineIfToggled('weight')}/>
-        <Switch label={'seconds'}/>
+        <View style={{marginTop: 20}}>
+          <View style={[common.row, {justifyContent: 'space-around'}]}>
+            <View style={{width: 90}}>
+              <Switch label={'sets'} onPress={this.handleTogglePress} enabled={this.determineIfToggled('sets')}/>
+            </View>
+            <View style={{width: 90}}>
+              <Switch label={'reps'} onPress={this.handleTogglePress} enabled={this.determineIfToggled('reps')}/>
+            </View>
+          </View>
+          <View style={[common.row, {justifyContent: 'space-around'}]}>
+            <View style={{width: 90}}>
+              <Switch label={'weight'} onPress={this.handleTogglePress} enabled={this.determineIfToggled('weight')}/>
+            </View>
+            <View style={{width: 90}}>
+              <Switch label={'time'} onPress={this.handleTogglePress} enabled={this.determineIfToggled('time')}/>
+            </View>
+          </View>
         </View>
       )
     } else {
@@ -158,20 +150,40 @@ class AddWorkoutScreen extends React.Component {
     }
   }
 
+  renderButtons = () => {
+    return (
+      <View style={[common.row, {marginTop: 50}]}>
+        <KButton
+          style={{width: 70, padding: 4, marginRight: 20, borderRadius: 16}}
+          value={<Foundation name={"arrow-left"} size={30} color={COLORS.gray1}/>}
+          isEnabled={this.isButtonEnabled('back')}
+          onPress={ () => this.goBack() }
+        />
+        <KButton
+          style={{width: 70, padding: 4, marginLeft: 20, borderRadius: 16}}
+          value={<Foundation name={"arrow-right"} size={30} color={COLORS.gray1}/>}
+          isEnabled={this.isButtonEnabled('next')}
+          onPress={ () => this.goForward() }
+        />
+      </View>
+    )
+  }
+
   render() {
     return (
       <View style={[common.staticView]}>
-        <View style={common.row}>
+        <View style={[common.row, {marginTop: 10}]}>
           <Text style={[common.tajawal5, {fontSize: 22, color: COLORS.gray10, textAlign: 'center'}]}>
             {`Choose what attributes to \n track for each exercise.`}
           </Text>
         </View>
-        <View style={[common.row]}>
+        <View style={[common.row, {marginTop: 30}]}>
           <Text style={[common.tajawal5, {fontSize: 30, color: COLORS.gray10, textAlign: 'center'}]}>
-            {this.state.exerciseNames[this.state.exerciseIdx]}
+            {this.state.exerciseNames[this.state.exerciseIdx] + ` (${this.state.exerciseIdx + 1}/${this.state.exerciseNames.length})`}
           </Text>
         </View>
         { this.renderSwitches() }
+        { this.renderButtons() }
       </View>
     )
   }

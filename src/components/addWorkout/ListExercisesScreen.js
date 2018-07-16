@@ -76,7 +76,6 @@ class ListExercisesScreen extends React.Component {
     }, 100)
   }
 
-// modify this to render pills which appear width wise
   renderExercises = () => {
     return this.state.exerciseNames.map((e) => {
       return (
@@ -95,7 +94,7 @@ class ListExercisesScreen extends React.Component {
     return (
       <View style={[common.staticView]}>
         <KeyboardAwareScrollView style={{flex:1, justifyContent: 'start'}}>
-          <View style={common.row}>
+          <View style={[common.row, {marginTop: 10}]}>
             <Text style={[common.tajawal5, {fontSize: 22, color: COLORS.gray10, textAlign: 'center'}]}>
               {`Type the names of exercises \n in your workout.`}
             </Text>
