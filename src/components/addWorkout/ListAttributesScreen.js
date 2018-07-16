@@ -29,10 +29,19 @@ const mapStateToProps = (state, ownProps) => {
   }
 }
 
-class AddWorkoutScreen extends React.Component {
+class ListAttributesScreen extends React.Component {
   static navigationOptions = ({navigation}) => {
     return {
       title: `Attributes`,
+      headerRight: (
+        <View style={{paddingRight: 10}}>
+          <KButton
+            value={'Next'}
+            isEnabled={navigation.getParam('nextEnabled')}
+            onPress={navigation.getParam('toNameWorkout')}
+          />
+        </View>
+      )
     }
   }
 
@@ -58,31 +67,37 @@ class AddWorkoutScreen extends React.Component {
     this.setState({})
   }
 
-  componentDidUpdate() {
-    console.log('state',this.state)
+  componentDidMount() {
+    this.props.navigation.setParams({
+      nextEnabled: false,
+      toNameWorkout: this.toNameWorkout
+    })
   }
 
-  // addWorkout = () => {
-  //   this.props.addWorkout(
-  //     this.state.workoutName,
-  //     this.state.exerciseData,
-  //     this.props.user.uid
-  //   )
-  //   this.resetState()
-  //
-  //   const resetAction = StackActions.reset({
-  //     index: 0,
-  //     actions: [NavigationActions.navigate({ routeName: 'Record' })],
-  //   })
-  //   this.props.navigation.dispatch(resetAction)
-  // }
+  componentDidUpdate(prevProps) {
+    const nextEnabled = this.props.navigation.getParam('nextEnabled')
+    const lastExerciseHasAttr = this.state.exerciseData[this.state.exerciseNames.length - 1].attributes.length > 0
+
+    if (lastExerciseHasAttr && nextEnabled === false) {
+      this.props.navigation.setParams({ nextEnabled: true })
+    } else if (prevProps.navigation.getParam('nextEnabled') !== false) {
+      this.props.navigation.setParams({ nextEnabled: false })
+    }
+  }
+
+  toNameWorkout = () => {
+    console.log('toNameWorkout!')
+    // this.props.navigation.navigate('NameWorkout', {
+    //   exerciseNames: this.state.exerciseNames,
+    //   exerciseData: this.state.exerciseData
+    // })
+  }
 
   handleCapture = () => {
     this.textInput && this.textInput.blur()
   }
-  // attributes messed up
+
   handleTogglePress = (label) => {
-    // toggles attribute on an exercise
     this.setState((prevState) => {
       return produce(prevState, (draftState) => {
         const attrs = prevState.exerciseData[this.state.exerciseIdx].attributes
@@ -189,4 +204,4 @@ const mapDispatchToProps = (dispatch) => {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(AddWorkoutScreen)
+export default connect(mapStateToProps, mapDispatchToProps)(ListAttributesScreen)

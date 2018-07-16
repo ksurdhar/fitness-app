@@ -37,7 +37,7 @@ class ListExercisesScreen extends React.Component {
     super()
     this.state = {
       currentName: '',
-      exerciseNames: []
+      exerciseNames: ['pushups', 'pullups']
     }
   }
 
