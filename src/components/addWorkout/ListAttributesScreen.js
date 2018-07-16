@@ -126,7 +126,7 @@ class AddWorkoutScreen extends React.Component {
   renderSwitches = () => {
     if (this.state.exerciseNames.length > 0) {
       return (
-        <View style={{marginTop: 20}}>
+        <View style={{marginTop: 30}}>
           <View style={[common.row, {justifyContent: 'space-around'}]}>
             <View style={{width: 90}}>
               <Switch label={'sets'} onPress={this.handleTogglePress} enabled={this.determineIfToggled('sets')}/>
@@ -150,25 +150,6 @@ class AddWorkoutScreen extends React.Component {
     }
   }
 
-  renderButtons = () => {
-    return (
-      <View style={[common.row, {marginTop: 50}]}>
-        <KButton
-          style={{width: 70, padding: 4, marginRight: 20, borderRadius: 16}}
-          value={<Foundation name={"arrow-left"} size={30} color={COLORS.gray1}/>}
-          isEnabled={this.isButtonEnabled('back')}
-          onPress={ () => this.goBack() }
-        />
-        <KButton
-          style={{width: 70, padding: 4, marginLeft: 20, borderRadius: 16}}
-          value={<Foundation name={"arrow-right"} size={30} color={COLORS.gray1}/>}
-          isEnabled={this.isButtonEnabled('next')}
-          onPress={ () => this.goForward() }
-        />
-      </View>
-    )
-  }
-
   render() {
     return (
       <View style={[common.staticView]}>
@@ -177,13 +158,24 @@ class AddWorkoutScreen extends React.Component {
             {`Choose what attributes to \n track for each exercise.`}
           </Text>
         </View>
-        <View style={[common.row, {marginTop: 30}]}>
-          <Text style={[common.tajawal5, {fontSize: 30, color: COLORS.gray10, textAlign: 'center'}]}>
+        <View style={[common.row, {marginTop: 30, justifyContent: 'space-between'}]}>
+          <KButton
+            style={{width: 60, padding: 4, marginLeft: 15, borderRadius: 16}}
+            value={"<"}
+            isEnabled={this.isButtonEnabled('back')}
+            onPress={ () => this.goBack() }
+          />
+          <Text style={[common.tajawal5, {fontSize: 30, color: COLORS.gray10, textAlign: 'center', marginTop: 10}]}>
             {this.state.exerciseNames[this.state.exerciseIdx] + ` (${this.state.exerciseIdx + 1}/${this.state.exerciseNames.length})`}
           </Text>
+          <KButton
+            style={{width: 60, padding: 4, marginRight: 15, borderRadius: 16}}
+            value={">"}
+            isEnabled={this.isButtonEnabled('next')}
+            onPress={ () => this.goForward() }
+          />
         </View>
         { this.renderSwitches() }
-        { this.renderButtons() }
       </View>
     )
   }
