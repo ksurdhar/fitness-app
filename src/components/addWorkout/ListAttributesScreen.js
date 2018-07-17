@@ -14,6 +14,7 @@ import { StackActions, NavigationActions } from 'react-navigation'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import { Foundation } from '@expo/vector-icons'
 
+import AnimatedText from '../reusable/animatedText'
 import KButton from '../reusable/button'
 import Fade from '../reusable/fade'
 import Input from '../reusable/input'
@@ -35,10 +36,10 @@ class ListAttributesScreen extends React.Component {
       title: `Attributes`,
       headerRight: (
         <View style={{paddingRight: 10}}>
-          <KButton
+          <AnimatedText
             value={'Next'}
+            textColors={[COLORS.gray10, COLORS.peach]}
             isEnabled={navigation.getParam('nextEnabled')}
-            onPress={navigation.getParam('toNameWorkout')}
           />
         </View>
       )
