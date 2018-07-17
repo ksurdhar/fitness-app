@@ -8,6 +8,7 @@ import {
   Button,
   View,
   Text,
+  TouchableOpacity
 } from 'react-native'
 import SideSwipe from 'react-native-sideswipe'
 import { StackActions, NavigationActions } from 'react-navigation'
@@ -36,11 +37,13 @@ class ListAttributesScreen extends React.Component {
       title: `Attributes`,
       headerRight: (
         <View style={{paddingRight: 10}}>
-          <AnimatedText
-            value={'Next'}
-            textColors={[COLORS.gray10, COLORS.peach]}
-            isEnabled={navigation.getParam('nextEnabled')}
-          />
+          <TouchableOpacity onPress={navigation.getParam('toNameWorkout')} disabled={!navigation.getParam('nextEnabled')}>
+            <AnimatedText
+              value={'Next'}
+              textColors={[COLORS.gray10, COLORS.peach]}
+              isEnabled={navigation.getParam('nextEnabled')}
+            />
+          </TouchableOpacity>
         </View>
       )
     }
