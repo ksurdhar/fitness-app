@@ -8,317 +8,96 @@ import {
   Button,
   View,
   Text,
+  ScrollView
 } from 'react-native'
-import SideSwipe from 'react-native-sideswipe'
 import { StackActions, NavigationActions } from 'react-navigation'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
+import { MaterialIcons } from '@expo/vector-icons'
 
-import KButton from '../reusable/button'
-import Fade from '../reusable/fade'
 import Input from '../reusable/input'
-import Switch from '../reusable/switch'
 import PressCapture from '../reusable/pressCapture'
 import { common, COLORS } from '../reusable/common'
 import * as workoutActions from '../../redux/actions/workoutActions'
 
-// exerciseData = {} of exerciseNames -> attributes[]
-ADD_WORKOUT_STATE = {
-  carouselIdx: 0,
-  exerciseIdx: 0,
-  workoutName: '',
-  tempEName: '',
-  exerciseData: {},
-}
-
-CAROUSEL_LENGTH = 4
-
-const mapStateToProps = (state, ownProps) => {
-  return {
-    user: state.auth.user
-  }
-}
-
-class AddWorkoutScreen extends React.Component {
+class NameWorkout extends React.Component {
   static navigationOptions = ({navigation}) => {
     return {
-      title: `Define Workout`,
-      tabBarLabel: 'Record',
-      tabBarIcon: ({ tintColor }) => (
-        <Text>Record</Text>
-      )
+      title: `Name`
     }
   }
 
   constructor() {
     super()
-    this.state = ADD_WORKOUT_STATE
+    this.state = {
+      currentName: '',
+    }
   }
 
-  resetState() {
-    this.setState(ADD_WORKOUT_STATE)
-  }
-
-  componentDidUpdate() {
-    // console.log('state',this.state)
-  }
+  // componentDidMount() {
+  //   this.props.navigation.setParams({ toPrompts: this.toPrompts })
+  // }
+  //
+  // toPrompts = () => {
+  //   this.props.navigation.navigate('ListAttributes', {
+  //     exerciseNames: this.state.exerciseNames
+  //   })
+  // }
 
   addWorkout = () => {
+    const eData = this.props.navigation.getParam('exerciseData')
     this.props.addWorkout(
-      this.state.workoutName,
-      this.state.exerciseData,
+      this.state.currentName,
+      eData,
       this.props.user.uid
     )
-    this.resetState()
 
     const resetAction = StackActions.reset({
       index: 0,
       actions: [NavigationActions.navigate({ routeName: 'Record' })],
     })
+    
     this.props.navigation.dispatch(resetAction)
   }
 
-  changeWorkoutNameHandler = (value) => {
-    this.setState({workoutName: value})
-  }
-
-  changeExerciseNameHandler = (value) => {
-    this.setState({tempEName: value})
+  changeNameHandler = (value) => {
+    this.setState({currentName: value})
   }
 
   handleCapture = () => {
     this.textInput && this.textInput.blur()
   }
 
-  isButtonEnabled = (direction) => {
-    const spaceLeft = this.state.carouselIdx - 1 >= 0
-    const spaceRight = this.state.carouselIdx + 1 < CAROUSEL_LENGTH
-    const withinBoundary = direction === 'next' ? spaceRight : spaceLeft
-    let indexCondition = false
-    if (this.state.carouselIdx === 0) {
-      indexCondition = this.state.workoutName && this.state.workoutName.length > 0
-    }
-    if (this.state.carouselIdx === 1) {
-      // user has supplied a name
-      indexCondition = this.state.tempEName && this.state.tempEName.length > 0
-    }
-    if (this.state.carouselIdx === 2) {
-      // one attribute must be set
-      indexCondition = this.state.exerciseData[this.state.exerciseIdx].attributes.length > 0
-    }
-    return direction === 'next' ? indexCondition && withinBoundary : withinBoundary
-  }
-
-  incrementCarousel = () => {
-    // additionally fires an action based upon the index we are currently on
-    if (this.state.carouselIdx + 1 < CAROUSEL_LENGTH) {
-      this.setState({
-        carouselIdx: this.state.carouselIdx + 1
-      })
-    }
-    if (this.state.carouselIdx === 1) {
-      // adds exercise data to state, resets temp exercise name
-      this.setState((prevState) => {
-        return produce(prevState, (draftState) => {
-          const exerciseObj = {
-            name: prevState.tempEName,
-            attributes: []
-          }
-          draftState.exerciseData[this.state.exerciseIdx] = exerciseObj
-          draftState.tempEName = ''
-        })
-      })
-    }
-  }
-
-  decrementCarousel = () => {
-    if (this.state.carouselIdx - 1 >= 0) {
-      this.setState({
-        carouselIdx: this.state.carouselIdx - 1
-      })
-    }
-  }
-
-  handleTogglePress = (label) => {
-    // toggles attribute on an exercise
-    this.setState((prevState) => {
-      return produce(prevState, (draftState) => {
-        const attrs = prevState.exerciseData[this.state.exerciseIdx].attributes
-        const idx = attrs.indexOf(label)
-        idx === -1 ? attrs.push(label) : attrs.splice(idx, 1)
-        draftState.exerciseData[this.state.exerciseIdx].attributes = attrs
-      })
-    })
-  }
-
-  determineIfToggled = (attrVal) => {
-    const eData = this.state.exerciseData[this.state.exerciseIdx]
-    return eData && eData.attributes.indexOf(attrVal) > -1
-  }
-
-  addExercise = () => {
-    this.setState({
-      exerciseIdx: this.state.exerciseIdx + 1,
-      carouselIdx: 1
-    })
-  }
-
-  renderCurrentPrompt = (idx, item) => {
-    switch (idx) {
-      case 0:
-        return (
-          <Input
-            value={this.state.workoutName}
-            labelText='Name Your Workout:'
-            onChangeText={this.changeWorkoutNameHandler}
-            ref={(element) => { this.input1 = element }}
-            small={true}
-            fixedLabel={true}
-            style={{marginBottom: 20}}
-          />
-        )
-        break;
-      case 1:
-        return (
-          <Input
-            value={this.state.tempEName}
-            labelText='Name An Exercise:'
-            onChangeText={this.changeExerciseNameHandler}
-            ref={(element) => { this.input2 = element }}
-            small={true}
-            fixedLabel={true}
-            style={{marginBottom: 20}}
-          />
-        )
-        break
-      case 2:
-        return (
-          <View>
-            <Switch label={'sets'} onPress={this.handleTogglePress} enabled={this.determineIfToggled('sets')}/>
-            <Switch label={'reps'} onPress={this.handleTogglePress} enabled={this.determineIfToggled('reps')}/>
-            <Switch label={'weight'} onPress={this.handleTogglePress} enabled={this.determineIfToggled('weight')}/>
-            <Switch label={'seconds'}/>
-          </View>
-        )
-        break;
-        case 3:
-          return (
-            <View>
-              <Button title='Add Another Exercise' onPress={this.addExercise}/>
-              <Button title='Submit Workout' onPress={this.addWorkout}/>
-            </View>
-          )
-          break;
-    }
-  }
-
-  renderSummary = () => {
-    let workoutName
-    let exerciseEls = []
-
-    function generateAttrStr(attrs) {
-      if (attrs.length && attrs.length > 0) {
-        let str = ' for '
-        attrs.forEach((attr, idx) => {
-          if (idx === attrs.length - 1) {
-            str = str + attr
-          } else {
-            str = str + `${attr}, `
-          }
-        })
-        return str
-      } else {
-        return ''
-      }
-    }
-
-    if (this.state.carouselIdx > 0) {
-      workoutName = (
-        <Fade>
-          <View style={common.row}>
-            <Text style={[common.baseFont, {fontSize: 24, textDecorationLine: 'underline', textDecorationColor: COLORS.gray5}]}>{this.state.workoutName}</Text>
-          </View>
-        </Fade>
-      )
-    }
-    const exercises = Object.values(this.state.exerciseData)
-    if (exercises.length > 0) {
-      exerciseEls = exercises.map((exercise) => {
-        return (
-          <Fade>
-            <View style={common.row}>
-              <Text style={[common.baseFont, common.smFont]}>{exercise.name + generateAttrStr(exercise.attributes)}</Text>
-            </View>
-          </Fade>
-        )
-      })
-    }
-
-    return (
-      <View style={{
-        minHeight: 130,
-        paddingBottom: 10
-      }}>
-        { workoutName }
-        { exerciseEls }
-      </View>
-    )
-  }
-
-  renderCarousel = () => { // carousel does not work with pressCapture component
-    const { width } = Dimensions.get('window');
-
-    return (
-      <SideSwipe
-        index={this.state.carouselIdx}
-        itemWidth={width}
-        style={{ width: width }}
-        data={[1,2,3,4]}
-        useNativeDriver={true}
-        onIndexChange={index => {
-          this.setState(() => ({ carouselIdx: index }))
-        }}
-        renderItem={({ itemIndex, currentIndex, item, animatedValue }) => (
-          <View style={[{ width: width - 20, marginRight: 20, height: 140}]}>
-            { this.renderCurrentPrompt(itemIndex, item) }
-          </View>
-        )}
-      />
-    )
-  }
-
   render() {
+    const { width, height } = Dimensions.get('window')
     return (
       <View style={[common.staticView]}>
         <KeyboardAwareScrollView style={{flex:1, justifyContent: 'start'}}>
-          { this.renderSummary() }
-          <View style={{
-            height: 180,
-            borderBottomWidth: 2,
-            borderTopWidth: 2,
-            borderTopColor: COLORS.gray1,
-            borderBottomColor: COLORS.gray1,
-            marginBottom: 20,
-            paddingTop: 20
-          }}>
-            { this.renderCarousel() }
+          <View style={[common.row, {marginTop: 10}]}>
+            <Text style={[common.tajawal5, {fontSize: 22, color: COLORS.gray10, textAlign: 'center'}]}>
+              {`Finally, give your workout \n a good name.`}
+            </Text>
           </View>
-          <View style={[common.row, {justifyContent: 'space-around'}]}>
-            <KButton
-              style={{width: 100, padding: 4}}
-              value={'<'}
-              isEnabled={this.isButtonEnabled('back')}
-              onPress={ () => this.decrementCarousel() }
-            />
-            <KButton
-              style={{width: 100, padding: 4}}
-              value={'>'}
-              isEnabled={this.isButtonEnabled('next')}
-              onPress={ () => this.incrementCarousel() }
-            />
+          <Input
+            value={this.state.currentName}
+            labelText='Workout Name'
+            onChangeText={this.changeNameHandler}
+            ref={(element) => { this.input = element }}
+            small={true}
+            style={{marginBottom: 20, width: width-20, marginTop: 100}}
+            fixedLabel={true}
+          />
+          <View style={[common.row]}>
+            <MaterialIcons name={"add-circle"} size={32} color={COLORS.peach} style={{top: -62, left: 180, backgroundColor: 'transparent'}} onPress={this.addWorkout}/>
           </View>
         </KeyboardAwareScrollView>
       </View>
     )
+  }
+}
+
+const mapStateToProps = (state, ownProps) => {
+  return {
+    user: state.auth.user
   }
 }
 
@@ -330,4 +109,4 @@ const mapDispatchToProps = (dispatch) => {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(AddWorkoutScreen)
+export default connect(mapStateToProps, mapDispatchToProps)(NameWorkout)

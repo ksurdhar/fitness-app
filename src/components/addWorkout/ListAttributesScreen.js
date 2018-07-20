@@ -90,11 +90,10 @@ class ListAttributesScreen extends React.Component {
   }
 
   toNameWorkout = () => {
-    console.log('toNameWorkout!')
-    // this.props.navigation.navigate('NameWorkout', {
-    //   exerciseNames: this.state.exerciseNames,
-    //   exerciseData: this.state.exerciseData
-    // })
+    this.props.navigation.navigate('NameWorkout', {
+      exerciseNames: this.state.exerciseNames,
+      exerciseData: this.state.exerciseData
+    })
   }
 
   handleCapture = () => {
@@ -176,6 +175,9 @@ class ListAttributesScreen extends React.Component {
           <Text style={[common.tajawal5, {fontSize: 22, color: COLORS.gray10, textAlign: 'center'}]}>
             {`Choose what attributes to \n track for each exercise.`}
           </Text>
+        </View>
+        <View style={common.row}>
+          <Text style={[common.tajawal3, {fontSize: 18, color: COLORS.gray8}]}>Hit next when you’ve added them all.</Text>
         </View>
         <View style={[common.row, {marginTop: 30, justifyContent: 'space-between'}]}>
           <KButton
