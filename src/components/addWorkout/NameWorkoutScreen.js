@@ -33,16 +33,6 @@ class NameWorkout extends React.Component {
     }
   }
 
-  // componentDidMount() {
-  //   this.props.navigation.setParams({ toPrompts: this.toPrompts })
-  // }
-  //
-  // toPrompts = () => {
-  //   this.props.navigation.navigate('ListAttributes', {
-  //     exerciseNames: this.state.exerciseNames
-  //   })
-  // }
-
   addWorkout = () => {
     const eData = this.props.navigation.getParam('exerciseData')
     this.props.addWorkout(
@@ -55,7 +45,7 @@ class NameWorkout extends React.Component {
       index: 0,
       actions: [NavigationActions.navigate({ routeName: 'Record' })],
     })
-    
+
     this.props.navigation.dispatch(resetAction)
   }
 

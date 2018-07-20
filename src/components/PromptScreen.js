@@ -119,7 +119,7 @@ class PromptScreen extends React.Component {
             justifyContent: 'center'
           }}>
             <KButton
-              textColor={COLORS.chill}
+              textColor={COLORS.peach}
               value={workout.name}
               isEnabled={true}
               transparent={true}
@@ -131,6 +131,11 @@ class PromptScreen extends React.Component {
     })
     return (
       <View style={[{ borderBottomColor: COLORS.gray1, borderBottomWidth: 1, }]}>
+        <View style={[common.row, {marginTop: 20}]}>
+          <Text style={[common.tajawal5, {fontSize: 22, color: COLORS.gray10, textAlign: 'center'}]}>
+            {`Choose a workout:`}
+          </Text>
+        </View>
         { workoutButtons }
       </View>
     )

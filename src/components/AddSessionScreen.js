@@ -5,6 +5,8 @@ import {
   StyleSheet,
   Keyboard,
 } from 'react-native'
+import { StackActions, NavigationActions } from 'react-navigation'
+
 import * as sessionActions from '../redux/actions/sessionActions'
 import { Dropdown } from 'react-native-material-dropdown'
 import { Button, Text, Container, Content, Input, Form, Item, Label, Card, CardItem, Body } from 'native-base'
@@ -81,8 +83,12 @@ class AddSessionScreen extends React.Component {
       this.state.workoutName
     )
     this.resetState()
+    const resetAction = StackActions.reset({
+      index: 0,
+      actions: [NavigationActions.navigate({ routeName: 'Record' })],
+    })
+    this.props.navigation.dispatch(resetAction)
     this.props.navigation.navigate('Workouts')
-    Keyboard.dismiss()
   }
 
   setAttrVal(exIdx, attrIdx, val) {
