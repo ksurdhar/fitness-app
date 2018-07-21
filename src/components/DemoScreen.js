@@ -13,6 +13,7 @@ import {
   TouchableWithoutFeedback
 } from 'react-native'
 import { format } from 'date-fns'
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
 import ExpandingCard from './reusable/expandingCard'
 import KButton from './reusable/button'
@@ -135,7 +136,7 @@ class DemoScreen extends React.Component {
     return (
       <PressCapture onPress={this.handleCapture}>
         <View style={[common.staticView, { paddingLeft: 10, paddingRight: 10, backgroundColor: COLORS.white, height: height }]}>
-          <ScrollView style={{paddingTop: 10}}>
+          <KeyboardAwareScrollView style={{paddingTop: 10}}>
             { this.renderExercises() }
             <View style={[common.row]}>
               <TouchableOpacity onPress={() => this.addSession() }>
@@ -146,7 +147,7 @@ class DemoScreen extends React.Component {
                 </View>
               </TouchableOpacity>
             </View>
-          </ScrollView>
+          </KeyboardAwareScrollView>
         </View>
       </PressCapture>
     )
