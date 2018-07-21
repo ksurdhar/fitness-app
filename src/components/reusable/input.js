@@ -23,13 +23,23 @@ class Input extends React.Component {
     }
   }
 
-  componentDidMount() {
-    if (this.props.value && this.props.value.length > 0) {
-      Animated.timing(this.animations.labelPosition, {
-        toValue: 100,
-        duration: 300
-      }).start()
-    }
+  componentDidUpdate() {
+    console.log(this.props)
+  }
+
+  animate() {
+    const hasValue = this.props.value && this.props.value.length > 0
+    const raiseLabel = this.props.fixedLabel || this.state.isFocused || hasValue
+    Animated.timing(this.animations.labelPosition, {
+      toValue: raiseLabel? 100: 0,
+      duration: 300
+    }).start()
+
+    const colorBar = this.state.isFocused
+    Animated.timing(this.animations.lineColor, {
+      toValue: colorBar? 100 : 0,
+      duration: 200
+    }).start()
   }
 
   focus() {
@@ -41,22 +51,12 @@ class Input extends React.Component {
   }
 
   focusHandler = () => {
-    Animated.timing(this.animations.labelPosition, {
-      toValue: 100,
-      duration: 300
-    }).start()
     this.setState({
       isFocused: true
     })
   }
 
   blurHandler = () => {
-    if (!this.props.value || this.props.value.length === 0) {
-      Animated.timing(this.animations.labelPosition, {
-        toValue: 0,
-        duration: 300
-      }).start()
-    }
     this.setState({
       isFocused: false
     })
@@ -75,26 +75,22 @@ class Input extends React.Component {
   }
 
   render() {
-    const labelPosition = this.props.fixedLabel ? 42 : this.animations.labelPosition.interpolate({
-      inputRange: [0, 100],
-      outputRange: [0, 42]
-    })
     const size = this.props.small === true ? 'small' : 'large'
-    const labelConfig = {
-      fontSize: size === 'small' ? 24 : 36,
-      labelPosition
-    }
+    const fontSize =  size === 'small' ? 24 : 36
     const inputHeight = size === 'small' ? 74 : 90
+
     const lineColors = this.props.lineColors
       ? this.props.lineColors
       : [COLORS.gray1, COLORS.gray1]
     const animations = {
       lineColor: this.animations.lineColor.interpolate(
         this.basicInterpolation(lineColors)
+      ),
+      labelPosition: this.animations.labelPosition.interpolate(
+        this.basicInterpolation([0, 42])
       )
     }
-    console.log(animations)
-
+    this.animate()
 
     return (
       <Animated.View style={[{
@@ -103,7 +99,7 @@ class Input extends React.Component {
         marginTop:10,
         marginBottom: 10
       }, styleLine(animations), this.props.style]}>
-        <Animated.Text style={styleLabel(labelConfig)}>
+        <Animated.Text style={styleLabel(animations, fontSize)}>
           {this.props.labelText}
         </Animated.Text>
         <TextInput
@@ -128,13 +124,13 @@ function styleLine(animations) {
   }
 }
 
-function styleLabel(config) {
+function styleLabel(animations, fontSize) {
   return {
     position: 'absolute',
     fontFamily: 'rubik-medium',
-    fontSize: config.fontSize,
+    fontSize: fontSize,
     color: COLORS.gray7,
-    bottom: config.labelPosition
+    bottom: animations.labelPosition
   }
 }
 

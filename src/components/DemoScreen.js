@@ -72,6 +72,10 @@ class DemoScreen extends React.Component {
     this.state = INITIAL_STATE
   }
 
+  componentDidUpdate() {
+    // console.log(this.state)
+  }
+
   setAttrVal(exIdx, attrIdx, val) {
     this.setState((prevState) => {
       return produce(prevState, (draftState) => {
@@ -85,12 +89,11 @@ class DemoScreen extends React.Component {
       return (
         <View key={attrIdx}>
           <Input
-            value={null}
+            value={this.state.exerciseData[exIdx][attrIdx].val}
             labelText={attr.type}
             onChangeText={this.setAttrVal.bind(this, exIdx, attrIdx)}
             ref={(element) => { this.input1 = element }}
             small={true}
-            fixedLabel={true}
             lineColors={[COLORS.gray1, COLORS.chill]}
           />
         </View>
