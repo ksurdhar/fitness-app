@@ -60,8 +60,6 @@ class Input extends React.Component {
     } else {
       if (this.props.isValid) {
         coloredValue = COLORS.celestialGreen
-      } else if (this.state.invalidSubmission) {
-        coloredValue = COLORS.fluorescentRed
       }
     }
     if (this.state.invalidSubmission) {
@@ -93,6 +91,11 @@ class Input extends React.Component {
 
   changeHandler = (text) => {
     this.props.onChangeText(text)
+    if (text.length < 1) {
+      this.setState({ invalidSubmission: true })
+    } else {
+      this.setState({ invalidSubmission: false})
+    }
   }
 
   basicInterpolation(colors) {

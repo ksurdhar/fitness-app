@@ -106,6 +106,7 @@ class DemoScreen extends React.Component {
             small={true}
             lineColors={[COLORS.gray1, COLORS.chill]}
             isValid={attrVal && attrVal.length > 0}
+            fixedLabel={true}
           />
         </View>
       )
