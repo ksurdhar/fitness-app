@@ -76,6 +76,14 @@ class DemoScreen extends React.Component {
     // console.log(this.state)
   }
 
+  handleCapture = () => {
+    this.state.exerciseNames.forEach((name, exIdx) => {
+      Object.entries(this.state.exerciseData[exIdx]).forEach(([attrIdx, attr]) => {
+        this[`${exIdx}-${attrIdx}-input`] && this[`${exIdx}-${attrIdx}-input`].blur()
+      })
+    })
+  }
+
   setAttrVal(exIdx, attrIdx, val) {
     this.setState((prevState) => {
       return produce(prevState, (draftState) => {
@@ -92,7 +100,7 @@ class DemoScreen extends React.Component {
             value={this.state.exerciseData[exIdx][attrIdx].val}
             labelText={attr.type}
             onChangeText={this.setAttrVal.bind(this, exIdx, attrIdx)}
-            ref={(element) => { this.input1 = element }}
+            ref={(element) => { this[`${exIdx}-${attrIdx}-input`] = element }}
             small={true}
             lineColors={[COLORS.gray1, COLORS.chill]}
           />
@@ -125,20 +133,22 @@ class DemoScreen extends React.Component {
     const { width, height } = Dimensions.get('window')
 
     return (
-      <View style={[common.staticView, { paddingLeft: 10, paddingRight: 10, backgroundColor: COLORS.white, height: height }]}>
-        <ScrollView style={{paddingTop: 10}}>
-          { this.renderExercises() }
-          <View style={[common.row]}>
-            <TouchableOpacity onPress={() => this.addSession() }>
-              <View style={{padding: 14, backgroundColor: COLORS.peach}}>
-                <Text style={{fontSize: 24, fontFamily: 'rubik-medium', textAlign: 'center', color: COLORS.white}}>
-                  Record Session
-                </Text>
-              </View>
-            </TouchableOpacity>
-          </View>
-        </ScrollView>
-      </View>
+      <PressCapture onPress={this.handleCapture}>
+        <View style={[common.staticView, { paddingLeft: 10, paddingRight: 10, backgroundColor: COLORS.white, height: height }]}>
+          <ScrollView style={{paddingTop: 10}}>
+            { this.renderExercises() }
+            <View style={[common.row]}>
+              <TouchableOpacity onPress={() => this.addSession() }>
+                <View style={{padding: 14, backgroundColor: COLORS.peach}}>
+                  <Text style={{fontSize: 24, fontFamily: 'rubik-medium', textAlign: 'center', color: COLORS.white}}>
+                    Record Session
+                  </Text>
+                </View>
+              </TouchableOpacity>
+            </View>
+          </ScrollView>
+        </View>
+      </PressCapture>
     )
 
   }
