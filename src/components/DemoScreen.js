@@ -1,5 +1,4 @@
 import React from 'react'
-import { connect } from 'react-redux'
 import produce from 'immer'
 import {
   ScrollView,
@@ -19,7 +18,6 @@ import KButton from './reusable/button'
 import Input from './reusable/input'
 import Switch from './reusable/switch'
 import PressCapture from './reusable/pressCapture'
-import Fade from './reusable/fade'
 import { common, COLORS } from './reusable/common'
 
 // ['Leg Blasters', 'Ab Crunches', 'Arm Destroyer', 'Leg Blasters', 'Ab Crunches', 'Arm Destroyer']
@@ -27,98 +25,128 @@ DEMO_STATE = {
   mockWorkouts: ['Leg Blasters', 'Ab Crunches', 'Arm Destroyer', 'Leg Blasters', 'Ab Crunches', 'Arm Destroyer']
 }
 
-SAMPLE_TEXT = [
-  'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Id venenatis a condimentum vitae sapien pellentesque habitant morbi tristique. Id volutpat lacus laoreet non curabitur gravida arcu. Morbi tristique senectus et netus et malesuada fames ac turpis. Sociis natoque penatibus et magnis dis. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore ma',
-  'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Id venenatis a condimentum vitae sapien pellentesque habitant morbi tristique. Id volutpat lacus laoreet non curabitur gravida arcu. Morbi tristique senectus et netus et malesuada fames ac turpis. Sociis natoque penatibus et magnis dis. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore ma Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Id venenatis a condimentum vitae sapien pellentesque habitant morbi tristique. Id volutpat lacus laoreet non curabitur gravida arcu. Morbi tristique senectus et netus et malesuada fames ac turpis. Sociis natoque penatibus et magnis dis. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore ma',
-  'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Id venenatis a condimentum',
-  'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Id venenatis a condimentum vitae sapien pellentesque habitant morbi tristique. Id volutpat lacus laoreet non curabitur gravida arcu. Morbi tristique senectus et netus et malesuada fames ac turpis. Sociis natoque penatibus et magnis dis. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore ma',
-  'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Id venenatis a condimentum vitae sapien pellentesque habitant morbi tristique. Id volutpat lacus laoreet non curabitur gravida arcu. Morbi tristique senectus et netus et malesuada fames ac turpis. Sociis natoque penatibus et magnis dis. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore ma Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Id venenatis a condimentum vitae sapien pellentesque habitant morbi tristique. Id volutpat lacus laoreet non curabitur gravida arcu. Morbi tristique senectus et netus et malesuada fames ac turpis. Sociis natoque penatibus et magnis dis. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore ma',
-  'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Id venenatis a condimentum'
-]
+// SHAPE OF EXERCISE DATA
+// Object {
+  // "0": Object {
+  //   "0": Object {
+  //     "type": "sets",
+  //     "val": null,
+  //   },
+  //   "1": Object {
+  //     "type": "reps",
+  //     "val": null,
+  //   },
+  // },
+// }
+
+INITIAL_STATE = {
+  workoutName: '',
+  exerciseNames: ['pullups', 'pushups'],
+  exerciseData: {
+    0: {
+      0: {
+        "type": "sets",
+        "val": null,
+      },
+      1: {
+        "type": "reps",
+        "val": null,
+      },
+    },
+    1: {
+      0: {
+        "type": "sets",
+        "val": null,
+      },
+    },
+  },
+}
 
 class DemoScreen extends React.Component {
-  static navigationOptions = {
-    title: 'DEMO SCREEN',
-    tabBarLabel: 'Record',
-    tabBarIcon: ({ tintColor }) => (
-      <Text>Record</Text>
-    )
-  }
-
   constructor() {
     super()
-    this.state = DEMO_STATE
+    this.state = INITIAL_STATE
   }
 
-  resetState() {
-    this.setState(DEMO_STATE)
+  setAttrVal(exIdx, attrIdx, val) {
+    this.setState((prevState) => {
+      return produce(prevState, (draftState) => {
+        draftState.exerciseData[exIdx][attrIdx].val = val
+      })
+    })
   }
 
-  componentDidMount() {
-    // console.log('component did mount')
-  }
-
-  componentDidUpdate() {
-    console.log('state', this.state)
-  }
-
-  renderEmptyView = () => {
-    const { height } = Dimensions.get('window')
-
-    return (
-      <View style={[common.row, { marginTop: 160, height: height }]}>
-        <Text style={{ fontFamily: 'rubik-medium', fontSize: 24, textAlign: 'center', color: COLORS.gray5 }}>
-          {'You have no recorded workouts.'}
-        </Text>
-      </View>
-    )
-  }
-
-  // drop shadow requires there to be a background color
-  renderWorkoutCards = () => {
-    const cards = this.state.mockWorkouts.map((workoutName, idx) => {
-      const dateString = format(new Date(), 'dddd, MMM D [at] h:mm A')
-      const cardContent = (
-        <View>
-          <Text style={[common.tajawal3, {fontSize: 18, color: COLORS.gray8, paddingBottom: 2}]}>{'Pushups - 5 sets / 6 reps / 20 secs'}</Text>
-          <View style={{paddingTop: 10, borderTopWidth: 1, borderTopColor: COLORS.gray1}}>
-            <Text style={[common.tajawal3, {fontSize: 18, color: COLORS.gray8}]}>
-            { SAMPLE_TEXT[idx] }
-            </Text>
-          </View>
-        </View>
-      )
-
+  renderAttrInputs(exIdx) {
+    console.log(this.state.exerciseData, exIdx)
+    return Object.entries(this.state.exerciseData[exIdx]).map(([attrIdx, attr]) => {
       return (
-        <ExpandingCard subHeader={dateString} header={workoutName}>
-          { cardContent }
-        </ExpandingCard>
+        <View key={attrIdx}>
+          <Text>{attr.type}</Text>
+        </View>
+        // <CardItem key={attrIdx} style={{backgroundColor: 'white', height: 60, marginBottom: 10}}>
+        //   <Body>
+        //     <Item stackedLabel>
+        //       <Label>{attr.type}</Label>
+        //       <Input
+        //         style={{width: 320, maxHeight: 25, backgroundColor: 'white', borderBottomWidth: 1, borderBottomColor: 'gray'}}
+        //         underline
+        //         keyboardType={"numeric"}
+        //         onChangeText={ this.setAttrVal.bind(this, exIdx, attrIdx)}
+        //       />
+        //     </Item>
+        //   </Body>
+        // </CardItem>
       )
     })
+  }
 
-    return (
-      <ScrollView style={{paddingTop: 10}}>
-        { cards }
-      </ScrollView>
-    )
+  renderExercises() {
+    if (this.state.exerciseNames) {
+      return this.state.exerciseNames.map((val, exIdx) => {
+        return (
+          // <Card key={exIdx}>
+          //   <CardItem header bordered>
+          //
+          //   </CardItem>
+          //
+          // </Card>
+          <View>
+            <Text>{val}</Text>
+            { this.renderAttrInputs(exIdx) }
+          </View>
+        )
+      })
+    } else {
+      return null
+    }
   }
 
   render() {
+    const { width, height } = Dimensions.get('window')
+
+    // no height!!
+    // const recordButton = (
+    //   <Button rounded success onPress={() => this.addSession() }>
+    //     <Text>Record Session</Text>
+    //   </Button>
+    // )
+    // return (
+    //   <Content padder>
+    //     { this.renderExercises() }
+    //     <Container style={{flexDirection: 'row', justifyContent: 'space-around', marginTop: 20, height: 80}}>
+    //       { recordButton }
+    //     </Container>
+    //   </Content>
+    // )
     return (
-      <View style={common.staticView, {marginTop: 70, marginLeft: 10, marginRight: 10, backgroundColor: COLORS.white}}>
-        <View style={[common.row,  { marginTop: 20, marginBottom: 5, justifyContent: 'space-between' }]}>
-          <Text style={[common.baseFont, common.lgFont, {marginLeft: 5, color: COLORS.gray10}]}>
-            Workouts
-          </Text>
-        </View>
-        {
-          this.state.mockWorkouts.length > 0 ?
-          this.renderWorkoutCards() :
-          this.renderEmptyView()
-        }
+      <View style={[common.staticView, { paddingLeft: 10, paddingRight: 10, backgroundColor: COLORS.white, height: height }]}>
+        <ScrollView style={{paddingTop: 10, marginBottom: 110}}>
+          { this.renderExercises() }
+        </ScrollView>
       </View>
     )
+
   }
 }
 
-export default connect(null, null)(DemoScreen)
+export default DemoScreen

@@ -8,7 +8,8 @@ import {
   Button,
   View,
   Text,
-  ScrollView
+  ScrollView,
+  TouchableOpacity
 } from 'react-native'
 import { StackActions, NavigationActions } from 'react-navigation'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
@@ -77,12 +78,13 @@ class NameWorkout extends React.Component {
             fixedLabel={true}
           />
           <View style={[common.row]}>
-            <MaterialIcons
-              name={"add-circle"}
-              size={32} color={COLORS.peach}
-              style={{top: -62, left: width/2 - 26, backgroundColor: 'transparent'}}
-              onPress={this.addWorkout}
-            />
+            <TouchableOpacity onPress={this.addWorkout}>
+              <MaterialIcons
+                name={"add-circle"}
+                size={32} color={COLORS.peach}
+                style={{top: -62, left: width/2 - 26, backgroundColor: 'transparent'}}
+              />
+            </TouchableOpacity>
           </View>
         </KeyboardAwareScrollView>
       </View>

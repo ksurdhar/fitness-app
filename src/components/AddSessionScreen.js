@@ -4,11 +4,14 @@ import produce from 'immer'
 import {
   StyleSheet,
   Keyboard,
+  View,
+  ScrollView,
 } from 'react-native'
 import { StackActions, NavigationActions } from 'react-navigation'
 
+import ExpandingCard from './reusable/expandingCard'
+import { common, COLORS } from './reusable/common'
 import * as sessionActions from '../redux/actions/sessionActions'
-import { Dropdown } from 'react-native-material-dropdown'
 import { Button, Text, Container, Content, Input, Form, Item, Label, Card, CardItem, Body } from 'native-base'
 
 // SHAPE OF EXERCISE DATA
@@ -150,6 +153,11 @@ class AddSessionScreen extends React.Component {
         </Container>
       </Content>
     )
+    // <View style={common.staticView, { paddingLeft: 10, paddingRight: 10, backgroundColor: COLORS.white, height: height }}>
+    //   <ScrollView style={{paddingTop: 10, marginBottom: 110}}>
+    //     { this.renderExercises() }
+    //   </ScrollView>
+    // </View>
   }
 }
 
