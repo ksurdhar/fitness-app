@@ -3,7 +3,7 @@ import {
   Text,
   Animated,
   StyleSheet,
-  TouchableWithoutFeedback,
+  TouchableOpacity,
   View
 } from 'react-native'
 
@@ -65,9 +65,9 @@ class Switch extends React.Component {
 
     return (
       <View key={this.props.label} style={{marginTop: 10, marginBottom: 10}}>
-        <TouchableWithoutFeedback onPress={this.handleOnPress}>
+        <TouchableOpacity onPress={this.handleOnPress}>
           <Animated.View style={[styleSwitch(animations), this.props.style]} />
-        </TouchableWithoutFeedback>
+        </TouchableOpacity>
         <Text style={{ position: 'absolute', left: 36, bottom: 1, fontSize: 24, fontFamily: 'rubik-medium', color: COLORS.gray7, textAlign: 'center'}}>
           { this.props.label }
         </Text>

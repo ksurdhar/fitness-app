@@ -73,11 +73,16 @@ class NameWorkout extends React.Component {
             onChangeText={this.changeNameHandler}
             ref={(element) => { this.input = element }}
             small={true}
-            style={{marginBottom: 20, width: width-20, marginTop: 100}}
+            style={{marginBottom: 20, width: width - 20, marginTop: 100}}
             fixedLabel={true}
           />
           <View style={[common.row]}>
-            <MaterialIcons name={"add-circle"} size={32} color={COLORS.peach} style={{top: -62, left: 180, backgroundColor: 'transparent'}} onPress={this.addWorkout}/>
+            <MaterialIcons
+              name={"add-circle"}
+              size={32} color={COLORS.peach}
+              style={{top: -62, left: width/2 - 26, backgroundColor: 'transparent'}}
+              onPress={this.addWorkout}
+            />
           </View>
         </KeyboardAwareScrollView>
       </View>

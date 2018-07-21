@@ -117,7 +117,12 @@ class ListExercisesScreen extends React.Component {
             fixedLabel={true}
           />
           <View style={[common.row]}>
-            <MaterialIcons name={"add-circle"} size={32} color={COLORS.peach} style={{top: -62, left: 180, backgroundColor: 'transparent'}} onPress={this.addExercise}/>
+            <MaterialIcons
+              name={"add-circle"}
+              size={32} color={COLORS.peach}
+              style={{top: -62, left: width/2 - 26, backgroundColor: 'transparent'}}
+              onPress={this.addExercise}
+            />
           </View>
         </KeyboardAwareScrollView>
       </View>

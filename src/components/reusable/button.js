@@ -2,7 +2,8 @@ import React from 'react'
 import {
   Animated,
   StyleSheet,
-  TouchableWithoutFeedback
+  TouchableWithoutFeedback,
+  TouchableOpacity
 } from 'react-native'
 
 import { common, COLORS } from './common'
@@ -79,13 +80,13 @@ class Button extends React.Component {
     } : styleButton(animations)
 
     return (
-      <TouchableWithoutFeedback onPress={this.handleOnPress}>
+      <TouchableOpacity onPress={this.handleOnPress}>
         <Animated.View style={[internalStyle, this.props.style]}>
           <Animated.Text style={[{fontSize: 24, fontFamily: 'rubik-medium', color: animations.text, textAlign: 'center'}, {color: this.props.textColor}]}>
             { this.props.value }
           </Animated.Text>
         </Animated.View>
-      </TouchableWithoutFeedback>
+      </TouchableOpacity>
     )
   }
 }
