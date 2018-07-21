@@ -90,6 +90,8 @@ class DemoScreen extends React.Component {
             onChangeText={this.setAttrVal.bind(this, exIdx, attrIdx)}
             ref={(element) => { this.input1 = element }}
             small={true}
+            fixedLabel={true}
+            lineColors={[COLORS.gray1, COLORS.chill]}
           />
         </View>
       )
