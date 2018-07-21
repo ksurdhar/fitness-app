@@ -41,10 +41,18 @@ INITIAL_STATE = {
   exerciseData: {
     0: {
       0: {
-        "type": "sets",
+        "type": "bleps",
         "val": null,
       },
       1: {
+        "type": "reps",
+        "val": null,
+      },
+      2: {
+        "type": "bleps",
+        "val": null,
+      },
+      3: {
         "type": "reps",
         "val": null,
       },
@@ -97,6 +105,7 @@ class DemoScreen extends React.Component {
               header={val}
               deleteHandler={() => {}}
               expandable={false}
+              cardHeights={[600, 600]}
             >
               { this.renderAttrInputs(exIdx) }
             </ExpandingCard>
@@ -112,7 +121,7 @@ class DemoScreen extends React.Component {
 
     return (
       <View style={[common.staticView, { paddingLeft: 10, paddingRight: 10, backgroundColor: COLORS.white, height: height }]}>
-        <ScrollView style={{paddingTop: 10, marginBottom: 110}}>
+        <ScrollView style={{paddingTop: 10}}>
           { this.renderExercises() }
           <View style={[common.row]}>
             <TouchableOpacity onPress={() => this.addSession() }>

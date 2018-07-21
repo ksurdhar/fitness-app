@@ -45,9 +45,10 @@ class ExpandingCard extends React.Component {
   render() {
     const { width } = Dimensions.get('window')
 
+    // this needs serious work
     const cardHeight = this.animations.height.interpolate({
       inputRange: [0, 100],
-      outputRange: [90, 800]
+      outputRange: this.props.cardHeights ? this.props.cardHeights : [90, 800]
     })
 
     this.animateExpansion()
@@ -67,12 +68,19 @@ class ExpandingCard extends React.Component {
     ]
 
     return (
-      <View style={styleCard(width, this.state.expanded)}>
+      <View style={styleCard(width)}>
         <View style={{borderBottomColor: COLORS.gray1, borderBottomWidth: 1}}>
           <Swipeout right={swipeoutBtns} backgroundColor={COLORS.white}>
             <View style={{ paddingLeft: 16, paddingRight: 16, paddingTop: 16}}>
-              <Text style={[common.tajawal3, {fontSize: 18, color: COLORS.gray8}]}>{this.props.subHeader}</Text>
-              <Text style={[common.tajawal5, {fontSize: 26, color: COLORS.gray10}]}>{this.props.header}</Text>
+              { this.props.subHeader
+                ? (<Text style={[common.tajawal3, {fontSize: 18, color: COLORS.gray8}]}>
+                    {this.props.subHeader}
+                  </Text>)
+                : null
+              }
+              <Text style={[common.tajawal5, {fontSize: 26, color: COLORS.gray10}]}>
+                {this.props.header}
+              </Text>
             </View>
           </Swipeout>
         </View>
@@ -81,13 +89,12 @@ class ExpandingCard extends React.Component {
             { this.props.children }
           </Animated.View>
           { this.props.expandable
-            ? (
-              <View style={[common.row, {marginTop: 10}]}>
+            ? (<View style={[common.row, {marginTop: 10}]}>
                 <TouchableWithoutFeedback onPress={this.handleOnPress}>
                   <Entypo name={this.state.expanded ? "chevron-up" : "chevron-down"} size={22} color={COLORS.gray3}/>
                 </TouchableWithoutFeedback>
-              </View>
-            ) : null
+              </View>)
+            : null
           }
         </View>
       </View>
