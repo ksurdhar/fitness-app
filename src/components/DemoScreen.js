@@ -4,11 +4,12 @@ import {
   ScrollView,
   Dimensions,
   Animated,
-  Button,
   StyleSheet,
   TextInput,
   View,
   Text,
+  TouchableOpacity,
+  Button,
   TouchableWithoutFeedback
 } from 'react-native'
 import { format } from 'date-fns'
@@ -19,11 +20,6 @@ import Input from './reusable/input'
 import Switch from './reusable/switch'
 import PressCapture from './reusable/pressCapture'
 import { common, COLORS } from './reusable/common'
-
-// ['Leg Blasters', 'Ab Crunches', 'Arm Destroyer', 'Leg Blasters', 'Ab Crunches', 'Arm Destroyer']
-DEMO_STATE = {
-  mockWorkouts: ['Leg Blasters', 'Ab Crunches', 'Arm Destroyer', 'Leg Blasters', 'Ab Crunches', 'Arm Destroyer']
-}
 
 // SHAPE OF EXERCISE DATA
 // Object {
@@ -75,27 +71,19 @@ class DemoScreen extends React.Component {
       })
     })
   }
-
+// make keyboard type numeric
   renderAttrInputs(exIdx) {
-    console.log(this.state.exerciseData, exIdx)
     return Object.entries(this.state.exerciseData[exIdx]).map(([attrIdx, attr]) => {
       return (
         <View key={attrIdx}>
-          <Text>{attr.type}</Text>
+          <Input
+            value={null}
+            labelText={attr.type}
+            onChangeText={this.setAttrVal.bind(this, exIdx, attrIdx)}
+            ref={(element) => { this.input1 = element }}
+            small={true}
+          />
         </View>
-        // <CardItem key={attrIdx} style={{backgroundColor: 'white', height: 60, marginBottom: 10}}>
-        //   <Body>
-        //     <Item stackedLabel>
-        //       <Label>{attr.type}</Label>
-        //       <Input
-        //         style={{width: 320, maxHeight: 25, backgroundColor: 'white', borderBottomWidth: 1, borderBottomColor: 'gray'}}
-        //         underline
-        //         keyboardType={"numeric"}
-        //         onChangeText={ this.setAttrVal.bind(this, exIdx, attrIdx)}
-        //       />
-        //     </Item>
-        //   </Body>
-        // </CardItem>
       )
     })
   }
@@ -104,16 +92,14 @@ class DemoScreen extends React.Component {
     if (this.state.exerciseNames) {
       return this.state.exerciseNames.map((val, exIdx) => {
         return (
-          // <Card key={exIdx}>
-          //   <CardItem header bordered>
-          //
-          //   </CardItem>
-          //
-          // </Card>
-          <View>
-            <Text>{val}</Text>
-            { this.renderAttrInputs(exIdx) }
-          </View>
+            <ExpandingCard
+              key={exIdx}
+              header={val}
+              deleteHandler={() => {}}
+              expandable={false}
+            >
+              { this.renderAttrInputs(exIdx) }
+            </ExpandingCard>
         )
       })
     } else {
@@ -124,24 +110,19 @@ class DemoScreen extends React.Component {
   render() {
     const { width, height } = Dimensions.get('window')
 
-    // no height!!
-    // const recordButton = (
-    //   <Button rounded success onPress={() => this.addSession() }>
-    //     <Text>Record Session</Text>
-    //   </Button>
-    // )
-    // return (
-    //   <Content padder>
-    //     { this.renderExercises() }
-    //     <Container style={{flexDirection: 'row', justifyContent: 'space-around', marginTop: 20, height: 80}}>
-    //       { recordButton }
-    //     </Container>
-    //   </Content>
-    // )
     return (
       <View style={[common.staticView, { paddingLeft: 10, paddingRight: 10, backgroundColor: COLORS.white, height: height }]}>
         <ScrollView style={{paddingTop: 10, marginBottom: 110}}>
           { this.renderExercises() }
+          <View style={[common.row]}>
+            <TouchableOpacity onPress={() => this.addSession() }>
+              <View style={{padding: 14, backgroundColor: COLORS.peach}}>
+                <Text style={{fontSize: 24, fontFamily: 'rubik-medium', textAlign: 'center', color: COLORS.white}}>
+                  Record Session
+                </Text>
+              </View>
+            </TouchableOpacity>
+          </View>
         </ScrollView>
       </View>
     )

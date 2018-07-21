@@ -80,11 +80,15 @@ class ExpandingCard extends React.Component {
           <Animated.View style={styleExpand(cardHeight)}>
             { this.props.children }
           </Animated.View>
-          <View style={[common.row, {marginTop: 10}]}>
-            <TouchableWithoutFeedback onPress={this.handleOnPress}>
-              <Entypo name={this.state.expanded ? "chevron-up" : "chevron-down"} size={22} color={COLORS.gray3}/>
-            </TouchableWithoutFeedback>
-          </View>
+          { this.props.expandable
+            ? (
+              <View style={[common.row, {marginTop: 10}]}>
+                <TouchableWithoutFeedback onPress={this.handleOnPress}>
+                  <Entypo name={this.state.expanded ? "chevron-up" : "chevron-down"} size={22} color={COLORS.gray3}/>
+                </TouchableWithoutFeedback>
+              </View>
+            ) : null
+          }
         </View>
       </View>
     )
