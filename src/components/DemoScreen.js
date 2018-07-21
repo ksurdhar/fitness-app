@@ -95,15 +95,17 @@ class DemoScreen extends React.Component {
 // make keyboard type numeric
   renderAttrInputs(exIdx) {
     return Object.entries(this.state.exerciseData[exIdx]).map(([attrIdx, attr]) => {
+      const attrVal = this.state.exerciseData[exIdx][attrIdx].val
       return (
         <View key={attrIdx}>
           <Input
-            value={this.state.exerciseData[exIdx][attrIdx].val}
+            value={attrVal}
             labelText={attr.type}
             onChangeText={this.setAttrVal.bind(this, exIdx, attrIdx)}
             ref={(element) => { this[`${exIdx}-${attrIdx}-input`] = element }}
             small={true}
             lineColors={[COLORS.gray1, COLORS.chill]}
+            isValid={attrVal && attrVal.length > 0}
           />
         </View>
       )
@@ -114,15 +116,15 @@ class DemoScreen extends React.Component {
     if (this.state.exerciseNames) {
       return this.state.exerciseNames.map((val, exIdx) => {
         return (
-            <ExpandingCard
-              key={exIdx}
-              header={val}
-              deleteHandler={() => {}}
-              expandable={false}
-              cardHeights={[600, 600]}
-            >
-              { this.renderAttrInputs(exIdx) }
-            </ExpandingCard>
+          <ExpandingCard
+            key={exIdx}
+            header={val}
+            deleteHandler={() => {}}
+            expandable={false}
+            cardHeights={[600, 600]}
+          >
+            { this.renderAttrInputs(exIdx) }
+          </ExpandingCard>
         )
       })
     } else {

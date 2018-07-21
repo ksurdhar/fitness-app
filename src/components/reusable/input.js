@@ -19,7 +19,8 @@ class Input extends React.Component {
     super(props)
 
     this.state = {
-      isFocused: false
+      isFocused: false,
+      invalidSubmission: false
     }
   }
 
@@ -35,11 +36,38 @@ class Input extends React.Component {
       duration: 300
     }).start()
 
-    const colorBar = this.state.isFocused
     Animated.timing(this.animations.lineColor, {
-      toValue: colorBar? 100 : 0,
+      toValue: 100,
       duration: 200
     }).start()
+  }
+
+  determineLineColor = () => {
+    // state.focused - blue
+    // props.valid - green
+    // !props.valid - red
+    // !state.focused - gray
+    let coloredValue = COLORS.gray1
+
+    if (this.state.isFocused) {
+      if (this.props.isValid) {
+        coloredValue = COLORS.celestialGreen
+      } else if (this.state.invalidSubmission) {
+        coloredValue = COLORS.fluorescentRed
+      } else {
+        coloredValue = COLORS.summerSky
+      }
+    } else {
+      if (this.props.isValid) {
+        coloredValue = COLORS.celestialGreen
+      } else if (this.state.invalidSubmission) {
+        coloredValue = COLORS.fluorescentRed
+      }
+    }
+    if (this.state.invalidSubmission) {
+      coloredValue = COLORS.fluorescentRed
+    }
+    return [COLORS.gray1, coloredValue]
   }
 
   focus() {
@@ -79,12 +107,9 @@ class Input extends React.Component {
     const fontSize =  size === 'small' ? 24 : 36
     const inputHeight = size === 'small' ? 74 : 90
 
-    const lineColors = this.props.lineColors
-      ? this.props.lineColors
-      : [COLORS.gray1, COLORS.gray1]
     const animations = {
       lineColor: this.animations.lineColor.interpolate(
-        this.basicInterpolation(lineColors)
+        this.basicInterpolation(this.determineLineColor())
       ),
       labelPosition: this.animations.labelPosition.interpolate(
         this.basicInterpolation([0, 42])
