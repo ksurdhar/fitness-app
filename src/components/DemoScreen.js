@@ -53,10 +53,6 @@ INITIAL_STATE = {
         "type": "bleps",
         "val": null,
       },
-      3: {
-        "type": "reps",
-        "val": null,
-      },
     },
     1: {
       0: {

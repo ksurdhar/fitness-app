@@ -42,6 +42,23 @@ class ExpandingCard extends React.Component {
     })
   }
 
+  renderFooter = () => {
+    if (this.props.footer) {
+      return (
+        <View style={{
+          borderTopColor: COLORS.gray1,
+          borderTopWidth: 1,
+          marginTop: 20, paddingLeft: 16,
+          paddingRight: 16, paddingBottom: 16
+        }}>
+          { this.props.footer }
+        </View>
+      )
+    } else {
+      return null
+    }
+  }
+
   render() {
     const { width } = Dimensions.get('window')
 
@@ -70,7 +87,7 @@ class ExpandingCard extends React.Component {
     return (
       <View style={styleCard(width)}>
         <View style={{borderBottomColor: COLORS.gray1, borderBottomWidth: 1}}>
-          <Swipeout right={swipeoutBtns} backgroundColor={COLORS.white}>
+          <Swipeout disabled={this.props.swipeable ? false : true} right={swipeoutBtns} backgroundColor={COLORS.white}>
             <View style={{ paddingLeft: 16, paddingRight: 16, paddingTop: 16}}>
               { this.props.subHeader
                 ? (<Text style={[common.tajawal3, {fontSize: 18, color: COLORS.gray8}]}>
@@ -97,6 +114,7 @@ class ExpandingCard extends React.Component {
             : null
           }
         </View>
+        { this.renderFooter() }
       </View>
     )
   }

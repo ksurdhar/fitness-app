@@ -89,6 +89,7 @@ class WorkoutsScreen extends React.Component {
           subHeader={dateString}
           header={session.workoutName}
           deleteHandler={this.removeSession.bind(this, session.id)}
+          swipeable={true}
         >
           { this.renderExerciseTexts(session.exercises) }
         </ExpandingCard>
