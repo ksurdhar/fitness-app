@@ -12,9 +12,10 @@ import { COLORS } from './common'
 class Input extends React.Component {
   animations = {
     labelPosition: new Animated.Value(0),
-    lineColor: new Animated.Value(0)
+    greenLine: new Animated.Value(0),
+    redLine: new Animated.Value(0),
+    blueLine: new Animated.Value(0)
   }
-  val = 0
 
   constructor(props) {
     super(props)
@@ -22,36 +23,17 @@ class Input extends React.Component {
     this.state = {
       isFocused: false,
       interactedWith: false,
-      prevLineColor: COLORS.gray1,
-      newLineColor: COLORS.gray1
     }
   }
   componentDidMount() {
     this.animate()
-
-    const determinedColor = this.determineLineColor()
-    if (this.state.newLineColor !== determinedColor) {
-      this.setState({
-        prevLineColor: this.state.newLineColor,
-        newLineColor: determinedColor
-      })
-    }
   }
 
   componentDidUpdate() {
     this.animate()
-
-    const determinedColor = this.determineLineColor()
-    if (this.state.newLineColor !== determinedColor) {
-      this.setState({
-        prevLineColor: this.state.newLineColor,
-        newLineColor: determinedColor
-      })
-    }
   }
 
   animate = () => {
-    console.log('animating!')
     const hasValue = this.props.value && this.props.value.length > 0
     const raiseLabel = this.props.fixedLabel || this.state.isFocused || hasValue
     Animated.timing(this.animations.labelPosition, {
@@ -59,33 +41,40 @@ class Input extends React.Component {
       duration: 300
     }).start()
 
-    let val = this.val
-    if (this.state.prevLineColor !== this.state.newLineColor) {
-      val = this.val === 100 ? 0 : 100
-      this.val = val
-    }
-    Animated.timing(this.animations.lineColor, {
-      toValue: val,
-      duration: 1000
-    }).start()
-  }
-
-  // users either tap to focus, or type to change content
-
-  determineLineColor = () => {
-    let color = null
+    let valid, invalid, focused = false
     if (this.props.isValid) {
-      color = COLORS.celestialGreen
+      // valid
+      valid = true
+      invalid = false
+      focused = false
     } else if (!this.props.isValid && this.state.interactedWith) {
-      color = COLORS.fluorescentRed
+      // invalid
+      valid = false
+      invalid = true
+      focused = false
     } else {
       if (this.state.isFocused) {
-        color = COLORS.summerSky
-      } else {
-        color = COLORS.gray1
+        // focused
+        valid = false
+        invalid = false
+        focused = true
       }
     }
-    return color
+
+    Animated.timing(this.animations.greenLine, {
+      toValue: valid ? 100 : 0,
+      duration: 400
+    }).start()
+
+    Animated.timing(this.animations.blueLine, {
+      toValue: focused ? 100 : 0,
+      duration: 400
+    }).start()
+
+    Animated.timing(this.animations.redLine, {
+      toValue: invalid ? 100 : 0,
+      duration: 400
+    }).start()
   }
 
   focus() {
@@ -126,64 +115,58 @@ class Input extends React.Component {
     }
   }
 
-  colorInterpolation(colors) {
-    let rearrangedColors = [colors[0], colors[1]]
-    console.log('rearrangedColors', rearrangedColors)
-    if (colors[0] !== colors[1]) {
-      rearrangedColors = [colors[1], colors[0]]
-    }
-    return {
-      inputRange: [0, 100],
-      outputRange: rearrangedColors
-    }
-  }
-
   render() {
     const size = this.props.small === true ? 'small' : 'large'
     const fontSize =  size === 'small' ? 24 : 36
     const inputHeight = size === 'small' ? 74 : 90
 
-    const newColor = this.state.newLineColor ? this.state.newLineColor : COLORS.gray1
-
     const animations = {
-      lineColor: this.animations.lineColor.interpolate(
-        this.basicInterpolation([this.state.prevLineColor, newColor])
+      greenLine: this.animations.greenLine.interpolate(
+        this.basicInterpolation([COLORS.celestialGreen0, COLORS.celestialGreen])
+      ),
+      blueLine: this.animations.blueLine.interpolate(
+        this.basicInterpolation([COLORS.gray1, COLORS.summerSky])
+      ),
+      redLine: this.animations.redLine.interpolate(
+        this.basicInterpolation([COLORS.fluorescentRed0, COLORS.fluorescentRed])
       ),
       labelPosition: this.animations.labelPosition.interpolate(
-        this.basicInterpolation([0, 42])
+        this.basicInterpolation([this.props.fixedLabel ? 42: 0, 42])
       )
     }
-    //need values
 
     return (
-      <Animated.View style={[{
-        borderBottomWidth: 3,
-        height: inputHeight,
-        marginTop:10,
-        marginBottom: 10
-      }, styleLine(animations), this.props.style]}>
-        <Animated.Text style={styleLabel(animations, fontSize)}>
-          {this.props.labelText}
-        </Animated.Text>
-        <TextInput
-          value={this.props.value}
-          style={[styles[size], styles.base]}
-          placeholder={this.props.placeholder}
-          autoFocus={this.props.autoFocus}
-          secureTextEntry={this.props.secureTextEntry}
-          ref={(element) => { this.textInput = element }}
-          onFocus={this.focusHandler}
-          onEndEditing={this.blurHandler}
-          onChangeText={this.changeHandler}
-        />
-      </Animated.View>
+      <View>
+        <Animated.View style={[{
+          borderBottomWidth: 3,
+          height: inputHeight,
+          marginTop:10
+        }, styleLine(animations, 'blueLine'), this.props.style]}>
+          <Animated.Text style={styleLabel(animations, fontSize)}>
+            {this.props.labelText}
+          </Animated.Text>
+          <TextInput
+            value={this.props.value}
+            style={[styles[size], styles.base]}
+            placeholder={this.props.placeholder}
+            autoFocus={this.props.autoFocus}
+            secureTextEntry={this.props.secureTextEntry}
+            ref={(element) => { this.textInput = element }}
+            onFocus={this.focusHandler}
+            onEndEditing={this.blurHandler}
+            onChangeText={this.changeHandler}
+          />
+        </Animated.View>
+        <Animated.View style={[{borderBottomWidth: 3, top: -3}, styleLine(animations, 'greenLine')]}/>
+        <Animated.View style={[{borderBottomWidth: 3, top: -6}, styleLine(animations, 'redLine')]}/>
+      </View>
     )
   }
 }
 
-function styleLine(animations) {
+function styleLine(animations, lineColor) {
   return {
-    borderBottomColor: animations.lineColor
+    borderBottomColor: animations[lineColor]
   }
 }
 
