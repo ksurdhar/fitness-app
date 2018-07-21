@@ -144,7 +144,7 @@ class PromptScreen extends React.Component {
   renderEmptyMessage = () => {
     const { height } = Dimensions.get('window')
     return (
-      <View style={{ justifyContent: 'center', height: height/2 }}>
+      <View style={{ justifyContent: 'center', top: (height/2 - 120) }}>
         <View style={common.row}>
           <Text style={[{ fontFamily: 'rubik-medium', fontSize: 24, textAlign: 'center', color: COLORS.gray9 }]}>
             {'You have no workouts to record. Try adding one!'}
@@ -158,7 +158,7 @@ class PromptScreen extends React.Component {
     const isEmpty = this.props.workouts.length === 0
 
     return (
-      <View style={common.staticView, {marginLeft: 10, marginRight: 10, backgroundColor: COLORS.white, height: height}}>
+      <View style={common.staticView, {paddingLeft: 10, paddingRight: 10, backgroundColor: COLORS.white, height: height}}>
         { isEmpty ? this.renderEmptyMessage() : this.renderWorkoutButtons() }
       </View>
     )

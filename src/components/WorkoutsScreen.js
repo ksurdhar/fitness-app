@@ -70,7 +70,7 @@ class WorkoutsScreen extends React.Component {
   renderEmptyMessage = () => {
     const { height } = Dimensions.get('window')
     return (
-      <View style={{ justifyContent: 'center', height: height/2 }}>
+      <View style={{ justifyContent: 'center', top: (height/2 - 130) }}>
         <View style={common.row}>
           <Text style={[{ fontFamily: 'rubik-medium', fontSize: 24, textAlign: 'center', color: COLORS.gray9 }]}>
             {'You have not recorded a workout. Try recording one!'}
@@ -101,8 +101,8 @@ class WorkoutsScreen extends React.Component {
     const isEmpty = this.props.sessions.length === 0
 
     return (
-      <View style={common.staticView, { marginLeft: 10, marginRight: 10, backgroundColor: COLORS.white }}>
-        <ScrollView style={{paddingTop: 10, marginBottom: 70, height: height - 240}}>
+      <View style={common.staticView, { paddingLeft: 10, paddingRight: 10, backgroundColor: COLORS.white, height: height }}>
+        <ScrollView style={{paddingTop: 10, marginBottom: 110}}>
           { isEmpty? this.renderEmptyMessage() : this.renderSessionCards() }
         </ScrollView>
       </View>
