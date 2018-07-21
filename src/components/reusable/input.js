@@ -14,21 +14,44 @@ class Input extends React.Component {
     labelPosition: new Animated.Value(0),
     lineColor: new Animated.Value(0)
   }
+  val = 0
 
   constructor(props) {
     super(props)
 
     this.state = {
       isFocused: false,
-      invalidSubmission: false
+      interactedWith: false,
+      prevLineColor: COLORS.gray1,
+      newLineColor: COLORS.gray1
+    }
+  }
+  componentDidMount() {
+    this.animate()
+
+    const determinedColor = this.determineLineColor()
+    if (this.state.newLineColor !== determinedColor) {
+      this.setState({
+        prevLineColor: this.state.newLineColor,
+        newLineColor: determinedColor
+      })
     }
   }
 
   componentDidUpdate() {
-    console.log(this.props)
+    this.animate()
+
+    const determinedColor = this.determineLineColor()
+    if (this.state.newLineColor !== determinedColor) {
+      this.setState({
+        prevLineColor: this.state.newLineColor,
+        newLineColor: determinedColor
+      })
+    }
   }
 
-  animate() {
+  animate = () => {
+    console.log('animating!')
     const hasValue = this.props.value && this.props.value.length > 0
     const raiseLabel = this.props.fixedLabel || this.state.isFocused || hasValue
     Animated.timing(this.animations.labelPosition, {
@@ -36,36 +59,33 @@ class Input extends React.Component {
       duration: 300
     }).start()
 
+    let val = this.val
+    if (this.state.prevLineColor !== this.state.newLineColor) {
+      val = this.val === 100 ? 0 : 100
+      this.val = val
+    }
     Animated.timing(this.animations.lineColor, {
-      toValue: 100,
-      duration: 200
+      toValue: val,
+      duration: 1000
     }).start()
   }
 
-  determineLineColor = () => {
-    // state.focused - blue
-    // props.valid - green
-    // !props.valid - red
-    // !state.focused - gray
-    let coloredValue = COLORS.gray1
+  // users either tap to focus, or type to change content
 
-    if (this.state.isFocused) {
-      if (this.props.isValid) {
-        coloredValue = COLORS.celestialGreen
-      } else if (this.state.invalidSubmission) {
-        coloredValue = COLORS.fluorescentRed
-      } else {
-        coloredValue = COLORS.summerSky
-      }
+  determineLineColor = () => {
+    let color = null
+    if (this.props.isValid) {
+      color = COLORS.celestialGreen
+    } else if (!this.props.isValid && this.state.interactedWith) {
+      color = COLORS.fluorescentRed
     } else {
-      if (this.props.isValid) {
-        coloredValue = COLORS.celestialGreen
+      if (this.state.isFocused) {
+        color = COLORS.summerSky
+      } else {
+        color = COLORS.gray1
       }
     }
-    if (this.state.invalidSubmission) {
-      coloredValue = COLORS.fluorescentRed
-    }
-    return [COLORS.gray1, coloredValue]
+    return color
   }
 
   focus() {
@@ -77,6 +97,7 @@ class Input extends React.Component {
   }
 
   focusHandler = () => {
+    console.log('focusing')
     this.setState({
       isFocused: true
     })
@@ -86,22 +107,34 @@ class Input extends React.Component {
     this.setState({
       isFocused: false
     })
+
     this.props.onEndEditing && this.props.onEndEditing()
   }
 
   changeHandler = (text) => {
     this.props.onChangeText(text)
-    if (text.length < 1) {
-      this.setState({ invalidSubmission: true })
-    } else {
-      this.setState({ invalidSubmission: false})
+
+    if (!this.state.interactedWith) {
+      this.setState({ interactedWith: true })
     }
   }
 
-  basicInterpolation(colors) {
+  basicInterpolation(vals) {
     return {
       inputRange: [0, 100],
-      outputRange: colors
+      outputRange: vals
+    }
+  }
+
+  colorInterpolation(colors) {
+    let rearrangedColors = [colors[0], colors[1]]
+    console.log('rearrangedColors', rearrangedColors)
+    if (colors[0] !== colors[1]) {
+      rearrangedColors = [colors[1], colors[0]]
+    }
+    return {
+      inputRange: [0, 100],
+      outputRange: rearrangedColors
     }
   }
 
@@ -110,15 +143,17 @@ class Input extends React.Component {
     const fontSize =  size === 'small' ? 24 : 36
     const inputHeight = size === 'small' ? 74 : 90
 
+    const newColor = this.state.newLineColor ? this.state.newLineColor : COLORS.gray1
+
     const animations = {
       lineColor: this.animations.lineColor.interpolate(
-        this.basicInterpolation(this.determineLineColor())
+        this.basicInterpolation([this.state.prevLineColor, newColor])
       ),
       labelPosition: this.animations.labelPosition.interpolate(
         this.basicInterpolation([0, 42])
       )
     }
-    this.animate()
+    //need values
 
     return (
       <Animated.View style={[{
