@@ -14,7 +14,9 @@ import {
 } from 'react-native'
 import { format } from 'date-fns'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
+import { FontAwesome } from '@expo/vector-icons'
 
+import AnimatedIcon from './reusable/animatedIcon'
 import ExpandingCard from './reusable/expandingCard'
 import KButton from './reusable/button'
 import Input from './reusable/input'
@@ -117,13 +119,23 @@ class DemoScreen extends React.Component {
     })
   }
 
-  renderExercises() {
+  cardComplete = (exIdx) => {
+    return Object.entries(this.state.exerciseData[exIdx]).every(([attrIdx, attr]) => {
+      return attr.val && attr.val.length > 0
+    })
+  }
+
+  renderExercises = () => {
     if (this.state.exerciseNames) {
       return this.state.exerciseNames.map((val, exIdx) => {
-        // to animate svg, animate view on top from solid to transparent
-        // or, have two svgs and make each transparent, like the inputs
         const completeEl = (
-          <Text>Hello</Text>
+          <AnimatedIcon
+            icon1={<FontAwesome name={'check'} color={COLORS.gray1} size={30}/>}
+            icon2={<FontAwesome name={'check'} color={COLORS.celestialGreen7} size={30}/>}
+            isEnabled={this.cardComplete(exIdx)}
+            size={30}
+            style={{marginTop: -6}}
+          />
         )
         return (
           <ExpandingCard
@@ -131,6 +143,7 @@ class DemoScreen extends React.Component {
             header={val}
             expandable={false}
             cardHeights={[600, 600]}
+            rightCorner={completeEl}
           >
             { this.renderAttrInputs(exIdx) }
           </ExpandingCard>
