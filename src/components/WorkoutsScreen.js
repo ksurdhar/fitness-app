@@ -8,7 +8,7 @@ import {
   Text,
 } from 'react-native'
 import { format } from 'date-fns'
-import { Entypo, Feather } from '@expo/vector-icons'
+import { Entypo, Feather, FontAwesome } from '@expo/vector-icons'
 
 import ExpandingCard from './reusable/expandingCard'
 import { common, COLORS } from './reusable/common'
@@ -90,6 +90,7 @@ class WorkoutsScreen extends React.Component {
           header={session.workoutName}
           deleteHandler={this.removeSession.bind(this, session.id)}
           swipeable={true}
+          expandable={true}
         >
           { this.renderExerciseTexts(session.exercises) }
         </ExpandingCard>

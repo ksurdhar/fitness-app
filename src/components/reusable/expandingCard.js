@@ -89,15 +89,18 @@ class ExpandingCard extends React.Component {
         <View style={{borderBottomColor: COLORS.gray1, borderBottomWidth: 1}}>
           <Swipeout disabled={this.props.swipeable ? false : true} right={swipeoutBtns} backgroundColor={COLORS.white}>
             <View style={{ paddingLeft: 16, paddingRight: 16, paddingTop: 16, justifyContent: 'space-between', flexDirection: 'row'}}>
-              { this.props.subHeader
-                ? (<Text style={[common.tajawal3, {fontSize: 18, color: COLORS.gray8}]}>
-                    {this.props.subHeader}
-                  </Text>)
-                : null
-              }
-              <Text style={[common.tajawal5, {fontSize: 26, color: COLORS.gray10}]}>
-                {this.props.header}
-              </Text>
+              <View style={{flexDirection: 'column'}}>
+                { this.props.subHeader
+                  ? (<Text style={[common.tajawal3, {fontSize: 18, color: COLORS.gray8}]}>
+                      {this.props.subHeader}
+                    </Text>)
+                  : null
+                }
+                <Text style={[common.tajawal5, {fontSize: 26, color: COLORS.gray10}]}>
+                  {this.props.header}
+                </Text>
+              </View>
+
               { this.props.rightCorner ? this.props.rightCorner : null }
             </View>
           </Swipeout>
