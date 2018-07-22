@@ -122,6 +122,25 @@ class LoginScreen extends Component {
   // />
 
   render() {
+    const emailLabel = (
+      <Text style={{
+        fontFamily: 'rubik-medium',
+        fontSize:20,
+        color: COLORS.gray7
+      }}>
+        Email
+      </Text>
+    )
+    const passwordLabel = (
+      <Text style={{
+        fontFamily: 'rubik-medium',
+        fontSize:20,
+        color: COLORS.gray7
+      }}>
+        Password
+      </Text>
+    )
+
     return (
       <PressCapture onPress={this.handleCapture}>
         <View style={[common.staticView]}>
@@ -132,21 +151,25 @@ class LoginScreen extends Component {
               MIGHTY
             </Text>
             <Input
-              labelText={'Email'}
+              label={emailLabel}
               value={this.state.email}
               onChangeText={ text => this.setState({ email: text })}
               autoFocus={true}
               ref={(element) => { this.emailInput = element }}
-              small={true}
+              fixedTrue={false}
+              fontSize={24}
             />
-            <Input
-              labelText={'Password'}
-              value={this.state.password}
-              onChangeText={ text => this.setState({ password: text })}
-              secureTextEntry={true}
-              ref={(element) => { this.passwordInput = element }}
-              small={true}
-            />
+            <View style={{paddingTop: 40}}>
+              <Input
+                label={passwordLabel}
+                value={this.state.password}
+                onChangeText={ text => this.setState({ password: text })}
+                secureTextEntry={true}
+                ref={(element) => { this.passwordInput = element }}
+                fixedTrue={false}
+                fontSize={24}
+              />
+            </View>
             <View style={[common.row, {marginTop: 50, marginBottom: 80}]}>
               <Button
                 style={{width: 300}}
