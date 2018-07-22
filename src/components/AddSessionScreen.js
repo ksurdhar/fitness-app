@@ -1,18 +1,32 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import produce from 'immer'
+
 import {
-  StyleSheet,
-  Keyboard,
-  View,
   ScrollView,
+  Dimensions,
+  Animated,
+  StyleSheet,
+  TextInput,
+  View,
+  Text,
+  TouchableOpacity,
+  Button,
+  TouchableWithoutFeedback
 } from 'react-native'
+import { format } from 'date-fns'
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
+import { FontAwesome } from '@expo/vector-icons'
 import { StackActions, NavigationActions } from 'react-navigation'
 
+import AnimatedIcon from './reusable/animatedIcon'
 import ExpandingCard from './reusable/expandingCard'
+import KButton from './reusable/button'
+import Input from './reusable/input'
+import Switch from './reusable/switch'
+import PressCapture from './reusable/pressCapture'
 import { common, COLORS } from './reusable/common'
 import * as sessionActions from '../redux/actions/sessionActions'
-import { Button, Text, Container, Content, Input, Form, Item, Label, Card, CardItem, Body } from 'native-base'
 
 // SHAPE OF EXERCISE DATA
 // Object {
@@ -64,7 +78,6 @@ class AddSessionScreen extends React.Component {
 
   componentDidMount() {
     const params = this.props.navigation.state.params
-    console.log('PARAMS', params)
     this.setState({
       workoutID: params.workoutID,
       workoutName: params.workoutName,
@@ -94,6 +107,14 @@ class AddSessionScreen extends React.Component {
     this.props.navigation.navigate('Workouts')
   }
 
+  handleCapture = () => {
+    this.state.exerciseNames.forEach((name, exIdx) => {
+      Object.entries(this.state.exerciseData[exIdx]).forEach(([attrIdx, attr]) => {
+        this[`${exIdx}-${attrIdx}-input`] && this[`${exIdx}-${attrIdx}-input`].blur()
+      })
+    })
+  }
+
   setAttrVal(exIdx, attrIdx, val) {
     this.setState((prevState) => {
       return produce(prevState, (draftState) => {
@@ -101,37 +122,63 @@ class AddSessionScreen extends React.Component {
       })
     })
   }
-
+  // make keyboard type numeric
   renderAttrInputs(exIdx) {
     return Object.entries(this.state.exerciseData[exIdx]).map(([attrIdx, attr]) => {
+      const labelElement = (
+        <Text style={{
+          fontFamily: 'rubik-medium',
+          fontSize:20,
+          color: COLORS.gray7
+        }}>
+          {attr.type}
+        </Text>
+      )
+      const attrVal = this.state.exerciseData[exIdx][attrIdx].val
       return (
-        <CardItem key={attrIdx} style={{backgroundColor: 'white', height: 60, marginBottom: 10}}>
-          <Body>
-            <Item stackedLabel>
-              <Label>{attr.type}</Label>
-              <Input
-                style={{width: 320, maxHeight: 25, backgroundColor: 'white', borderBottomWidth: 1, borderBottomColor: 'gray'}}
-                underline
-                keyboardType={"numeric"}
-                onChangeText={ this.setAttrVal.bind(this, exIdx, attrIdx)}
-              />
-            </Item>
-          </Body>
-        </CardItem>
+        <View key={attrIdx} style={{paddingTop: 20}}>
+          <Input
+            value={attrVal}
+            label={labelElement}
+            onChangeText={this.setAttrVal.bind(this, exIdx, attrIdx)}
+            ref={(element) => { this[`${exIdx}-${attrIdx}-input`] = element }}
+            fontSize={24}
+            isValid={attrVal && attrVal.length > 0}
+            fixedLabel={false}
+          />
+        </View>
       )
     })
   }
 
-  renderExercises() {
+  cardComplete = (exIdx) => {
+    return Object.entries(this.state.exerciseData[exIdx]).every(([attrIdx, attr]) => {
+      return attr.val && attr.val.length > 0
+    })
+  }
+
+  renderExercises = () => {
     if (this.state.exerciseNames) {
       return this.state.exerciseNames.map((val, exIdx) => {
+        const completeEl = (
+          <AnimatedIcon
+            icon1={<FontAwesome name={'check'} color={COLORS.gray1} size={30}/>}
+            icon2={<FontAwesome name={'check'} color={COLORS.celestialGreen7} size={30}/>}
+            isEnabled={this.cardComplete(exIdx)}
+            size={30}
+            style={{marginTop: -6}}
+          />
+        )
         return (
-          <Card key={exIdx}>
-          <CardItem header bordered>
-          <Text>{val}</Text>
-          </CardItem>
-          { this.renderAttrInputs(exIdx) }
-          </Card>
+          <ExpandingCard
+            key={exIdx}
+            header={val}
+            expandable={false}
+            cardHeights={[600, 600]}
+            rightCorner={completeEl}
+          >
+            { this.renderAttrInputs(exIdx) }
+          </ExpandingCard>
         )
       })
     } else {
@@ -140,24 +187,26 @@ class AddSessionScreen extends React.Component {
   }
 
   render() {
-    const recordButton = (
-      <Button rounded success onPress={() => this.addSession() }>
-        <Text>Record Session</Text>
-      </Button>
-    )
+    const { width, height } = Dimensions.get('window')
+
     return (
-      <Content padder>
-        { this.renderExercises() }
-        <Container style={{flexDirection: 'row', justifyContent: 'space-around', marginTop: 20, height: 80}}>
-          { recordButton }
-        </Container>
-      </Content>
+      <PressCapture onPress={this.handleCapture}>
+        <View style={[common.staticView, { paddingLeft: 10, paddingRight: 10, backgroundColor: COLORS.white, height: height }]}>
+          <KeyboardAwareScrollView style={{paddingTop: 10}}>
+            { this.renderExercises() }
+            <View style={[common.row]}>
+              <TouchableOpacity onPress={() => this.addSession() }>
+                <View style={{padding: 14, backgroundColor: COLORS.peach}}>
+                  <Text style={{fontSize: 24, fontFamily: 'rubik-medium', textAlign: 'center', color: COLORS.white}}>
+                    Record Session
+                  </Text>
+                </View>
+              </TouchableOpacity>
+            </View>
+          </KeyboardAwareScrollView>
+        </View>
+      </PressCapture>
     )
-    // <View style={common.staticView, { paddingLeft: 10, paddingRight: 10, backgroundColor: COLORS.white, height: height }}>
-    //   <ScrollView style={{paddingTop: 10, marginBottom: 110}}>
-    //     { this.renderExercises() }
-    //   </ScrollView>
-    // </View>
   }
 }
 
@@ -166,13 +215,5 @@ const mapDispatchToProps = (dispatch) => {
     addSession: (exerciseNames, exerciseData, uid, workoutID, workoutName) => { dispatch(sessionActions.addSession(exerciseNames, exerciseData, uid, workoutID, workoutName)) },
   }
 }
-
-const styles = StyleSheet.create({
-  container: {
-    paddingTop: 10,
-    alignItems: 'center',
-    justifyContent: 'flex-start',
-  },
-})
 
 export default connect(mapStateToProps, mapDispatchToProps)(AddSessionScreen)

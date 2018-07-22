@@ -90,7 +90,7 @@ class DemoScreen extends React.Component {
       })
     })
   }
-// make keyboard type numeric
+  // make keyboard type numeric
   renderAttrInputs(exIdx) {
     return Object.entries(this.state.exerciseData[exIdx]).map(([attrIdx, attr]) => {
       const labelElement = (
@@ -175,7 +175,6 @@ class DemoScreen extends React.Component {
         </View>
       </PressCapture>
     )
-
   }
 }
 
