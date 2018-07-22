@@ -42,7 +42,7 @@ import * as sessionActions from '../redux/actions/sessionActions'
 //   },
 // }
 
-INITIAL_STATE = {
+ADD_SESSION_STATE = {
   workoutName: '',
   exerciseNames: [],
   exerciseData: {},
@@ -70,11 +70,11 @@ class AddSessionScreen extends React.Component {
 
   constructor() {
     super()
-    this.state = INITIAL_STATE
+    this.state = ADD_SESSION_STATE
   }
 
   resetState() {
-    this.setState(INITIAL_STATE)
+    this.setState(ADD_SESSION_STATE)
   }
 
   componentDidMount() {

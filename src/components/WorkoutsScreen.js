@@ -44,6 +44,55 @@ class WorkoutsScreen extends React.Component {
     })
   }
 
+  removeSession = (id) => {
+    const userID = this.props.userID
+    this.props.removeSession(id, userID)
+  }
+
+  render() {
+    const { height } = Dimensions.get('window')
+    const isEmpty = this.props.sessions.length === 0
+
+    return (
+      <View style={common.staticView, { paddingLeft: 10, paddingRight: 10, backgroundColor: COLORS.white, height: height }}>
+        <ScrollView style={{paddingTop: 10, marginBottom: 110}}>
+          { isEmpty? this.renderEmptyMessage() : this.renderSessionCards() }
+        </ScrollView>
+      </View>
+    )
+  }
+
+  renderSessionCards = () => {
+    return this.props.sessions.map((session) => {
+      const dateString = format(session.date, 'dddd, MMM D [at] h:mm A')
+      return (
+        <ExpandingCard
+          key={session.id}
+          subHeader={dateString}
+          header={session.workoutName}
+          deleteHandler={this.removeSession.bind(this, session.id)}
+          swipeable={true}
+          expandable={true}
+        >
+          { this.renderExerciseTexts(session.exercises) }
+          { this.renderNotes(session.noteText) }
+        </ExpandingCard>
+      )
+    })
+  }
+
+  renderNotes(text) {
+    if (text.length > 0 ) {
+      return (
+        <Text style={[common.tajawal3, {fontSize: 18, color: COLORS.gray8, paddingBottom: 2}]}>
+        { `Notes: \n` + text }
+        </Text>
+      )
+    } else {
+      return null
+    }
+  }
+
   renderExerciseTexts = (exercises) => {
     if (exercises) {
       return Object.values(exercises).map((exercise) => {
@@ -62,11 +111,6 @@ class WorkoutsScreen extends React.Component {
     }
   }
 
-  removeSession = (id) => {
-    const userID = this.props.userID
-    this.props.removeSession(id, userID)
-  }
-
   renderEmptyMessage = () => {
     const { height } = Dimensions.get('window')
     return (
@@ -76,37 +120,6 @@ class WorkoutsScreen extends React.Component {
             {'You have not recorded a workout. Try recording one!'}
           </Text>
         </View>
-      </View>
-    )
-  }
-
-  renderSessionCards = () => {
-    return this.props.sessions.map((session) => {
-      const dateString = format(session.date, 'dddd, MMM D [at] h:mm A')
-      return (
-        <ExpandingCard
-          key={session.id}
-          subHeader={dateString}
-          header={session.workoutName}
-          deleteHandler={this.removeSession.bind(this, session.id)}
-          swipeable={true}
-          expandable={true}
-        >
-          { this.renderExerciseTexts(session.exercises) }
-        </ExpandingCard>
-      )
-    })
-  }
-
-  render() {
-    const { height } = Dimensions.get('window')
-    const isEmpty = this.props.sessions.length === 0
-
-    return (
-      <View style={common.staticView, { paddingLeft: 10, paddingRight: 10, backgroundColor: COLORS.white, height: height }}>
-        <ScrollView style={{paddingTop: 10, marginBottom: 110}}>
-          { isEmpty? this.renderEmptyMessage() : this.renderSessionCards() }
-        </ScrollView>
       </View>
     )
   }
