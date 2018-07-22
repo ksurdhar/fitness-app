@@ -61,20 +61,22 @@ class Input extends React.Component {
       }
     }
 
-    Animated.timing(this.animations.greenLine, {
-      toValue: valid ? 100 : 0,
-      duration: 400
-    }).start()
+    if (this.props.animate) {
+      Animated.timing(this.animations.blueLine, {
+        toValue: focused ? 100 : 0,
+        duration: 400
+      }).start()
 
-    Animated.timing(this.animations.blueLine, {
-      toValue: focused ? 100 : 0,
-      duration: 400
-    }).start()
+      Animated.timing(this.animations.greenLine, {
+        toValue: valid ? 100 : 0,
+        duration: 400
+      }).start()
 
-    Animated.timing(this.animations.redLine, {
-      toValue: invalid ? 100 : 0,
-      duration: 400
-    }).start()
+      Animated.timing(this.animations.redLine, {
+        toValue: invalid ? 100 : 0,
+        duration: 400
+      }).start()
+    }
   }
 
   focus() {

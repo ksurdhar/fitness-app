@@ -60,6 +60,15 @@ class NameWorkout extends React.Component {
 
   render() {
     const { width, height } = Dimensions.get('window')
+    const labelEl = (
+      <Text style={{
+        fontFamily: 'rubik-medium',
+        fontSize:20,
+        color: COLORS.gray7
+      }}>
+        Workout Name
+      </Text>
+    )
     return (
       <View style={[common.staticView]}>
         <KeyboardAwareScrollView style={{flex:1, justifyContent: 'start'}}>
@@ -70,12 +79,13 @@ class NameWorkout extends React.Component {
           </View>
           <Input
             value={this.state.currentName}
-            labelText='Workout Name'
+            label={labelEl}
             onChangeText={this.changeNameHandler}
             ref={(element) => { this.input = element }}
-            small={true}
-            style={{marginBottom: 20, width: width - 20, marginTop: 100}}
+            style={{width: width - 20, marginTop: 100}}
             fixedLabel={true}
+            fontSize={24}
+            animate={false}
           />
           <View style={[common.row]}>
             <TouchableOpacity onPress={this.addWorkout}>

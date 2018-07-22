@@ -92,6 +92,15 @@ class ListExercisesScreen extends React.Component {
 
   render() {
     const { width, height } = Dimensions.get('window')
+    const labelEl = (
+      <Text style={{
+        fontFamily: 'rubik-medium',
+        fontSize:20,
+        color: COLORS.gray7
+      }}>
+        Exercise Name
+      </Text>
+    )
     return (
       <View style={[common.staticView]}>
         <KeyboardAwareScrollView style={{flex:1, justifyContent: 'start'}}>
@@ -110,12 +119,13 @@ class ListExercisesScreen extends React.Component {
           </View>
           <Input
             value={this.state.currentName}
-            labelText='Exercise Name'
+            label={labelEl}
             onChangeText={this.changeExerciseNameHandler}
             ref={(element) => { this.input = element }}
-            small={true}
-            style={{marginBottom: 20, width: width-20}}
+            style={{width: width-20}}
             fixedLabel={true}
+            fontSize={24}
+            animate={false}
           />
           <View style={[common.row]}>
             <TouchableOpacity onPress={this.addExercise}>

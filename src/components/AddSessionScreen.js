@@ -145,6 +145,7 @@ class AddSessionScreen extends React.Component {
             fontSize={24}
             isValid={attrVal && attrVal.length > 0}
             fixedLabel={false}
+            animate={true}
           />
         </View>
       )

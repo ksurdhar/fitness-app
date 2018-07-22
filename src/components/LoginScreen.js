@@ -158,6 +158,7 @@ class LoginScreen extends Component {
               ref={(element) => { this.emailInput = element }}
               fixedTrue={false}
               fontSize={24}
+              animate={false}
             />
             <View style={{paddingTop: 40}}>
               <Input
@@ -168,6 +169,7 @@ class LoginScreen extends Component {
                 ref={(element) => { this.passwordInput = element }}
                 fixedTrue={false}
                 fontSize={24}
+                animate={false}
               />
             </View>
             <View style={[common.row, {marginTop: 50, marginBottom: 80}]}>
