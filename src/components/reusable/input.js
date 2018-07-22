@@ -149,6 +149,9 @@ class Input extends React.Component {
             placeholder={this.props.placeholder}
             autoFocus={this.props.autoFocus}
             secureTextEntry={this.props.secureTextEntry}
+            multiline={this.props.multiline}
+            numberOfLines={this.props.numberOfLines}
+            keyboardType={this.props.keyboardType}
             ref={(element) => { this.textInput = element }}
             onFocus={this.focusHandler}
             onEndEditing={this.blurHandler}

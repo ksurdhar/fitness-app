@@ -46,6 +46,7 @@ INITIAL_STATE = {
   workoutName: '',
   exerciseNames: [],
   exerciseData: {},
+  noteText: ''
 }
 
 const mapStateToProps = (state, ownProps) => {
@@ -96,7 +97,8 @@ class AddSessionScreen extends React.Component {
       this.state.exerciseData,
       this.props.user.uid,
       this.state.workoutID,
-      this.state.workoutName
+      this.state.workoutName,
+      this.state.noteText
     )
     this.resetState()
     const resetAction = StackActions.reset({
@@ -146,6 +148,7 @@ class AddSessionScreen extends React.Component {
             isValid={attrVal && attrVal.length > 0}
             fixedLabel={false}
             animate={true}
+            keyboardType={'numeric'}
           />
         </View>
       )
@@ -187,6 +190,27 @@ class AddSessionScreen extends React.Component {
     }
   }
 
+  renderNoteCard = () => {
+    return (
+      <ExpandingCard
+        key={'notes'}
+        header={'Notes'}
+        expandable={false}
+        cardHeights={[600, 600]}
+      >
+      <Input
+        value={this.state.noteText}
+        onChangeText={(val) => { this.setState({noteText: val}) }}
+        fontSize={20}
+        fixedLabel={false}
+        animate={false}
+        multiline={true}
+        numberOfLines={4}
+      />
+      </ExpandingCard>
+    )
+  }
+
   render() {
     const { width, height } = Dimensions.get('window')
 
@@ -195,6 +219,7 @@ class AddSessionScreen extends React.Component {
         <View style={[common.staticView, { paddingLeft: 10, paddingRight: 10, backgroundColor: COLORS.white, height: height }]}>
           <KeyboardAwareScrollView style={{paddingTop: 10}}>
             { this.renderExercises() }
+            { this.renderNoteCard() }
             <View style={[common.row]}>
               <TouchableOpacity onPress={() => this.addSession() }>
                 <View style={{padding: 14, backgroundColor: COLORS.peach}}>
@@ -213,7 +238,7 @@ class AddSessionScreen extends React.Component {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    addSession: (exerciseNames, exerciseData, uid, workoutID, workoutName) => { dispatch(sessionActions.addSession(exerciseNames, exerciseData, uid, workoutID, workoutName)) },
+    addSession: (exerciseNames, exerciseData, uid, workoutID, workoutName, noteText) => { dispatch(sessionActions.addSession(exerciseNames, exerciseData, uid, workoutID, workoutName, noteText)) },
   }
 }
 
