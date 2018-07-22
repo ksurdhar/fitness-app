@@ -98,6 +98,7 @@ class ExpandingCard extends React.Component {
               <Text style={[common.tajawal5, {fontSize: 26, color: COLORS.gray10}]}>
                 {this.props.header}
               </Text>
+              { this.props.rightCorner ? this.props.rightCorner : null }
             </View>
           </Swipeout>
         </View>

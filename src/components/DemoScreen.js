@@ -91,18 +91,26 @@ class DemoScreen extends React.Component {
 // make keyboard type numeric
   renderAttrInputs(exIdx) {
     return Object.entries(this.state.exerciseData[exIdx]).map(([attrIdx, attr]) => {
+      const labelElement = (
+        <Text style={{
+          fontFamily: 'rubik-medium',
+          fontSize:20,
+          color: COLORS.gray7
+        }}>
+          {attr.type}
+        </Text>
+      )
       const attrVal = this.state.exerciseData[exIdx][attrIdx].val
       return (
-        <View key={attrIdx}>
+        <View key={attrIdx} style={{paddingTop: 20}}>
           <Input
             value={attrVal}
-            labelText={attr.type}
+            label={labelElement}
             onChangeText={this.setAttrVal.bind(this, exIdx, attrIdx)}
             ref={(element) => { this[`${exIdx}-${attrIdx}-input`] = element }}
-            small={true}
-            lineColors={[COLORS.gray1, COLORS.chill]}
+            fontSize={24}
             isValid={attrVal && attrVal.length > 0}
-            fixedLabel={true}
+            fixedLabel={false}
           />
         </View>
       )
@@ -112,11 +120,15 @@ class DemoScreen extends React.Component {
   renderExercises() {
     if (this.state.exerciseNames) {
       return this.state.exerciseNames.map((val, exIdx) => {
+        // to animate svg, animate view on top from solid to transparent
+        // or, have two svgs and make each transparent, like the inputs
+        const completeEl = (
+          <Text>Hello</Text>
+        )
         return (
           <ExpandingCard
             key={exIdx}
             header={val}
-            deleteHandler={() => {}}
             expandable={false}
             cardHeights={[600, 600]}
           >

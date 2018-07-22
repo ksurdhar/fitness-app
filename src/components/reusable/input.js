@@ -116,10 +116,7 @@ class Input extends React.Component {
   }
 
   render() {
-    const size = this.props.small === true ? 'small' : 'large'
-    const fontSize =  size === 'small' ? 24 : 36
-    const inputHeight = size === 'small' ? 74 : 90
-
+    const labelPosition = Math.ceil(this.props.fontSize * 1.4)
     const animations = {
       greenLine: this.animations.greenLine.interpolate(
         this.basicInterpolation([COLORS.celestialGreen0, COLORS.celestialGreen])
@@ -131,7 +128,7 @@ class Input extends React.Component {
         this.basicInterpolation([COLORS.fluorescentRed0, COLORS.fluorescentRed])
       ),
       labelPosition: this.animations.labelPosition.interpolate(
-        this.basicInterpolation([this.props.fixedLabel ? 42: 0, 42])
+        this.basicInterpolation([this.props.fixedLabel ? labelPosition: 0, labelPosition])
       )
     }
 
@@ -139,15 +136,14 @@ class Input extends React.Component {
       <View>
         <Animated.View style={[{
           borderBottomWidth: 3,
-          height: inputHeight,
           marginTop:10
         }, styleLine(animations, 'blueLine'), this.props.style]}>
-          <Animated.Text style={styleLabel(animations, fontSize)}>
-            {this.props.labelText}
-          </Animated.Text>
+          <Animated.View style={styleLabel(animations)}>
+            { this.props.label }
+          </Animated.View>
           <TextInput
             value={this.props.value}
-            style={[styles[size], styles.base]}
+            style={[{fontSize: this.props.fontSize}, styles.base]}
             placeholder={this.props.placeholder}
             autoFocus={this.props.autoFocus}
             secureTextEntry={this.props.secureTextEntry}
@@ -170,28 +166,18 @@ function styleLine(animations, lineColor) {
   }
 }
 
-function styleLabel(animations, fontSize) {
+function styleLabel(animations) {
   return {
     position: 'absolute',
-    fontFamily: 'rubik-medium',
-    fontSize: fontSize,
-    color: COLORS.gray7,
     bottom: animations.labelPosition
   }
 }
 
+// instead of setting sizes, pass in your element and give us a top to animate
 const styles = StyleSheet.create({
   base: {
     fontFamily: 'rubik-medium',
   },
-  large: {
-    fontSize: 36,
-    top: 44
-  },
-  small: {
-    fontSize: 24,
-    top: 40
-  }
 })
 
 export default Input
