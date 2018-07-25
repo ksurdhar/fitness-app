@@ -6,7 +6,9 @@ import Navigator from './Navigator'
 import store from './redux/store'
 import LoginScreen from './components/LoginScreen'
 import DemoScreen from './components/DemoScreen'
+import Toast from './components/reusable/toast'
 import { Font } from 'expo'
+
 
 import Config from 'react-native-config'
 import config from '../config'
@@ -23,31 +25,31 @@ class Index extends Component {
 
   render() {
     // UNCOMMENT TO WORK ON DEMO
-    // if (this.state.fontLoaded) {
-    //   return (
-    //     <Provider store={store}>
-    //       <DemoScreen />
-    //     </Provider>
-    //   )
-    // } else {
-    //   return null
-    // }
-
-    if (this.state.fontLoaded && this.props.isLoggedIn) {
+    if (this.state.fontLoaded) {
       return (
         <Provider store={store}>
-          <Navigator />
-        </Provider>
-      )
-    } else if (this.state.fontLoaded) {
-      return (
-        <Provider store={store}>
-          <LoginScreen />
+          <DemoScreen />
         </Provider>
       )
     } else {
       return null
     }
+
+    // if (this.state.fontLoaded && this.props.isLoggedIn) {
+    //   return (
+    //     <Provider store={store}>
+    //       <Navigator />
+    //     </Provider>
+    //   )
+    // } else if (this.state.fontLoaded) {
+    //   return (
+    //     <Provider store={store}>
+    //       <LoginScreen />
+    //     </Provider>
+    //   )
+    // } else {
+    //   return null
+    // }
   }
 
   async componentDidMount() {

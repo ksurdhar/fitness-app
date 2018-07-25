@@ -23,6 +23,7 @@ import Input from './reusable/input'
 import Switch from './reusable/switch'
 import PressCapture from './reusable/pressCapture'
 import { common, COLORS } from './reusable/common'
+import Toast from './reusable/toast'
 
 // SHAPE OF EXERCISE DATA
 // Object {
@@ -75,6 +76,12 @@ class DemoScreen extends React.Component {
     // console.log(this.state)
   }
 
+  componentDidMount() {
+    // this.toast.open('You already have a workout with that name.')
+    this.toast.open('You already have an exercise with that name.')
+    // this.toast.open('Each .')
+  }
+
   handleCapture = () => {
     this.state.exerciseNames.forEach((name, exIdx) => {
       Object.entries(this.state.exerciseData[exIdx]).forEach(([attrIdx, attr]) => {
@@ -103,6 +110,8 @@ class DemoScreen extends React.Component {
         </Text>
       )
       const attrVal = this.state.exerciseData[exIdx][attrIdx].val
+      // if user has submitted
+      // then check the value, and if invalid, set that on the input
       return (
         <View key={attrIdx} style={{paddingTop: 20}}>
           <Input
@@ -113,6 +122,7 @@ class DemoScreen extends React.Component {
             fontSize={24}
             isValid={attrVal && attrVal.length > 0}
             fixedLabel={false}
+            animate={true}
           />
         </View>
       )
@@ -159,19 +169,22 @@ class DemoScreen extends React.Component {
 
     return (
       <PressCapture onPress={this.handleCapture}>
-        <View style={[common.staticView, { paddingLeft: 10, paddingRight: 10, backgroundColor: COLORS.white, height: height }]}>
-          <KeyboardAwareScrollView style={{paddingTop: 10}}>
-            { this.renderExercises() }
-            <View style={[common.row]}>
-              <TouchableOpacity onPress={() => this.addSession() }>
-                <View style={{padding: 14, backgroundColor: COLORS.peach}}>
-                  <Text style={{fontSize: 24, fontFamily: 'rubik-medium', textAlign: 'center', color: COLORS.white}}>
-                    Record Session
-                  </Text>
-                </View>
-              </TouchableOpacity>
-            </View>
-          </KeyboardAwareScrollView>
+        <View style={{flex: 1}}>
+          <Toast ref={(element) => { this.toast = element } }/>
+          <View style={[common.staticView, { paddingLeft: 10, paddingRight: 10, backgroundColor: COLORS.white, height: height }]}>
+            <KeyboardAwareScrollView style={{paddingTop: 10}}>
+              { this.renderExercises() }
+              <View style={[common.row]}>
+                <TouchableOpacity onPress={() => this.addSession() }>
+                  <View style={{padding: 14, backgroundColor: COLORS.peach}}>
+                    <Text style={{fontSize: 24, fontFamily: 'rubik-medium', textAlign: 'center', color: COLORS.white}}>
+                      Record Session
+                    </Text>
+                  </View>
+                </TouchableOpacity>
+              </View>
+            </KeyboardAwareScrollView>
+          </View>
         </View>
       </PressCapture>
     )
