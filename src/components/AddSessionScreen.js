@@ -224,7 +224,7 @@ class AddSessionScreen extends React.Component {
               <TouchableOpacity onPress={() => this.addSession() }>
                 <View style={{padding: 14, backgroundColor: COLORS.peach}}>
                   <Text style={{fontSize: 24, fontFamily: 'rubik-medium', textAlign: 'center', color: COLORS.white}}>
-                    Record Session
+                    Record
                   </Text>
                 </View>
               </TouchableOpacity>

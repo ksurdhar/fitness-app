@@ -11,7 +11,8 @@ import {
 import { common, COLORS } from './common'
 class Toast extends React.Component {
   animations = {
-    opacity: new Animated.Value(0)
+    opacity: new Animated.Value(0),
+    height: new Animated.Value(0)
   }
 
   constructor(props) {
@@ -36,6 +37,10 @@ class Toast extends React.Component {
   animate = () => {
     Animated.parallel([
       Animated.timing(this.animations.opacity, {
+        toValue: this.state.isOpen? 100 : 0,
+        duration: 220
+      }),
+      Animated.timing(this.animations.height, {
         toValue: this.state.isOpen? 100 : 0,
         duration: 220
       }),
@@ -74,11 +79,14 @@ class Toast extends React.Component {
     const animations = {
       opacity: this.animations.opacity.interpolate(
         this.basicInterpolation([0, 1])
+      ),
+      height: this.animations.height.interpolate(
+        this.basicInterpolation([0, 80])
       )
     }
 
     return (
-      <View style={{top: 30, zIndex: 10, position: 'absolute'}}>
+      <View style={{zIndex: 10, position: 'absolute'}}>
         <Animated.View style={[{
           paddingTop: 25,
           paddingBottom: 25,
@@ -97,14 +105,7 @@ class Toast extends React.Component {
 function animatedStyles(animations) {
   return {
     opacity: animations.opacity,
-    transform: [
-      {
-        scaleY: animations.opacity.interpolate({
-          inputRange: [0, 1],
-          outputRange: [0, 1],
-        }),
-      },
-    ],
+    height: animations.height
   }
 }
 

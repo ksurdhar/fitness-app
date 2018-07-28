@@ -78,8 +78,8 @@ class DemoScreen extends React.Component {
 
   componentDidMount() {
     // this.toast.open('You already have a workout with that name.')
-    this.toast.open('You already have an exercise with that name.')
-    // this.toast.open('Each .')
+    // this.toast.open('You already have an exercise with that name.')
+    this.toast.open('Workout names must be less than 20 chars')
   }
 
   handleCapture = () => {
