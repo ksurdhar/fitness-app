@@ -13,6 +13,7 @@ import {
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
 import { MaterialIcons } from '@expo/vector-icons'
+import { Permissions, Notifications } from 'expo'
 
 import Button from './reusable/button'
 import Input from './reusable/input'
@@ -48,6 +49,34 @@ class LoginScreen extends Component {
     this.onLogin = this.onLogin.bind(this)
     this.onSignUp = this.onSignUp.bind(this)
     this.onSubmit = this.onSubmit.bind(this)
+    this.registerNotifications = this.registerNotifications.bind(this)
+  }
+
+  async registerNotifications () {
+    console.log('registering')
+    const { status: existingStatus } = await Permissions.getAsync(
+      Permissions.NOTIFICATIONS
+    )
+    let finalStatus = existingStatus
+
+    // only ask if permissions have not already been determined, because
+    // iOS won't necessarily prompt the user a second time.
+    if (existingStatus !== 'granted') {
+      // Android remote notification permissions are granted during the app
+      // install, so this will only ask on iOS
+      const { status } = await Permissions.askAsync(Permissions.NOTIFICATIONS);
+      finalStatus = status;
+    }
+    // Stop here if the user did not grant permissions
+    if (finalStatus !== 'granted') {
+      console.log('not granted')
+      return
+    }
+
+    // Get the token that uniquely identifies this device
+    let token = await Notifications.getExpoPushTokenAsync()
+    console.log('RECEIVED TOKEN', token)
+    
   }
 
   onLogin() {
@@ -77,6 +106,8 @@ class LoginScreen extends Component {
         sessionsRef.once('value', (snapshot) => {
           store.dispatch(recievedSessions(snapshot.val()))
         })
+        // NOTIFICATION REGISTRATION
+        this.registerNotifications()
         this.props.dispatchLogin(user)
       })
       .catch(error => {
