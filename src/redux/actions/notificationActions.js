@@ -7,22 +7,13 @@ export function recievedNotifications(notifications) {
   }
 }
 
-// turns array into object where [apple, orange] -> {0: apple, 1: orange}
-Array.prototype.toObj = function () {
-  const obj = {}
-  this.forEach((entry, idx) => {
-    obj[idx] = entry
-  })
-  return obj
-}
-
-// simplify add notification
 export function addNotification(workoutID, userID, hours, minutes, daysInterval) {
   const id = Math.random().toString(36).substring(7)
   const notificationRef = rootRef.child(`notifications/${workoutID}`)
 
   notificationRef.set({
     id,
+    workoutID,
     userID,
     hours,
     minutes,
@@ -34,12 +25,29 @@ export function addNotification(workoutID, userID, hours, minutes, daysInterval)
   }
 }
 
+export function updateNotification(workoutID, patchObj) {
+  const notificationRef = rootRef.child(`notifications/${workoutID}`)
+
+  notificationRef.update(patchObj)
+
+  return {
+    type: 'UPDATE_NOTIFICATION'
+  }
+}
+
 export function removeNotification(workoutID) {
   const notificationRef = rootRef.child(`notifications/${workoutID}`)
   notificationRef.remove()
 
   return {
     type: 'REMOVE_NOTIFICATION'
+  }
+}
+
+export function updateNotificationSuccess(notification) {
+  return {
+    type: 'UPDATE_NOTIFICATION_SUCCESS',
+    notification: notification
   }
 }
 

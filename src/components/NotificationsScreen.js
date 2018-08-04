@@ -1,6 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import produce from 'immer'
+import { Permissions, Notifications } from 'expo'
 import {
   Dimensions,
   StyleSheet,
@@ -20,10 +21,34 @@ import KButton from './reusable/button'
 import Switch from './reusable/switch'
 import * as notificationActions from '../redux/actions/notificationActions'
 
+async function registerForPushNotificationsAsync() {
+  console.log('registering for notifications!')
+  const { status: existingStatus } = await Permissions.getAsync(
+    Permissions.NOTIFICATIONS
+  )
+  let finalStatus = existingStatus
+
+  if (existingStatus !== 'granted') {
+    const { status } = await Permissions.askAsync(Permissions.NOTIFICATIONS)
+    finalStatus = status
+  }
+
+  // Stop here if the user did not grant permissions
+  if (finalStatus !== 'granted') {
+    return
+  }
+
+  // Get the token that uniquely identifies this device
+  let token = await Notifications.getExpoPushTokenAsync();
+  console.log('generated token:', token)
+  // save token to firebase
+}
+
 const mapStateToProps = (state, ownProps) => {
   return {
     workouts: state.workouts.workouts,
     userID: state.auth.user.uid,
+    notifications: state.notifications.notifications
   }
 }
 
@@ -41,23 +66,26 @@ class NotificationsScreen extends React.Component {
     }
   }
 
+
+  componentDidMount() {
+    registerForPushNotificationsAsync()
+    console.log('props', this.props.notifications)
+  }
+
+  componentDidUpdate() {
+    console.log('cmp update', this.props.notifications)
+    // console.log('PROMPT WORKOUT PROPS', this.props.workouts)
+  }
+
   addNotification = (workoutID) => {
     console.log('add notification')
     const dateObj = new Date()
-
-    // need to move this state into redux, not local state, wired to firebase
-    this.setState((prevState) => {
-      return produce(prevState, (draftState) => {
-        draftState.notificationData[workoutID] = dateObj
-      })
-    })
 
     const hours = dateObj.getUTCHours()
     const minutes = dateObj.getMinutes()
     const daysInterval = 3
     const userID = this.props.userID
 
-    // workoutID, userID, hours, minutes, daysInterval
     this.props.addNotification(workoutID, userID, hours, minutes, daysInterval)
   }
 
@@ -66,49 +94,31 @@ class NotificationsScreen extends React.Component {
   }
 
   removeNotification = (workoutID) => {
-    console.log('remove notification')
-    this.setState((prevState) => {
-      return produce(prevState, (draftState) => {
-        draftState.notificationData[workoutID] = null
-      })
-    })
-
     this.props.removeNotification(workoutID)
   }
 
   toggleNotification = (workoutID) => {
-    console.log('toggling', workoutID)
-    if (this.state.notificationData[workoutID]) {
-      this.removeNotification(workoutID)
-    } else {
-      this.addNotification(workoutID)
-    }
+    const notificationEnabled = this.props.notifications.some((notification) => {
+      return notification.workoutID === workoutID
+    })
+
+    notificationEnabled ? this.removeNotification(workoutID) : this.addNotification(workoutID)
   }
 
-  // here is where we grab the notifications endpoint and check if the toggles are on
-  componentDidMount() {
-    // console.log('mounted',this.props)
-    // const notificationData = {}
-    // this.props.workouts.for
-    // this.setState()
-  }
-
-  componentDidUpdate() {
-    console.log('cmp update', this.state)
-    // console.log('PROMPT WORKOUT PROPS', this.props.workouts)
-  }
-
-  // if the switch is tapped, send a value to the server, change it with the time thing
   renderWorkouts = () => {
     const workoutElements = this.props.workouts.map((workout, idx) => {
+      const notificationEnabled = this.props.notifications.some((notification) => {
+        return notification.workoutID === workout.id
+      })
+
       return (
-        <View style={[common.row, { marginTop: 20, justifyContent: 'left' }]}>
+        <View key={workout.id} style={[common.row, { marginTop: 20, justifyContent: 'left' }]}>
           <Text style={[common.tajawal5, {fontSize: 22, color: COLORS.gray10, textAlign: 'center'}]}>
             { workout.name }
           </Text>
           <Switch
-            enabled={this.state.notificationData[workout.id]}
-            onPress={() => this.toggleNotification(workout.id) }
+            enabled={notificationEnabled}
+            onPress={() => this.toggleNotification(workout.id, notificationEnabled) }
           />
         </View>
       )

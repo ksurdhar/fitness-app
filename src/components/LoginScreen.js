@@ -24,6 +24,7 @@ import firebase from 'firebase'
 import { login, loginFailed } from '../redux/actions/authActions.js'
 import { addWorkoutSuccess, removeWorkoutSuccess, recievedWorkouts } from '../redux/actions/workoutActions'
 import { addSessionSuccess, removeSessionSuccess, recievedSessions } from '../redux/actions/sessionActions'
+import { addNotificationSuccess, removeNotificationSuccess, recievedNotifications, updateNotificationSuccess } from '../redux/actions/notificationActions'
 
 import config from '../../config.js'
 import store from '../redux/store.js'
@@ -105,8 +106,24 @@ class LoginScreen extends Component {
         sessionsRef.once('value', (snapshot) => {
           store.dispatch(recievedSessions(snapshot.val()))
         })
+        // NOTIFICATIONS
+        const notificationsRef = rootRef.child('notifications').orderByChild('userID').equalTo(user.uid)
+        notificationsRef.on('child_added', (snapshot) => {
+          store.dispatch(addNotificationSuccess(snapshot.val()))
+        })
+        notificationsRef.on('child_removed', (snapshot) => {
+          store.dispatch(removeNotificationSuccess(snapshot.val()))
+        })
+        notificationsRef.on('child_changed', (snapshot) => {
+          console.log('CHILD UPDATED', snapshot.val())
+          store.dispatch(updateNotificationSuccess(snapshot.val()))
+        })
+        notificationsRef.once('value', (snapshot) => {
+          store.dispatch(recievedNotifications(snapshot.val()))
+        })
+
         // NOTIFICATION REGISTRATION
-        this.registerNotifications()
+        // this.registerNotifications()
         this.props.dispatchLogin(user)
       })
       .catch(error => {
