@@ -76,7 +76,6 @@ class LoginScreen extends Component {
     // Get the token that uniquely identifies this device
     let token = await Notifications.getExpoPushTokenAsync()
     console.log('RECEIVED TOKEN', token)
-    
   }
 
   onLogin() {

@@ -23,14 +23,19 @@ class ProfileScreen extends React.Component {
       })
   }
 
+  toNotifications = () => {
+    console.log('notifications!')
+    this.props.navigation.navigate('Notifications')
+  }
+
   render() {
-    let message = 'No user logged in.'
-    if (this.props.isLoggedIn) {
-      message = this.props.user.email
-    }
     return (
       <View style={styles.container}>
-        <Text>{message}</Text>
+        <Text>{this.props.user.email}</Text>
+        <Button
+          title='Notifications'
+          onPress={() => this.toNotifications()}
+        />
         <Button
           title='Logout'
           onPress={() => this.logout()}
