@@ -45,6 +45,7 @@ class NotificationsScreen extends React.Component {
     console.log('add notification')
     const dateObj = new Date()
 
+    // need to move this state into redux, not local state, wired to firebase
     this.setState((prevState) => {
       return produce(prevState, (draftState) => {
         draftState.notificationData[workoutID] = dateObj
@@ -56,7 +57,6 @@ class NotificationsScreen extends React.Component {
     const daysInterval = 3
     const userID = this.props.userID
 
-    // get the variables you need
     // workoutID, userID, hours, minutes, daysInterval
     this.props.addNotification(workoutID, userID, hours, minutes, daysInterval)
   }
@@ -72,6 +72,8 @@ class NotificationsScreen extends React.Component {
         draftState.notificationData[workoutID] = null
       })
     })
+
+    this.props.removeNotification(workoutID)
   }
 
   toggleNotification = (workoutID) => {
@@ -134,6 +136,7 @@ class NotificationsScreen extends React.Component {
 const mapDispatchToProps = (dispatch) => {
   return {
     addNotification: (workoutID, userID, hours, minutes, daysInterval) => { dispatch(notificationActions.addNotification(workoutID, userID, hours, minutes, daysInterval)) },
+    removeNotification: (workoutID) => { dispatch(notificationActions.removeNotification(workoutID)) },
   }
 }
 

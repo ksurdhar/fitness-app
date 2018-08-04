@@ -19,11 +19,10 @@ Array.prototype.toObj = function () {
 // simplify add notification
 export function addNotification(workoutID, userID, hours, minutes, daysInterval) {
   const id = Math.random().toString(36).substring(7)
-  const notificationRef = rootRef.child(`notifications/${id}`)
+  const notificationRef = rootRef.child(`notifications/${workoutID}`)
 
   notificationRef.set({
     id,
-    workoutID,
     userID,
     hours,
     minutes,
@@ -35,8 +34,8 @@ export function addNotification(workoutID, userID, hours, minutes, daysInterval)
   }
 }
 
-export function removeNotification(id, userID) {
-  const notificationRef = rootRef.child(`notifications/${id}`)
+export function removeNotification(workoutID) {
+  const notificationRef = rootRef.child(`notifications/${workoutID}`)
   notificationRef.remove()
 
   return {
