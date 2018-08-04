@@ -70,7 +70,7 @@ class NotificationsScreen extends React.Component {
 
   componentDidMount() {
     registerForPushNotificationsAsync()
-    console.log('props', this.props.notifications)
+    // console.log('props', this.props.notifications)
   }
 
   componentDidUpdate() {
@@ -79,7 +79,7 @@ class NotificationsScreen extends React.Component {
   }
 
   addNotification = (workoutID) => {
-    console.log('add notification')
+    // console.log('add notification')
     const dateObj = new Date()
 
     const hours = dateObj.getUTCHours()
@@ -91,7 +91,7 @@ class NotificationsScreen extends React.Component {
   }
 
   updateNotification = () => {
-    console.log('updating notification')
+    // console.log('updating notification')
   }
 
   removeNotification = (workoutID) => {
@@ -111,19 +111,27 @@ class NotificationsScreen extends React.Component {
     console.log('date change val', val)
   }
 
-  renderControls = (notificationEnabled, workoutID) => {
-    if (notificationEnabled) {
-      return (
-        // need to get the hour / minute from firebase notification, and update the value here
+  renderControls = (workoutID) => {
+    const offsetDate = new Date()
+    const offset = offsetDate.getTimezoneOffset() / 60 // this will be an int, positive or negative
+    // console.log('offset', offset)
+    const notification = this.props.notifications.find((notification) => {
+      return notification.workoutID = workoutID
+    })
+    const hours = notification.hours - offset
+    const minutes = notification.minutes
+    const pickerDate = new Date('1991', 0, 1, hours, minutes) // first three values are useless
+    // console.log('pickerDate', pickerDate.toString())
 
-        <DatePickerIOS
-          date={new Date()}
-          minuteInterval={ 15 }
-          mode={'time'}
-          onDateChange={ this.onDateChange.bind(this, workoutID) }
-        />
-      )
-    }
+    // need to get the hour / minute from firebase notification, and update the value here
+    return (
+      <DatePickerIOS
+        date={pickerDate}
+        minuteInterval={ 15 }
+        mode={'time'}
+        onDateChange={ this.onDateChange.bind(this, workoutID) }
+      />
+    )
   }
 
 
@@ -135,8 +143,8 @@ class NotificationsScreen extends React.Component {
       })
 
       return (
-        <View>
-          <View key={workout.id} style={[common.row, { marginTop: 20, justifyContent: 'left' }]}>
+        <View key={workout.id}>
+          <View style={[common.row, { marginTop: 20, justifyContent: 'left' }]}>
             <Text style={[common.tajawal5, {fontSize: 22, color: COLORS.gray10, textAlign: 'center'}]}>
               { workout.name }
             </Text>
@@ -145,7 +153,7 @@ class NotificationsScreen extends React.Component {
               onPress={() => this.toggleNotification(workout.id, notificationEnabled) }
             />
           </View>
-          { this.renderControls(notificationEnabled, workout.id) }
+          { notificationEnabled ? this.renderControls(workout.id) : null }
         </View>
       )
     })
