@@ -18,7 +18,7 @@ import { Feather } from '@expo/vector-icons'
 import { common } from './reusable/common'
 import KButton from './reusable/button'
 import Switch from './reusable/switch'
-import * as workoutActions from '../redux/actions/workoutActions'
+import * as notificationActions from '../redux/actions/notificationActions'
 
 const mapStateToProps = (state, ownProps) => {
   return {
@@ -43,11 +43,22 @@ class NotificationsScreen extends React.Component {
 
   addNotification = (workoutID) => {
     console.log('add notification')
+    const dateObj = new Date()
+
     this.setState((prevState) => {
       return produce(prevState, (draftState) => {
-        draftState.notificationData[workoutID] = new Date()
+        draftState.notificationData[workoutID] = dateObj
       })
     })
+
+    const hours = dateObj.getUTCHours()
+    const minutes = dateObj.getMinutes()
+    const daysInterval = 3
+    const userID = this.props.userID
+
+    // get the variables you need
+    // workoutID, userID, hours, minutes, daysInterval
+    this.props.addNotification(workoutID, userID, hours, minutes, daysInterval)
   }
 
   updateNotification = () => {
@@ -122,7 +133,7 @@ class NotificationsScreen extends React.Component {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    removeWorkout: (id, userID) => { dispatch(workoutActions.removeWorkout(id, userID)) },
+    addNotification: (workoutID, userID, hours, minutes, daysInterval) => { dispatch(notificationActions.addNotification(workoutID, userID, hours, minutes, daysInterval)) },
   }
 }
 
