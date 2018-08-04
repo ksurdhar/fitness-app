@@ -11,7 +11,8 @@ import {
   Keyboard,
   View,
   Picker,
-  Button
+  Button,
+  DatePickerIOS
 } from 'react-native'
 import Swipeout from 'react-native-swipeout'
 import { Feather } from '@expo/vector-icons'
@@ -105,6 +106,28 @@ class NotificationsScreen extends React.Component {
     notificationEnabled ? this.removeNotification(workoutID) : this.addNotification(workoutID)
   }
 
+  onDateChange = (workoutID, val) => {
+    console.log('date change workoutID', workoutID)
+    console.log('date change val', val)
+  }
+
+  renderControls = (notificationEnabled, workoutID) => {
+    if (notificationEnabled) {
+      return (
+        // need to get the hour / minute from firebase notification, and update the value here
+
+        <DatePickerIOS
+          date={new Date()}
+          minuteInterval={ 15 }
+          mode={'time'}
+          onDateChange={ this.onDateChange.bind(this, workoutID) }
+        />
+      )
+    }
+  }
+
+
+  // render a time picker if the toggle is on
   renderWorkouts = () => {
     const workoutElements = this.props.workouts.map((workout, idx) => {
       const notificationEnabled = this.props.notifications.some((notification) => {
@@ -112,14 +135,17 @@ class NotificationsScreen extends React.Component {
       })
 
       return (
-        <View key={workout.id} style={[common.row, { marginTop: 20, justifyContent: 'left' }]}>
-          <Text style={[common.tajawal5, {fontSize: 22, color: COLORS.gray10, textAlign: 'center'}]}>
-            { workout.name }
-          </Text>
-          <Switch
-            enabled={notificationEnabled}
-            onPress={() => this.toggleNotification(workout.id, notificationEnabled) }
-          />
+        <View>
+          <View key={workout.id} style={[common.row, { marginTop: 20, justifyContent: 'left' }]}>
+            <Text style={[common.tajawal5, {fontSize: 22, color: COLORS.gray10, textAlign: 'center'}]}>
+              { workout.name }
+            </Text>
+            <Switch
+              enabled={notificationEnabled}
+              onPress={() => this.toggleNotification(workout.id, notificationEnabled) }
+            />
+          </View>
+          { this.renderControls(notificationEnabled, workout.id) }
         </View>
       )
     })
