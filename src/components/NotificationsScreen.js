@@ -74,23 +74,26 @@ class NotificationsScreen extends React.Component {
   addNotification = (workoutID, workoutName) => {
     const dateObj = new Date()
 
-    const hours = dateObj.getUTCHours()
+    const hours = dateObj.getUTCHours() - 1 // uncertain why this works, investigate further
     const minutes = dateObj.getMinutes()
     const daysInterval = 3
     const userID = this.props.userID
 
     this.props.addNotification(workoutID, workoutName, userID, hours, minutes, daysInterval)
-    this.props.updateWorkout(workoutID, { notificationsEnabled: true, notificationHours: hours, notificationMinutes: minutes })
-    // maybe update workout with field
-  }
-
-  updateNotification = () => {
-    // console.log('updating notification')
+    this.props.updateWorkout(workoutID, {
+      notificationsEnabled: true,
+      notificationHours: hours,
+      notificationMinutes: minutes
+    })
   }
 
   removeNotification = (workoutID) => {
     this.props.removeNotification(workoutID)
-    this.props.updateWorkout(workoutID, { notificationsEnabled: false, notificationHours: null, notificationMinutes: null })
+    this.props.updateWorkout(workoutID, {
+      notificationsEnabled: false,
+      notificationHours: null,
+      notificationMinutes: null
+    })
   }
 
   toggleNotification = (workout) => {
@@ -99,9 +102,25 @@ class NotificationsScreen extends React.Component {
     workout.notificationsEnabled ? this.removeNotification(workoutID) : this.addNotification(workoutID, workoutName)
   }
 
+  updateNotification = (workoutID, val) => {
+    // console.log('updating notification')
+    const dateObj = new Date(val)
+    console.log(dateObj.toString())
+
+    const hours = dateObj.getUTCHours() - 1 // uncertain why works, investigate further
+    const minutes = dateObj.getMinutes()
+    const daysInterval = 3
+    const userID = this.props.userID
+
+    // this.props.updateNotification(workoutID, workoutName, userID, hours, minutes, daysInterval)
+    this.props.updateWorkout(workoutID, {
+      notificationHours: hours,
+      notificationMinutes: minutes
+    })
+  }
+
   onDateChange = (workoutID, val) => {
-    console.log('date change workoutID', workoutID)
-    console.log('date change val', val)
+    this.updateNotification(workoutID, val)
   }
 
   renderControls = (workout) => {
@@ -125,7 +144,6 @@ class NotificationsScreen extends React.Component {
 
   renderWorkouts = () => {
     const workoutElements = this.props.workouts.map((workout, idx) => {
-      console.log('workout enabled', workout.name, workout.notificationsEnabled)
       return (
         <View key={workout.id}>
           <View style={[common.row, { marginTop: 20, justifyContent: 'left' }]}>
@@ -147,7 +165,6 @@ class NotificationsScreen extends React.Component {
       </View>
     )
   }
-
 
   render() {
     const { height } = Dimensions.get('window')
