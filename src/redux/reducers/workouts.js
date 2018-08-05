@@ -13,6 +13,20 @@ export default function workoutsReducer(state = initialState, action) {
       return Object.assign({}, state, {
         workouts: state.workouts.concat(action.workout)
       })
+    case 'UPDATE_WORKOUT_SUCCESS':
+      console.log('UPDATING WORKOUT')
+      const newWorkouts = []
+      let workoutToUpdate
+      state.workouts.forEach((workout) => {
+        if (workout.id !== action.workout.id) {
+          newWorkouts.push(workout)
+        } else {
+          newWorkouts.push(action.workout)
+        }
+      })
+      return Object.assign({}, state, {
+        workouts: newWorkouts
+      })
     case 'REMOVE_WORKOUT_SUCCESS':
       return Object.assign({}, state, {
         workouts: state.workouts.filter((workout) => workout.id !== action.workout.id)

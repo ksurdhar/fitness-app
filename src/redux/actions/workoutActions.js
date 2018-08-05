@@ -55,6 +55,24 @@ export function removeWorkout(id, userID) {
   }
 }
 
+
+export function updateWorkout(id, patchObj) {
+  const notificationRef = rootRef.child(`workouts/${id}`)
+
+  notificationRef.update(patchObj)
+
+  return {
+    type: 'UPDATE_NOTIFICATION'
+  }
+}
+
+export function updateWorkoutSuccess(workout) {
+  return {
+    type: 'UPDATE_WORKOUT_SUCCESS',
+    workout: workout
+  }
+}
+
 export function removeWorkoutSuccess(workout) {
   return {
     type: 'REMOVE_WORKOUT_SUCCESS',

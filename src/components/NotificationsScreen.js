@@ -21,6 +21,7 @@ import { common } from './reusable/common'
 import KButton from './reusable/button'
 import Switch from './reusable/switch'
 import * as notificationActions from '../redux/actions/notificationActions'
+import * as workoutActions from '../redux/actions/workoutActions'
 
 async function registerForPushNotificationsAsync() {
   console.log('registering for notifications!')
@@ -60,26 +61,17 @@ class NotificationsScreen extends React.Component {
     }
   }
 
-  constructor() {
-    super()
-    this.state = {
-      notificationData: {} // object with workout id to notification
-    }
-  }
-
-
   componentDidMount() {
     registerForPushNotificationsAsync()
     // console.log('props', this.props.notifications)
   }
 
   componentDidUpdate() {
-    console.log('cmp update', this.props.notifications)
+    // console.log('cmp update', this.props.notifications)
     // console.log('PROMPT WORKOUT PROPS', this.props.workouts)
   }
 
-  addNotification = (workoutID) => {
-    // console.log('add notification')
+  addNotification = (workoutID, workoutName) => {
     const dateObj = new Date()
 
     const hours = dateObj.getUTCHours()
@@ -87,7 +79,9 @@ class NotificationsScreen extends React.Component {
     const daysInterval = 3
     const userID = this.props.userID
 
-    this.props.addNotification(workoutID, userID, hours, minutes, daysInterval)
+    this.props.addNotification(workoutID, workoutName, userID, hours, minutes, daysInterval)
+    this.props.updateWorkout(workoutID, { notificationsEnabled: true, notificationHours: hours, notificationMinutes: minutes })
+    // maybe update workout with field
   }
 
   updateNotification = () => {
@@ -96,14 +90,13 @@ class NotificationsScreen extends React.Component {
 
   removeNotification = (workoutID) => {
     this.props.removeNotification(workoutID)
+    this.props.updateWorkout(workoutID, { notificationsEnabled: false, notificationHours: null, notificationMinutes: null })
   }
 
-  toggleNotification = (workoutID) => {
-    const notificationEnabled = this.props.notifications.some((notification) => {
-      return notification.workoutID === workoutID
-    })
-
-    notificationEnabled ? this.removeNotification(workoutID) : this.addNotification(workoutID)
+  toggleNotification = (workout) => {
+    const workoutID = workout.id
+    const workoutName = workout.name
+    workout.notificationsEnabled ? this.removeNotification(workoutID) : this.addNotification(workoutID, workoutName)
   }
 
   onDateChange = (workoutID, val) => {
@@ -111,17 +104,13 @@ class NotificationsScreen extends React.Component {
     console.log('date change val', val)
   }
 
-  renderControls = (workoutID) => {
+  renderControls = (workout) => {
     const offsetDate = new Date()
-    const offset = offsetDate.getTimezoneOffset() / 60 // this will be an int, positive or negative
-    // console.log('offset', offset)
-    const notification = this.props.notifications.find((notification) => {
-      return notification.workoutID = workoutID
-    })
-    const hours = notification.hours - offset
-    const minutes = notification.minutes
+    const offset = offsetDate.getTimezoneOffset() / 60
+
+    const hours = workout.notificationHours - offset
+    const minutes = workout.notificationMinutes
     const pickerDate = new Date('1991', 0, 1, hours, minutes) // first three values are useless
-    // console.log('pickerDate', pickerDate.toString())
 
     // need to get the hour / minute from firebase notification, and update the value here
     return (
@@ -129,19 +118,14 @@ class NotificationsScreen extends React.Component {
         date={pickerDate}
         minuteInterval={ 15 }
         mode={'time'}
-        onDateChange={ this.onDateChange.bind(this, workoutID) }
+        onDateChange={ this.onDateChange.bind(this, workout.id) }
       />
     )
   }
 
-
-  // render a time picker if the toggle is on
   renderWorkouts = () => {
     const workoutElements = this.props.workouts.map((workout, idx) => {
-      const notificationEnabled = this.props.notifications.some((notification) => {
-        return notification.workoutID === workout.id
-      })
-
+      console.log('workout enabled', workout.name, workout.notificationsEnabled)
       return (
         <View key={workout.id}>
           <View style={[common.row, { marginTop: 20, justifyContent: 'left' }]}>
@@ -149,11 +133,11 @@ class NotificationsScreen extends React.Component {
               { workout.name }
             </Text>
             <Switch
-              enabled={notificationEnabled}
-              onPress={() => this.toggleNotification(workout.id, notificationEnabled) }
+              enabled={ !!workout.notificationsEnabled }
+              onPress={() => this.toggleNotification(workout) }
             />
           </View>
-          { notificationEnabled ? this.renderControls(workout.id) : null }
+          { !!workout.notificationsEnabled ? this.renderControls(workout) : null }
         </View>
       )
     })
@@ -179,8 +163,9 @@ class NotificationsScreen extends React.Component {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    addNotification: (workoutID, userID, hours, minutes, daysInterval) => { dispatch(notificationActions.addNotification(workoutID, userID, hours, minutes, daysInterval)) },
+    addNotification: (workoutID, workoutName, userID, hours, minutes, daysInterval) => { dispatch(notificationActions.addNotification(workoutID, workoutName, userID, hours, minutes, daysInterval)) },
     removeNotification: (workoutID) => { dispatch(notificationActions.removeNotification(workoutID)) },
+    updateWorkout: (workoutID, patchObj) => { dispatch(workoutActions.updateWorkout(workoutID, patchObj))}
   }
 }
 

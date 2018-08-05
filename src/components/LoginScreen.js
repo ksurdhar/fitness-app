@@ -22,7 +22,7 @@ import { common, COLORS } from './reusable/common'
 
 import firebase from 'firebase'
 import { login, loginFailed } from '../redux/actions/authActions.js'
-import { addWorkoutSuccess, removeWorkoutSuccess, recievedWorkouts } from '../redux/actions/workoutActions'
+import { addWorkoutSuccess, removeWorkoutSuccess, recievedWorkouts, updateWorkoutSuccess } from '../redux/actions/workoutActions'
 import { addSessionSuccess, removeSessionSuccess, recievedSessions } from '../redux/actions/sessionActions'
 import { addNotificationSuccess, removeNotificationSuccess, recievedNotifications, updateNotificationSuccess } from '../redux/actions/notificationActions'
 
@@ -92,6 +92,9 @@ class LoginScreen extends Component {
         workoutsRef.on('child_removed', (snapshot) => {
           store.dispatch(removeWorkoutSuccess(snapshot.val()))
         })
+        workoutsRef.on('child_changed', (snapshot) => {
+          store.dispatch(updateWorkoutSuccess(snapshot.val()))
+        })
         workoutsRef.once('value', (snapshot) => {
           store.dispatch(recievedWorkouts(snapshot.val()))
         })
@@ -114,10 +117,10 @@ class LoginScreen extends Component {
         notificationsRef.on('child_removed', (snapshot) => {
           store.dispatch(removeNotificationSuccess(snapshot.val()))
         })
-        notificationsRef.on('child_changed', (snapshot) => {
-          console.log('CHILD UPDATED', snapshot.val())
-          store.dispatch(updateNotificationSuccess(snapshot.val()))
-        })
+        // notificationsRef.on('child_changed', (snapshot) => {
+        //   console.log('CHILD UPDATED', snapshot.val())
+        //   store.dispatch(updateNotificationSuccess(snapshot.val()))
+        // })
         notificationsRef.once('value', (snapshot) => {
           store.dispatch(recievedNotifications(snapshot.val()))
         })
