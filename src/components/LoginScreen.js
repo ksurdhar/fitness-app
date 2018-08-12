@@ -117,10 +117,9 @@ class LoginScreen extends Component {
         notificationsRef.on('child_removed', (snapshot) => {
           store.dispatch(removeNotificationSuccess(snapshot.val()))
         })
-        // notificationsRef.on('child_changed', (snapshot) => {
-        //   console.log('CHILD UPDATED', snapshot.val())
-        //   store.dispatch(updateNotificationSuccess(snapshot.val()))
-        // })
+        notificationsRef.on('child_changed', (snapshot) => {
+          store.dispatch(updateNotificationSuccess(snapshot.val()))
+        })
         notificationsRef.once('value', (snapshot) => {
           store.dispatch(recievedNotifications(snapshot.val()))
         })

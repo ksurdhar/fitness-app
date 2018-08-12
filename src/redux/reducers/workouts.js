@@ -14,9 +14,7 @@ export default function workoutsReducer(state = initialState, action) {
         workouts: state.workouts.concat(action.workout)
       })
     case 'UPDATE_WORKOUT_SUCCESS':
-      console.log('UPDATING WORKOUT')
       const newWorkouts = []
-      let workoutToUpdate
       state.workouts.forEach((workout) => {
         if (workout.id !== action.workout.id) {
           newWorkouts.push(workout)
