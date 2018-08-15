@@ -1,18 +1,11 @@
-import { rootRef } from '../../firebase';
+import { rootRef } from '../../firebase'
 
-export function recievedUsers(users) {
-  return {
-    type: 'RECIEVED_USERS',
-    users: users
-  }
-}
-
-export function addUser(userObj) {
-  const userRef = rootRef.child(`users/${userObj.id}`)
+export function addUser(user) {
+  const userRef = rootRef.child(`users/${user.uid}`)
 
   userRef.set({
-    userID: userObj.id,
-    name: userObj.name
+    userID: user.uid,
+    email: user.email,
   })
 
   return {
@@ -20,33 +13,12 @@ export function addUser(userObj) {
   }
 }
 
-// add an update user method here
-// export function addUser(userObj) {
-//   const userRef = rootRef.child(`users/${userObj.id}`)
-//
-//   userRef.set({
-//     userID: userObj.id,
-//     name: userObj.name
-//   })
-//
-//   return {
-//     type: 'ADD_USER'
-//   }
-// }
-
-export function removeUser(workoutID) {
-  const userRef = rootRef.child(`users/${workoutID}`)
-  userRef.remove()
+export function updateUser(id, patchObj) {
+  const userRef = rootRef.child(`users/${id}`)
+  userRef.update(patchObj)
 
   return {
-    type: 'REMOVE_USER'
-  }
-}
-
-export function removeUserSuccess(user) {
-  return {
-    type: 'REMOVE_USER_SUCCESS',
-    user: user
+    type: 'UPDATE_USER'
   }
 }
 
@@ -54,5 +26,19 @@ export function addUserSuccess(user) {
   return {
     type: 'ADD_USER_SUCCESS',
     user: user
-  };
+  }
+}
+
+export function updateUserSuccess(user) {
+  return {
+    type: 'UPDATE_USER_SUCCESS',
+    user: user
+  }
+}
+
+export function recievedUser(user) {
+  return {
+    type: 'RECIEVED_USER',
+    user: user
+  }
 }

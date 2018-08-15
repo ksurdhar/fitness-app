@@ -22,6 +22,7 @@ import KButton from './reusable/button'
 import Switch from './reusable/switch'
 import * as notificationActions from '../redux/actions/notificationActions'
 import * as workoutActions from '../redux/actions/workoutActions'
+import * as userActions from '../redux/actions/userActions'
 
 async function registerForPushNotificationsAsync() {
   console.log('registering for notifications!')
@@ -43,14 +44,15 @@ async function registerForPushNotificationsAsync() {
   // Get the token that uniquely identifies this device
   let token = await Notifications.getExpoPushTokenAsync();
   console.log('generated token:', token)
-  // save token to firebase
+  return token
 }
 
 const mapStateToProps = (state, ownProps) => {
   return {
     workouts: state.workouts.workouts,
     userID: state.auth.user.uid,
-    notifications: state.notifications.notifications
+    notifications: state.notifications.notifications,
+    userData: state.users.user
   }
 }
 
@@ -62,8 +64,13 @@ class NotificationsScreen extends React.Component {
   }
 
   componentDidMount() {
-    registerForPushNotificationsAsync()
-    // console.log('props', this.props.notifications)
+    if (!this.props.userData.pushToken) {
+      registerForPushNotificationsAsync().then((token) => {
+        this.props.updateUser(this.props.userID, { pushToken: token })
+      })
+    } else {
+      console.log('push notification already saved:', this.props.userData.pushToken)
+    }
   }
 
   componentDidUpdate() {
@@ -185,7 +192,8 @@ const mapDispatchToProps = (dispatch) => {
     addNotification: (workoutID, workoutName, userID, hours, minutes, daysInterval) => { dispatch(notificationActions.addNotification(workoutID, workoutName, userID, hours, minutes, daysInterval)) },
     removeNotification: (workoutID) => { dispatch(notificationActions.removeNotification(workoutID)) },
     updateWorkout: (workoutID, patchObj) => { dispatch(workoutActions.updateWorkout(workoutID, patchObj))},
-    updateNotification: (workoutID, patchObj) => { dispatch(notificationActions.updateNotification(workoutID, patchObj))}
+    updateNotification: (workoutID, patchObj) => { dispatch(notificationActions.updateNotification(workoutID, patchObj))},
+    updateUser: (userID, patchObj) => { dispatch(userActions.updateUser(userID, patchObj)) }
   }
 }
 

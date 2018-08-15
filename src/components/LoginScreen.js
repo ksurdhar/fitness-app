@@ -7,7 +7,8 @@ import {
   TextInput,
   View,
   KeyboardAvoidingView,
-  Dimensions
+  Dimensions,
+  Button
 } from 'react-native'
 
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
@@ -15,7 +16,7 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 import { MaterialIcons } from '@expo/vector-icons'
 import { Permissions, Notifications } from 'expo'
 
-import Button from './reusable/button'
+import KButton from './reusable/button'
 import Input from './reusable/input'
 import PressCapture from './reusable/pressCapture'
 import { common, COLORS } from './reusable/common'
@@ -25,6 +26,7 @@ import { login, loginFailed } from '../redux/actions/authActions.js'
 import { addWorkoutSuccess, removeWorkoutSuccess, recievedWorkouts, updateWorkoutSuccess } from '../redux/actions/workoutActions'
 import { addSessionSuccess, removeSessionSuccess, recievedSessions } from '../redux/actions/sessionActions'
 import { addNotificationSuccess, removeNotificationSuccess, recievedNotifications, updateNotificationSuccess } from '../redux/actions/notificationActions'
+import * as UserActions from '../redux/actions/userActions'
 
 import config from '../../config.js'
 import store from '../redux/store.js'
@@ -42,44 +44,13 @@ class LoginScreen extends Component {
       password: ""
     }
 
-    if (config.DEV_MODE) {
-      this.state.email = 'admin@gmail.com'
-      this.state.password = 'password'
-    }
-    this.handleCapture = this.handleCapture.bind(this)
-    this.onLogin = this.onLogin.bind(this)
-    this.onSignUp = this.onSignUp.bind(this)
-    this.onSubmit = this.onSubmit.bind(this)
-    this.registerNotifications = this.registerNotifications.bind(this)
+    // if (config.DEV_MODE) {
+    //   this.state.email = 'admin@gmail.com'
+    //   this.state.password = 'password'
+    // }
   }
 
-  async registerNotifications () {
-    console.log('registering')
-    const { status: existingStatus } = await Permissions.getAsync(
-      Permissions.NOTIFICATIONS
-    )
-    let finalStatus = existingStatus
-
-    // only ask if permissions have not already been determined, because
-    // iOS won't necessarily prompt the user a second time.
-    if (existingStatus !== 'granted') {
-      // Android remote notification permissions are granted during the app
-      // install, so this will only ask on iOS
-      const { status } = await Permissions.askAsync(Permissions.NOTIFICATIONS);
-      finalStatus = status;
-    }
-    // Stop here if the user did not grant permissions
-    if (finalStatus !== 'granted') {
-      console.log('not granted')
-      return
-    }
-
-    // Get the token that uniquely identifies this device
-    let token = await Notifications.getExpoPushTokenAsync()
-    console.log('RECEIVED TOKEN', token)
-  }
-
-  onLogin() {
+  onLogin = () => {
     firebase
       .auth()
       .signInWithEmailAndPassword(this.state.email, this.state.password)
@@ -123,9 +94,18 @@ class LoginScreen extends Component {
         notificationsRef.once('value', (snapshot) => {
           store.dispatch(recievedNotifications(snapshot.val()))
         })
+        // USERS
+        const usersRef = rootRef.child('users').orderByChild('userID').equalTo(user.uid)
+        usersRef.on('child_added', (snapshot) => {
+          store.dispatch(UserActions.addUserSuccess(snapshot.val()))
+        })
+        usersRef.on('child_changed', (snapshot) => {
+          store.dispatch(UserActions.updateUserSuccess(snapshot.val()))
+        })
+        usersRef.once('value', (snapshot) => {
+          store.dispatch(UserActions.recievedUser(snapshot.val()))
+        })
 
-        // NOTIFICATION REGISTRATION
-        // this.registerNotifications()
         this.props.dispatchLogin(user)
       })
       .catch(error => {
@@ -133,19 +113,20 @@ class LoginScreen extends Component {
       })
   }
 
-  onSignUp() {
+  onSignUp = () => {
     firebase
       .auth()
       .createUserWithEmailAndPassword(this.state.email, this.state.password)
       .then(user => {
         this.props.dispatchLogin(user)
+        this.props.addUser(user)
       })
       .catch(error => {
         console.log("signup failed: " + error)
       })
   }
 
-  onSubmit() {
+  onSubmit = () => {
     switch (this.state.action) {
       case LOGIN:
         return this.onLogin()
@@ -154,21 +135,14 @@ class LoginScreen extends Component {
     }
   }
 
-  onToggleAction() {
+  onToggleAction = () => {
     this.setState({ action: this.state.action === LOGIN ? SIGNUP : LOGIN })
   }
 
-  handleCapture() {
+  handleCapture = () => {
     this.emailInput && this.emailInput.blur()
     this.passwordInput && this.passwordInput.blur()
   }
-
-  // TODO REPLACE SIGN UP BUTTON WITH LINK
-  // <Button
-  //   style={{marginLeft: 10}}
-  //   onPress={e => this.onToggleAction(e)}
-  //   value={this.state.action === LOGIN ? SIGNUP : LOGIN}
-  // />
 
   render() {
     const emailLabel = (
@@ -222,11 +196,18 @@ class LoginScreen extends Component {
               />
             </View>
             <View style={[common.row, {marginTop: 50, marginBottom: 80}]}>
-              <Button
+              <KButton
                 style={{width: 300}}
                 onPress={() => this.onSubmit()}
                 value={this.state.action}
                 isEnabled={true}
+              />
+            </View>
+            <View style={[common.row]}>
+              <Button
+                style={{marginLeft: 10}}
+                onPress={e => this.onToggleAction(e)}
+                title={this.state.action === LOGIN ? `or ${SIGNUP}` : `or ${LOGIN}`}
               />
             </View>
           </KeyboardAwareScrollView>
@@ -256,6 +237,9 @@ const mapDispatchToProps = dispatch => {
   return {
     dispatchLogin: user => {
       dispatch(login(user))
+    },
+    addUser: (user) => {
+      dispatch(UserActions.addUser(user))
     }
   }
 }

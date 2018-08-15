@@ -1,22 +1,15 @@
 const initialState = {
-  users: [],
+  user: {}
 }
 
 export default function usersReducer(state = initialState, action) {
   switch (action.type) {
-    case 'RECIEVED_USERS':
-      const updatedUsers = action.users ? Object.values(action.users) : []
-      return Object.assign({}, state, {
-        users: updatedUsers
-      })
+    case 'RECIEVED_USER':
+      return { user: Object.values(action.user)[0] }
     case 'ADD_USER_SUCCESS':
-      return Object.assign({}, state, {
-        users: state.users.concat(action.user)
-      })
-    case 'REMOVE_USER_SUCCESS':
-      return Object.assign({}, state, {
-        users: state.users.filter((user) => user.id !== action.user.id)
-      })
+      return { user: Object.values(action.user)[0] }
+    case 'UPDATE_USER_SUCCESS':
+      return { user: Object.values(action.user)[0] }
     default:
       return state
   }
