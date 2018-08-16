@@ -81,7 +81,7 @@ class LoginScreen extends Component {
           store.dispatch(recievedSessions(snapshot.val()))
         })
         // NOTIFICATIONS
-        const notificationsRef = rootRef.child('notifications').orderByChild('userID').equalTo(user.uid)
+        const notificationsRef = rootRef.child(`notifications`).orderByChild('userID').equalTo(user.uid)
         notificationsRef.on('child_added', (snapshot) => {
           store.dispatch(addNotificationSuccess(snapshot.val()))
         })

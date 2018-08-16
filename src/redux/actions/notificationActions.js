@@ -7,7 +7,7 @@ export function recievedNotifications(notifications) {
   }
 }
 
-export function addNotification(workoutID, workoutName, userID, hours, minutes, daysInterval) {
+export function addNotification(workoutID, workoutName, userID, hours, minutes, daysInterval, pushToken) {
   const id = Math.random().toString(36).substring(7)
   const notificationRef = rootRef.child(`notifications/${workoutID}`)
 
@@ -18,7 +18,8 @@ export function addNotification(workoutID, workoutName, userID, hours, minutes, 
     userID,
     hours,
     minutes,
-    daysInterval
+    daysInterval,
+    pushToken
   })
 
   return {
