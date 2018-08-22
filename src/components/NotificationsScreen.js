@@ -81,7 +81,8 @@ class NotificationsScreen extends React.Component {
   addNotification = (workoutID, workoutName) => {
     const dateObj = new Date()
     const hours = dateObj.getUTCHours()
-    const minutes = dateObj.getMinutes()
+    const unroundedMinutes = dateObj.getMinutes() // needs to be rounded
+    const minutes = Math.floor(unroundedMinutes/15)*15
 
     const notificationObj = {
       workoutID,

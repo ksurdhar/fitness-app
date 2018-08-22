@@ -1,0 +1,4 @@
+cron:
+- description: "notifications function"
+  url: /notifications
+  schedule: every 15 mins synchronized
