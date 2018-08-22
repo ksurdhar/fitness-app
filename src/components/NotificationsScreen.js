@@ -80,13 +80,22 @@ class NotificationsScreen extends React.Component {
 
   addNotification = (workoutID, workoutName) => {
     const dateObj = new Date()
+    const hours = dateObj.getUTCHours()
+    const minutes = dateObj.getMinutes()
 
-    const hours = dateObj.getUTCHours() 
-    const minutes = dateObj.getMinutes() // needs to be rounded to 0, 15, 30, 45
-    const daysInterval = 3
-    const userID = this.props.userID
+    const notificationObj = {
+      workoutID,
+      workoutName,
+      pushToken: this.props.userData.pushToken,
+      month: dateObj.getUTCMonth(),
+      day: dateObj.getUTCDate(),
+      hours,
+      minutes, // needs to be rounded to 0, 15, 30, 45
+      daysInterval: 3,
+      userID: this.props.userID
+    }
 
-    this.props.addNotification(workoutID, workoutName, userID, hours, minutes, daysInterval, this.props.userData.pushToken)
+    this.props.addNotification(notificationObj)
     this.props.updateWorkout(workoutID, {
       notificationsEnabled: true,
       notificationHours: hours,
@@ -188,7 +197,7 @@ class NotificationsScreen extends React.Component {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    addNotification: (workoutID, workoutName, userID, hours, minutes, daysInterval, pushToken) => { dispatch(notificationActions.addNotification(workoutID, workoutName, userID, hours, minutes, daysInterval, pushToken)) },
+    addNotification: (notificationObj) => { dispatch(notificationActions.addNotification(notificationObj)) },
     removeNotification: (workoutID) => { dispatch(notificationActions.removeNotification(workoutID)) },
     updateWorkout: (workoutID, patchObj) => { dispatch(workoutActions.updateWorkout(workoutID, patchObj))},
     updateNotification: (workoutID, patchObj) => { dispatch(notificationActions.updateNotification(workoutID, patchObj))},
