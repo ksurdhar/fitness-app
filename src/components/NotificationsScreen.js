@@ -72,7 +72,7 @@ class NotificationsScreen extends React.Component {
 
     this.state = {
       modalOpen: false,
-      modalWorkout: null
+      modalWorkoutID: null
     }
   }
 
@@ -157,7 +157,7 @@ class NotificationsScreen extends React.Component {
   renderDetails = (workout) => {
     return (
       <View style={{marginTop: -3}}>
-        <TouchableOpacity onPress={() => { this.setState({ modalOpen: true, modalWorkout: workout.id })}}>
+        <TouchableOpacity onPress={() => { this.setState({ modalOpen: true, modalWorkoutID: workout.id })}}>
           <Text style={[common.tajawal3, {fontSize: 20, color: COLORS.gray6}]}>
             {`deliver x days after a session \nat 0:00 AM`}
           </Text>
@@ -169,7 +169,7 @@ class NotificationsScreen extends React.Component {
   renderModal = () => {
     const { height } = Dimensions.get('window')
     const workout = this.props.workouts.find((workout) => {
-      return workout.id === this.state.modalWorkout
+      return workout.id === this.state.modalWorkoutID
     })
 
     const offsetDate = new Date()
@@ -186,7 +186,7 @@ class NotificationsScreen extends React.Component {
         onRequestClose={() => {
           alert('Modal has been closed.')
         }}>
-        <View style={{marginTop: 20, backgroundColor: COLORS.gray5, height, justifyContent: 'end'}}>
+        <View style={{ backgroundColor: COLORS.gray5, height, justifyContent: 'flex-end' }}>
           <View style={{ backgroundColor: COLORS.white }}>
             <View style={[common.row, { marginTop: 20 }]}>
               <Text style={[common.tajawal5, {fontSize: 22, color: COLORS.gray10, textAlign: 'center'}]}>
