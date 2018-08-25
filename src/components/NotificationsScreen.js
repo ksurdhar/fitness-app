@@ -15,12 +15,14 @@ import {
   DatePickerIOS,
   Modal,
   TouchableHighlight,
+  TouchableOpacity,
   Switch
 } from 'react-native'
 import Swipeout from 'react-native-swipeout'
-import { Feather } from '@expo/vector-icons'
+import { Entypo } from '@expo/vector-icons'
 
 import { common } from './reusable/common'
+import AnimatedIcon from './reusable/animatedIcon'
 import KButton from './reusable/button'
 import KSwitch from './reusable/switch'
 import * as notificationActions from '../redux/actions/notificationActions'
@@ -170,8 +172,8 @@ class NotificationsScreen extends React.Component {
     //   />
     // )
     return (
-      <View style={{marginTop: -4, marginBottom: 10 }}>
-        <Text style={[common.tajawal5, {fontSize: 20, color: COLORS.gray5}]}>
+      <View style={{marginTop: -4}}>
+        <Text style={[common.tajawal5, {fontSize: 20, color: COLORS.gray4}]}>
           {`deliver x days after a session \nat 0:00 AM`}
         </Text>
       </View>
@@ -180,14 +182,28 @@ class NotificationsScreen extends React.Component {
 
   renderWorkouts = () => {
     const workoutElements = this.props.workouts.map((workout, idx) => {
+      const bellIcon =(
+        <TouchableOpacity onPress={() => this.toggleNotification(workout)}>
+          <View>
+            <AnimatedIcon
+            icon1={<Entypo name={'bell'} color={COLORS.gray1} size={30}/>}
+            icon2={<Entypo name={'bell'} color={COLORS.celestialGreen} size={30}/>}
+            isEnabled={!!workout.notificationsEnabled}
+            size={30}
+            style={{marginTop: 7}}
+            />
+          </View>
+        </TouchableOpacity>
+      )
+
       return (
-        <View style={{marginLeft: 5, marginRight: 5, borderBottomColor: COLORS.gray1, borderBottomWidth: 1}} key={workout.id}>
-          <View style={[common.row, { marginTop: 20,justifyContent: 'space-between' }]}>
+        <View style={{marginLeft: 5, marginRight: 5, paddingBottom: 8, borderBottomColor: COLORS.gray1, borderBottomWidth: 1}} key={workout.id}>
+          <View style={[common.row, { marginTop: 18,justifyContent: 'space-between' }]}>
             <Text style={[common.tajawal5, {fontSize: 22, color: COLORS.gray10, textAlign: 'center'}]}>
               { `${workout.name} - ${workout.notificationsEnabled ? 'Enabled' : 'Disabled'}` }
             </Text>
             <View style={{ marginTop: -16, marginRight: 5 }}>
-              <KSwitch enabled={ !!workout.notificationsEnabled } onPress={() => this.toggleNotification(workout) } />
+              { bellIcon }
             </View>
           </View>
           { workout.notificationsEnabled ? this.renderControls(workout) : null}
