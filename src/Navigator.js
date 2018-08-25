@@ -42,9 +42,9 @@ const ProfileStack = createStackNavigator({
   Notifications: {
     screen: NotificationsScreen
   }
-})
+}, { initialRouteName: 'Notifications' })
 
-const Navigator = createBottomTabNavigator(
+const Navigator = createBottomTabNavigator( // https://reactnavigation.org/docs/en/bottom-tab-navigator.html
   {
     Workouts: {
       screen: WorkoutStack,
@@ -77,7 +77,8 @@ const Navigator = createBottomTabNavigator(
     animationEnabled: true,
     tabBarOptions: {
       activeTintColor: "#e91e63"
-    }
+    },
+    initialRouteName: 'Profile'
   }
 )
 

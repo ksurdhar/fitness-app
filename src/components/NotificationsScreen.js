@@ -12,14 +12,17 @@ import {
   View,
   Picker,
   Button,
-  DatePickerIOS
+  DatePickerIOS,
+  Modal,
+  TouchableHighlight,
+  Switch
 } from 'react-native'
 import Swipeout from 'react-native-swipeout'
 import { Feather } from '@expo/vector-icons'
 
 import { common } from './reusable/common'
 import KButton from './reusable/button'
-import Switch from './reusable/switch'
+import KSwitch from './reusable/switch'
 import * as notificationActions from '../redux/actions/notificationActions'
 import * as workoutActions from '../redux/actions/workoutActions'
 import * as userActions from '../redux/actions/userActions'
@@ -60,6 +63,14 @@ class NotificationsScreen extends React.Component {
   static navigationOptions = ({ navigation }) => {
     return {
       title: 'Notifications'
+    }
+  }
+
+  constructor(props) {
+    super(props)
+
+    this.state = {
+      modalOpen: false
     }
   }
 
@@ -168,7 +179,7 @@ class NotificationsScreen extends React.Component {
             <Text style={[common.tajawal5, {fontSize: 22, color: COLORS.gray10, textAlign: 'center'}]}>
               { workout.name }
             </Text>
-            <Switch
+            <KSwitch
               enabled={ !!workout.notificationsEnabled }
               onPress={() => this.toggleNotification(workout) }
             />
@@ -190,6 +201,31 @@ class NotificationsScreen extends React.Component {
 
     return (
       <View style={common.staticView, {paddingLeft: 10, paddingRight: 10, backgroundColor: COLORS.white, height: height}}>
+        <Modal
+          animationType="slide"
+          transparent={true}
+          visible={this.state.modalOpen}
+          onRequestClose={() => {
+            alert('Modal has been closed.')
+          }}>
+          <View style={{marginTop: 22, backgroundColor: COLORS.gray5}}>
+            <View>
+              <Text>Hello World!</Text>
+
+              <TouchableHighlight
+                onPress={() => {
+                  this.setState({modalOpen: false})
+                }}>
+                <Text>Hide Modal</Text>
+              </TouchableHighlight>
+            </View>
+          </View>
+        </Modal>
+
+        <Switch
+          value={ this.state.modalOpen }
+          onValueChange={() => { this.setState({modalOpen: true})} }
+        />
         { this.renderWorkouts() }
       </View>
     )
