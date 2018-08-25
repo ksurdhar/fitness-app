@@ -153,43 +153,49 @@ class NotificationsScreen extends React.Component {
   }
 
   renderControls = (workout) => {
-    const offsetDate = new Date()
-    const offset = offsetDate.getTimezoneOffset() / 60
+    // const offsetDate = new Date()
+    // const offset = offsetDate.getTimezoneOffset() / 60
+    //
+    // const hours = workout.notificationHours - offset
+    // const minutes = workout.notificationMinutes
+    // const pickerDate = new Date('1991', 0, 1, hours, minutes) // first three values are useless
 
-    const hours = workout.notificationHours - offset
-    const minutes = workout.notificationMinutes
-    const pickerDate = new Date('1991', 0, 1, hours, minutes) // first three values are useless
-
-    // need to get the hour / minute from firebase notification, and update the value here
+    // // need to get the hour / minute from firebase notification, and update the value here
+    // return (
+    //   <DatePickerIOS
+    //     date={pickerDate}
+    //     minuteInterval={ 15 }
+    //     mode={'time'}
+    //     onDateChange={ this.onDateChange.bind(this, workout.id) }
+    //   />
+    // )
     return (
-      <DatePickerIOS
-        date={pickerDate}
-        minuteInterval={ 15 }
-        mode={'time'}
-        onDateChange={ this.onDateChange.bind(this, workout.id) }
-      />
+      <View style={{marginTop: -4, marginBottom: 10 }}>
+        <Text style={[common.tajawal5, {fontSize: 20, color: COLORS.gray5}]}>
+          {`deliver x days after a session \nat 0:00 AM`}
+        </Text>
+      </View>
     )
   }
 
   renderWorkouts = () => {
     const workoutElements = this.props.workouts.map((workout, idx) => {
       return (
-        <View key={workout.id}>
-          <View style={[common.row, { marginTop: 20, justifyContent: 'left' }]}>
+        <View style={{marginLeft: 5, marginRight: 5, borderBottomColor: COLORS.gray1, borderBottomWidth: 1}} key={workout.id}>
+          <View style={[common.row, { marginTop: 20,justifyContent: 'space-between' }]}>
             <Text style={[common.tajawal5, {fontSize: 22, color: COLORS.gray10, textAlign: 'center'}]}>
-              { workout.name }
+              { `${workout.name} - ${workout.notificationsEnabled ? 'Enabled' : 'Disabled'}` }
             </Text>
-            <KSwitch
-              enabled={ !!workout.notificationsEnabled }
-              onPress={() => this.toggleNotification(workout) }
-            />
+            <View style={{ marginTop: -16, marginRight: 5 }}>
+              <KSwitch enabled={ !!workout.notificationsEnabled } onPress={() => this.toggleNotification(workout) } />
+            </View>
           </View>
-          { !!workout.notificationsEnabled ? this.renderControls(workout) : null }
+          { workout.notificationsEnabled ? this.renderControls(workout) : null}
         </View>
       )
     })
     return (
-      <View style={[{ borderBottomColor: COLORS.gray1, borderBottomWidth: 1 }]}>
+      <View>
         { workoutElements }
       </View>
     )

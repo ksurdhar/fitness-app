@@ -47,6 +47,7 @@ class LoginScreen extends Component {
     if (config.DEV_MODE) {
       this.state.email = 'User5@gmail.com'
       this.state.password = 'password'
+      this.onLogin()
     }
   }
 
