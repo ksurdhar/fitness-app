@@ -14,7 +14,6 @@ import {
   Button,
   DatePickerIOS,
   Modal,
-  TouchableHighlight,
   TouchableOpacity,
   Switch
 } from 'react-native'
@@ -72,7 +71,8 @@ class NotificationsScreen extends React.Component {
     super(props)
 
     this.state = {
-      modalOpen: false
+      modalOpen: false,
+      modalWorkout: null
     }
   }
 
@@ -154,29 +154,59 @@ class NotificationsScreen extends React.Component {
     this.updateNotification(workoutID, val)
   }
 
-  renderControls = (workout) => {
-    // const offsetDate = new Date()
-    // const offset = offsetDate.getTimezoneOffset() / 60
-    //
-    // const hours = workout.notificationHours - offset
-    // const minutes = workout.notificationMinutes
-    // const pickerDate = new Date('1991', 0, 1, hours, minutes) // first three values are useless
-
-    // // need to get the hour / minute from firebase notification, and update the value here
-    // return (
-    //   <DatePickerIOS
-    //     date={pickerDate}
-    //     minuteInterval={ 15 }
-    //     mode={'time'}
-    //     onDateChange={ this.onDateChange.bind(this, workout.id) }
-    //   />
-    // )
+  renderDetails = (workout) => {
     return (
-      <View style={{marginTop: -4}}>
-        <Text style={[common.tajawal5, {fontSize: 20, color: COLORS.gray4}]}>
-          {`deliver x days after a session \nat 0:00 AM`}
-        </Text>
+      <View style={{marginTop: -3}}>
+        <TouchableOpacity onPress={() => { this.setState({ modalOpen: true, modalWorkout: workout.id })}}>
+          <Text style={[common.tajawal3, {fontSize: 20, color: COLORS.gray6}]}>
+            {`deliver x days after a session \nat 0:00 AM`}
+          </Text>
+        </TouchableOpacity>
       </View>
+    )
+  }
+
+  renderModal = () => {
+    const { height } = Dimensions.get('window')
+    const workout = this.props.workouts.find((workout) => {
+      return workout.id === this.state.modalWorkout
+    })
+
+    const offsetDate = new Date()
+    const offset = offsetDate.getTimezoneOffset() / 60
+    const hours = workout.notificationHours - offset
+    const minutes = workout.notificationMinutes
+    const pickerDate = new Date('1991', 0, 1, hours, minutes) // first three values are useless
+
+    return (
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={this.state.modalOpen}
+        onRequestClose={() => {
+          alert('Modal has been closed.')
+        }}>
+        <View style={{marginTop: 20, backgroundColor: COLORS.gray5, height, justifyContent: 'end'}}>
+          <View style={{ backgroundColor: COLORS.white }}>
+            <View style={[common.row, { marginTop: 20 }]}>
+              <Text style={[common.tajawal5, {fontSize: 22, color: COLORS.gray10, textAlign: 'center'}]}>
+                { workout.name }
+              </Text>
+            </View>
+
+            <DatePickerIOS
+              date={pickerDate}
+              minuteInterval={ 15 }
+              mode={'time'}
+              onDateChange={ this.onDateChange.bind(this, workout.id) }
+            />
+
+            <TouchableOpacity onPress={() => { this.setState({modalOpen: false}) }}>
+              <Text>Hide Modal</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Modal>
     )
   }
 
@@ -186,11 +216,11 @@ class NotificationsScreen extends React.Component {
         <TouchableOpacity onPress={() => this.toggleNotification(workout)}>
           <View>
             <AnimatedIcon
-            icon1={<Entypo name={'bell'} color={COLORS.gray1} size={30}/>}
+            icon1={<Entypo name={'bell'} color={COLORS.gray3} size={30}/>}
             icon2={<Entypo name={'bell'} color={COLORS.celestialGreen} size={30}/>}
             isEnabled={!!workout.notificationsEnabled}
             size={30}
-            style={{marginTop: 7}}
+            style={{marginTop: 8}}
             />
           </View>
         </TouchableOpacity>
@@ -200,13 +230,16 @@ class NotificationsScreen extends React.Component {
         <View style={{marginLeft: 5, marginRight: 5, paddingBottom: 8, borderBottomColor: COLORS.gray1, borderBottomWidth: 1}} key={workout.id}>
           <View style={[common.row, { marginTop: 18,justifyContent: 'space-between' }]}>
             <Text style={[common.tajawal5, {fontSize: 22, color: COLORS.gray10, textAlign: 'center'}]}>
-              { `${workout.name} - ${workout.notificationsEnabled ? 'Enabled' : 'Disabled'}` }
+              { workout.name }
+              <Text style={[common.tajawal5, {fontSize: 18, color: `${workout.notificationsEnabled ? COLORS.gray5: COLORS.gray5}` , textAlign: 'center',}]}>
+                { `    ${workout.notificationsEnabled ? 'Enabled' : 'Disabled'}` }
+              </Text>
             </Text>
             <View style={{ marginTop: -16, marginRight: 5 }}>
               { bellIcon }
             </View>
           </View>
-          { workout.notificationsEnabled ? this.renderControls(workout) : null}
+          { workout.notificationsEnabled ? this.renderDetails(workout) : null}
         </View>
       )
     })
@@ -223,31 +256,7 @@ class NotificationsScreen extends React.Component {
 
     return (
       <View style={common.staticView, {paddingLeft: 10, paddingRight: 10, backgroundColor: COLORS.white, height: height}}>
-        <Modal
-          animationType="slide"
-          transparent={true}
-          visible={this.state.modalOpen}
-          onRequestClose={() => {
-            alert('Modal has been closed.')
-          }}>
-          <View style={{marginTop: 22, backgroundColor: COLORS.gray5}}>
-            <View>
-              <Text>Hello World!</Text>
-
-              <TouchableHighlight
-                onPress={() => {
-                  this.setState({modalOpen: false})
-                }}>
-                <Text>Hide Modal</Text>
-              </TouchableHighlight>
-            </View>
-          </View>
-        </Modal>
-
-        <Switch
-          value={ this.state.modalOpen }
-          onValueChange={() => { this.setState({modalOpen: true})} }
-        />
+        { this.state.modalOpen ? this.renderModal()  : null }
         { this.renderWorkouts() }
       </View>
     )
