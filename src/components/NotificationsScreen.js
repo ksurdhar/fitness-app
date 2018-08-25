@@ -24,6 +24,7 @@ import { common } from './reusable/common'
 import AnimatedIcon from './reusable/animatedIcon'
 import KButton from './reusable/button'
 import KSwitch from './reusable/switch'
+import KInput from './reusable/input'
 import * as notificationActions from '../redux/actions/notificationActions'
 import * as workoutActions from '../redux/actions/workoutActions'
 import * as userActions from '../redux/actions/userActions'
@@ -159,7 +160,7 @@ class NotificationsScreen extends React.Component {
       <View style={{marginTop: -3}}>
         <TouchableOpacity onPress={() => { this.setState({ modalOpen: true, modalWorkoutID: workout.id })}}>
           <Text style={[common.tajawal3, {fontSize: 20, color: COLORS.gray6}]}>
-            {`deliver x days after a session \nat 0:00 AM`}
+            {`deliver x days after a workout \nat 0:00 AM`}
           </Text>
         </TouchableOpacity>
       </View>
@@ -186,11 +187,29 @@ class NotificationsScreen extends React.Component {
         onRequestClose={() => {
           alert('Modal has been closed.')
         }}>
-        <View style={{ backgroundColor: COLORS.gray5, height, justifyContent: 'flex-end' }}>
+        <View style={{ backgroundColor: COLORS.gray7, height, justifyContent: 'flex-end' }}>
           <View style={{ backgroundColor: COLORS.white }}>
-            <View style={[common.row, { marginTop: 20 }]}>
+            <View style={[common.row, { marginTop: 20, marginLeft: 10, marginRight: 10 }]}>
               <Text style={[common.tajawal5, {fontSize: 22, color: COLORS.gray10, textAlign: 'center'}]}>
-                { workout.name }
+                { `Schedule notifications for\n${workout.name}` }
+              </Text>
+            </View>
+
+            <Picker
+              style={{ marginTop: 10, marginBottom: 10}}
+              onValueChange={(itemValue, itemIndex) => this.setState({language: itemValue})}>
+              <Picker.Item label="1 day after working out" value="1" />
+              <Picker.Item label="2 days after working out" value="2" />
+              <Picker.Item label="3 days after working out" value="3" />
+              <Picker.Item label="4 days after working out" value="4" />
+              <Picker.Item label="5 days after working out" value="5" />
+              <Picker.Item label="6 days after working out" value="6" />
+              <Picker.Item label="7 days after working out" value="7" />
+            </Picker>
+
+            <View style={common.row}>
+              <Text style={[common.tajawal5, {fontSize: 20, color: COLORS.gray10, textAlign: 'center'}]}>
+                At
               </Text>
             </View>
 
