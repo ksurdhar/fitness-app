@@ -115,7 +115,8 @@ class NotificationsScreen extends React.Component {
     this.props.updateWorkout(workoutID, {
       notificationsEnabled: true,
       notificationHours: hours,
-      notificationMinutes: minutes
+      notificationMinutes: minutes,
+      notificationInterval: 3
     })
   }
 
@@ -124,7 +125,8 @@ class NotificationsScreen extends React.Component {
     this.props.updateWorkout(workoutID, {
       notificationsEnabled: false,
       notificationHours: null,
-      notificationMinutes: null
+      notificationMinutes: null,
+      notificationInterval: null
     })
   }
 
@@ -134,12 +136,11 @@ class NotificationsScreen extends React.Component {
     workout.notificationsEnabled ? this.removeNotification(workoutID) : this.addNotification(workoutID, workoutName)
   }
 
-  updateNotification = (workoutID, val) => {
+  updateNotificationTime = (workoutID, val) => {
     const dateObj = new Date(val)
 
     const hours = dateObj.getUTCHours() - 1 // maybe needs the minus 1 because of val
     const minutes = dateObj.getMinutes()
-    const daysInterval = 3
     const userID = this.props.userID
 
     this.props.updateNotification(workoutID, {
@@ -152,8 +153,22 @@ class NotificationsScreen extends React.Component {
     })
   }
 
+  updateNotificationInterval = (workoutID, val) => {
+    const interval = parseInt(val, 10)
+    this.props.updateNotification(workoutID, {
+      daysInterval: interval,
+    })
+    this.props.updateWorkout(workoutID, {
+      notificationInterval: interval,
+    })
+  }
+
   onDateChange = (workoutID, val) => {
-    this.updateNotification(workoutID, val)
+    this.updateNotificationTime(workoutID, val)
+  }
+
+  onIntervalChange = (workoutID, val) => {
+    this.updateNotificationInterval(workoutID, val)
   }
 
   renderDetails = (workout) => {
@@ -161,7 +176,7 @@ class NotificationsScreen extends React.Component {
       <View style={{marginTop: -3}}>
         <TouchableOpacity onPress={() => { this.setState({ modalOpen: true, modalWorkoutID: workout.id })}}>
           <Text style={[common.tajawal3, {fontSize: 20, color: COLORS.gray6}]}>
-            {`deliver x days after a workout \nat 0:00 AM`}
+            {`deliver ${workout.notificationInterval} days after a workout \nat ${workout.notificationHours}:${workout.notificationMinutes} AM`}
           </Text>
         </TouchableOpacity>
       </View>
@@ -169,7 +184,7 @@ class NotificationsScreen extends React.Component {
   }
 
   renderModal = () => {
-    const { height } = Dimensions.get('window')
+    const { height, width } = Dimensions.get('window')
     const workout = this.props.workouts.find((workout) => {
       return workout.id === this.state.modalWorkoutID
     })
@@ -184,23 +199,23 @@ class NotificationsScreen extends React.Component {
       <Modal
         animationType="slide"
         transparent={true}
-        visible={this.state.modalOpen}
-        onRequestClose={() => {
-          alert('Modal has been closed.')
-        }}>
+        visible={this.state.modalOpen}>
         <TouchableWithoutFeedback onPress={() => { this.setState({modalOpen: false}) }}>
           <View style={{ backgroundColor: COLORS.gray7, height, justifyContent: 'flex-end' }}>
             <TouchableWithoutFeedback onPress={(event) => { event.stopPropagation() }}>
               <View style={{ backgroundColor: COLORS.white }}>
                 <View style={[common.row, { marginTop: 20, marginLeft: 10, marginRight: 10 }]}>
                   <Text style={[common.tajawal5, {fontSize: 22, color: COLORS.gray10, textAlign: 'center'}]}>
-                    { `Schedule notifications for\n${workout.name}` }
+                    { `Send notifications for\n${workout.name}` }
                   </Text>
                 </View>
 
                 <Picker
-                  style={{ marginTop: 10, marginBottom: 10}}
-                  onValueChange={(itemValue, itemIndex) => this.setState({language: itemValue})}>
+                  selectedValue={ workout.notificationInterval.toString() }
+                  style={{ height: 120, marginBottom: 20, width}}
+                  itemStyle={{ height: 120 }}
+                  onValueChange={ this.onIntervalChange.bind(this, workout.id) }
+                  >
                   <Picker.Item label="1 day after working out" value="1" />
                   <Picker.Item label="2 days after working out" value="2" />
                   <Picker.Item label="3 days after working out" value="3" />
@@ -222,10 +237,6 @@ class NotificationsScreen extends React.Component {
                   mode={'time'}
                   onDateChange={ this.onDateChange.bind(this, workout.id) }
                 />
-
-                <TouchableOpacity onPress={() => { this.setState({modalOpen: false}) }}>
-                  <Text>Hide Modal</Text>
-                </TouchableOpacity>
               </View>
             </TouchableWithoutFeedback>
           </View>
@@ -240,11 +251,11 @@ class NotificationsScreen extends React.Component {
         <TouchableOpacity onPress={() => this.toggleNotification(workout)}>
           <View>
             <AnimatedIcon
-            icon1={<Entypo name={'bell'} color={COLORS.gray3} size={30}/>}
-            icon2={<Entypo name={'bell'} color={COLORS.celestialGreen} size={30}/>}
-            isEnabled={!!workout.notificationsEnabled}
-            size={30}
-            style={{marginTop: 8}}
+              icon1={<Entypo name={'bell'} color={COLORS.gray3} size={30}/>}
+              icon2={<Entypo name={'bell'} color={COLORS.celestialGreen} size={30}/>}
+              isEnabled={!!workout.notificationsEnabled}
+              size={30}
+              style={{marginTop: 8}}
             />
           </View>
         </TouchableOpacity>
