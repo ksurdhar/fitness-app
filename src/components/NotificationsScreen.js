@@ -104,8 +104,8 @@ class NotificationsScreen extends React.Component {
       workoutID,
       workoutName,
       pushToken: this.props.userData.pushToken,
-      month: dateObj.getUTCMonth(),
-      day: dateObj.getUTCDate(),
+      month: dateObj.getUTCMonth(), // remove from here - set after recording session
+      day: dateObj.getUTCDate(), // remove from here - set after recording session
       hours,
       minutes, // needs to be rounded to 0, 15, 30, 45
       daysInterval: 3,
@@ -173,6 +173,7 @@ class NotificationsScreen extends React.Component {
   }
 
   renderDetails = (workout) => {
+    const { width } = Dimensions.get('window')
     const offsetDate = new Date()
     const offset = offsetDate.getTimezoneOffset() / 60
     const hours = workout.notificationHours - offset
@@ -180,10 +181,13 @@ class NotificationsScreen extends React.Component {
     const interval = workout.notificationInterval
 
     return (
-      <View style={{marginTop: -3}}>
+      <View style={{ marginTop: -3, width: width/1.5 }}>
         <TouchableOpacity onPress={() => { this.setState({ modalOpen: true, modalWorkoutID: workout.id })}}>
           <Text style={[common.tajawal3, {fontSize: 20, color: COLORS.gray6}]}>
-            {`deliver ${interval} days after a workout \nat ${formattedTime}`}
+            {`deliver `}
+            <Text style={{ textDecorationLine: 'underline' }}>{`${interval} days`}</Text>
+            {` after a workout \nat `}
+            <Text style={{ textDecorationLine: 'underline' }}>{ formattedTime }</Text>
           </Text>
         </TouchableOpacity>
       </View>
