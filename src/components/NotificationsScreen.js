@@ -19,7 +19,7 @@ import {
   Switch
 } from 'react-native'
 import Swipeout from 'react-native-swipeout'
-import { Entypo } from '@expo/vector-icons'
+import { Entypo, Ionicons } from '@expo/vector-icons'
 import { format } from 'date-fns'
 
 import { common } from './reusable/common'
@@ -54,6 +54,11 @@ async function registerForPushNotificationsAsync() {
   return token
 }
 
+const NOTIFICATION_MODALS = {
+  help: 'Help',
+  scheduling: 'Scheduling'
+}
+
 const mapStateToProps = (state, ownProps) => {
   return {
     workouts: state.workouts.workouts,
@@ -66,7 +71,14 @@ const mapStateToProps = (state, ownProps) => {
 class NotificationsScreen extends React.Component {
   static navigationOptions = ({ navigation }) => {
     return {
-      title: 'Notifications'
+      title: 'Notifications',
+      headerRight: (
+        <View style={{paddingRight: 10}}>
+          <TouchableOpacity onPress={navigation.getParam('openHelpModal')}>
+            <Ionicons name='ios-help-circle-outline' color={COLORS.gray8} size={30}/>
+          </TouchableOpacity>
+        </View>
+      )
     }
   }
 
@@ -74,7 +86,7 @@ class NotificationsScreen extends React.Component {
     super(props)
 
     this.state = {
-      modalOpen: false,
+      modalType: null,
       modalWorkoutID: null
     }
   }
@@ -87,6 +99,9 @@ class NotificationsScreen extends React.Component {
     } else {
       console.log('push notification already saved:', this.props.userData.pushToken)
     }
+    this.props.navigation.setParams({
+      openHelpModal: () => { this.setState({ modalType: NOTIFICATION_MODALS.help }) }
+    })
   }
 
   componentDidUpdate() {
@@ -182,7 +197,7 @@ class NotificationsScreen extends React.Component {
 
     return (
       <View style={{ marginTop: -3, width: width/1.5 }}>
-        <TouchableOpacity onPress={() => { this.setState({ modalOpen: true, modalWorkoutID: workout.id })}}>
+        <TouchableOpacity onPress={() => { this.setState({ modalType: NOTIFICATION_MODALS.scheduling, modalWorkoutID: workout.id })}}>
           <Text style={[common.tajawal3, {fontSize: 20, color: COLORS.gray6}]}>
             {`deliver `}
             <Text style={{ textDecorationLine: 'underline' }}>{`${interval} days`}</Text>
@@ -196,6 +211,42 @@ class NotificationsScreen extends React.Component {
 
   renderModal = () => {
     const { height, width } = Dimensions.get('window')
+
+    return (
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={this.state.modalType}>
+        <TouchableWithoutFeedback onPress={() => { this.setState({ modalType: null }) }}>
+          <View style={{ backgroundColor: COLORS.gray7, height, justifyContent: 'flex-end' }}>
+            <TouchableWithoutFeedback onPress={(event) => { event.stopPropagation() }}>
+              <View style={{ backgroundColor: COLORS.white }}>
+                { this[`render${this.state.modalType}Modal`]() }
+              </View>
+            </TouchableWithoutFeedback>
+          </View>
+        </TouchableWithoutFeedback>
+      </Modal>
+    )
+  }
+
+  renderHelpModal = () => {
+    return (
+      <View style={[common.row, { marginTop: 20, marginLeft: 20, marginRight: 20 }]}>
+        <Text style={[common.tajawal3, {fontSize: 20, color: COLORS.gray10, textAlign: 'center'}]}>
+          Set reminders for specific workouts by enabling notifications. {'\n'}{'\n'}
+          Once a notification is enabled, you can tailor their delivery time. {'\n'}{'\n'}
+          You will receive a notification after recording a session of a given workout. {'\n'}{'\n'}
+          For example, if you set a notification interval of 3 days at 9:30 AM for a leg workout, {'\n'}
+          and record a leg workout session at 6:45 PM on a Tuesday,
+          you will receive a reminder on Friday (3 days later) at 9:30 AM. {'\n'}{'\n'}
+        </Text>
+      </View>
+    )
+  }
+
+  renderSchedulingModal = () => {
+    const { height, width } = Dimensions.get('window')
     const workout = this.props.workouts.find((workout) => {
       return workout.id === this.state.modalWorkoutID
     })
@@ -207,52 +258,41 @@ class NotificationsScreen extends React.Component {
     const pickerDate = new Date('1991', 0, 1, hours, minutes) // first three values are useless
 
     return (
-      <Modal
-        animationType="slide"
-        transparent={true}
-        visible={this.state.modalOpen}>
-        <TouchableWithoutFeedback onPress={() => { this.setState({modalOpen: false}) }}>
-          <View style={{ backgroundColor: COLORS.gray7, height, justifyContent: 'flex-end' }}>
-            <TouchableWithoutFeedback onPress={(event) => { event.stopPropagation() }}>
-              <View style={{ backgroundColor: COLORS.white }}>
-                <View style={[common.row, { marginTop: 20, marginLeft: 10, marginRight: 10 }]}>
-                  <Text style={[common.tajawal5, {fontSize: 22, color: COLORS.gray10, textAlign: 'center'}]}>
-                    { `Send notifications for\n${workout.name}` }
-                  </Text>
-                </View>
+      <View>
+        <View style={[common.row, { marginTop: 20, marginLeft: 10, marginRight: 10 }]}>
+          <Text style={[common.tajawal5, {fontSize: 22, color: COLORS.gray10, textAlign: 'center'}]}>
+            { `Send notifications for\n${workout.name}` }
+          </Text>
+        </View>
 
-                <Picker
-                  selectedValue={ workout.notificationInterval.toString() }
-                  style={{ height: 120, marginBottom: 20, width}}
-                  itemStyle={{ height: 120 }}
-                  onValueChange={ this.onIntervalChange.bind(this, workout.id) }
-                  >
-                  <Picker.Item label="1 day after working out" value="1" />
-                  <Picker.Item label="2 days after working out" value="2" />
-                  <Picker.Item label="3 days after working out" value="3" />
-                  <Picker.Item label="4 days after working out" value="4" />
-                  <Picker.Item label="5 days after working out" value="5" />
-                  <Picker.Item label="6 days after working out" value="6" />
-                  <Picker.Item label="7 days after working out" value="7" />
-                </Picker>
+        <Picker
+          selectedValue={ workout.notificationInterval.toString() }
+          style={{ height: 120, marginBottom: 20, width}}
+          itemStyle={{ height: 120 }}
+          onValueChange={ this.onIntervalChange.bind(this, workout.id) }
+          >
+          <Picker.Item label="1 day after working out" value="1" />
+          <Picker.Item label="2 days after working out" value="2" />
+          <Picker.Item label="3 days after working out" value="3" />
+          <Picker.Item label="4 days after working out" value="4" />
+          <Picker.Item label="5 days after working out" value="5" />
+          <Picker.Item label="6 days after working out" value="6" />
+          <Picker.Item label="7 days after working out" value="7" />
+        </Picker>
 
-                <View style={common.row}>
-                  <Text style={[common.tajawal5, {fontSize: 20, color: COLORS.gray10, textAlign: 'center'}]}>
-                    At
-                  </Text>
-                </View>
+        <View style={common.row}>
+          <Text style={[common.tajawal5, {fontSize: 20, color: COLORS.gray10, textAlign: 'center'}]}>
+            At
+          </Text>
+        </View>
 
-                <DatePickerIOS
-                  date={pickerDate}
-                  minuteInterval={ 15 }
-                  mode={'time'}
-                  onDateChange={ this.onDateChange.bind(this, workout.id) }
-                />
-              </View>
-            </TouchableWithoutFeedback>
-          </View>
-        </TouchableWithoutFeedback>
-      </Modal>
+        <DatePickerIOS
+          date={pickerDate}
+          minuteInterval={ 15 }
+          mode={'time'}
+          onDateChange={ this.onDateChange.bind(this, workout.id) }
+        />
+      </View>
     )
   }
 
@@ -302,7 +342,7 @@ class NotificationsScreen extends React.Component {
 
     return (
       <View style={common.staticView, {paddingLeft: 10, paddingRight: 10, backgroundColor: COLORS.white, height: height}}>
-        { this.state.modalOpen ? this.renderModal()  : null }
+        { this.state.modalType ? this.renderModal() : null }
         { this.renderWorkouts() }
       </View>
     )
