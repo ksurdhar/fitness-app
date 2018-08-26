@@ -20,6 +20,7 @@ import {
 } from 'react-native'
 import Swipeout from 'react-native-swipeout'
 import { Entypo } from '@expo/vector-icons'
+import { format } from 'date-fns'
 
 import { common } from './reusable/common'
 import AnimatedIcon from './reusable/animatedIcon'
@@ -172,11 +173,17 @@ class NotificationsScreen extends React.Component {
   }
 
   renderDetails = (workout) => {
+    const offsetDate = new Date()
+    const offset = offsetDate.getTimezoneOffset() / 60
+    const hours = workout.notificationHours - offset
+    const formattedTime = format(new Date('1991', 0, 1, hours, workout.notificationMinutes), 'h:mm A')
+    const interval = workout.notificationInterval
+
     return (
       <View style={{marginTop: -3}}>
         <TouchableOpacity onPress={() => { this.setState({ modalOpen: true, modalWorkoutID: workout.id })}}>
           <Text style={[common.tajawal3, {fontSize: 20, color: COLORS.gray6}]}>
-            {`deliver ${workout.notificationInterval} days after a workout \nat ${workout.notificationHours}:${workout.notificationMinutes} AM`}
+            {`deliver ${interval} days after a workout \nat ${formattedTime}`}
           </Text>
         </TouchableOpacity>
       </View>
