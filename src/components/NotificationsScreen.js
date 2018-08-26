@@ -112,15 +112,13 @@ class NotificationsScreen extends React.Component {
   addNotification = (workoutID, workoutName) => {
     const dateObj = new Date()
     const hours = dateObj.getUTCHours()
-    const unroundedMinutes = dateObj.getMinutes() // needs to be rounded
+    const unroundedMinutes = dateObj.getMinutes()
     const minutes = Math.floor(unroundedMinutes/15)*15
 
     const notificationObj = {
       workoutID,
       workoutName,
       pushToken: this.props.userData.pushToken,
-      month: dateObj.getUTCMonth(), // remove from here - set after recording session
-      day: dateObj.getUTCDate(), // remove from here - set after recording session
       hours,
       minutes, // needs to be rounded to 0, 15, 30, 45
       daysInterval: 3,
@@ -233,13 +231,15 @@ class NotificationsScreen extends React.Component {
   renderHelpModal = () => {
     return (
       <View style={[common.row, { marginTop: 20, marginLeft: 20, marginRight: 20 }]}>
-        <Text style={[common.tajawal3, {fontSize: 20, color: COLORS.gray10, textAlign: 'center'}]}>
+        <Text style={[common.tajawal3, {fontSize: 20, color: COLORS.gray10, textAlign: 'left'}]}>
           Set reminders for specific workouts by enabling notifications. {'\n'}{'\n'}
           Once a notification is enabled, you can tailor their delivery time. {'\n'}{'\n'}
           You will receive a notification after recording a session of a given workout. {'\n'}{'\n'}
-          For example, if you set a notification interval of 3 days at 9:30 AM for a leg workout, {'\n'}
-          and record a leg workout session at 6:45 PM on a Tuesday,
-          you will receive a reminder on Friday (3 days later) at 9:30 AM. {'\n'}{'\n'}
+          For example, if you set a interval of: {'\n'}{'\n'}
+          <Text style={common.tajawal5}>3 days at 9:30 AM for a leg workout {'\n'}{'\n'}</Text>
+          and record a leg workout session at: {'\n'}{'\n'}
+          <Text style={common.tajawal5}>6:45 PM on a Tuesday{'\n'}{'\n'}</Text>
+          You will receive a reminder on Friday (3 days later) at 9:30 AM. {'\n'}{'\n'}
         </Text>
       </View>
     )

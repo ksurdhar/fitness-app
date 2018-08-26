@@ -14,7 +14,7 @@ import {
   Button,
   TouchableWithoutFeedback
 } from 'react-native'
-import { format } from 'date-fns'
+import { format, addDays } from 'date-fns'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import { FontAwesome } from '@expo/vector-icons'
 import { StackActions, NavigationActions } from 'react-navigation'
@@ -26,6 +26,7 @@ import Input from './reusable/input'
 import Switch from './reusable/switch'
 import PressCapture from './reusable/pressCapture'
 import { common, COLORS } from './reusable/common'
+import * as notificationActions from '../redux/actions/notificationActions'
 import * as sessionActions from '../redux/actions/sessionActions'
 
 // SHAPE OF EXERCISE DATA
@@ -51,7 +52,8 @@ ADD_SESSION_STATE = {
 
 const mapStateToProps = (state, ownProps) => {
   return {
-    user: state.auth.user
+    user: state.auth.user,
+    workouts: state.workouts.workouts,
   }
 }
 
@@ -91,7 +93,7 @@ class AddSessionScreen extends React.Component {
     console.log('state',this.state)
   }
 
-  addSession() {
+  addSession = () => {
     this.props.addSession(
       this.state.exerciseNames,
       this.state.exerciseData,
@@ -100,6 +102,16 @@ class AddSessionScreen extends React.Component {
       this.state.workoutName,
       this.state.noteText
     )
+    // update notification delivery date
+    const workout = this.props.workouts.find((workout) => {
+      return workout.id === this.state.workoutID
+    })
+    const dateObj = addDays(new Date(), workout.notificationInterval)
+    this.props.updateNotification(this.state.workoutID, {
+      month: dateObj.getUTCMonth() ,
+      day: dateObj.getUTCDate(),
+    })
+    // reset state
     this.resetState()
     const resetAction = StackActions.reset({
       index: 0,
@@ -239,6 +251,7 @@ class AddSessionScreen extends React.Component {
 const mapDispatchToProps = (dispatch) => {
   return {
     addSession: (exerciseNames, exerciseData, uid, workoutID, workoutName, noteText) => { dispatch(sessionActions.addSession(exerciseNames, exerciseData, uid, workoutID, workoutName, noteText)) },
+    updateNotification: (workoutID, patchObj) => { dispatch(notificationActions.updateNotification(workoutID, patchObj))},
   }
 }
 
