@@ -102,15 +102,17 @@ class AddSessionScreen extends React.Component {
       this.state.workoutName,
       this.state.noteText
     )
-    // update notification delivery date
+    // update notification delivery date if enabled
     const workout = this.props.workouts.find((workout) => {
       return workout.id === this.state.workoutID
     })
-    const dateObj = addDays(new Date(), workout.notificationInterval)
-    this.props.updateNotification(this.state.workoutID, {
-      month: dateObj.getUTCMonth() ,
-      day: dateObj.getUTCDate(),
-    })
+    if (workout.notificationsEnabled) {
+      const dateObj = addDays(new Date(), workout.notificationInterval)
+      this.props.updateNotification(this.state.workoutID, {
+        month: dateObj.getUTCMonth() ,
+        day: dateObj.getUTCDate(),
+      })
+    }
     // reset state
     this.resetState()
     const resetAction = StackActions.reset({

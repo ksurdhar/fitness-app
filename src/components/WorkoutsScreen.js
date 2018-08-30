@@ -65,17 +65,20 @@ class WorkoutsScreen extends React.Component {
   renderSessionCards = () => {
     return this.props.sessions.map((session) => {
       const dateString = format(session.date, 'dddd, MMM D [at] h:mm A')
+      const headerString = format(session.date, 'MMM D')
       return (
         <ExpandingCard
           key={session.id}
           subHeader={dateString}
-          header={session.workoutName}
+          header={headerString + ' ' + session.workoutName}
           deleteHandler={this.removeSession.bind(this, session.id)}
           swipeable={true}
-          expandable={true}
+          expandable={false}
         >
-          { this.renderExerciseTexts(session.exercises) }
-          { this.renderNotes(session.noteText) }
+          <View>
+            { this.renderExerciseTexts(session.exercises) }
+            { this.renderNotes(session.noteText) }
+          </View>
         </ExpandingCard>
       )
     })
@@ -101,8 +104,8 @@ class WorkoutsScreen extends React.Component {
           attrString = attrString + `${attr.val} ${attr.type} / `
         })
         return (
-          <Text style={[common.tajawal3, {fontSize: 18, color: COLORS.gray8, paddingBottom: 2}]}>
-          {`${exercise.name} - ${attrString}`}
+          <Text style={[common.tajawal3, {fontSize: 20, color: COLORS.gray8, paddingBottom: 10}]}>
+          {`${exercise.name}\n${attrString}`}
           </Text>
         )
       })
