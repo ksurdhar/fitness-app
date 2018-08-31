@@ -10,7 +10,7 @@ import {
 import { format } from 'date-fns'
 import { Entypo, Feather, FontAwesome } from '@expo/vector-icons'
 
-import ExpandingCard from './reusable/expandingCard'
+import BasicCard from './reusable/basicCard'
 import { common, COLORS } from './reusable/common'
 import * as workoutActions from '../redux/actions/workoutActions'
 import * as sessionActions from '../redux/actions/sessionActions'
@@ -66,20 +66,31 @@ class WorkoutsScreen extends React.Component {
     return this.props.sessions.map((session) => {
       const dateString = format(session.date, 'dddd, MMM D [at] h:mm A')
       const headerString = format(session.date, 'MMM D')
+
+      const cardHeader = (
+        <View style={{flexDirection: 'column'}}>
+          <Text style={[common.tajawal3, {fontSize: 18, color: COLORS.gray8}]}>
+            { dateString }
+          </Text>
+          <Text style={[common.tajawal5, {fontSize: 26, color: COLORS.gray10}]}>
+            {session.workoutName}
+          </Text>
+        </View>
+      )
+
+      const cardBody = (
+        <View>
+          { this.renderExerciseTexts(session.exercises) }
+          { this.renderNotes(session.noteText) }
+        </View>
+      )
+
       return (
-        <ExpandingCard
+        <BasicCard
           key={session.id}
-          subHeader={dateString}
-          header={headerString + ' ' + session.workoutName}
-          deleteHandler={this.removeSession.bind(this, session.id)}
-          swipeable={true}
-          expandable={false}
-        >
-          <View>
-            { this.renderExerciseTexts(session.exercises) }
-            { this.renderNotes(session.noteText) }
-          </View>
-        </ExpandingCard>
+          header={cardHeader}
+          body={cardBody}
+        />
       )
     })
   }
