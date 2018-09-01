@@ -1,6 +1,39 @@
 const initialState = {
   sessions: [],
-};
+}
+
+initialState.sessions.push(
+  {
+    date: new Date(),
+    exercises: [
+      {
+        name: 'Push Ups',
+        attributes: [
+          { type: 'sets', val: 4 },
+          { type: 'reps', val: 8 },
+          { type: 'weight', val: 25 },
+          { type: 'time', val: 60 },
+        ]
+      },
+      {
+        name: 'Pull Ups',
+        attributes: [
+          { type: 'sets', val: 4 },
+          { type: 'reps', val: 8 },
+        ]
+      },
+      {
+        name: 'Plank',
+        attributes: [
+          { type: 'sets', val: 2 },
+          { type: 'time', val: 60 },
+        ]
+      }
+    ],
+    workoutName: 'Leg Blaster',
+    noteText: 'Felt kind of weak, post long run.'
+  }
+)
 
 export default function sessionsReducer(state = initialState, action) {
   switch (action.type) {

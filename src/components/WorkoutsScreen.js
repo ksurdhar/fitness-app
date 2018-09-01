@@ -15,9 +15,10 @@ import { common, COLORS } from './reusable/common'
 import * as workoutActions from '../redux/actions/workoutActions'
 import * as sessionActions from '../redux/actions/sessionActions'
 
+ATTR_ORDER = ['sets', 'reps', 'weight', 'time']
+
 const mapStateToProps = (state, ownProps) => {
   return {
-    workouts: state.workouts.workouts,
     sessions: state.sessions.sessions,
     userID: state.auth.user.uid,
   }
@@ -54,7 +55,7 @@ class WorkoutsScreen extends React.Component {
     const isEmpty = this.props.sessions.length === 0
 
     return (
-      <View style={common.staticView, { paddingLeft: 10, paddingRight: 10, backgroundColor: COLORS.white, height: height }}>
+      <View style={common.staticView, { paddingLeft: 10, paddingRight: 10, backgroundColor: COLORS.gray1, height: height }}>
         <ScrollView style={{paddingTop: 10, marginBottom: 110}}>
           { isEmpty? this.renderEmptyMessage() : this.renderSessionCards() }
         </ScrollView>
@@ -98,8 +99,11 @@ class WorkoutsScreen extends React.Component {
   renderNotes(text) {
     if (text.length > 0 ) {
       return (
-        <Text style={[common.tajawal3, {fontSize: 18, color: COLORS.gray8, paddingBottom: 2}]}>
-        { `Notes: \n` + text }
+        <Text style={[common.tajawal5, {fontSize: 20, color: COLORS.gray9, paddingBottom: 10}]}>
+          { `Notes: \n` }
+          <Text style={[common.tajawal3, {fontSize: 18, color: COLORS.gray8}]}>
+            { text }
+          </Text>
         </Text>
       )
     } else {
@@ -110,13 +114,24 @@ class WorkoutsScreen extends React.Component {
   renderExerciseTexts = (exercises) => {
     if (exercises) {
       return Object.values(exercises).map((exercise) => {
-        let attrString = ''
-        exercise.attributes.forEach((attr) => {
-          attrString = attrString + `${attr.val} ${attr.type} / `
+        exercise.attributes.sort((a, b) => ATTR_ORDER.indexOf(a.type) > ATTR_ORDER.indexOf(b.type))
+        const strings = exercise.attributes.map((attr, idx) => {
+          let formattedType = attr.type
+          if (attr.type == 'weight') {
+            formattedType = 'lbs' // TODO: add toggle between lbs / kg
+          }
+          if (attr.type == 'time') {
+            formattedType = 'secs'
+          }
+          return `${attr.val} ${formattedType}`
         })
+        const attrString = strings.join(' / ')
         return (
-          <Text style={[common.tajawal3, {fontSize: 20, color: COLORS.gray8, paddingBottom: 10}]}>
-          {`${exercise.name}\n${attrString}`}
+          <Text style={[common.tajawal5, {fontSize: 20, color: COLORS.gray9, paddingBottom: 10}]}>
+            {exercise.name}
+            <Text style={[common.tajawal3, {fontSize: 18, color: COLORS.gray8}]}>
+              {`\n${attrString}`}
+            </Text>
           </Text>
         )
       })
