@@ -142,9 +142,9 @@ class Input extends React.Component {
         return (
           <AnimatedText
             value={this.props.subLabel}
-            textColors={[DYNAMIC.foreground, DYNAMIC.text5]}
+            textColors={[DYNAMIC.foreground, DYNAMIC.text4]}
             isEnabled={this.state.isFocused}
-            style={{ marginLeft: 10, marginTop: 1, fontFamily: 'rubik-medium', fontSize: 18}}
+            style={{ marginLeft: 10, marginTop: 1, fontFamily: 'rubik-medium', fontSize: 18, textAlign: 'center'}}
           />
         )
       } else {

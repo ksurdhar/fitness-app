@@ -55,7 +55,7 @@ class WorkoutsScreen extends React.Component {
     const isEmpty = this.props.sessions.length === 0
 
     return (
-      <View style={common.staticView, { paddingLeft: 10, paddingRight: 10, backgroundColor: DYNAMIC.background1, height: height }}>
+      <View style={common.staticView, { paddingLeft: 10, paddingRight: 10, backgroundColor: DYNAMIC.foreground5, height: height }}>
         <ScrollView style={{paddingTop: 10, marginBottom: 110}}>
           { isEmpty? this.renderEmptyMessage() : this.renderSessionCards() }
         </ScrollView>

@@ -152,7 +152,7 @@ class AddSessionScreen extends React.Component {
 
   getPreviousValueForAttr = (exName, attrType) => {
     let prevVal
-    if (attrType) {
+    if (attrType && this.state.prevSession) {
       Object.entries(this.state.prevSession.exercises).forEach(([prevExID, prevExObj]) => {
         // finding the correct exercise
         if (prevExObj.name == exName) {
@@ -195,7 +195,7 @@ class AddSessionScreen extends React.Component {
           <Input
             value={attrVal}
             label={labelElement}
-            subLabel={`last time - ${prevVal}`}
+            subLabel={ prevVal ? `${prevVal} previously` : '' }
             onChangeText={this.setAttrVal.bind(this, exIdx, attrIdx)}
             ref={(element) => { this[`${exIdx}-${attrIdx}-input`] = element }}
             fontSize={24}
@@ -270,7 +270,7 @@ class AddSessionScreen extends React.Component {
 
     return (
       <PressCapture onPress={this.handleCapture}>
-        <View style={[common.staticView, { paddingLeft: 10, paddingRight: 10, backgroundColor: DYNAMIC.foreground, height: height }]}>
+        <View style={[common.staticView, { paddingLeft: 10, paddingRight: 10, backgroundColor: DYNAMIC.foreground5, height: height }]}>
           <KeyboardAwareScrollView style={{paddingTop: 10}}>
             { this.renderExercises() }
             { this.renderNoteCard() }
