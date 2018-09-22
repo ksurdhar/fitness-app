@@ -15,7 +15,7 @@ import {
 import Swipeout from 'react-native-swipeout'
 import { Feather } from '@expo/vector-icons'
 
-import { common } from './reusable/common'
+import { common, DYNAMIC } from './reusable/common'
 import KButton from './reusable/button'
 import * as workoutActions from '../redux/actions/workoutActions'
 
@@ -25,6 +25,7 @@ INITIAL_STATE = {
 
 const mapStateToProps = (state, ownProps) => {
   return {
+    sessions: state.sessions.sessions,
     workouts: state.workouts.workouts,
     userID: state.auth.user.uid,
   }
@@ -94,6 +95,25 @@ class PromptScreen extends React.Component {
     })
   }
 
+  // renderLastWorkoutDate = (workout) => {
+  //   // take the workout id, filter through sessions that match the ID and capture the date of the last recorded workouts
+  //   let mostRecentWorkout = 0
+  //   this.props.sessions.forEach((session) => {
+  //     if (session.workoutID === workout.id) {
+  //       if (session.date > mostRecentWorkout) {
+  //         mostRecentWorkout = session.date
+  //       }
+  //     }
+  //   })
+  //   console.log('mostRecentWorkout', mostRecentWorkout)
+  //   if (mostRecentWorkout > 0) {
+  //     console.log('gonna work')
+  //     return <Text>` - ${mostRecentWorkout}`</Text>
+  //   } else {
+  //     return null
+  //   }
+  // }
+
   // needs a limit how how many can be rendered
   renderWorkoutButtons = () => {
     const workoutButtons = this.props.workouts.map((workout) => {
@@ -106,10 +126,17 @@ class PromptScreen extends React.Component {
       const swipeoutBtns = [
         {
           component: deleteButton,
-          backgroundColor: DYNAMIC.link,
+          backgroundColor: DYNAMIC.red8,
           onPress: this.removeWorkout.bind(this, workout.id)
         }
       ]
+
+      const buttonContent = (
+        <Text style={{ fontFamily: common.tajawal3 }}>
+          { workout.name }
+        </Text>
+      )
+      console.log(buttonContent, buttonContent)
 
       return (
         <Swipeout right={swipeoutBtns} backgroundColor={DYNAMIC.foreground} key={workout.id}>
@@ -120,7 +147,8 @@ class PromptScreen extends React.Component {
           }}>
             <KButton
               textColor={DYNAMIC.link}
-              value={workout.name}
+              textAlign={'left'}
+              value={buttonContent}
               isEnabled={true}
               transparent={true}
               onPress={this.recordSession.bind(this, workout.name)}
@@ -159,7 +187,11 @@ class PromptScreen extends React.Component {
 
     return (
       <View style={common.staticView, {paddingLeft: 10, paddingRight: 10, backgroundColor: DYNAMIC.foreground, height: height}}>
-        { isEmpty ? this.renderEmptyMessage() : this.renderWorkoutButtons() }
+        {
+          isEmpty
+          ? this.renderEmptyMessage()
+          : this.renderWorkoutButtons()
+      }
       </View>
     )
   }

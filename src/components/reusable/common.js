@@ -4,7 +4,7 @@ import {
 // https://flatuicolors.com/palette/in
 // https://digitalsynopsis.com/design/minimal-web-color-palettes-combination-hex-code/
 
-COLORS = {
+const COLORS = {
   // unused
   orange: '223, 102, 89',
   fuchsia: '179, 55, 113',
@@ -22,7 +22,7 @@ COLORS = {
   gray: '64, 77, 91',
 }
 
-TYPES = {
+const TYPES = {
   text: 'gray',
   foreground: 'white',
   background: 'navy',
@@ -31,7 +31,7 @@ TYPES = {
   green: 'celestialGreen'
 }
 
-DYNAMIC = {}
+const DYNAMIC = {}
 Object.entries(TYPES).forEach(([type, color]) => {
   for (var i = 0; i <= 10; i++) {
     const val = i == 10 ? `rgba(${COLORS[color]}, 1.0)` : `rgba(${COLORS[color]}, 0.${i})`
