@@ -150,6 +150,24 @@ class AddSessionScreen extends React.Component {
     })
   }
 
+  getPreviousValueForAttr = (exName, attrType) => {
+    let prevVal
+    if (attrType) {
+      Object.entries(this.state.prevSession.exercises).forEach(([prevExID, prevExObj]) => {
+        // finding the correct exercise
+        if (prevExObj.name == exName) {
+          prevExObj.attributes.forEach((prevAttrObj) => {
+            // finding the correct value for type
+            if (prevAttrObj.type == attrType) {
+              prevVal = prevAttrObj.val
+            }
+          })
+        }
+      })
+    }
+    return prevVal
+  }
+
   setAttrVal(exIdx, attrIdx, val) {
     this.setState((prevState) => {
       return produce(prevState, (draftState) => {
@@ -158,7 +176,7 @@ class AddSessionScreen extends React.Component {
     })
   }
   // make keyboard type numeric
-  renderAttrInputs(exIdx) {
+  renderAttrInputs(exIdx, exVal) {
     return Object.entries(this.state.exerciseData[exIdx]).map(([attrIdx, attr]) => {
       const labelElement = (
         <Text style={{
@@ -169,13 +187,15 @@ class AddSessionScreen extends React.Component {
           {attr.type}
         </Text>
       )
+
       const attrVal = this.state.exerciseData[exIdx][attrIdx].val
+      const prevVal = this.getPreviousValueForAttr(exVal, attr.type)
       return (
         <View key={attrIdx} style={{paddingTop: 20}}>
           <Input
             value={attrVal}
             label={labelElement}
-            subLabel={'foo'}
+            subLabel={`last time - ${prevVal}`}
             onChangeText={this.setAttrVal.bind(this, exIdx, attrIdx)}
             ref={(element) => { this[`${exIdx}-${attrIdx}-input`] = element }}
             fontSize={24}
@@ -215,7 +235,7 @@ class AddSessionScreen extends React.Component {
             cardHeights={[600, 600]}
             rightCorner={completeEl}
           >
-            { this.renderAttrInputs(exIdx) }
+            { this.renderAttrInputs(exIdx, val) }
           </ExpandingCard>
         )
       })
