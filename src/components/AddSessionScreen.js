@@ -20,6 +20,7 @@ import { FontAwesome } from '@expo/vector-icons'
 import { StackActions, NavigationActions } from 'react-navigation'
 
 import AnimatedIcon from './reusable/animatedIcon'
+import AnimatedText from './reusable/animatedText'
 import ExpandingCard from './reusable/expandingCard'
 import KButton from './reusable/button'
 import Input from './reusable/input'
@@ -156,6 +157,7 @@ class AddSessionScreen extends React.Component {
           <Input
             value={attrVal}
             label={labelElement}
+            subLabel={'foo'}
             onChangeText={this.setAttrVal.bind(this, exIdx, attrIdx)}
             ref={(element) => { this[`${exIdx}-${attrIdx}-input`] = element }}
             fontSize={24}

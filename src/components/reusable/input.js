@@ -4,8 +4,11 @@ import {
   StyleSheet,
   TextInput,
   View,
+  Text
 } from 'react-native'
 import { DYNAMIC } from './common'
+
+import AnimatedText from './animatedText'
 
 // DIFFERENT INPUT STATES
 // focused, blurred, valid, invalid, filled, empty
@@ -134,6 +137,21 @@ class Input extends React.Component {
       )
     }
 
+    const maybeRenderSublabel = () => {
+      if (this.props.subLabel) {
+        return (
+          <AnimatedText
+            value={this.props.subLabel}
+            textColors={[DYNAMIC.foreground, DYNAMIC.text5]}
+            isEnabled={this.state.isFocused}
+            style={{ marginLeft: 10, marginTop: 1, fontFamily: 'rubik-medium', fontSize: 18}}
+          />
+        )
+      } else {
+        return null
+      }
+    }
+
     return (
       <View>
         <Animated.View style={[{
@@ -142,6 +160,7 @@ class Input extends React.Component {
         }, styleLine(animations, 'blueLine'), this.props.style]}>
           <Animated.View style={styleLabel(animations)}>
             { this.props.label }
+            { maybeRenderSublabel() }
           </Animated.View>
           <TextInput
             value={this.props.value}
@@ -174,7 +193,9 @@ function styleLine(animations, lineColor) {
 function styleLabel(animations) {
   return {
     position: 'absolute',
-    bottom: animations.labelPosition
+    bottom: animations.labelPosition,
+    flexDirection: 'row',
+    justifyContent: 'left'
   }
 }
 
