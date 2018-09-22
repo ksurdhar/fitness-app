@@ -55,6 +55,7 @@ const mapStateToProps = (state, ownProps) => {
   return {
     user: state.auth.user,
     workouts: state.workouts.workouts,
+    sessions: state.sessions.sessions
   }
 }
 
@@ -82,16 +83,33 @@ class AddSessionScreen extends React.Component {
 
   componentDidMount() {
     const params = this.props.navigation.state.params
+    const prevSession = this.findPreviousSession(params.workoutID)
+
     this.setState({
       workoutID: params.workoutID,
       workoutName: params.workoutName,
       exerciseData: params.exerciseData,
       exerciseNames: params.exerciseNames,
+      prevSession
     })
   }
 
   componentDidUpdate() {
-    console.log('state',this.state)
+    // console.log('state',this.state)
+  }
+
+  findPreviousSession = (workoutID) => {
+    let mostRecentSession = { date: 0 }
+    this.props.sessions.forEach((session) => {
+      if (session.workoutID == workoutID && session.date > mostRecentSession.date) {
+        mostRecentSession = session
+      }
+    })
+    if (mostRecentSession.date > 0) {
+      return mostRecentSession
+    } else {
+      return null
+    }
   }
 
   addSession = () => {
