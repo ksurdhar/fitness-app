@@ -85,6 +85,7 @@ class Button extends React.Component {
           <Animated.Text style={[{fontSize: 24, fontFamily: 'rubik-medium', color: animations.text, textAlign: this.props.textAlign ? this.props.textAlign : 'center'}, {color: this.props.textColor}]}>
             { this.props.value }
           </Animated.Text>
+          { this.props.children }
         </Animated.View>
       </TouchableOpacity>
     )

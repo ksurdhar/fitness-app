@@ -16,7 +16,7 @@ import Swipeout from 'react-native-swipeout'
 import { Feather } from '@expo/vector-icons'
 
 import { common, DYNAMIC } from './reusable/common'
-import KButton from './reusable/button'
+import BasicButton from './reusable/basicButton'
 import * as workoutActions from '../redux/actions/workoutActions'
 
 INITIAL_STATE = {
@@ -131,13 +131,6 @@ class PromptScreen extends React.Component {
         }
       ]
 
-      const buttonContent = (
-        <Text style={{ fontFamily: common.tajawal3 }}>
-          { workout.name }
-        </Text>
-      )
-      console.log(buttonContent, buttonContent)
-
       return (
         <Swipeout right={swipeoutBtns} backgroundColor={DYNAMIC.foreground} key={workout.id}>
           <View style={{
@@ -145,14 +138,11 @@ class PromptScreen extends React.Component {
             borderTopColor: DYNAMIC.text1, borderTopWidth: 1,
             justifyContent: 'center'
           }}>
-            <KButton
-              textColor={DYNAMIC.link}
-              textAlign={'left'}
-              value={buttonContent}
-              isEnabled={true}
-              transparent={true}
-              onPress={this.recordSession.bind(this, workout.name)}
-            />
+            <BasicButton onPress={this.recordSession.bind(this, workout.name)}>
+              <Text style={[ common.tajawal5, common.mdFont]}>
+                { workout.name }
+              </Text>
+            </BasicButton>
           </View>
         </Swipeout>
       )
