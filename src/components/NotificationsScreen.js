@@ -75,7 +75,7 @@ class NotificationsScreen extends React.Component {
       headerRight: (
         <View style={{paddingRight: 10}}>
           <TouchableOpacity onPress={navigation.getParam('openHelpModal')}>
-            <Ionicons name='ios-help-circle-outline' color={COLORS.gray8} size={30}/>
+            <Ionicons name='ios-help-circle-outline' color={DYNAMIC.text8} size={30}/>
           </TouchableOpacity>
         </View>
       )
@@ -196,7 +196,7 @@ class NotificationsScreen extends React.Component {
     return (
       <View style={{ marginTop: -3, width: width/1.5 }}>
         <TouchableOpacity onPress={() => { this.setState({ modalType: NOTIFICATION_MODALS.scheduling, modalWorkoutID: workout.id })}}>
-          <Text style={[common.tajawal3, {fontSize: 20, color: COLORS.gray6}]}>
+          <Text style={[common.tajawal3, {fontSize: 20, color: DYNAMIC.text6}]}>
             {`deliver `}
             <Text style={{ textDecorationLine: 'underline' }}>{`${interval} days`}</Text>
             {` after a workout \nat `}
@@ -216,9 +216,9 @@ class NotificationsScreen extends React.Component {
         transparent={true}
         visible={this.state.modalType}>
         <TouchableWithoutFeedback onPress={() => { this.setState({ modalType: null }) }}>
-          <View style={{ backgroundColor: COLORS.gray7, height, justifyContent: 'flex-end' }}>
+          <View style={{ backgroundColor: DYNAMIC.text7, height, justifyContent: 'flex-end' }}>
             <TouchableWithoutFeedback onPress={(event) => { event.stopPropagation() }}>
-              <View style={{ backgroundColor: COLORS.white }}>
+              <View style={{ backgroundColor: DYNAMIC.foreground }}>
                 { this[`render${this.state.modalType}Modal`]() }
               </View>
             </TouchableWithoutFeedback>
@@ -231,7 +231,7 @@ class NotificationsScreen extends React.Component {
   renderHelpModal = () => {
     return (
       <View style={[common.row, { marginTop: 20, marginLeft: 20, marginRight: 20 }]}>
-        <Text style={[common.tajawal3, {fontSize: 20, color: COLORS.gray10, textAlign: 'left'}]}>
+        <Text style={[common.tajawal3, {fontSize: 20, color: DYNAMIC.text10, textAlign: 'left'}]}>
           Set reminders for specific workouts by enabling notifications. {'\n'}{'\n'}
           Once a notification is enabled, you can tailor their delivery time. {'\n'}{'\n'}
           You will receive a notification after recording a session of a given workout. {'\n'}{'\n'}
@@ -260,7 +260,7 @@ class NotificationsScreen extends React.Component {
     return (
       <View>
         <View style={[common.row, { marginTop: 20, marginLeft: 10, marginRight: 10 }]}>
-          <Text style={[common.tajawal5, {fontSize: 22, color: COLORS.gray10, textAlign: 'center'}]}>
+          <Text style={[common.tajawal5, {fontSize: 22, color: DYNAMIC.text10, textAlign: 'center'}]}>
             { `Send notifications for\n${workout.name}` }
           </Text>
         </View>
@@ -281,7 +281,7 @@ class NotificationsScreen extends React.Component {
         </Picker>
 
         <View style={common.row}>
-          <Text style={[common.tajawal5, {fontSize: 20, color: COLORS.gray10, textAlign: 'center'}]}>
+          <Text style={[common.tajawal5, {fontSize: 20, color: DYNAMIC.text10, textAlign: 'center'}]}>
             At
           </Text>
         </View>
@@ -302,8 +302,8 @@ class NotificationsScreen extends React.Component {
         <TouchableOpacity onPress={() => this.toggleNotification(workout)}>
           <View>
             <AnimatedIcon
-              icon1={<Entypo name={'bell'} color={COLORS.gray3} size={30}/>}
-              icon2={<Entypo name={'bell'} color={COLORS.celestialGreen} size={30}/>}
+              icon1={<Entypo name={'bell'} color={DYNAMIC.text3} size={30}/>}
+              icon2={<Entypo name={'bell'} color={DYNAMIC.green} size={30}/>}
               isEnabled={!!workout.notificationsEnabled}
               size={30}
               style={{marginTop: 8}}
@@ -313,11 +313,11 @@ class NotificationsScreen extends React.Component {
       )
 
       return (
-        <View style={{marginLeft: 5, marginRight: 5, paddingBottom: 8, borderBottomColor: COLORS.gray1, borderBottomWidth: 1}} key={workout.id}>
+        <View style={{marginLeft: 5, marginRight: 5, paddingBottom: 8, borderBottomColor: DYNAMIC.text1, borderBottomWidth: 1}} key={workout.id}>
           <View style={[common.row, { marginTop: 18,justifyContent: 'space-between' }]}>
-            <Text style={[common.tajawal5, {fontSize: 22, color: COLORS.gray10, textAlign: 'center'}]}>
+            <Text style={[common.tajawal5, {fontSize: 22, color: DYNAMIC.text10, textAlign: 'center'}]}>
               { workout.name }
-              <Text style={[common.tajawal5, {fontSize: 18, color: `${workout.notificationsEnabled ? COLORS.gray5: COLORS.gray5}` , textAlign: 'center',}]}>
+              <Text style={[common.tajawal5, {fontSize: 18, color: `${workout.notificationsEnabled ? DYNAMIC.text5: DYNAMIC.text5}` , textAlign: 'center',}]}>
                 { `    ${workout.notificationsEnabled ? 'Enabled' : 'Disabled'}` }
               </Text>
             </Text>
@@ -341,7 +341,7 @@ class NotificationsScreen extends React.Component {
     const isEmpty = this.props.workouts.length === 0
 
     return (
-      <View style={common.staticView, {paddingLeft: 10, paddingRight: 10, backgroundColor: COLORS.white, height: height}}>
+      <View style={common.staticView, {paddingLeft: 10, paddingRight: 10, backgroundColor: DYNAMIC.foreground, height: height}}>
         { this.state.modalType ? this.renderModal() : null }
         { this.renderWorkouts() }
       </View>

@@ -21,7 +21,7 @@ import Fade from '../reusable/fade'
 import Input from '../reusable/input'
 import Switch from '../reusable/switch'
 import PressCapture from '../reusable/pressCapture'
-import { common, COLORS } from '../reusable/common'
+import { common, DYNAMIC } from '../reusable/common'
 import * as workoutActions from '../../redux/actions/workoutActions'
 
 // exerciseData = {} of exerciseNames -> attributes[]
@@ -40,7 +40,7 @@ class ListAttributesScreen extends React.Component {
           <TouchableOpacity onPress={navigation.getParam('toNameWorkout')} disabled={!navigation.getParam('nextEnabled')}>
             <AnimatedText
               value={'Next'}
-              textColors={[COLORS.gray10, COLORS.peach]}
+              textColors={[DYNAMIC.text10, DYNAMIC.link]}
               isEnabled={navigation.getParam('nextEnabled')}
             />
           </TouchableOpacity>
@@ -172,12 +172,12 @@ class ListAttributesScreen extends React.Component {
     return (
       <View style={[common.staticView]}>
         <View style={[common.row, {marginTop: 10}]}>
-          <Text style={[common.tajawal5, {fontSize: 22, color: COLORS.gray10, textAlign: 'center'}]}>
+          <Text style={[common.tajawal5, {fontSize: 22, color: DYNAMIC.text10, textAlign: 'center'}]}>
             {`Choose what attributes to \n track for each exercise.`}
           </Text>
         </View>
         <View style={common.row}>
-          <Text style={[common.tajawal3, {fontSize: 18, color: COLORS.gray8}]}>Hit next when you’ve added them all.</Text>
+          <Text style={[common.tajawal3, {fontSize: 18, color: DYNAMIC.text8}]}>Hit next when you’ve added them all.</Text>
         </View>
         <View style={[common.row, {marginTop: 30, justifyContent: 'space-between'}]}>
           <KButton
@@ -186,7 +186,7 @@ class ListAttributesScreen extends React.Component {
             isEnabled={this.isButtonEnabled('back')}
             onPress={ () => this.goBack() }
           />
-          <Text style={[common.tajawal5, {fontSize: 30, color: COLORS.gray10, textAlign: 'center', marginTop: 10}]}>
+          <Text style={[common.tajawal5, {fontSize: 30, color: DYNAMIC.text10, textAlign: 'center', marginTop: 10}]}>
             {this.state.exerciseNames[this.state.exerciseIdx] + ` (${this.state.exerciseIdx + 1}/${this.state.exerciseNames.length})`}
           </Text>
           <KButton

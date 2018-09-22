@@ -1,7 +1,7 @@
 import React from 'react'
 import { Animated, View } from 'react-native'
 
-import { common, COLORS } from './common'
+import { common, DYNAMIC } from './common'
 class AnimatedIcon extends React.Component {
   animations = {
     icon1: new Animated.Value(0),

@@ -18,7 +18,7 @@ import Fade from './reusable/fade'
 import Input from './reusable/input'
 import Switch from './reusable/switch'
 import PressCapture from './reusable/pressCapture'
-import { common, COLORS } from './reusable/common'
+import { common, DYNAMIC } from './reusable/common'
 import * as workoutActions from '../redux/actions/workoutActions'
 
 // exerciseData = {} of exerciseNames -> attributes[]
@@ -235,7 +235,7 @@ class AddWorkoutScreen extends React.Component {
       workoutName = (
         <Fade>
           <View style={common.row}>
-            <Text style={[common.baseFont, {fontSize: 24, textDecorationLine: 'underline', textDecorationColor: COLORS.gray5}]}>{this.state.workoutName}</Text>
+            <Text style={[common.baseFont, {fontSize: 24, textDecorationLine: 'underline', textDecorationColor: DYNAMIC.text5}]}>{this.state.workoutName}</Text>
           </View>
         </Fade>
       )
@@ -295,8 +295,8 @@ class AddWorkoutScreen extends React.Component {
             height: 180,
             borderBottomWidth: 2,
             borderTopWidth: 2,
-            borderTopColor: COLORS.gray1,
-            borderBottomColor: COLORS.gray1,
+            borderTopColor: DYNAMIC.text1,
+            borderBottomColor: DYNAMIC.text1,
             marginBottom: 20,
             paddingTop: 20
           }}>

@@ -5,7 +5,7 @@ import {
   TextInput,
   View,
 } from 'react-native'
-import { COLORS } from './common'
+import { DYNAMIC } from './common'
 
 // DIFFERENT INPUT STATES
 // focused, blurred, valid, invalid, filled, empty
@@ -121,13 +121,13 @@ class Input extends React.Component {
     const labelPosition = Math.ceil(this.props.fontSize * 1.4)
     const animations = {
       greenLine: this.animations.greenLine.interpolate(
-        this.basicInterpolation([COLORS.celestialGreen0, COLORS.celestialGreen])
+        this.basicInterpolation([DYNAMIC.green0, DYNAMIC.green])
       ),
       blueLine: this.animations.blueLine.interpolate(
-        this.basicInterpolation([COLORS.gray1, COLORS.summerSky])
+        this.basicInterpolation([DYNAMIC.text1, DYNAMIC.link])
       ),
       redLine: this.animations.redLine.interpolate(
-        this.basicInterpolation([COLORS.fluorescentRed0, COLORS.fluorescentRed])
+        this.basicInterpolation([DYNAMIC.red0, DYNAMIC.red])
       ),
       labelPosition: this.animations.labelPosition.interpolate(
         this.basicInterpolation([this.props.fixedLabel ? labelPosition: 0, labelPosition])

@@ -99,27 +99,27 @@ class PromptScreen extends React.Component {
     const workoutButtons = this.props.workouts.map((workout) => {
       const deleteButton = (
         <View style={[common.row, {paddingTop: 16}]}>
-          <Feather name={"trash"} size={28} color={COLORS.white}/>
+          <Feather name={"trash"} size={28} color={DYNAMIC.foreground}/>
         </View>
       )
 
       const swipeoutBtns = [
         {
           component: deleteButton,
-          backgroundColor: COLORS.orange,
+          backgroundColor: DYNAMIC.link,
           onPress: this.removeWorkout.bind(this, workout.id)
         }
       ]
 
       return (
-        <Swipeout right={swipeoutBtns} backgroundColor={COLORS.white} key={workout.id}>
+        <Swipeout right={swipeoutBtns} backgroundColor={DYNAMIC.foreground} key={workout.id}>
           <View style={{
             height: 60,
-            borderTopColor: COLORS.gray1, borderTopWidth: 1,
+            borderTopColor: DYNAMIC.text1, borderTopWidth: 1,
             justifyContent: 'center'
           }}>
             <KButton
-              textColor={COLORS.peach}
+              textColor={DYNAMIC.link}
               value={workout.name}
               isEnabled={true}
               transparent={true}
@@ -130,9 +130,9 @@ class PromptScreen extends React.Component {
       )
     })
     return (
-      <View style={[{ borderBottomColor: COLORS.gray1, borderBottomWidth: 1, }]}>
+      <View style={[{ borderBottomColor: DYNAMIC.text1, borderBottomWidth: 1, }]}>
         <View style={[common.row, {marginTop: 20}]}>
-          <Text style={[common.tajawal5, {fontSize: 22, color: COLORS.gray10, textAlign: 'center'}]}>
+          <Text style={[common.tajawal5, {fontSize: 22, color: DYNAMIC.text10, textAlign: 'center'}]}>
             {`Choose a workout:`}
           </Text>
         </View>
@@ -146,7 +146,7 @@ class PromptScreen extends React.Component {
     return (
       <View style={{ justifyContent: 'center', top: (height/2 - 120) }}>
         <View style={common.row}>
-          <Text style={[{ fontFamily: 'rubik-medium', fontSize: 24, textAlign: 'center', color: COLORS.gray9 }]}>
+          <Text style={[{ fontFamily: 'rubik-medium', fontSize: 24, textAlign: 'center', color: DYNAMIC.text9 }]}>
             {'You have no workouts to record. Try adding one!'}
           </Text>
         </View>
@@ -158,7 +158,7 @@ class PromptScreen extends React.Component {
     const isEmpty = this.props.workouts.length === 0
 
     return (
-      <View style={common.staticView, {paddingLeft: 10, paddingRight: 10, backgroundColor: COLORS.white, height: height}}>
+      <View style={common.staticView, {paddingLeft: 10, paddingRight: 10, backgroundColor: DYNAMIC.foreground, height: height}}>
         { isEmpty ? this.renderEmptyMessage() : this.renderWorkoutButtons() }
       </View>
     )

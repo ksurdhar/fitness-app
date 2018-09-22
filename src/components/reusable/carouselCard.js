@@ -10,7 +10,7 @@ import {
 
 import SideSwipe from 'react-native-sideswipe'
 
-import { common, COLORS } from './common'
+import { common, DYNAMIC } from './common'
 class CarouselCard extends React.Component {
   constructor() {
     super()
@@ -54,10 +54,10 @@ class CarouselCard extends React.Component {
       <TouchableWithoutFeedback onPress={this.toggleIdx}>
         <View style={styleCard(width)}>
           <View>
-            <View style={{ borderBottomColor: COLORS.gray1, borderBottomWidth: 1, marginBottom: 10, top: 64, zIndex: 2}} />
+            <View style={{ borderBottomColor: DYNAMIC.text1, borderBottomWidth: 1, marginBottom: 10, top: 64, zIndex: 2}} />
             <View style={{ paddingLeft: 16, paddingRight: 16 }}>
-              <Text style={[common.tajawal3, {fontSize: 18, color: COLORS.gray8}]}>{this.props.subHeader}</Text>
-              <Text style={[common.tajawal5, {fontSize: 26, color: COLORS.gray10, paddingBottom: 10}]}>{this.props.header}</Text>
+              <Text style={[common.tajawal3, {fontSize: 18, color: DYNAMIC.text8}]}>{this.props.subHeader}</Text>
+              <Text style={[common.tajawal5, {fontSize: 26, color: DYNAMIC.text10, paddingBottom: 10}]}>{this.props.header}</Text>
               <SideSwipe
                 index={this.state.carouselIdx}
                 itemWidth={width}
@@ -85,10 +85,10 @@ function styleCard(width) {
   return {
     width: width - 30,
     minHeight: 180,
-    backgroundColor: COLORS.white,
+    backgroundColor: DYNAMIC.foreground,
     marginBottom: 16,
     marginLeft: 6,
-    shadowColor: COLORS.gray10,
+    shadowColor: DYNAMIC.text10,
     shadowOpacity: 0.3,
     shadowOffset: { width: 1, height: 1 },
     shadowRadius: 2,

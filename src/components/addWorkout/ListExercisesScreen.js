@@ -17,7 +17,7 @@ import { MaterialIcons } from '@expo/vector-icons'
 
 import Input from '../reusable/input'
 import PressCapture from '../reusable/pressCapture'
-import { common, COLORS } from '../reusable/common'
+import { common, DYNAMIC } from '../reusable/common'
 
 class ListExercisesScreen extends React.Component {
   static navigationOptions = ({navigation}) => {
@@ -81,8 +81,8 @@ class ListExercisesScreen extends React.Component {
     return this.state.exerciseNames.map((e) => {
       return (
         <View style={[common.col, {marginLeft: 3, marginRight: 3}]}>
-          <View style={[{backgroundColor: COLORS.gray6, borderRadius: 16, height: 32}]}>
-            <Text style={[common.tajawal3, {fontSize: 22, color: COLORS.white, marginRight: 14, marginLeft:14, marginTop: 7}]}>{e}</Text>
+          <View style={[{backgroundColor: DYNAMIC.text6, borderRadius: 16, height: 32}]}>
+            <Text style={[common.tajawal3, {fontSize: 22, color: DYNAMIC.foreground, marginRight: 14, marginLeft:14, marginTop: 7}]}>{e}</Text>
           </View>
         </View>
       )
@@ -96,7 +96,7 @@ class ListExercisesScreen extends React.Component {
       <Text style={{
         fontFamily: 'rubik-medium',
         fontSize:20,
-        color: COLORS.gray7
+        color: DYNAMIC.text7
       }}>
         Exercise Name
       </Text>
@@ -105,12 +105,12 @@ class ListExercisesScreen extends React.Component {
       <View style={[common.staticView]}>
         <KeyboardAwareScrollView style={{flex:1, justifyContent: 'start'}}>
           <View style={[common.row, {marginTop: 10}]}>
-            <Text style={[common.tajawal5, {fontSize: 22, color: COLORS.gray10, textAlign: 'center'}]}>
+            <Text style={[common.tajawal5, {fontSize: 22, color: DYNAMIC.text10, textAlign: 'center'}]}>
               {`Type the names of exercises \n in your workout.`}
             </Text>
           </View>
           <View style={common.row}>
-            <Text style={[common.tajawal3, {fontSize: 18, color: COLORS.gray8}]}>Hit next when you’ve added them all.</Text>
+            <Text style={[common.tajawal3, {fontSize: 18, color: DYNAMIC.text8}]}>Hit next when you’ve added them all.</Text>
           </View>
           <View style={[common.row, {height: 100}]}>
             <ScrollView horizontal={true} centerContent={true} ref={(element) => { this.pillContainer = element }}>
@@ -131,7 +131,7 @@ class ListExercisesScreen extends React.Component {
             <TouchableOpacity onPress={this.addExercise}>
               <MaterialIcons
                 name={"add-circle"}
-                size={32} color={COLORS.peach}
+                size={32} color={DYNAMIC.link}
                 style={{top: -62, left: width/2 - 26, backgroundColor: 'transparent'}}
               />
             </TouchableOpacity>

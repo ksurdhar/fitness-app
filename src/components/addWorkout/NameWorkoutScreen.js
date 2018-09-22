@@ -17,7 +17,7 @@ import { MaterialIcons } from '@expo/vector-icons'
 
 import Input from '../reusable/input'
 import PressCapture from '../reusable/pressCapture'
-import { common, COLORS } from '../reusable/common'
+import { common, DYNAMIC } from '../reusable/common'
 import * as workoutActions from '../../redux/actions/workoutActions'
 
 class NameWorkout extends React.Component {
@@ -64,7 +64,7 @@ class NameWorkout extends React.Component {
       <Text style={{
         fontFamily: 'rubik-medium',
         fontSize:20,
-        color: COLORS.gray7
+        color: DYNAMIC.text7
       }}>
         Workout Name
       </Text>
@@ -73,7 +73,7 @@ class NameWorkout extends React.Component {
       <View style={[common.staticView]}>
         <KeyboardAwareScrollView style={{flex:1, justifyContent: 'start'}}>
           <View style={[common.row, {marginTop: 10}]}>
-            <Text style={[common.tajawal5, {fontSize: 22, color: COLORS.gray10, textAlign: 'center'}]}>
+            <Text style={[common.tajawal5, {fontSize: 22, color: DYNAMIC.text10, textAlign: 'center'}]}>
               {`Finally, give your workout \n a good name.`}
             </Text>
           </View>
@@ -91,7 +91,7 @@ class NameWorkout extends React.Component {
             <TouchableOpacity onPress={this.addWorkout}>
               <MaterialIcons
                 name={"add-circle"}
-                size={32} color={COLORS.peach}
+                size={32} color={DYNAMIC.link}
                 style={{top: -62, left: width/2 - 26, backgroundColor: 'transparent'}}
               />
             </TouchableOpacity>

@@ -6,7 +6,7 @@ import {
   TouchableOpacity
 } from 'react-native'
 
-import { common, COLORS } from './common'
+import { common, DYNAMIC } from './common'
 class Button extends React.Component {
   animations = {
     border: new Animated.Value(0),
@@ -55,9 +55,9 @@ class Button extends React.Component {
   }
 
   render() {
-    const defaultBackgroundColors = [COLORS.gray0, COLORS.peach]
-    const defaultBorderColors = [COLORS.gray1, COLORS.peach]
-    const defaultTextColors = [COLORS.gray1, COLORS.gray10]
+    const defaultBackgroundColors = [DYNAMIC.text0, DYNAMIC.link]
+    const defaultBorderColors = [DYNAMIC.text1, DYNAMIC.link]
+    const defaultTextColors = [DYNAMIC.text1, DYNAMIC.text10]
     const animations = {
       background: this.animations.background.interpolate(
         this.basicInterpolation(defaultBackgroundColors)

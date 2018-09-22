@@ -11,7 +11,7 @@ import { format } from 'date-fns'
 import { Entypo, Feather, FontAwesome } from '@expo/vector-icons'
 
 import BasicCard from './reusable/basicCard'
-import { common, COLORS } from './reusable/common'
+import { common, DYNAMIC } from './reusable/common'
 import * as workoutActions from '../redux/actions/workoutActions'
 import * as sessionActions from '../redux/actions/sessionActions'
 
@@ -55,7 +55,7 @@ class WorkoutsScreen extends React.Component {
     const isEmpty = this.props.sessions.length === 0
 
     return (
-      <View style={common.staticView, { paddingLeft: 10, paddingRight: 10, backgroundColor: COLORS.gray1, height: height }}>
+      <View style={common.staticView, { paddingLeft: 10, paddingRight: 10, backgroundColor: DYNAMIC.background1, height: height }}>
         <ScrollView style={{paddingTop: 10, marginBottom: 110}}>
           { isEmpty? this.renderEmptyMessage() : this.renderSessionCards() }
         </ScrollView>
@@ -70,10 +70,10 @@ class WorkoutsScreen extends React.Component {
 
       const cardHeader = (
         <View style={{flexDirection: 'column'}}>
-          <Text style={[common.tajawal3, {fontSize: 18, color: COLORS.gray8}]}>
+          <Text style={[common.tajawal3, {fontSize: 18, color: DYNAMIC.text8}]}>
             { dateString }
           </Text>
-          <Text style={[common.tajawal5, {fontSize: 26, color: COLORS.gray10}]}>
+          <Text style={[common.tajawal5, {fontSize: 26, color: DYNAMIC.text10}]}>
             {session.workoutName}
           </Text>
         </View>
@@ -99,9 +99,9 @@ class WorkoutsScreen extends React.Component {
   renderNotes(text) {
     if (text.length > 0 ) {
       return (
-        <Text style={[common.tajawal5, {fontSize: 20, color: COLORS.gray9, paddingBottom: 10}]}>
+        <Text style={[common.tajawal5, {fontSize: 20, color: DYNAMIC.text9, paddingBottom: 10}]}>
           { `Notes: \n` }
-          <Text style={[common.tajawal3, {fontSize: 18, color: COLORS.gray8}]}>
+          <Text style={[common.tajawal3, {fontSize: 18, color: DYNAMIC.text8}]}>
             { text }
           </Text>
         </Text>
@@ -127,9 +127,9 @@ class WorkoutsScreen extends React.Component {
         })
         const attrString = strings.join(' / ')
         return (
-          <Text style={[common.tajawal5, {fontSize: 20, color: COLORS.gray9, paddingBottom: 10}]}>
+          <Text style={[common.tajawal5, {fontSize: 20, color: DYNAMIC.text9, paddingBottom: 10}]}>
             {exercise.name}
-            <Text style={[common.tajawal3, {fontSize: 18, color: COLORS.gray8}]}>
+            <Text style={[common.tajawal3, {fontSize: 18, color: DYNAMIC.text8}]}>
               {`\n${attrString}`}
             </Text>
           </Text>
@@ -145,7 +145,7 @@ class WorkoutsScreen extends React.Component {
     return (
       <View style={{ justifyContent: 'center', top: (height/2 - 130) }}>
         <View style={common.row}>
-          <Text style={[{ fontFamily: 'rubik-medium', fontSize: 24, textAlign: 'center', color: COLORS.gray9 }]}>
+          <Text style={[{ fontFamily: 'rubik-medium', fontSize: 24, textAlign: 'center', color: DYNAMIC.text9 }]}>
             {'You have not recorded a workout. Try recording one!'}
           </Text>
         </View>

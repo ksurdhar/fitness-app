@@ -34,16 +34,6 @@ class Index extends Component {
     // } else {
     //   return null
     // }
-    //
-    // if (this.state.fontLoaded) {
-    //   return (
-    //     <Provider store={store}>
-    //       <Navigator />
-    //     </Provider>
-    //   )
-    // } else {
-    //   return null
-    // }
 
     if (this.state.fontLoaded && this.props.isLoggedIn) {
       return (

@@ -1,7 +1,7 @@
 import React from 'react'
 import { Animated } from 'react-native'
 
-import { common, COLORS } from './common'
+import { common, DYNAMIC } from './common'
 class AnimatedText extends React.Component {
   animations = {
     text: new Animated.Value(0),
@@ -26,7 +26,7 @@ class AnimatedText extends React.Component {
   }
 
   render() {
-    const textColors = this.props.textColors ? this.props.textColors : [COLORS.gray1, COLORS.gray10]
+    const textColors = this.props.textColors ? this.props.textColors : [DYNAMIC.text1, DYNAMIC.text10]
     const animations = {
       text: this.animations.text.interpolate(
         this.basicInterpolation(textColors)

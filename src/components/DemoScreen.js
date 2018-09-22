@@ -22,7 +22,7 @@ import KButton from './reusable/button'
 import Input from './reusable/input'
 import Switch from './reusable/switch'
 import PressCapture from './reusable/pressCapture'
-import { common, COLORS } from './reusable/common'
+import { common, DYNAMIC } from './reusable/common'
 import Toast from './reusable/toast'
 
 // SHAPE OF EXERCISE DATA
@@ -104,7 +104,7 @@ class DemoScreen extends React.Component {
         <Text style={{
           fontFamily: 'rubik-medium',
           fontSize:20,
-          color: COLORS.gray7
+          color: DYNAMIC.text7
         }}>
           {attr.type}
         </Text>
@@ -140,8 +140,8 @@ class DemoScreen extends React.Component {
       return this.state.exerciseNames.map((val, exIdx) => {
         const completeEl = (
           <AnimatedIcon
-            icon1={<FontAwesome name={'check'} color={COLORS.gray1} size={30}/>}
-            icon2={<FontAwesome name={'check'} color={COLORS.celestialGreen7} size={30}/>}
+            icon1={<FontAwesome name={'check'} color={DYNAMIC.text1} size={30}/>}
+            icon2={<FontAwesome name={'check'} color={DYNAMIC.green7} size={30}/>}
             isEnabled={this.cardComplete(exIdx)}
             size={30}
             style={{marginTop: -6}}
@@ -171,13 +171,13 @@ class DemoScreen extends React.Component {
       <PressCapture onPress={this.handleCapture}>
         <View style={{flex: 1}}>
           <Toast ref={(element) => { this.toast = element } }/>
-          <View style={[common.staticView, { paddingLeft: 10, paddingRight: 10, backgroundColor: COLORS.white, height: height }]}>
+          <View style={[common.staticView, { paddingLeft: 10, paddingRight: 10, backgroundColor: DYNAMIC.foreground, height: height }]}>
             <KeyboardAwareScrollView style={{paddingTop: 10}}>
               { this.renderExercises() }
               <View style={[common.row]}>
                 <TouchableOpacity onPress={() => this.addSession() }>
-                  <View style={{padding: 14, backgroundColor: COLORS.peach}}>
-                    <Text style={{fontSize: 24, fontFamily: 'rubik-medium', textAlign: 'center', color: COLORS.white}}>
+                  <View style={{padding: 14, backgroundColor: DYNAMIC.link}}>
+                    <Text style={{fontSize: 24, fontFamily: 'rubik-medium', textAlign: 'center', color: DYNAMIC.foreground}}>
                       Record Session
                     </Text>
                   </View>

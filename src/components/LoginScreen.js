@@ -19,7 +19,7 @@ import { Permissions, Notifications } from 'expo'
 import KButton from './reusable/button'
 import Input from './reusable/input'
 import PressCapture from './reusable/pressCapture'
-import { common, COLORS } from './reusable/common'
+import { common, DYNAMIC } from './reusable/common'
 
 import firebase from 'firebase'
 import { login, loginFailed } from '../redux/actions/authActions.js'
@@ -150,7 +150,7 @@ class LoginScreen extends Component {
       <Text style={{
         fontFamily: 'rubik-medium',
         fontSize:20,
-        color: COLORS.gray7
+        color: DYNAMIC.text7
       }}>
         Email
       </Text>
@@ -159,7 +159,7 @@ class LoginScreen extends Component {
       <Text style={{
         fontFamily: 'rubik-medium',
         fontSize:20,
-        color: COLORS.gray7
+        color: DYNAMIC.text7
       }}>
         Password
       </Text>
@@ -171,7 +171,7 @@ class LoginScreen extends Component {
           <KeyboardAwareScrollView
             style={{flex:1, justifyContent: 'start'}}
           >
-            <Text style={[common.headerFont, { marginTop: 70, marginBottom: 50, textAlign:'center', color: COLORS.gray5 }]}>
+            <Text style={[common.headerFont, { marginTop: 70, marginBottom: 50, textAlign:'center', color: DYNAMIC.text5 }]}>
               MIGHTY
             </Text>
             <Input

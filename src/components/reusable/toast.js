@@ -8,7 +8,7 @@ import {
   Dimensions
 } from 'react-native'
 
-import { common, COLORS } from './common'
+import { common, DYNAMIC } from './common'
 class Toast extends React.Component {
   animations = {
     opacity: new Animated.Value(0),
@@ -91,9 +91,9 @@ class Toast extends React.Component {
           paddingTop: 25,
           paddingBottom: 25,
           width: width,
-          backgroundColor: COLORS.peach
+          backgroundColor: DYNAMIC.link
         }, common.row, animatedStyles(animations)]}>
-          <Text style={{fontSize: 18, fontFamily: 'rubik-medium', color: COLORS.white}}>
+          <Text style={{fontSize: 18, fontFamily: 'rubik-medium', color: DYNAMIC.foreground}}>
             { this.state.message }
           </Text>
         </Animated.View>
