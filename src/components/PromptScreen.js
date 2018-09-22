@@ -14,6 +14,7 @@ import {
 } from 'react-native'
 import Swipeout from 'react-native-swipeout'
 import { Feather } from '@expo/vector-icons'
+import { distanceInWords } from 'date-fns'
 
 import { common, DYNAMIC } from './reusable/common'
 import BasicButton from './reusable/basicButton'
@@ -95,24 +96,22 @@ class PromptScreen extends React.Component {
     })
   }
 
-  // renderLastWorkoutDate = (workout) => {
-  //   // take the workout id, filter through sessions that match the ID and capture the date of the last recorded workouts
-  //   let mostRecentWorkout = 0
-  //   this.props.sessions.forEach((session) => {
-  //     if (session.workoutID === workout.id) {
-  //       if (session.date > mostRecentWorkout) {
-  //         mostRecentWorkout = session.date
-  //       }
-  //     }
-  //   })
-  //   console.log('mostRecentWorkout', mostRecentWorkout)
-  //   if (mostRecentWorkout > 0) {
-  //     console.log('gonna work')
-  //     return <Text>` - ${mostRecentWorkout}`</Text>
-  //   } else {
-  //     return null
-  //   }
-  // }
+  renderLastWorkoutDate = (workout) => {
+    let mostRecentWorkout = 0
+    this.props.sessions.forEach((session) => {
+      if (session.workoutID === workout.id) {
+        if (session.date > mostRecentWorkout) {
+          mostRecentWorkout = session.date
+        }
+      }
+    })
+    if (mostRecentWorkout > 0) {
+      mostRecentWorkout = distanceInWords(new Date(mostRecentWorkout), new Date())
+      return <Text>{` - ${mostRecentWorkout} ago`}</Text>
+    } else {
+      return null
+    }
+  }
 
   // needs a limit how how many can be rendered
   renderWorkoutButtons = () => {
@@ -139,8 +138,9 @@ class PromptScreen extends React.Component {
             justifyContent: 'center'
           }}>
             <BasicButton onPress={this.recordSession.bind(this, workout.name)}>
-              <Text style={[ common.tajawal5, common.mdFont]}>
+              <Text style={[ common.tajawal5, common.mdFont, {color: DYNAMIC.link}]}>
                 { workout.name }
+                { this.renderLastWorkoutDate(workout) }
               </Text>
             </BasicButton>
           </View>
