@@ -25,7 +25,8 @@ class BasicButton extends React.Component {
 function styleButton() {
   return {
     padding: 10,
-    alignSelf: 'flex-start' // critical to create view width of contents
+    flexDirection: 'row',
+    justifyContent: 'center'
   }
 }
 

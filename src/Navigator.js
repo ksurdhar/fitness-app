@@ -78,7 +78,7 @@ const Navigator = createBottomTabNavigator( // https://reactnavigation.org/docs/
     tabBarOptions: {
       activeTintColor: "#e91e63"
     },
-    initialRouteName: 'Workouts'
+    initialRouteName: 'Record'
   }
 )
 

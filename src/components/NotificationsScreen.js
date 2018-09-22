@@ -22,7 +22,7 @@ import Swipeout from 'react-native-swipeout'
 import { Entypo, Ionicons } from '@expo/vector-icons'
 import { format } from 'date-fns'
 
-import { common } from './reusable/common'
+import { common, DYNAMIC } from './reusable/common'
 import AnimatedIcon from './reusable/animatedIcon'
 import KButton from './reusable/button'
 import KSwitch from './reusable/switch'
@@ -317,7 +317,7 @@ class NotificationsScreen extends React.Component {
           <View style={[common.row, { marginTop: 18,justifyContent: 'space-between' }]}>
             <Text style={[common.tajawal5, {fontSize: 22, color: DYNAMIC.text10, textAlign: 'center'}]}>
               { workout.name }
-              <Text style={[common.tajawal5, {fontSize: 18, color: `${workout.notificationsEnabled ? DYNAMIC.text5: DYNAMIC.text5}` , textAlign: 'center',}]}>
+              <Text style={[common.tajawal5, {fontSize: 18, color: DYNAMIC.text5, textAlign: 'center',}]}>
                 { `    ${workout.notificationsEnabled ? 'Enabled' : 'Disabled'}` }
               </Text>
             </Text>

@@ -107,7 +107,7 @@ class PromptScreen extends React.Component {
     })
     if (mostRecentWorkout > 0) {
       mostRecentWorkout = distanceInWords(new Date(mostRecentWorkout), new Date())
-      return <Text>{` - ${mostRecentWorkout} ago`}</Text>
+      return <Text style={{fontSize: 18, color: DYNAMIC.text5}}>{`   ${mostRecentWorkout} ago`}</Text>
     } else {
       return null
     }
@@ -138,7 +138,7 @@ class PromptScreen extends React.Component {
             justifyContent: 'center'
           }}>
             <BasicButton onPress={this.recordSession.bind(this, workout.name)}>
-              <Text style={[ common.tajawal5, common.mdFont, {color: DYNAMIC.link}]}>
+              <Text style={[ common.tajawal5, common.mdFont, {color: DYNAMIC.link, marginTop: 10}]}>
                 { workout.name }
                 { this.renderLastWorkoutDate(workout) }
               </Text>
