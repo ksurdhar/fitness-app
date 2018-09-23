@@ -144,18 +144,6 @@ class ListExercisesScreen extends React.Component {
     this.setState({ exerciseNames: newExerciseNames })
   }
 
-  renderExercises = () => {
-    return this.state.exerciseNames.map((e) => {
-      return (
-        <View style={[common.col, {marginLeft: 3, marginRight: 3}]}>
-          <View style={[{backgroundColor: DYNAMIC.text6, borderRadius: 16, height: 32}]}>
-            <Text style={[common.tajawal3, {fontSize: 22, color: DYNAMIC.foreground, marginRight: 14, marginLeft:14, marginTop: 7}]}>{e}</Text>
-          </View>
-        </View>
-      )
-    })
-  }
-
   render() {
     const { width, height } = Dimensions.get('window')
     const labelEl = (
@@ -167,12 +155,6 @@ class ListExercisesScreen extends React.Component {
         Exercise
       </Text>
     )
-
-    // <View style={[common.row, {height: 100}]}>
-    //   <ScrollView horizontal={true} centerContent={true} ref={(element) => { this.pillContainer = element }}>
-    //   { this.renderExercises() }
-    //   </ScrollView>
-    // </View>
 
     const renderHeader = () => {
       const isCatalogOpen = this.state.isCatalogOpen
@@ -197,10 +179,18 @@ class ListExercisesScreen extends React.Component {
       )
     }
 
+    const renderExerciseCount = () => {
+      return (
+        <View style={[common.row,  {marginTop: 20}]}>
+          <Text style={{fontSize: 18, fontFamily: 'rubik-medium', color: DYNAMIC.text}}>{`${this.state.exerciseNames.length} exercises added`}</Text>
+        </View>
+      )
+    }
+
     const maybeRenderAutoComplete = () => {
       if (!this.state.isCatalogOpen) {
         return (
-          <View style={{ marginTop: 80 }}>
+          <View style={{ marginTop: 40 }}>
           <Autocomplete
           inputContainerStyle={styleInput()}
           listStyle={{ backgroundColor: 'transparent', borderWidth: 0 }}
@@ -290,7 +280,7 @@ class ListExercisesScreen extends React.Component {
         })
 
         return (
-          <View style={{ marginTop: 60 }}>
+          <View style={{ marginTop: 24 }}>
             { buttons }
           </View>
         )
@@ -304,6 +294,7 @@ class ListExercisesScreen extends React.Component {
         <KeyboardAwareScrollView style={{flex:1, justifyContent: 'start'}}>
           <View>
             { renderHeader() }
+            { renderExerciseCount() }
             { maybeRenderAutoComplete() }
             { maybeRenderCatalog() }
           </View>
