@@ -14,6 +14,7 @@ import {
 import { StackActions, NavigationActions } from 'react-navigation'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import { MaterialIcons } from '@expo/vector-icons'
+import Autocomplete from 'react-native-autocomplete-input'
 
 import Input from '../reusable/input'
 import PressCapture from '../reusable/pressCapture'
@@ -37,8 +38,10 @@ class ListExercisesScreen extends React.Component {
   constructor() {
     super()
     this.state = {
-      currentName: '',
-      exerciseNames: ['pushups', 'pullups']
+      textField: '',
+      exerciseNames: ['pushups', 'pullups'],
+      workoutList: ['A', 'Ab', 'Abc', 'Abcd'],
+      results: []
     }
   }
 
@@ -52,6 +55,17 @@ class ListExercisesScreen extends React.Component {
     this.props.navigation.setParams({ toListAttributes: this.toListAttributes })
   }
 
+  componentDidUpdate(prevProps, prevState) {
+    if (prevState.textField !== this.state.textField) {
+      const results = this.state.workoutList.filter((workout) => {
+        return workout.includes(this.state.textField)
+      })
+      this.setState({
+        results
+      })
+    }
+  }
+
   toListAttributes = () => {
     this.props.navigation.navigate('ListAttributes', {
       exerciseNames: this.state.exerciseNames
@@ -59,7 +73,7 @@ class ListExercisesScreen extends React.Component {
   }
 
   changeExerciseNameHandler = (value) => {
-    this.setState({currentName: value})
+    this.setState({textField: value})
   }
 
   handleCapture = () => {
@@ -68,8 +82,8 @@ class ListExercisesScreen extends React.Component {
 
   addExercise = () => {
     this.setState({
-      exerciseNames: this.state.exerciseNames.concat([this.state.currentName]),
-      currentName: ''
+      exerciseNames: this.state.exerciseNames.concat([this.state.textField]),
+      textField: ''
     })
 
     setTimeout(() => {
@@ -89,7 +103,6 @@ class ListExercisesScreen extends React.Component {
     })
   }
 
-
   render() {
     const { width, height } = Dimensions.get('window')
     const labelEl = (
@@ -101,9 +114,27 @@ class ListExercisesScreen extends React.Component {
         Exercise Name
       </Text>
     )
-    return (
-      <View style={[common.staticView]}>
-        <KeyboardAwareScrollView style={{flex:1, justifyContent: 'start'}}>
+
+    // <View style={[common.row, {height: 100}]}>
+    //   <ScrollView horizontal={true} centerContent={true} ref={(element) => { this.pillContainer = element }}>
+    //   { this.renderExercises() }
+    //   </ScrollView>
+    // </View>
+
+    // <Input
+    //   value={this.state.textField}
+    //   label={labelEl}
+    //   onChangeText={this.changeExerciseNameHandler}
+    //   ref={(element) => { this.input = element }}
+    //   style={{width: width-20}}
+    //   fixedLabel={true}
+    //   fontSize={24}
+    //   animate={false}
+    // />
+    //
+    const renderHeader = () => {
+      return (
+        <View>
           <View style={[common.row, {marginTop: 10}]}>
             <Text style={[common.tajawal5, {fontSize: 22, color: DYNAMIC.text10, textAlign: 'center'}]}>
               {`Type the names of exercises \n in your workout.`}
@@ -112,29 +143,24 @@ class ListExercisesScreen extends React.Component {
           <View style={common.row}>
             <Text style={[common.tajawal3, {fontSize: 18, color: DYNAMIC.text8}]}>Hit next when you’ve added them all.</Text>
           </View>
-          <View style={[common.row, {height: 100}]}>
-            <ScrollView horizontal={true} centerContent={true} ref={(element) => { this.pillContainer = element }}>
-            { this.renderExercises() }
-            </ScrollView>
-          </View>
-          <Input
-            value={this.state.currentName}
-            label={labelEl}
-            onChangeText={this.changeExerciseNameHandler}
-            ref={(element) => { this.input = element }}
-            style={{width: width-20}}
-            fixedLabel={true}
-            fontSize={24}
-            animate={false}
-          />
-          <View style={[common.row]}>
-            <TouchableOpacity onPress={this.addExercise}>
-              <MaterialIcons
-                name={"add-circle"}
-                size={32} color={DYNAMIC.link}
-                style={{top: -62, left: width/2 - 26, backgroundColor: 'transparent'}}
-              />
-            </TouchableOpacity>
+        </View>
+      )
+    }
+
+    return (
+      <View style={[common.staticView]}>
+        <KeyboardAwareScrollView style={{flex:1, justifyContent: 'start'}}>
+          <View>
+            { renderHeader() }
+            <Autocomplete
+              data={this.state.results}
+              onChangeText={text => this.setState({ textField: text }) }
+              renderItem={item => (
+                <TouchableOpacity onPress={() => { console.log('item', item)}}>
+                  <Text>{item}</Text>
+                </TouchableOpacity>
+              )}
+            />
           </View>
         </KeyboardAwareScrollView>
       </View>
