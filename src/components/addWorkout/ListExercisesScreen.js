@@ -38,6 +38,7 @@ class ListExercisesScreen extends React.Component {
   constructor() {
     super()
     this.state = {
+      categories: ['Core', 'Legs', 'Arms', 'Chest', 'Back', 'Shoulders'],
       isCatalogOpen: false,
       activeCategory: 'Core',
       textField: '',
@@ -219,11 +220,25 @@ class ListExercisesScreen extends React.Component {
 
     const maybeRenderCatalog = () => {
       if (this.state.isCatalogOpen) {
+        const buttons = this.state.categories.map((category) => {
+          return (
+            <TouchableOpacity onPress={() => this.setState({ activeCategory: category }) }>
+              <Text style={{
+                fontSize: 30,
+                fontFamily: 'rubik-medium',
+                color: this.state.activeCategory === category ? DYNAMIC.link : DYNAMIC.text5,
+                marginLeft: 5,
+                marginRight: 5
+              }}>
+                { category }
+              </Text>
+            </TouchableOpacity>
+          )
+        })
+        // flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-between'}
         return (
           <View style={{ marginTop: 60 }}>
-            <Text style={{fontSize: 20, fontFamily: 'rubik-medium', textAlign: 'center', color: DYNAMIC.text7}}>
-              Core   Arms   Legs   Chest   Back   Shoulders
-            </Text>
+            { buttons }
           </View>
         )
       } else {
