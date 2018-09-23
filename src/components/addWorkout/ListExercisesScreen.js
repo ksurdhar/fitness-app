@@ -38,9 +38,9 @@ class ListExercisesScreen extends React.Component {
   constructor() {
     super()
     this.state = {
-      categories: ['Core', 'Legs', 'Arms', 'Chest', 'Back', 'Shoulders'],
-      isCatalogOpen: false,
-      activeCategory: 'Core',
+      categories: ['Arms', 'Legs', 'Core', 'Chest', 'Back', 'Shoulders'],
+      isCatalogOpen: true,
+      activeCategory: 'Arms',
       textField: '',
       exerciseNames: ['pushups', 'pullups'],
       results: [],
@@ -86,7 +86,7 @@ class ListExercisesScreen extends React.Component {
 
   componentDidMount() {
     this.props.navigation.setParams({ toListAttributes: this.toListAttributes })
-    this.input.focus()
+    this.input && this.input.focus()
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -218,19 +218,19 @@ class ListExercisesScreen extends React.Component {
       }
     }
 
-    const maybeRenderCategoryExes = (category) => {
+    const maybeRenderCategoryExercises = (category) => {
       if (this.state.activeCategory === category) {
         const exerciseEls = this.state.database.map((exercise) => {
           if (exercise.categories.includes(this.state.activeCategory)) {
             return (
-              <Text>
+              <Text style={{ fontSize: 24, fontFamily: 'rubik-medium', marginBottom: 6, color: DYNAMIC.text8 }}>
                 { exercise.name }
               </Text>
             )
           }
         })
         return (
-          <View>
+          <View style={{ marginLeft: 16 }}>
             { exerciseEls }
           </View>
         )
@@ -243,18 +243,18 @@ class ListExercisesScreen extends React.Component {
       if (this.state.isCatalogOpen) {
         const buttons = this.state.categories.map((category) => {
           return (
-            <TouchableOpacity onPress={() => this.setState({ activeCategory: category }) }>
-              <Text style={{
-                fontSize: 30,
-                fontFamily: 'rubik-medium',
-                color: this.state.activeCategory === category ? DYNAMIC.link : DYNAMIC.text5,
-                marginLeft: 5,
-                marginRight: 5
-              }}>
-                { category }
-                { maybeRenderCategoryExes(category) }
-              </Text>
-            </TouchableOpacity>
+            <View style={{marginLeft: 5}}>
+              <TouchableOpacity onPress={() => this.setState({ activeCategory: this.state.activeCategory === category ? '' : category }) }>
+                <Text style={{
+                  fontSize: 30,
+                  fontFamily: 'rubik-medium',
+                  color: this.state.activeCategory === category ? DYNAMIC.link : DYNAMIC.text5,
+                }}>
+                  { category }
+                </Text>
+              </TouchableOpacity>
+              { maybeRenderCategoryExercises(category) }
+            </View>
           )
         })
 
