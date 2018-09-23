@@ -45,12 +45,12 @@ class Input extends React.Component {
     }).start()
 
     let valid, invalid, focused = false
-    if (this.props.isValid) {
+    if (this.props.isValid && !this.props.noValidation) {
       // valid
       valid = true
       invalid = false
       focused = false
-    } else if (!this.props.isValid && this.state.interactedWith) {
+    } else if (!this.props.isValid && this.state.interactedWith && !this.props.noValidation) {
       // invalid
       valid = false
       invalid = true

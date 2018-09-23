@@ -33,7 +33,11 @@ const RecordStack = createStackNavigator({
   ListExercises: ListExercisesScreen,
   ListAttributes: ListAttributesScreen,
   NameWorkout: NameWorkoutScreen
-})
+},
+{
+  initialRouteName: 'ListExercises'
+}
+)
 
 const ProfileStack = createStackNavigator({
   Profile: {

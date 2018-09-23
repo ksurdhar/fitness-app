@@ -65,6 +65,7 @@ class ListExercisesScreen extends React.Component {
 
   componentDidMount() {
     this.props.navigation.setParams({ toListAttributes: this.toListAttributes })
+    this.input.focus()
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -139,28 +140,46 @@ class ListExercisesScreen extends React.Component {
     //   </ScrollView>
     // </View>
 
-    // <Input
-    //   value={this.state.textField}
-    //   label={labelEl}
-    //   onChangeText={this.changeExerciseNameHandler}
-    //   ref={(element) => { this.input = element }}
-    //   style={{width: width-20}}
-    //   fixedLabel={true}
-    //   fontSize={24}
-    //   animate={false}
-    // />
-    //
+
     const renderHeader = () => {
       return (
         <View>
           <View style={[common.row, {marginTop: 10}]}>
             <Text style={[common.tajawal5, {fontSize: 22, color: DYNAMIC.text10, textAlign: 'center'}]}>
-              {`Type the names of exercises \n in your workout.`}
+              {`Add exercises to your workout`}
             </Text>
           </View>
           <View style={common.row}>
-            <Text style={[common.tajawal3, {fontSize: 18, color: DYNAMIC.text8}]}>Hit next when you’ve added them all.</Text>
+            <Text style={[common.tajawal3, {fontSize: 16, color: DYNAMIC.text9}]}>{`Type in the input or select from the categories below`}</Text>
           </View>
+        </View>
+      )
+    }
+
+    const renderAutoComplete = () => {
+      return (
+        <View style={{ marginTop: 40 }}>
+          <Autocomplete
+            inputContainerStyle={styleInput()}
+            listStyle={{ backgroundColor: 'transparent', borderWidth: 0 }}
+            data={this.state.results}
+            renderItem={item => (
+              <TouchableOpacity onPress={() => { console.log('item', item)}}>
+                <Text style={{ fontSize: 24, fontFamily: 'rubik-medium'}}>{item}</Text>
+              </TouchableOpacity>
+            )}
+            renderTextInput={something => (
+              <Input
+                ref={(element) => { this.input = element }}
+                value={this.state.textField}
+                onChangeText={text => this.setState({ textField: text }) }
+                style={{ width: width-20 }}
+                fontSize={30}
+                animate={true}
+                noValidation={true}
+              />
+            )}
+          />
         </View>
       )
     }
@@ -170,19 +189,18 @@ class ListExercisesScreen extends React.Component {
         <KeyboardAwareScrollView style={{flex:1, justifyContent: 'start'}}>
           <View>
             { renderHeader() }
-            <Autocomplete
-              data={this.state.results}
-              onChangeText={text => this.setState({ textField: text }) }
-              renderItem={item => (
-                <TouchableOpacity onPress={() => { console.log('item', item)}}>
-                  <Text>{item}</Text>
-                </TouchableOpacity>
-              )}
-            />
+            { renderAutoComplete() }
           </View>
         </KeyboardAwareScrollView>
       </View>
     )
+  }
+}
+
+function styleInput() {
+  return {
+    backgroundColor: 'transparent',
+    borderWidth: 0,
   }
 }
 
