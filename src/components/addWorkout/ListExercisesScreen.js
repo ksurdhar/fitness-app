@@ -23,7 +23,7 @@ import { common, DYNAMIC } from '../reusable/common'
 class ListExercisesScreen extends React.Component {
   static navigationOptions = ({navigation}) => {
     return {
-      title: `Exercises`,
+      title: `Add Exercises`,
       headerRight: (
         <View style={{paddingRight: 10}}>
           <Button
@@ -38,6 +38,7 @@ class ListExercisesScreen extends React.Component {
   constructor() {
     super()
     this.state = {
+      isCatalogOpen: false,
       textField: '',
       exerciseNames: ['pushups', 'pullups'],
       results: [],
@@ -130,7 +131,7 @@ class ListExercisesScreen extends React.Component {
         fontSize:20,
         color: DYNAMIC.text7
       }}>
-        Exercise Name
+        Exercise
       </Text>
     )
 
@@ -140,48 +141,73 @@ class ListExercisesScreen extends React.Component {
     //   </ScrollView>
     // </View>
 
-
     const renderHeader = () => {
+      const isCatalogOpen = this.state.isCatalogOpen
       return (
         <View>
-          <View style={[common.row, {marginTop: 10}]}>
-            <Text style={[common.tajawal5, {fontSize: 22, color: DYNAMIC.text10, textAlign: 'center'}]}>
-              {`Add exercises to your workout`}
-            </Text>
-          </View>
-          <View style={common.row}>
-            <Text style={[common.tajawal3, {fontSize: 16, color: DYNAMIC.text9}]}>{`Type in the input or select from the categories below`}</Text>
+          <View style={[common.row, { marginTop: 10 }]}>
+              <TouchableOpacity onPress={() => this.setState({ isCatalogOpen: false}) }>
+                <Text style={[common.tajawal3, {fontSize: 20, textAlign: 'center', color: isCatalogOpen ? DYNAMIC.link : DYNAMIC.text, textDecorationLine: isCatalogOpen ? 'underline' : 'none' }]}>
+                  {`Use the input  `}
+                </Text>
+              </TouchableOpacity>
+              <Text style={[common.tajawal3, {fontSize: 20, color: DYNAMIC.text, textAlign: 'center'}]}>
+                or
+              </Text>
+              <TouchableOpacity onPress={() => this.setState({ isCatalogOpen: true }) }>
+                <Text style={[common.tajawal3, {fontSize: 20, textAlign: 'center', color: isCatalogOpen ? DYNAMIC.text : DYNAMIC.link, textDecorationLine: isCatalogOpen ? 'none' : 'underline'  }]}>
+                  {` select from a category.`}
+                </Text>
+              </TouchableOpacity>
           </View>
         </View>
       )
     }
 
-    const renderAutoComplete = () => {
-      return (
-        <View style={{ marginTop: 40 }}>
+    const maybeRenderAutoComplete = () => {
+      if (!this.state.isCatalogOpen) {
+        return (
+          <View style={{ marginTop: 80 }}>
           <Autocomplete
-            inputContainerStyle={styleInput()}
-            listStyle={{ backgroundColor: 'transparent', borderWidth: 0 }}
-            data={this.state.results}
-            renderItem={item => (
-              <TouchableOpacity onPress={() => { console.log('item', item)}}>
-                <Text style={{ fontSize: 24, fontFamily: 'rubik-medium'}}>{item}</Text>
-              </TouchableOpacity>
-            )}
-            renderTextInput={something => (
-              <Input
-                ref={(element) => { this.input = element }}
-                value={this.state.textField}
-                onChangeText={text => this.setState({ textField: text }) }
-                style={{ width: width-20 }}
-                fontSize={30}
-                animate={true}
-                noValidation={true}
-              />
-            )}
+          inputContainerStyle={styleInput()}
+          listStyle={{ backgroundColor: 'transparent', borderWidth: 0 }}
+          data={this.state.results}
+          renderItem={item => (
+            <TouchableOpacity onPress={() => { console.log('item', item)}}>
+            <Text style={{ fontSize: 24, fontFamily: 'rubik-medium'}}>{item}</Text>
+            </TouchableOpacity>
+          )}
+          renderTextInput={something => (
+            <Input
+            ref={(element) => { this.input = element }}
+            value={this.state.textField}
+            onChangeText={text => this.setState({ textField: text }) }
+            style={{ width: width-20 }}
+            fontSize={30}
+            label={labelEl}
+            fixedLabel={true}
+            animate={true}
+            noValidation={true}
+            />
+          )}
           />
-        </View>
-      )
+          </View>
+        )
+      } else {
+        return null
+      }
+    }
+
+    const maybeRenderCatalog = () => {
+      if (this.state.isCatalogOpen) {
+        return (
+          <Animated.View style={{ marginTop: 80 }}>
+          <Text style={{fontSize: 20, fontFamily: 'rubik-medium', textAlign: 'center', color: DYNAMIC.text7}}> Core  Arms  Legs  Chest  Back  Shoulders</Text>
+          </Animated.View>
+        )
+      } else {
+        return null
+      }
     }
 
     return (
@@ -189,7 +215,8 @@ class ListExercisesScreen extends React.Component {
         <KeyboardAwareScrollView style={{flex:1, justifyContent: 'start'}}>
           <View>
             { renderHeader() }
-            { renderAutoComplete() }
+            { maybeRenderAutoComplete() }
+            { maybeRenderCatalog() }
           </View>
         </KeyboardAwareScrollView>
       </View>
