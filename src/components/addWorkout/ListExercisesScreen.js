@@ -40,8 +40,20 @@ class ListExercisesScreen extends React.Component {
     this.state = {
       textField: '',
       exerciseNames: ['pushups', 'pullups'],
-      workoutList: ['A', 'Ab', 'Abc', 'Abcd'],
-      results: []
+      results: [],
+      database: [
+      'Bicep Curls',
+      'Dips',
+      'Push-Ups',
+      'Lunges',
+      'Squats', 'Kettlebell Swings', 'Leg Curls', 'Leg Press', 'Deadlifts', 'Step-ups', 'Crunches', 'Flutter Kicks', 'Leg Raises', 'Plank', 'Sit-ups', 'V-ups', 'Climbers', 'Bench Press', 'Burpees',
+      'Cable Crosses', 'Chin-ups', 'Lat Pull Downs', 'Pull-Ups', 'Rows', 'Deadlifts',
+      'Snaches',
+      'Shrugs',
+      'Shoulder Press',
+      'Power Cleans',
+      'Handstands'
+      ]
     }
   }
 
@@ -57,12 +69,18 @@ class ListExercisesScreen extends React.Component {
 
   componentDidUpdate(prevProps, prevState) {
     if (prevState.textField !== this.state.textField) {
-      const results = this.state.workoutList.filter((workout) => {
+      const results = this.state.database.filter((workout) => {
         return workout.includes(this.state.textField)
-      })
-      this.setState({
-        results
-      })
+      }).sort()
+
+      if (results.length === this.state.database.length) {
+        // remove the dropdown of suggestions
+        this.setState({ results: [] })
+      } else {
+        this.setState({
+          results
+        })
+      }
     }
   }
 
