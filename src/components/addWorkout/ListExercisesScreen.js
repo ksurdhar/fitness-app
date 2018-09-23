@@ -13,7 +13,7 @@ import {
 } from 'react-native'
 import { StackActions, NavigationActions } from 'react-navigation'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
-import { MaterialIcons } from '@expo/vector-icons'
+import { FontAwesome } from '@expo/vector-icons'
 import Autocomplete from 'react-native-autocomplete-input'
 
 import Input from '../reusable/input'
@@ -42,7 +42,7 @@ class ListExercisesScreen extends React.Component {
       isCatalogOpen: true,
       activeCategory: 'Arms',
       textField: '',
-      exerciseNames: ['pushups', 'pullups'],
+      exerciseNames: [],
       results: [],
       database: [
         {name: 'Bicep Curls', categories: ['Arms']},
@@ -231,6 +231,18 @@ class ListExercisesScreen extends React.Component {
       }
     }
 
+    const maybeRenderCheck = (exerciseName) => {
+      if (this.state.exerciseNames.includes(exerciseName)){
+        return (
+          <View style={{paddingLeft: 10, paddingTop: 2}}>
+          <FontAwesome name={'check'} color={DYNAMIC.green} size={24}/>
+          </View>
+        )
+      } else {
+        return null
+      }
+    }
+
     const maybeRenderCategoryExercises = (category) => {
       if (this.state.activeCategory === category) {
         const exerciseEls = this.state.database.map((exercise) => {
@@ -238,9 +250,12 @@ class ListExercisesScreen extends React.Component {
           if (exercise.categories.includes(this.state.activeCategory)) {
             return (
               <TouchableOpacity onPress={ this.toggleExerciseViaCatalog.bind(this, exercise.name) }>
-                <Text style={{ fontSize: 24, fontFamily: 'rubik-medium', marginBottom: 6, color: DYNAMIC.text8 }}>
-                  { exercise.name }
-                </Text>
+                <View style={{flexDirection: 'row', justifyContent: 'left'}}>
+                  <Text style={{ fontSize: 24, fontFamily: 'rubik-medium', marginBottom: 6, color: DYNAMIC.text8 }}>
+                    { exercise.name }
+                  </Text>
+                  { maybeRenderCheck(exercise.name) }
+                </View>
               </TouchableOpacity>
             )
           }
