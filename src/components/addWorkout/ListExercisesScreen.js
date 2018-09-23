@@ -104,6 +104,7 @@ class ListExercisesScreen extends React.Component {
         })
       }
     }
+    console.log(this.state.exerciseNames)
   }
 
   toListAttributes = () => {
@@ -129,6 +130,18 @@ class ListExercisesScreen extends React.Component {
     setTimeout(() => {
       this.pillContainer.scrollToEnd()
     }, 100)
+  }
+
+  toggleExerciseViaCatalog = (catalogExercise) => {
+    let newExerciseNames = this.state.exerciseNames
+    if (this.state.exerciseNames.includes(catalogExercise)) {
+      newExerciseNames = newExerciseNames.filter((exercise) => {
+        return exercise !== catalogExercise
+      })
+    } else {
+      newExerciseNames.push(catalogExercise)
+    }
+    this.setState({ exerciseNames: newExerciseNames })
   }
 
   renderExercises = () => {
@@ -221,11 +234,14 @@ class ListExercisesScreen extends React.Component {
     const maybeRenderCategoryExercises = (category) => {
       if (this.state.activeCategory === category) {
         const exerciseEls = this.state.database.map((exercise) => {
+          // display exercises which match category
           if (exercise.categories.includes(this.state.activeCategory)) {
             return (
-              <Text style={{ fontSize: 24, fontFamily: 'rubik-medium', marginBottom: 6, color: DYNAMIC.text8 }}>
-                { exercise.name }
-              </Text>
+              <TouchableOpacity onPress={ this.toggleExerciseViaCatalog.bind(this, exercise.name) }>
+                <Text style={{ fontSize: 24, fontFamily: 'rubik-medium', marginBottom: 6, color: DYNAMIC.text8 }}>
+                  { exercise.name }
+                </Text>
+              </TouchableOpacity>
             )
           }
         })
@@ -243,7 +259,7 @@ class ListExercisesScreen extends React.Component {
       if (this.state.isCatalogOpen) {
         const buttons = this.state.categories.map((category) => {
           return (
-            <View style={{marginLeft: 5}}>
+            <View style={{marginLeft: 5, marginBottom: 4}}>
               <TouchableOpacity onPress={() => this.setState({ activeCategory: this.state.activeCategory === category ? '' : category }) }>
                 <Text style={{
                   fontSize: 30,
