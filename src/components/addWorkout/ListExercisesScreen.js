@@ -39,21 +39,40 @@ class ListExercisesScreen extends React.Component {
     super()
     this.state = {
       isCatalogOpen: false,
+      activeCategory: 'Core',
       textField: '',
       exerciseNames: ['pushups', 'pullups'],
       results: [],
       database: [
-      'Bicep Curls',
-      'Dips',
-      'Push-Ups',
-      'Lunges',
-      'Squats', 'Kettlebell Swings', 'Leg Curls', 'Leg Press', 'Deadlifts', 'Step-ups', 'Crunches', 'Flutter Kicks', 'Leg Raises', 'Plank', 'Sit-ups', 'V-ups', 'Climbers', 'Bench Press', 'Burpees',
-      'Cable Crosses', 'Chin-ups', 'Lat Pull Downs', 'Pull-Ups', 'Rows', 'Deadlifts',
-      'Snaches',
-      'Shrugs',
-      'Shoulder Press',
-      'Power Cleans',
-      'Handstands'
+        {name: 'Bicep Curls', categories: ['Arms']},
+        {name: 'Dips', categories: ['Arms', 'Chest']},
+        {name: 'Push-Ups', categories: ['Arms', 'Chest']},
+        {name: 'Lunges', categories: ['Legs']},
+        {name: 'Squats', categories: ['Legs']},
+        {name: 'Kettlebell Swings', categories: ['Legs', 'Core']},
+        {name: 'Leg Curls', categories: ['Legs']},
+        {name: 'Leg Press', categories: ['Legs']},
+        {name: 'Deadlifts', categories: ['Legs', 'Back']},
+        {name: 'Step-ups', categories: ['Legs']},
+        {name: 'Crunches', categories: ['Core']},
+        {name: 'Flutter Kicks', categories: ['Core']},
+        {name: 'Leg Raises', categories: ['Core']},
+        {name: 'Plank', categories: ['Core']},
+        {name: 'Sit-ups', categories: ['Core']},
+        {name: 'V-ups', categories: ['Core']},
+        {name: 'Climbers', categories: ['Core']},
+        {name: 'Bench Press', categories: ['Chest', 'Arms']},
+        {name: 'Burpees', categories: ['Arms', 'Legs', 'Core']},
+        {name: 'Cable Crosses', categories: ['Chest']},
+        {name: 'Chin-ups', categories: ['Back', 'Arms']},
+        {name: 'Lat Pull Downs', categories: ['Back']},
+        {name: 'Pull-Ups', categories: ['Back', 'Arms']},
+        {name: 'Rows', categories: ['Core']},
+        {name: 'Snaches', categories: ['Shoulders']},
+        {name: 'Shrugs', categories: ['Shoulders']},
+        {name: 'Shoulder Press', categories: ['Core']},
+        {name: 'Power Cleans', categories: ['Shoulders']},
+        {name: 'Handstands', categories: ['Shoulders']}
       ]
     }
   }
@@ -71,7 +90,7 @@ class ListExercisesScreen extends React.Component {
 
   componentDidUpdate(prevProps, prevState) {
     if (prevState.textField !== this.state.textField) {
-      const results = this.state.database.filter((workout) => {
+      const results = this.state.database.map((workout) => workout.name).filter((workout) => {
         return workout.includes(this.state.textField)
       }).sort()
 
@@ -201,9 +220,11 @@ class ListExercisesScreen extends React.Component {
     const maybeRenderCatalog = () => {
       if (this.state.isCatalogOpen) {
         return (
-          <Animated.View style={{ marginTop: 80 }}>
-          <Text style={{fontSize: 20, fontFamily: 'rubik-medium', textAlign: 'center', color: DYNAMIC.text7}}> Core  Arms  Legs  Chest  Back  Shoulders</Text>
-          </Animated.View>
+          <View style={{ marginTop: 60 }}>
+            <Text style={{fontSize: 20, fontFamily: 'rubik-medium', textAlign: 'center', color: DYNAMIC.text7}}>
+              Core   Arms   Legs   Chest   Back   Shoulders
+            </Text>
+          </View>
         )
       } else {
         return null
