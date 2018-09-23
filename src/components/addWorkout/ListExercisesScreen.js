@@ -92,10 +92,11 @@ class ListExercisesScreen extends React.Component {
   componentDidUpdate(prevProps, prevState) {
     if (prevState.textField !== this.state.textField) {
       const results = this.state.database.map((workout) => workout.name).filter((workout) => {
-        return workout.includes(this.state.textField)
+        // filter out exercises already added
+        return workout.includes(this.state.textField) && !prevState.exerciseNames.includes(workout)
       }).sort()
 
-      if (results.length === this.state.database.length) {
+      if (results.length === this.state.database.length || this.state.textField.length === 0) {
         // remove the dropdown of suggestions
         this.setState({ results: [] })
       } else {
@@ -121,15 +122,11 @@ class ListExercisesScreen extends React.Component {
     this.textInput && this.textInput.blur()
   }
 
-  addExercise = () => {
+  addExercise = (exerciseName) => {
     this.setState({
-      exerciseNames: this.state.exerciseNames.concat([this.state.textField]),
+      exerciseNames: this.state.exerciseNames.concat([exerciseName]),
       textField: ''
     })
-
-    setTimeout(() => {
-      this.pillContainer.scrollToEnd()
-    }, 100)
   }
 
   toggleExerciseViaCatalog = (catalogExercise) => {
@@ -196,8 +193,8 @@ class ListExercisesScreen extends React.Component {
           listStyle={{ backgroundColor: 'transparent', borderWidth: 0 }}
           data={this.state.results}
           renderItem={item => (
-            <TouchableOpacity onPress={() => { console.log('item', item)}}>
-            <Text style={{ fontSize: 24, fontFamily: 'rubik-medium'}}>{item}</Text>
+            <TouchableOpacity onPress={() => this.addExercise(item) }>
+              <Text style={{ fontSize: 24, fontFamily: 'rubik-medium'}}>{item}</Text>
             </TouchableOpacity>
           )}
           renderTextInput={something => (
