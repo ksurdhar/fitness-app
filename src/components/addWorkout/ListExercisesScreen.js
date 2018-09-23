@@ -39,7 +39,7 @@ class ListExercisesScreen extends React.Component {
     super()
     this.state = {
       categories: ['Arms', 'Legs', 'Core', 'Chest', 'Back', 'Shoulders'],
-      isCatalogOpen: true,
+      isCatalogOpen: false,
       activeCategory: 'Arms',
       textField: '',
       exerciseNames: [],
@@ -105,7 +105,6 @@ class ListExercisesScreen extends React.Component {
         })
       }
     }
-    console.log(this.state.exerciseNames)
   }
 
   toListAttributes = () => {
@@ -218,6 +217,22 @@ class ListExercisesScreen extends React.Component {
       }
     }
 
+    const maybeRenderSuggestion = () => {
+      const noResults = this.state.textField.length > 0 && this.state.results.length === 0
+      if (!this.state.isCatalogOpen && noResults) {
+        return (
+          <View style={[common.col, { marginTop: 40 }]}>
+            <Text style={[common.tajawal5, {fontSize: 18, color: DYNAMIC.text8 }]}>No results found.</Text>
+            <TouchableOpacity onPress={() => this.addExercise(this.state.textField) }>
+              <Text style={[common.tajawal3, {fontSize: 18, color: DYNAMIC.link, textDecorationLine: 'underline' }]}>Add custom exercise?</Text>
+            </TouchableOpacity>
+          </View>
+        )
+      } else {
+        return null
+      }
+    }
+
     const maybeRenderCheck = (exerciseName) => {
       if (this.state.exerciseNames.includes(exerciseName)){
         return (
@@ -294,6 +309,7 @@ class ListExercisesScreen extends React.Component {
             { renderExerciseCount() }
             { maybeRenderAutoComplete() }
             { maybeRenderCatalog() }
+            { maybeRenderSuggestion() }
           </View>
         </KeyboardAwareScrollView>
       </View>
