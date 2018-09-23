@@ -71,7 +71,7 @@ class ListExercisesScreen extends React.Component {
         {name: 'Rows', categories: ['Core']},
         {name: 'Snaches', categories: ['Shoulders']},
         {name: 'Shrugs', categories: ['Shoulders']},
-        {name: 'Shoulder Press', categories: ['Core']},
+        {name: 'Shoulder Press', categories: ['Shoulders']},
         {name: 'Power Cleans', categories: ['Shoulders']},
         {name: 'Handstands', categories: ['Shoulders']}
       ]
@@ -218,6 +218,27 @@ class ListExercisesScreen extends React.Component {
       }
     }
 
+    const maybeRenderCategoryExes = (category) => {
+      if (this.state.activeCategory === category) {
+        const exerciseEls = this.state.database.map((exercise) => {
+          if (exercise.categories.includes(this.state.activeCategory)) {
+            return (
+              <Text>
+                { exercise.name }
+              </Text>
+            )
+          }
+        })
+        return (
+          <View>
+            { exerciseEls }
+          </View>
+        )
+      } else {
+        return null
+      }
+    }
+
     const maybeRenderCatalog = () => {
       if (this.state.isCatalogOpen) {
         const buttons = this.state.categories.map((category) => {
@@ -231,11 +252,12 @@ class ListExercisesScreen extends React.Component {
                 marginRight: 5
               }}>
                 { category }
+                { maybeRenderCategoryExes(category) }
               </Text>
             </TouchableOpacity>
           )
         })
-        // flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-between'}
+
         return (
           <View style={{ marginTop: 60 }}>
             { buttons }
