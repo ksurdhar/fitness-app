@@ -42,6 +42,16 @@ export function addSession(exerciseNames, exerciseData, userID, workoutID, worko
   }
 }
 
+export function updateSession(id, patchObj) {
+  const sessionRef = rootRef.child(`sessions/${id}`)
+
+  sessionRef.update(patchObj)
+
+  return {
+    type: 'UPDATE_SESSION'
+  }
+}
+
 export function removeSession(id, userID) {
   const sessionRef = rootRef.child(`sessions/${id}`)
   sessionRef.remove()

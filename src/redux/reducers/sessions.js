@@ -46,6 +46,18 @@ export default function sessionsReducer(state = initialState, action) {
       return Object.assign({}, state, {
         sessions: state.sessions.concat(action.session)
       });
+    case 'UPDATE_SESSION_SUCCESS':
+      const newSessions = []
+      state.sessions.forEach((session) => {
+        if (session.id !== action.session.id) {
+          newSessions.push(session)
+        } else {
+          newSessions.push(action.session)
+        }
+      })
+      return Object.assign({}, state, {
+        sessions: newSessions
+      })
     case 'REMOVE_SESSION_SUCCESS':
       return Object.assign({}, state, {
         sessions: state.sessions.filter((session) => session.id !== action.session.id)

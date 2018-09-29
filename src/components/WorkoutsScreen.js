@@ -62,6 +62,15 @@ class WorkoutsScreen extends React.Component {
     // })
   }
 
+  navigateToUpdateSession = () => {
+    const sessionToEdit = this.state.sessionEditing
+    this.cancelModal()
+    this.props.navigation.navigate('UpdateSession', {
+      session: sessionToEdit,
+      userID: this.props.userID
+    })
+  }
+
   removeSession = () => {
     const userID = this.props.userID
     this.props.removeSession(this.state.sessionEditing.id, userID)
@@ -90,7 +99,7 @@ class WorkoutsScreen extends React.Component {
           borderTopColor: DYNAMIC.text1, borderTopWidth: 1,
           justifyContent: 'center'
         }}>
-          <BasicButton onPress={ this.initiateEditing }>
+          <BasicButton onPress={ this.navigateToUpdateSession }>
             <Text style={[ common.tajawal5, common.mdFont, {color: DYNAMIC.link, marginTop: 10}]}>
               Edit
             </Text>

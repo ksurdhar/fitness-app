@@ -13,6 +13,7 @@ import ListExercisesScreen from './components/addWorkout/ListExercisesScreen'
 import ListAttributesScreen from './components/addWorkout/ListAttributesScreen'
 import NameWorkoutScreen from './components/addWorkout/NameWorkoutScreen'
 import NotificationsScreen from './components/NotificationsScreen'
+import UpdateSessionScreen from './components/UpdateSessionScreen'
 
 const WorkoutStack = createStackNavigator({
   Workouts: {
@@ -20,6 +21,9 @@ const WorkoutStack = createStackNavigator({
   },
   Session: {
     screen: SessionScreen
+  },
+  UpdateSession: {
+    screen: UpdateSessionScreen
   }
 })
 

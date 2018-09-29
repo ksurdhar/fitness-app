@@ -57,12 +57,12 @@ export function removeWorkout(id, userID) {
 
 
 export function updateWorkout(id, patchObj) {
-  const notificationRef = rootRef.child(`workouts/${id}`)
+  const workoutRef = rootRef.child(`workouts/${id}`)
 
-  notificationRef.update(patchObj)
+  workoutRef.update(patchObj)
 
   return {
-    type: 'UPDATE_NOTIFICATION'
+    type: 'UPDATE_NOTIFICATION' // uh - probably want to update this?
   }
 }
 
