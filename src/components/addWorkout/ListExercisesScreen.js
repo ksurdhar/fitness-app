@@ -120,11 +120,12 @@ class ListExercisesScreen extends React.Component {
       this.input && this.input.focus()
     }
 
-    const isPopulated = this.state.exerciseNames.length > 0
-    const wasPopulated = prevState.exerciseNames.length > 0
-    if (isPopulated !== wasPopulated) {
+    // enable next button
+    const exerciseLength = this.state.exerciseNames.length
+    const prevExerciseLength = prevState.exerciseNames.length
+    if (exerciseLength !== prevExerciseLength) {
       this.props.navigation.setParams({
-        nextEnabled: isPopulated
+        nextEnabled: exerciseLength > 0
       })
     }
   }
@@ -151,15 +152,16 @@ class ListExercisesScreen extends React.Component {
   }
 
   toggleExerciseViaCatalog = (catalogExercise) => {
-    let newExerciseNames = this.state.exerciseNames
     if (this.state.exerciseNames.includes(catalogExercise)) {
-      newExerciseNames = newExerciseNames.filter((exercise) => {
+      newExerciseNames = this.state.exerciseNames.filter((exercise) => {
         return exercise !== catalogExercise
       })
+      this.setState({ exerciseNames: newExerciseNames })
     } else {
-      newExerciseNames.push(catalogExercise)
+      this.setState({
+        exerciseNames: this.state.exerciseNames.concat([catalogExercise])
+      })
     }
-    this.setState({ exerciseNames: newExerciseNames })
   }
 
   render() {
@@ -315,9 +317,11 @@ class ListExercisesScreen extends React.Component {
         })
 
         return (
-          <View style={{ marginTop: 24 }}>
-            { buttons }
-          </View>
+          <ScrollView>
+            <View style={{ marginTop: 24 }}>
+              { buttons }
+            </View>
+          </ScrollView>
         )
       } else {
         return null
