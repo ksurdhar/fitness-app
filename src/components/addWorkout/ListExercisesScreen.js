@@ -16,6 +16,7 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 import { FontAwesome } from '@expo/vector-icons'
 import Autocomplete from 'react-native-autocomplete-input'
 
+import AnimatedText from '../reusable/animatedText'
 import Input from '../reusable/input'
 import PressCapture from '../reusable/pressCapture'
 import { common, DYNAMIC } from '../reusable/common'
@@ -26,10 +27,14 @@ class ListExercisesScreen extends React.Component {
       title: `Add Exercises`,
       headerRight: (
         <View style={{paddingRight: 10}}>
-          <Button
-            title="Next"
-            onPress={navigation.getParam('toListAttributes')}
-          />
+          <TouchableOpacity onPress={navigation.getParam('toListAttributes')} disabled={!navigation.getParam('nextEnabled')}>
+            <AnimatedText
+              value={'Next'}
+              textColors={[DYNAMIC.text10, DYNAMIC.link]}
+              isEnabled={navigation.getParam('nextEnabled')}
+              style={{fontSize: 18}}
+            />
+          </TouchableOpacity>
         </View>
       )
     }
@@ -85,11 +90,15 @@ class ListExercisesScreen extends React.Component {
   }
 
   componentDidMount() {
-    this.props.navigation.setParams({ toListAttributes: this.toListAttributes })
+    this.props.navigation.setParams({
+      nextEnabled: false,
+      toListAttributes: this.toListAttributes
+    })
     this.input && this.input.focus()
   }
 
   componentDidUpdate(prevProps, prevState) {
+    // determines list of results
     if (prevState.textField !== this.state.textField) {
       const results = this.state.database.map((workout) => workout.name).filter((workout) => {
         // filter out exercises already added
@@ -106,13 +115,21 @@ class ListExercisesScreen extends React.Component {
       }
     }
 
+    // focus input
     if (prevState.isCatalogOpen && !this.state.isCatalogOpen) {
       this.input && this.input.focus()
+    }
+
+    const isPopulated = this.state.exerciseNames.length > 0
+    const wasPopulated = prevState.exerciseNames.length > 0
+    if (isPopulated !== wasPopulated) {
+      this.props.navigation.setParams({
+        nextEnabled: isPopulated
+      })
     }
   }
 
   handleCapture = () => {
-    console.log('CAPTURED')
     this.input && this.input.blur()
   }
 
