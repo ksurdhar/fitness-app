@@ -40,7 +40,7 @@ class ListExercisesScreen extends React.Component {
     this.state = {
       categories: ['Arms', 'Legs', 'Core', 'Chest', 'Back', 'Shoulders'],
       isCatalogOpen: false,
-      activeCategory: 'Arms',
+      activeCategory: '',
       textField: '',
       exerciseNames: [],
       results: [],
@@ -105,6 +105,15 @@ class ListExercisesScreen extends React.Component {
         })
       }
     }
+
+    if (prevState.isCatalogOpen && !this.state.isCatalogOpen) {
+      this.input && this.input.focus()
+    }
+  }
+
+  handleCapture = () => {
+    console.log('CAPTURED')
+    this.input && this.input.blur()
   }
 
   toListAttributes = () => {
@@ -115,10 +124,6 @@ class ListExercisesScreen extends React.Component {
 
   changeExerciseNameHandler = (value) => {
     this.setState({textField: value})
-  }
-
-  handleCapture = () => {
-    this.textInput && this.textInput.blur()
   }
 
   addExercise = (exerciseName) => {
@@ -142,34 +147,25 @@ class ListExercisesScreen extends React.Component {
 
   render() {
     const { width, height } = Dimensions.get('window')
-    const labelEl = (
-      <Text style={{
-        fontFamily: 'rubik-medium',
-        fontSize:20,
-        color: DYNAMIC.text7
-      }}>
-        Exercise
-      </Text>
-    )
 
     const renderHeader = () => {
       const isCatalogOpen = this.state.isCatalogOpen
       return (
         <View>
           <View style={[common.row, { marginTop: 10 }]}>
-              <TouchableOpacity onPress={() => this.setState({ isCatalogOpen: false}) }>
-                <Text style={[common.tajawal3, {fontSize: 20, textAlign: 'center', color: isCatalogOpen ? DYNAMIC.link : DYNAMIC.text, textDecorationLine: isCatalogOpen ? 'underline' : 'none' }]}>
-                  {`Use the input  `}
-                </Text>
-              </TouchableOpacity>
-              <Text style={[common.tajawal3, {fontSize: 20, color: DYNAMIC.text, textAlign: 'center'}]}>
-                or
+            <TouchableOpacity onPress={() => this.setState({ isCatalogOpen: false}) }>
+              <Text style={[common.tajawal3, {fontSize: 20, textAlign: 'center', color: isCatalogOpen ? DYNAMIC.link : DYNAMIC.text, textDecorationLine: isCatalogOpen ? 'underline' : 'none' }]}>
+                {`Use the input  `}
               </Text>
-              <TouchableOpacity onPress={() => this.setState({ isCatalogOpen: true }) }>
-                <Text style={[common.tajawal3, {fontSize: 20, textAlign: 'center', color: isCatalogOpen ? DYNAMIC.text : DYNAMIC.link, textDecorationLine: isCatalogOpen ? 'none' : 'underline'  }]}>
-                  {` select from a category.`}
-                </Text>
-              </TouchableOpacity>
+            </TouchableOpacity>
+            <Text style={[common.tajawal3, {fontSize: 20, color: DYNAMIC.text, textAlign: 'center'}]}>
+              or
+            </Text>
+            <TouchableOpacity onPress={() => this.setState({ isCatalogOpen: true }) }>
+              <Text style={[common.tajawal3, {fontSize: 20, textAlign: 'center', color: isCatalogOpen ? DYNAMIC.text : DYNAMIC.link, textDecorationLine: isCatalogOpen ? 'none' : 'underline'  }]}>
+                {` select from a category.`}
+              </Text>
+            </TouchableOpacity>
           </View>
         </View>
       )
@@ -184,31 +180,41 @@ class ListExercisesScreen extends React.Component {
     }
 
     const maybeRenderAutoComplete = () => {
+      const labelEl = (
+        <Text style={{
+          fontFamily: 'rubik-medium',
+          fontSize:20,
+          color: DYNAMIC.text7
+        }}>
+          Exercise Name
+        </Text>
+      )
+
       if (!this.state.isCatalogOpen) {
         return (
           <View style={{ marginTop: 40 }}>
           <Autocomplete
-          inputContainerStyle={styleInput()}
-          listStyle={{ backgroundColor: 'transparent', borderWidth: 0 }}
-          data={this.state.results}
-          renderItem={item => (
-            <TouchableOpacity onPress={() => this.addExercise(item) }>
-              <Text style={{ fontSize: 24, fontFamily: 'rubik-medium'}}>{item}</Text>
-            </TouchableOpacity>
-          )}
-          renderTextInput={something => (
-            <Input
-            ref={(element) => { this.input = element }}
-            value={this.state.textField}
-            onChangeText={text => this.setState({ textField: text }) }
-            style={{ width: width-20 }}
-            fontSize={30}
-            label={labelEl}
-            fixedLabel={true}
-            animate={true}
-            noValidation={true}
-            />
-          )}
+            inputContainerStyle={styleInput()}
+            listStyle={{ backgroundColor: 'transparent', borderWidth: 0 }}
+            data={this.state.results}
+            renderItem={item => (
+              <TouchableOpacity onPress={() => this.addExercise(item) }>
+                <Text style={{ fontSize: 24, fontFamily: 'rubik-medium'}}>{item}</Text>
+              </TouchableOpacity>
+            )}
+            renderTextInput={something => (
+              <Input
+                ref={(element) => { this.input = element }}
+                value={this.state.textField}
+                onChangeText={text => this.setState({ textField: text }) }
+                style={{ width: width-20 }}
+                fontSize={30}
+                label={labelEl}
+                fixedLabel={true}
+                animate={true}
+                noValidation={true}
+              />
+            )}
           />
           </View>
         )
@@ -302,17 +308,19 @@ class ListExercisesScreen extends React.Component {
     }
 
     return (
-      <View style={[common.staticView]}>
-        <KeyboardAwareScrollView style={{flex:1, justifyContent: 'start'}}>
-          <View>
-            { renderHeader() }
-            { renderExerciseCount() }
-            { maybeRenderAutoComplete() }
-            { maybeRenderCatalog() }
-            { maybeRenderSuggestion() }
+      <PressCapture onPress={this.handleCapture}>
+        <View style={[common.staticView]}>
+          <View style={{flex:1, justifyContent: 'start'}}>
+            <View>
+              { renderHeader() }
+              { renderExerciseCount() }
+              { maybeRenderAutoComplete() }
+              { maybeRenderCatalog() }
+              { maybeRenderSuggestion() }
+            </View>
           </View>
-        </KeyboardAwareScrollView>
-      </View>
+        </View>
+      </PressCapture>
     )
   }
 }
