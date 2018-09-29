@@ -42,6 +42,8 @@ class WorkoutsScreen extends React.Component {
 
     this.state = {
       sessionEditing: null, // the whole session object
+      isEditing: false,
+      isModalOpen: false
     }
   }
 
@@ -63,7 +65,14 @@ class WorkoutsScreen extends React.Component {
     const userID = this.props.userID
     this.props.removeSession(this.state.sessionEditing.id, userID)
     this.setState({
-      sessionEditing: null
+      sessionEditing: null,
+      isModalOpen: false
+    })
+  }
+
+  toggleEditing = () => {
+    this.setState({
+      isEditing: !this.state.isEditing
     })
   }
 
@@ -75,7 +84,7 @@ class WorkoutsScreen extends React.Component {
           borderTopColor: DYNAMIC.text1, borderTopWidth: 1,
           justifyContent: 'center'
         }}>
-          <BasicButton onPress={() => console.log('edit') }>
+          <BasicButton onPress={ this.toggleEditing }>
             <Text style={[ common.tajawal5, common.mdFont, {color: DYNAMIC.link, marginTop: 10}]}>
               Edit
             </Text>
@@ -100,12 +109,12 @@ class WorkoutsScreen extends React.Component {
     const { height, width } = Dimensions.get('window')
     const session = this.state.sessionEditing
 
-    if (this.state.sessionEditing) {
+    if (this.state.isModalOpen) {
       return (
         <Modal
           animationType="slide"
           transparent={true}>
-          <TouchableWithoutFeedback onPress={() => { this.setState({ sessionEditing: null }) }}>
+          <TouchableWithoutFeedback onPress={() => { this.setState({ sessionEditing: null, isModalOpen: false }) }}>
             <View style={{
               backgroundColor: DYNAMIC.text,
               justifyContent: 'space-around',
@@ -166,7 +175,7 @@ class WorkoutsScreen extends React.Component {
               {session.workoutName}
             </Text>
           </View>
-          <TouchableOpacity onPress={() => this.setState({ sessionEditing: session }) }>
+          <TouchableOpacity onPress={() => this.setState({ isModalOpen: true, sessionEditing: session }) }>
             <View style={{ marginRight: 10 }}>
               <Ionicons name='ios-more' size={36} color={DYNAMIC.text}/>
             </View>
