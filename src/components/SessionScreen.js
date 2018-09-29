@@ -1,18 +1,17 @@
-import React from 'react';
-import { connect } from 'react-redux';
-import { StyleSheet, Text, View, Button, FlatList } from 'react-native';
-import * as workoutActions from '../redux/actions/workoutActions';
+import React from 'react'
+import { connect } from 'react-redux'
+import { StyleSheet, Text, View, Button, FlatList } from 'react-native'
+import { Feather } from '@expo/vector-icons'
 
-class WorkoutScreen extends React.Component {
+import * as sessionActions from '../redux/actions/sessionActions'
+
+class SessionScreen extends React.Component {
   static navigationOptions = ({navigation}) => {
     const { params } = navigation.state
 
     return {
       title: `${params.session.workoutName} Session Details`,
       tabBarLabel: 'Workouts',
-      tabBarIcon: ({ tintColor }) => (
-        <Text>Workouts</Text>
-      ),
     }
   }
 
@@ -20,9 +19,9 @@ class WorkoutScreen extends React.Component {
     return item.id
   }
 
-  removeWorkout(id) {
+  removeSession(id) {
     const userID = this.props.navigation.state.params.userID
-    this.props.removeWorkout(id, userID)
+    this.props.removeSession(id, userID)
     this.props.navigation.goBack()
   }
 
@@ -62,7 +61,7 @@ class WorkoutScreen extends React.Component {
       <View style={styles.container}>
         {this.renderExercises()}
         <Button
-          onPress={() => { this.removeWorkout(session.id) }}
+          onPress={() => { this.removeSession(session.id) }}
           title="Remove"
         />
       </View>
@@ -72,7 +71,7 @@ class WorkoutScreen extends React.Component {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    removeWorkout: (id, userID) => { dispatch(workoutActions.removeWorkout(id, userID)); },
+    removeSession: (id, userID) => { dispatch(sessionActions.removeSession(id, userID)); },
   };
 }
 
@@ -104,4 +103,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default connect(null, mapDispatchToProps)(WorkoutScreen);
+export default connect(null, mapDispatchToProps)(SessionScreen);

@@ -11,6 +11,7 @@ import { format } from 'date-fns'
 import { Entypo, Feather, FontAwesome } from '@expo/vector-icons'
 
 import BasicCard from './reusable/basicCard'
+import BasicButton from './reusable/basicButton'
 import { common, DYNAMIC } from './reusable/common'
 import * as workoutActions from '../redux/actions/workoutActions'
 import * as sessionActions from '../redux/actions/sessionActions'
@@ -39,7 +40,8 @@ class WorkoutsScreen extends React.Component {
   }
 
   navigateToSession(item) {
-    this.props.navigation.navigate('Workout', {
+    console.log('navigating to session!')
+    this.props.navigation.navigate('Session', {
       session: item,
       userID: this.props.userID
     })
@@ -63,26 +65,34 @@ class WorkoutsScreen extends React.Component {
     )
   }
 
+  // <BasicButton onPress={this.recordSession.bind(this, workout.name)}>
+  //   <Text style={[ common.tajawal5, common.mdFont, {color: DYNAMIC.link, marginTop: 10}]}>
+  //     { workout.name }
+  //   </Text>
+  // </BasicButton>
+
   renderSessionCards = () => {
     return this.props.sessions.map((session) => {
       const dateString = format(session.date, 'dddd, MMM D [at] h:mm A')
       const headerString = format(session.date, 'MMM D')
 
       const cardHeader = (
-        <View style={{flexDirection: 'column'}}>
-          <Text style={[common.tajawal3, {fontSize: 18, color: DYNAMIC.text8}]}>
-            { dateString }
-          </Text>
-          <Text style={[common.tajawal5, {fontSize: 26, color: DYNAMIC.text10}]}>
-            {session.workoutName}
-          </Text>
-        </View>
+        <BasicButton onPress={this.navigateToSession.bind(this, session)}>
+          <View style={{flexDirection: 'column'}}>
+            <Text style={[common.tajawal3, {fontSize: 18, color: DYNAMIC.text8}]}>
+              { dateString }
+            </Text>
+            <Text style={[common.tajawal5, {fontSize: 26, color: DYNAMIC.text10}]}>
+              {session.workoutName}
+            </Text>
+          </View>
+        </BasicButton>
       )
 
       const cardBody = (
         <View>
           { this.renderExerciseTexts(session.exercises) }
-          { this.renderNotes(session.noteText) }
+          { this.maybeRenderNotes(session.noteText) }
         </View>
       )
 
@@ -96,7 +106,7 @@ class WorkoutsScreen extends React.Component {
     })
   }
 
-  renderNotes(text) {
+  maybeRenderNotes(text) {
     if (text.length > 0 ) {
       return (
         <Text style={[common.tajawal5, {fontSize: 20, color: DYNAMIC.text9, paddingBottom: 10}]}>

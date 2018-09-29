@@ -5,7 +5,7 @@ import { SimpleLineIcons } from '@expo/vector-icons'
 
 import PromptScreen from "./components/PromptScreen"
 import WorkoutsScreen from "./components/WorkoutsScreen"
-import WorkoutScreen from "./components/WorkoutScreen"
+import SessionScreen from "./components/SessionScreen"
 import ProfileScreen from "./components/ProfileScreen"
 import AddWorkoutScreen from './components/AddWorkoutScreen'
 import AddSessionScreen from './components/AddSessionScreen'
@@ -18,8 +18,8 @@ const WorkoutStack = createStackNavigator({
   Workouts: {
     screen: WorkoutsScreen
   },
-  Workout: {
-    screen: WorkoutScreen
+  Session: {
+    screen: SessionScreen
   }
 })
 
@@ -33,11 +33,7 @@ const RecordStack = createStackNavigator({
   ListExercises: ListExercisesScreen,
   ListAttributes: ListAttributesScreen,
   NameWorkout: NameWorkoutScreen
-},
-{
-  initialRouteName: 'ListExercises'
-}
-)
+})
 
 const ProfileStack = createStackNavigator({
   Profile: {
@@ -82,7 +78,7 @@ const Navigator = createBottomTabNavigator( // https://reactnavigation.org/docs/
     tabBarOptions: {
       activeTintColor: "#e91e63"
     },
-    initialRouteName: 'Record'
+    initialRouteName: 'Workouts'
   }
 )
 

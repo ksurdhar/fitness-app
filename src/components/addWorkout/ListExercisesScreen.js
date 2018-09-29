@@ -244,7 +244,8 @@ class ListExercisesScreen extends React.Component {
 
     const maybeRenderSuggestion = () => {
       const noResults = this.state.textField.length > 0 && this.state.results.length === 0
-      if (!this.state.isCatalogOpen && noResults) {
+      const moreThanOneCharacter = this.state.textField.length > 1
+      if (!this.state.isCatalogOpen && noResults && moreThanOneCharacter) {
         return (
           <View style={[common.col, { marginTop: 40 }]}>
             <Text style={[common.tajawal5, {fontSize: 18, color: DYNAMIC.text8 }]}>No results found.</Text>
