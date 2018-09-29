@@ -59,9 +59,41 @@ class WorkoutsScreen extends React.Component {
     // })
   }
 
-  removeSession = (id) => {
+  removeSession = () => {
     const userID = this.props.userID
-    this.props.removeSession(id, userID)
+    this.props.removeSession(this.state.sessionEditing.id, userID)
+    this.setState({
+      sessionEditing: null
+    })
+  }
+
+  renderModalOptionList() {
+    return (
+      <View>
+        <View style={{
+          height: 60,
+          borderTopColor: DYNAMIC.text1, borderTopWidth: 1,
+          justifyContent: 'center'
+        }}>
+          <BasicButton onPress={() => console.log('edit') }>
+            <Text style={[ common.tajawal5, common.mdFont, {color: DYNAMIC.link, marginTop: 10}]}>
+              Edit
+            </Text>
+          </BasicButton>
+        </View>
+        <View style={{
+          height: 60,
+          borderTopColor: DYNAMIC.text1, borderTopWidth: 1,
+          justifyContent: 'center'
+        }}>
+          <BasicButton onPress={ this.removeSession }>
+            <Text style={[ common.tajawal5, common.mdFont, {color: DYNAMIC.link, marginTop: 10}]}>
+              Delete
+            </Text>
+          </BasicButton>
+        </View>
+      </View>
+    )
   }
 
   maybeSessionRenderModal() {
@@ -75,7 +107,7 @@ class WorkoutsScreen extends React.Component {
           transparent={true}>
           <TouchableWithoutFeedback onPress={() => { this.setState({ sessionEditing: null }) }}>
             <View style={{
-              backgroundColor: DYNAMIC.text9,
+              backgroundColor: DYNAMIC.text,
               justifyContent: 'space-around',
               height,
               width
@@ -91,9 +123,9 @@ class WorkoutsScreen extends React.Component {
                   width: width - 40,
                   padding: 10
                 }}>
-                  <Text>{session.workoutName}</Text>
-                  <Text>{session.date}</Text>
-                  <Text>render options here</Text>
+                  <Text>{`${session.workoutName} session`}</Text>
+                  <Text>{ format(session.date, 'MMM D') }</Text>
+                  { this.renderModalOptionList() }
                 </View>
               </TouchableWithoutFeedback>
             </View>
