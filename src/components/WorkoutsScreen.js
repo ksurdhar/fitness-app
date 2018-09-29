@@ -8,6 +8,7 @@ import {
   Text,
   TouchableOpacity,
   TouchableWithoutFeedback,
+  Input,
   Modal
 } from 'react-native'
 import { format } from 'date-fns'
@@ -64,15 +65,20 @@ class WorkoutsScreen extends React.Component {
   removeSession = () => {
     const userID = this.props.userID
     this.props.removeSession(this.state.sessionEditing.id, userID)
+    this.cancelModal()
+  }
+
+  initiateEditing = () => {
     this.setState({
-      sessionEditing: null,
+      isEditing: true,
       isModalOpen: false
     })
   }
 
-  toggleEditing = () => {
+  cancelModal = () => {
     this.setState({
-      isEditing: !this.state.isEditing
+      sessionEditing: null,
+      isModalOpen: false
     })
   }
 
@@ -84,7 +90,7 @@ class WorkoutsScreen extends React.Component {
           borderTopColor: DYNAMIC.text1, borderTopWidth: 1,
           justifyContent: 'center'
         }}>
-          <BasicButton onPress={ this.toggleEditing }>
+          <BasicButton onPress={ this.initiateEditing }>
             <Text style={[ common.tajawal5, common.mdFont, {color: DYNAMIC.link, marginTop: 10}]}>
               Edit
             </Text>
@@ -101,6 +107,17 @@ class WorkoutsScreen extends React.Component {
             </Text>
           </BasicButton>
         </View>
+        <View style={{
+          height: 60,
+          borderTopColor: DYNAMIC.text1, borderTopWidth: 1,
+          justifyContent: 'center'
+        }}>
+          <BasicButton onPress={ this.cancelModal }>
+            <Text style={[ common.tajawal5, common.mdFont, {color: DYNAMIC.link, marginTop: 10}]}>
+              Cancel
+            </Text>
+          </BasicButton>
+        </View>
       </View>
     )
   }
@@ -114,9 +131,9 @@ class WorkoutsScreen extends React.Component {
         <Modal
           animationType="slide"
           transparent={true}>
-          <TouchableWithoutFeedback onPress={() => { this.setState({ sessionEditing: null, isModalOpen: false }) }}>
+          <TouchableWithoutFeedback onPress={ this.cancelModal }>
             <View style={{
-              backgroundColor: DYNAMIC.text,
+              backgroundColor: DYNAMIC.text7,
               justifyContent: 'space-around',
               height,
               width
@@ -185,7 +202,7 @@ class WorkoutsScreen extends React.Component {
 
       const cardBody = (
         <View>
-          { this.renderExerciseTexts(session.exercises) }
+          { this.renderExerciseTexts(session.exercises, session.id) }
           { this.maybeRenderNotes(session.noteText) }
         </View>
       )
@@ -215,7 +232,25 @@ class WorkoutsScreen extends React.Component {
     }
   }
 
-  renderExerciseTexts = (exercises) => {
+  renderExerciseNameButton(exercise, sessionID) {
+    const safeEditing = this.state.isEditing && this.state.sessionEditing
+    if (safeEditing && this.state.sessionEditing.id === sessionID) {
+      console.log('returning button')
+      return (
+        <BasicButton style={{padding: 0}} onPress={() => { console.log('exercise pressed:', exercise) }}>
+          <Text style={[common.tajawal5, {fontSize: 20, color: DYNAMIC.link}]}>
+            { exercise.name }
+          </Text>
+        </BasicButton>
+      )
+    } else {
+      console.log('returning texr')
+      return exercise.name
+    }
+  }
+
+  // modify this so that each one is already a disabled, styled input
+  renderExerciseTexts = (exercises, sessionID) => {
     if (exercises) {
       return Object.values(exercises).map((exercise) => {
         exercise.attributes.sort((a, b) => ATTR_ORDER.indexOf(a.type) > ATTR_ORDER.indexOf(b.type))
@@ -232,7 +267,7 @@ class WorkoutsScreen extends React.Component {
         const attrString = strings.join(' / ')
         return (
           <Text style={[common.tajawal5, {fontSize: 20, color: DYNAMIC.text9, paddingBottom: 10}]}>
-            {exercise.name}
+            { this.renderExerciseNameButton(exercise, sessionID) }
             <Text style={[common.tajawal3, {fontSize: 18, color: DYNAMIC.text8}]}>
               {`\n${attrString}`}
             </Text>
