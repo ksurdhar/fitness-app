@@ -6,9 +6,12 @@ import {
   StyleSheet,
   View,
   Text,
+  TouchableOpacity,
+  TouchableWithoutFeedback,
+  Modal
 } from 'react-native'
 import { format } from 'date-fns'
-import { Entypo, Feather, FontAwesome } from '@expo/vector-icons'
+import { Feather, MaterialIcons, Ionicons } from '@expo/vector-icons'
 
 import BasicCard from './reusable/basicCard'
 import BasicButton from './reusable/basicButton'
@@ -34,22 +37,62 @@ class WorkoutsScreen extends React.Component {
     ),
   }
 
+  constructor(props) {
+    super(props)
+
+    this.state = {
+      sessionEditing: null, // the whole session object
+    }
+  }
+
   componentDidUpdate() {
-    // console.log('WORKOUTS STATE', this.state)
+    // console.log('SESSION EDITING STATE', this.state.sessionEditing)
     // console.log('WORKOUTS PROPS', this.props)
   }
 
+  // currently unused
   navigateToSession(item) {
-    console.log('navigating to session!')
-    this.props.navigation.navigate('Session', {
-      session: item,
-      userID: this.props.userID
-    })
+    // console.log('navigating to session!')
+    // this.props.navigation.navigate('Session', {
+    //   session: item,
+    //   userID: this.props.userID
+    // })
   }
 
   removeSession = (id) => {
     const userID = this.props.userID
     this.props.removeSession(id, userID)
+  }
+
+  maybeSessionRenderModal() {
+    const { height, width } = Dimensions.get('window')
+    const session = this.state.sessionEditing
+
+    if (this.state.sessionEditing) {
+      return (
+        <Modal
+          animationType="slide"
+          transparent={true}>
+          <TouchableWithoutFeedback onPress={() => { this.setState({ sessionEditing: null }) }}>
+            <View style={{
+              backgroundColor: DYNAMIC.text7,
+              height,
+              justifyContent: 'flex-end'
+            }}>
+              <TouchableWithoutFeedback onPress={(event) => { event.stopPropagation() }}>
+                <View style={{ backgroundColor: DYNAMIC.foreground }}>
+                  <Text>{session.workoutName}</Text>
+                  <Text>{session.date}</Text>
+                  <Text>render options here</Text>
+                </View>
+              </TouchableWithoutFeedback>
+            </View>
+          </TouchableWithoutFeedback>
+        </Modal>
+      )
+    } else {
+      return null
+    }
   }
 
   render() {
@@ -60,16 +103,11 @@ class WorkoutsScreen extends React.Component {
       <View style={common.staticView, { paddingLeft: 10, paddingRight: 10, backgroundColor: DYNAMIC.foreground5, height: height }}>
         <ScrollView style={{paddingTop: 10, marginBottom: 110}}>
           { isEmpty? this.renderEmptyMessage() : this.renderSessionCards() }
+          { this.maybeSessionRenderModal() }
         </ScrollView>
       </View>
     )
   }
-
-  // <BasicButton onPress={this.recordSession.bind(this, workout.name)}>
-  //   <Text style={[ common.tajawal5, common.mdFont, {color: DYNAMIC.link, marginTop: 10}]}>
-  //     { workout.name }
-  //   </Text>
-  // </BasicButton>
 
   renderSessionCards = () => {
     return this.props.sessions.map((session) => {
@@ -77,7 +115,7 @@ class WorkoutsScreen extends React.Component {
       const headerString = format(session.date, 'MMM D')
 
       const cardHeader = (
-        <BasicButton onPress={this.navigateToSession.bind(this, session)}>
+        <View style={{flexDirection: 'row', justifyContent: 'space-between', flex: 1}}>
           <View style={{flexDirection: 'column'}}>
             <Text style={[common.tajawal3, {fontSize: 18, color: DYNAMIC.text8}]}>
               { dateString }
@@ -86,7 +124,12 @@ class WorkoutsScreen extends React.Component {
               {session.workoutName}
             </Text>
           </View>
-        </BasicButton>
+          <TouchableOpacity onPress={() => this.setState({ sessionEditing: session }) }>
+            <View style={{ marginRight: 10 }}>
+              <Ionicons name='ios-more' size={36} color={DYNAMIC.text}/>
+            </View>
+          </TouchableOpacity>
+        </View>
       )
 
       const cardBody = (

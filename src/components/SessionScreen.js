@@ -10,7 +10,7 @@ class SessionScreen extends React.Component {
     const { params } = navigation.state
 
     return {
-      title: `${params.session.workoutName} Session Details`,
+      title: `${params.session.workoutName} Session`,
       tabBarLabel: 'Workouts',
     }
   }
