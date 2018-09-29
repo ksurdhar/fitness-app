@@ -66,14 +66,39 @@ class UpdateSessionScreen extends React.Component {
       noteText: ''
     })
   }
+//
+//   Object {
+//   "igp47m": Object {
+//     "attributes": Array [
+//       Object {
+//         "type": "sets",
+//         "val": "4",
+//       },
+//     ],
+//     "id": "igp47m",
+//     "name": "pushups",
+//   },
+//   "w6vom": Object {
+//     "attributes": Array [
+//       Object {
+//         "type": "weight",
+//         "val": "20",
+//       },
+//     ],
+//     "id": "w6vom",
+//     "name": "pullups",
+//   },
+// }
 
   componentDidMount() {
     const params = this.props.navigation.state.params
-    console.log('SESSION', params.session.exercises)
+    // console.log('SESSION', params.session.exercises)
 
     const exerciseNames = Object.entries(params.session.exercises).map(([eIdx, exercise]) => {
       return exercise.name
     })
+
+    console.log('E DATA', params.session.exercises)
 
     this.setState({
       exerciseData: params.session.exercises,
@@ -82,59 +107,57 @@ class UpdateSessionScreen extends React.Component {
   }
 
   componentDidUpdate() {
-    // console.log('state',this.state)
+    console.log('state',this.state)
   }
 
   handleCapture = () => {
-    this.state.exerciseNames.forEach((name, exIdx) => {
-      Object.entries(this.state.exerciseData[exIdx]).forEach(([attrIdx, attr]) => {
-        this[`${exIdx}-${attrIdx}-input`] && this[`${exIdx}-${attrIdx}-input`].blur()
+    Object.entries(this.state.exerciseData).forEach(([exKey, exercise]) => {
+      exercise.attributes.forEach((attribute, attrIdx) => {
+        this[`${exKey}-${attrIdx}-input`] && this[`${exKey}-${attrIdx}-input`].blur()
       })
     })
   }
 
-  setAttrVal(exIdx, attrIdx, val) {
+  setAttrVal(exKey, attrIdx, val) {
     this.setState((prevState) => {
       return produce(prevState, (draftState) => {
-        draftState.exerciseData[exIdx][attrIdx].val = val
+        draftState.exerciseData[exKey].attributes[attrIdx].val = val
       })
     })
   }
 
-  renderAttrInputs(exIdx, exVal) {
-    return <Text>hey</Text>
-    // return Object.entries(this.state.exerciseData[exIdx]).map(([attrIdx, attr]) => {
-    //   const labelElement = (
-    //     <Text style={{
-    //       fontFamily: 'rubik-medium',
-    //       fontSize:20,
-    //       color: DYNAMIC.text7
-    //     }}>
-    //       {attr.type}
-    //     </Text>
-    //   )
-    //
-    //   const attrVal = this.state.exerciseData[exIdx][attrIdx].val
-    //   return (
-    //     <View key={attrIdx} style={{paddingTop: 20}}>
-    //       <Input
-    //         value={attrVal}
-    //         label={labelElement}
-    //         subLabel={''}
-    //         onChangeText={this.setAttrVal.bind(this, exIdx, attrIdx)}
-    //         ref={(element) => { this[`${exIdx}-${attrIdx}-input`] = element }}
-    //         fontSize={24}
-    //         isValid={attrVal && attrVal.length > 0}
-    //         fixedLabel={false}
-    //         animate={true}
-    //         keyboardType={'numeric'}
-    //       />
-    //     </View>
-    //   )
-    // })
+  renderAttrInputs(exKey, attributes) {
+    return attributes.map((attr, attrIdx) => {
+      const labelElement = (
+        <Text style={{
+          fontFamily: 'rubik-medium',
+          fontSize:20,
+          color: DYNAMIC.text7
+        }}>
+          { attr.type }
+        </Text>
+      )
+
+      return (
+        <View key={attrIdx} style={{paddingTop: 20}}>
+          <Input
+            value={attr.val}
+            label={labelElement}
+            subLabel={''}
+            onChangeText={this.setAttrVal.bind(this, exKey, attrIdx)}
+            ref={(element) => { this[`${exKey}-${attrIdx}-input`] = element }}
+            fontSize={24}
+            isValid={attr.val && attr.val.length > 0}
+            fixedLabel={true}
+            animate={true}
+            keyboardType={'numeric'}
+          />
+        </View>
+      )
+    })
   }
 
-  cardComplete = (exIdx) => {
+  cardComplete = (exKey) => {
     return true
     // return Object.entries(this.state.exerciseData[exIdx]).every(([attrIdx, attr]) => {
     //   return attr.val && attr.val.length > 0
@@ -142,25 +165,25 @@ class UpdateSessionScreen extends React.Component {
   }
 
   renderExercises = () => {
-    return this.state.exerciseNames.map((val, exIdx) => {
+    return Object.entries(this.state.exerciseData).map(([exKey, exercise]) => {
       const completeEl = (
         <AnimatedIcon
           icon1={<FontAwesome name={'check'} color={DYNAMIC.text1} size={30}/>}
           icon2={<FontAwesome name={'check'} color={DYNAMIC.green7} size={30}/>}
-          isEnabled={this.cardComplete(exIdx)}
+          isEnabled={this.cardComplete(exKey)}
           size={30}
           style={{marginTop: -6}}
         />
       )
       return (
         <ExpandingCard
-          key={exIdx}
-          header={val}
+          key={exKey}
+          header={exercise.name}
           expandable={false}
           cardHeights={[600, 600]}
           rightCorner={completeEl}
         >
-          { this.renderAttrInputs(exIdx, val) }
+          { this.renderAttrInputs(exKey, exercise.attributes) }
         </ExpandingCard>
       )
     })
