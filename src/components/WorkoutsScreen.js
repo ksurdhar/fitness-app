@@ -178,7 +178,7 @@ class WorkoutsScreen extends React.Component {
   }
 
   renderSessionCards = () => {
-    return this.props.sessions.map((session) => {
+    return this.props.sessions.sort((a, b) => b.date - a.date).map((session) => {
       const dateString = format(session.date, 'dddd, MMM D [at] h:mm A')
       const headerString = format(session.date, 'MMM D')
 
@@ -232,23 +232,6 @@ class WorkoutsScreen extends React.Component {
     }
   }
 
-  renderExerciseNameButton(exercise, sessionID) {
-    const safeEditing = this.state.isEditing && this.state.sessionEditing
-    if (safeEditing && this.state.sessionEditing.id === sessionID) {
-      console.log('returning button')
-      return (
-        <BasicButton style={{padding: 0}} onPress={() => { console.log('exercise pressed:', exercise) }}>
-          <Text style={[common.tajawal5, {fontSize: 20, color: DYNAMIC.link}]}>
-            { exercise.name }
-          </Text>
-        </BasicButton>
-      )
-    } else {
-      console.log('returning texr')
-      return exercise.name
-    }
-  }
-
   // modify this so that each one is already a disabled, styled input
   renderExerciseTexts = (exercises, sessionID) => {
     if (exercises) {
@@ -267,7 +250,7 @@ class WorkoutsScreen extends React.Component {
         const attrString = strings.join(' / ')
         return (
           <Text style={[common.tajawal5, {fontSize: 20, color: DYNAMIC.text9, paddingBottom: 10}]}>
-            { this.renderExerciseNameButton(exercise, sessionID) }
+            { exercise.name }
             <Text style={[common.tajawal3, {fontSize: 18, color: DYNAMIC.text8}]}>
               {`\n${attrString}`}
             </Text>
