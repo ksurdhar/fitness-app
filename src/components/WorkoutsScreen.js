@@ -75,12 +75,22 @@ class WorkoutsScreen extends React.Component {
           transparent={true}>
           <TouchableWithoutFeedback onPress={() => { this.setState({ sessionEditing: null }) }}>
             <View style={{
-              backgroundColor: DYNAMIC.text7,
+              backgroundColor: DYNAMIC.text9,
+              justifyContent: 'space-around',
               height,
-              justifyContent: 'flex-end'
+              width
             }}>
               <TouchableWithoutFeedback onPress={(event) => { event.stopPropagation() }}>
-                <View style={{ backgroundColor: DYNAMIC.foreground }}>
+                <View style={{
+                  backgroundColor: DYNAMIC.foreground,
+                  marginLeft: 20,
+                  marginTop: 20,
+                  marginRight: 20,
+                  marginBottom: 20,
+                  height: height - 80,
+                  width: width - 40,
+                  padding: 10
+                }}>
                   <Text>{session.workoutName}</Text>
                   <Text>{session.date}</Text>
                   <Text>render options here</Text>
