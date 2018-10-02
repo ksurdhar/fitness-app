@@ -52,6 +52,14 @@ export function updateSession(id, patchObj) {
   }
 }
 
+
+export function updateSessionSuccess(session) {
+  return {
+    type: 'UPDATE_SESSION_SUCCESS',
+    session
+  }
+}
+
 export function removeSession(id, userID) {
   const sessionRef = rootRef.child(`sessions/${id}`)
   sessionRef.remove()

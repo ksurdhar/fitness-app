@@ -36,15 +36,36 @@ const mapStateToProps = (state, ownProps) => {
   }
 }
 
+//   Object {
+//   "igp47m": Object {
+//     "attributes": Array [
+//       Object {
+//         "type": "sets",
+//         "val": "4",
+//       },
+//     ],
+//     "id": "igp47m",
+//     "name": "pushups",
+//   },
+// }
+
 class UpdateSessionScreen extends React.Component {
   static navigationOptions = ({navigation}) => {
     const { params } = navigation.state
 
     return {
-      title: `Update`, // maybe add info about workout type
-      tabBarLabel: 'Record',
-      tabBarIcon: ({ tintColor }) => (
-        <Text>Record</Text>
+      title: `Session Date`, // maybe add info about workout type
+      headerRight: (
+        <View style={{paddingRight: 10}}>
+          <TouchableOpacity onPress={navigation.getParam('updateSession')} disabled={false}>
+            <AnimatedText
+              value={'Update'}
+              textColors={[DYNAMIC.text10, DYNAMIC.link]}
+              isEnabled={true} // update with logic checking all vals
+              style={{fontSize: 18}}
+            />
+          </TouchableOpacity>
+        </View>
       )
     }
   }
@@ -66,48 +87,35 @@ class UpdateSessionScreen extends React.Component {
       noteText: ''
     })
   }
-//
-//   Object {
-//   "igp47m": Object {
-//     "attributes": Array [
-//       Object {
-//         "type": "sets",
-//         "val": "4",
-//       },
-//     ],
-//     "id": "igp47m",
-//     "name": "pushups",
-//   },
-//   "w6vom": Object {
-//     "attributes": Array [
-//       Object {
-//         "type": "weight",
-//         "val": "20",
-//       },
-//     ],
-//     "id": "w6vom",
-//     "name": "pullups",
-//   },
-// }
 
   componentDidMount() {
     const params = this.props.navigation.state.params
-    // console.log('SESSION', params.session.exercises)
-
     const exerciseNames = Object.entries(params.session.exercises).map(([eIdx, exercise]) => {
       return exercise.name
     })
-
-    console.log('E DATA', params.session.exercises)
 
     this.setState({
       exerciseData: params.session.exercises,
       exerciseNames: exerciseNames
     })
+
+    this.props.navigation.setParams({
+      // nextEnabled: false,
+      updateSession: this.updateSession
+    })
   }
 
   componentDidUpdate() {
-    console.log('state',this.state)
+    // console.log('state',this.state)
+  }
+
+  updateSession = () => {
+    const sessionToUpdate = this.props.navigation.state.params.session
+    sessionToUpdate.exercises = this.state.exerciseData
+    this.props.updateSession(sessionToUpdate.id, sessionToUpdate)
+    this.resetState()
+    this.props.navigation.navigate('Workouts')
+    // throw toast here saying session updated
   }
 
   handleCapture = () => {
@@ -158,10 +166,9 @@ class UpdateSessionScreen extends React.Component {
   }
 
   cardComplete = (exKey) => {
-    return true
-    // return Object.entries(this.state.exerciseData[exIdx]).every(([attrIdx, attr]) => {
-    //   return attr.val && attr.val.length > 0
-    // })
+    return this.state.exerciseData[exKey].attributes.every((attr) => {
+      return attr.val && attr.val.length > 0
+    })
   }
 
   renderExercises = () => {
@@ -228,7 +235,7 @@ class UpdateSessionScreen extends React.Component {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    updateNotification: (workoutID, patchObj) => { dispatch(notificationActions.updateNotification(workoutID, patchObj))},
+    updateSession:(sessionID, patchObj) => { dispatch(sessionActions.updateSession(sessionID, patchObj)) }
   }
 }
 

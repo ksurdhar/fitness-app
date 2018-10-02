@@ -24,7 +24,7 @@ import { common, DYNAMIC } from './reusable/common'
 import firebase from 'firebase'
 import { login, loginFailed } from '../redux/actions/authActions.js'
 import { addWorkoutSuccess, removeWorkoutSuccess, recievedWorkouts, updateWorkoutSuccess } from '../redux/actions/workoutActions'
-import { addSessionSuccess, removeSessionSuccess, recievedSessions } from '../redux/actions/sessionActions'
+import { addSessionSuccess, removeSessionSuccess, recievedSessions, updateSessionSuccess } from '../redux/actions/sessionActions'
 import { addNotificationSuccess, removeNotificationSuccess, recievedNotifications, updateNotificationSuccess } from '../redux/actions/notificationActions'
 import * as UserActions from '../redux/actions/userActions'
 
@@ -77,6 +77,9 @@ class LoginScreen extends Component {
         })
         sessionsRef.on('child_removed', (snapshot) => {
           store.dispatch(removeSessionSuccess(snapshot.val()))
+        })
+        sessionsRef.on('child_changed', (snapshot) => {
+          store.dispatch(updateSessionSuccess(snapshot.val()))
         })
         sessionsRef.once('value', (snapshot) => {
           store.dispatch(recievedSessions(snapshot.val()))
