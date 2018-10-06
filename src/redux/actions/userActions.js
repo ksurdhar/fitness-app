@@ -1,10 +1,13 @@
 import { rootRef } from '../../firebase'
 
 export function addUser(user) {
-  const userRef = rootRef.child(`users/${user.uid}`)
+  // email sign up will return with a uid
+  // gmail sign up will return an id
+  const userID = user.uid ? user.uid : user.id
+  const userRef = rootRef.child(`users/${userID}`)
 
   userRef.set({
-    userID: user.uid,
+    userID: userID,
     email: user.email,
   })
 

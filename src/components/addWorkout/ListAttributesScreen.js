@@ -203,12 +203,4 @@ class ListAttributesScreen extends React.Component {
   }
 }
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-    addWorkout: (workoutName, exerciseData, uid) => {
-      dispatch(workoutActions.addWorkout(workoutName, exerciseData, uid))
-    },
-  }
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(ListAttributesScreen)
+export default connect(mapStateToProps, null)(ListAttributesScreen)

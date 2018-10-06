@@ -8,20 +8,20 @@ import {
   View,
   KeyboardAvoidingView,
   Dimensions,
-  Button
+  Button,
+  Image
 } from 'react-native'
+import firebase from 'firebase'
+import Expo from 'expo'
 
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
-
 import { MaterialIcons } from '@expo/vector-icons'
-import { Permissions, Notifications } from 'expo'
 
-import KButton from './reusable/button'
+import BasicButton from './reusable/basicButton'
 import Input from './reusable/input'
 import PressCapture from './reusable/pressCapture'
 import { common, DYNAMIC } from './reusable/common'
 
-import firebase from 'firebase'
 import { login, loginFailed } from '../redux/actions/authActions.js'
 import { addWorkoutSuccess, removeWorkoutSuccess, recievedWorkouts, updateWorkoutSuccess } from '../redux/actions/workoutActions'
 import { addSessionSuccess, removeSessionSuccess, recievedSessions, updateSessionSuccess } from '../redux/actions/sessionActions'
@@ -32,102 +32,126 @@ import config from '../../config.js'
 import store from '../redux/store.js'
 import { firebaseApp, rootRef } from '../firebase.js'
 
+const googleURI = Expo.Asset.fromModule(require('../../assets/images/test.png')).uri
+console.log('GOOGLE URI', googleURI)
+
 const LOGIN = "Login"
 const SIGNUP = "Sign Up"
+
+async function signInWithGoogleAsync() {
+  try {
+    const result = await Expo.Google.logInAsync({
+      iosClientId: config.IOS_CLIENT_ID,
+      scopes: ['profile', 'email'],
+    })
+    console.log('RESULT', result)
+    if (result.type === 'success') {
+      return result
+    } else {
+      return {cancelled: true}
+    }
+  } catch(e) {
+    return {error: true}
+  }
+}
+
+function addListeners(userID) {
+  // WORKOUTS
+  const workoutsRef = rootRef.child('workouts').orderByChild('userID').equalTo(userID)
+  workoutsRef.on('child_added', (snapshot) => {
+    store.dispatch(addWorkoutSuccess(snapshot.val()))
+  })
+  workoutsRef.on('child_removed', (snapshot) => {
+    store.dispatch(removeWorkoutSuccess(snapshot.val()))
+  })
+  workoutsRef.on('child_changed', (snapshot) => {
+    store.dispatch(updateWorkoutSuccess(snapshot.val()))
+  })
+  workoutsRef.once('value', (snapshot) => {
+    store.dispatch(recievedWorkouts(snapshot.val()))
+  })
+  //SESSIONS
+  const sessionsRef = rootRef.child('sessions').orderByChild('userID').equalTo(userID)
+  sessionsRef.on('child_added', (snapshot) => {
+    store.dispatch(addSessionSuccess(snapshot.val()))
+  })
+  sessionsRef.on('child_removed', (snapshot) => {
+    store.dispatch(removeSessionSuccess(snapshot.val()))
+  })
+  sessionsRef.on('child_changed', (snapshot) => {
+    store.dispatch(updateSessionSuccess(snapshot.val()))
+  })
+  sessionsRef.once('value', (snapshot) => {
+    store.dispatch(recievedSessions(snapshot.val()))
+  })
+  // NOTIFICATIONS
+  const notificationsRef = rootRef.child(`notifications`).orderByChild('userID').equalTo(userID)
+  notificationsRef.on('child_added', (snapshot) => {
+    store.dispatch(addNotificationSuccess(snapshot.val()))
+  })
+  notificationsRef.on('child_removed', (snapshot) => {
+    store.dispatch(removeNotificationSuccess(snapshot.val()))
+  })
+  notificationsRef.on('child_changed', (snapshot) => {
+    store.dispatch(updateNotificationSuccess(snapshot.val()))
+  })
+  notificationsRef.once('value', (snapshot) => {
+    store.dispatch(recievedNotifications(snapshot.val()))
+  })
+  // USERS
+  const usersRef = rootRef.child('users').orderByChild('userID').equalTo(userID)
+  usersRef.on('child_added', (snapshot) => {
+    store.dispatch(UserActions.addUserSuccess(snapshot.val()))
+  })
+  usersRef.on('child_changed', (snapshot) => {
+    store.dispatch(UserActions.updateUserSuccess(snapshot.val()))
+  })
+  usersRef.once('value', (snapshot) => {
+    store.dispatch(UserActions.recievedUser(snapshot.val()))
+  })
+}
 
 class LoginScreen extends Component {
   constructor(props) {
     super(props)
     this.state = {
       action: LOGIN,
-      email: "",
-      password: ""
     }
 
-    if (config.DEV_MODE) {
-      this.state.email = 'User5@gmail.com'
-      this.state.password = 'password'
-      this.onLogin()
-    }
+    // if (config.DEV_MODE) {
+    //   this.state.email = 'User5@gmail.com'
+    //   this.state.password = 'password'
+    //   this.onLogin()
+    // }
   }
 
   onLogin = () => {
-    firebase
-      .auth()
-      .signInWithEmailAndPassword(this.state.email, this.state.password)
-      .then(user => {
-        // WORKOUTS
-        const workoutsRef = rootRef.child('workouts').orderByChild('userID').equalTo(user.uid)
-        workoutsRef.on('child_added', (snapshot) => {
-          store.dispatch(addWorkoutSuccess(snapshot.val()))
-        })
-        workoutsRef.on('child_removed', (snapshot) => {
-          store.dispatch(removeWorkoutSuccess(snapshot.val()))
-        })
-        workoutsRef.on('child_changed', (snapshot) => {
-          store.dispatch(updateWorkoutSuccess(snapshot.val()))
-        })
-        workoutsRef.once('value', (snapshot) => {
-          store.dispatch(recievedWorkouts(snapshot.val()))
-        })
-        //SESSIONS
-        const sessionsRef = rootRef.child('sessions').orderByChild('userID').equalTo(user.uid)
-        sessionsRef.on('child_added', (snapshot) => {
-          store.dispatch(addSessionSuccess(snapshot.val()))
-        })
-        sessionsRef.on('child_removed', (snapshot) => {
-          store.dispatch(removeSessionSuccess(snapshot.val()))
-        })
-        sessionsRef.on('child_changed', (snapshot) => {
-          store.dispatch(updateSessionSuccess(snapshot.val()))
-        })
-        sessionsRef.once('value', (snapshot) => {
-          store.dispatch(recievedSessions(snapshot.val()))
-        })
-        // NOTIFICATIONS
-        const notificationsRef = rootRef.child(`notifications`).orderByChild('userID').equalTo(user.uid)
-        notificationsRef.on('child_added', (snapshot) => {
-          store.dispatch(addNotificationSuccess(snapshot.val()))
-        })
-        notificationsRef.on('child_removed', (snapshot) => {
-          store.dispatch(removeNotificationSuccess(snapshot.val()))
-        })
-        notificationsRef.on('child_changed', (snapshot) => {
-          store.dispatch(updateNotificationSuccess(snapshot.val()))
-        })
-        notificationsRef.once('value', (snapshot) => {
-          store.dispatch(recievedNotifications(snapshot.val()))
-        })
-        // USERS
-        const usersRef = rootRef.child('users').orderByChild('userID').equalTo(user.uid)
-        usersRef.on('child_added', (snapshot) => {
-          store.dispatch(UserActions.addUserSuccess(snapshot.val()))
-        })
-        usersRef.on('child_changed', (snapshot) => {
-          store.dispatch(UserActions.updateUserSuccess(snapshot.val()))
-        })
-        usersRef.once('value', (snapshot) => {
-          store.dispatch(UserActions.recievedUser(snapshot.val()))
-        })
-
-        this.props.dispatchLogin(user)
-      })
-      .catch(error => {
-        console.log("login failed: " + error)
-      })
+    signInWithGoogleAsync().then(res => {
+      const user = res.user
+      if (!user.uid) {
+        // sets the uid on the user object
+        user.uid = user.id
+      }
+      addListeners(user.uid)
+      this.props.dispatchLogin(user)
+    }).catch(error => {
+      console.log("signin failed: " + error)
+    })
   }
 
   onSignUp = () => {
-    firebase
-      .auth()
-      .createUserWithEmailAndPassword(this.state.email, this.state.password)
-      .then(user => {
-        this.props.dispatchLogin(user)
-        this.props.addUser(user)
-      })
-      .catch(error => {
-        console.log("signup failed: " + error)
-      })
+    signInWithGoogleAsync().then(res => {
+      const user = res.user
+      if (!user.uid) {
+        // sets the uid on the user object
+        user.uid = user.id
+      }
+      addListeners(user.uid)
+      this.props.dispatchLogin(user)
+      this.props.addUser(user)
+    }).catch(error => {
+      console.log("signup failed: " + error)
+    })
   }
 
   onSubmit = () => {
@@ -143,93 +167,37 @@ class LoginScreen extends Component {
     this.setState({ action: this.state.action === LOGIN ? SIGNUP : LOGIN })
   }
 
-  handleCapture = () => {
-    this.emailInput && this.emailInput.blur()
-    this.passwordInput && this.passwordInput.blur()
-  }
-
   render() {
-    const emailLabel = (
-      <Text style={{
-        fontFamily: 'rubik-medium',
-        fontSize:20,
-        color: DYNAMIC.text7
-      }}>
-        Email
-      </Text>
-    )
-    const passwordLabel = (
-      <Text style={{
-        fontFamily: 'rubik-medium',
-        fontSize:20,
-        color: DYNAMIC.text7
-      }}>
-        Password
-      </Text>
-    )
-
+    const buttonText = this.state.action === LOGIN ? 'SIGN IN WITH GOOGLE' : 'SIGN UP WITH GOOGLE'
     return (
       <PressCapture onPress={this.handleCapture}>
         <View style={[common.staticView]}>
-          <KeyboardAwareScrollView
-            style={{flex:1, justifyContent: 'start'}}
-          >
-            <Text style={[common.headerFont, { marginTop: 70, marginBottom: 50, textAlign:'center', color: DYNAMIC.text5 }]}>
-              MIGHTY
-            </Text>
-            <Input
-              label={emailLabel}
-              value={this.state.email}
-              onChangeText={ text => this.setState({ email: text })}
-              autoFocus={true}
-              ref={(element) => { this.emailInput = element }}
-              fixedTrue={false}
-              fontSize={24}
-              animate={false}
+          <Text style={[common.headerFont, { marginTop: 70, marginBottom: 50, textAlign:'center', color: DYNAMIC.text5 }]}>
+            MIGHTY
+          </Text>
+          <View style={[common.row, {marginTop: 50, marginBottom: 80}]}>
+            <BasicButton onPress={() => this.onSubmit()}>
+              <View style={{ flexDirection: 'row', alignItems: 'center', backgroundColor: 'white', padding: 7, paddingRight: 20, shadowColor: DYNAMIC.text10,
+                shadowOpacity: 0.3,
+                shadowOffset: { width: 1, height: 1 },
+                shadowRadius: 2}}>
+                <Image source={{uri: googleURI}} style={{width: 50, height: 50, verticalAlign: 'text-bottom'}} />
+                <Text style={{ fontFamily: 'roboto-medium', fontSize: 18, color: DYNAMIC.text7, marginLeft: 10 }}>{buttonText}</Text>
+              </View>
+            </BasicButton>
+          </View>
+          <View style={[common.row]}>
+            <Button
+              style={{marginLeft: 10}}
+              onPress={e => this.onToggleAction(e)}
+              title={this.state.action === LOGIN ? `or ${SIGNUP}` : `or ${LOGIN}`}
             />
-            <View style={{paddingTop: 40}}>
-              <Input
-                label={passwordLabel}
-                value={this.state.password}
-                onChangeText={ text => this.setState({ password: text })}
-                secureTextEntry={true}
-                ref={(element) => { this.passwordInput = element }}
-                fixedTrue={false}
-                fontSize={24}
-                animate={false}
-              />
-            </View>
-            <View style={[common.row, {marginTop: 50, marginBottom: 80}]}>
-              <KButton
-                style={{width: 300}}
-                onPress={() => this.onSubmit()}
-                value={this.state.action}
-                isEnabled={true}
-              />
-            </View>
-            <View style={[common.row]}>
-              <Button
-                style={{marginLeft: 10}}
-                onPress={e => this.onToggleAction(e)}
-                title={this.state.action === LOGIN ? `or ${SIGNUP}` : `or ${LOGIN}`}
-              />
-            </View>
-          </KeyboardAwareScrollView>
+          </View>
         </View>
       </PressCapture>
     )
   }
 }
-
-const styles = StyleSheet.create({
-  buttonContainer: {
-    marginTop: 30,
-    width: 300,
-    flex: 1,
-    flexDirection: 'row',
-    justifyContent: 'space-between'
-  }
-})
 
 const mapStateToProps = (state, ownProps) => {
   return {

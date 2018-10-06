@@ -1,10 +1,4 @@
 import { initializeApp } from 'firebase'
-import {
-  addWorkoutSuccess,
-  removeWorkoutSuccess,
-  recievedWorkouts
-} from './redux/actions/workoutActions';
-
 import config from '../config'
 
 export const firebaseApp = initializeApp({

@@ -41,7 +41,6 @@ Object.entries(TYPES).forEach(([type, color]) => {
     }
   }
 })
-console.log('dynamic', DYNAMIC)
 
 const common = StyleSheet.create({
   staticView: {
@@ -80,6 +79,9 @@ const common = StyleSheet.create({
   },
   tajawal5: {
     fontFamily: 'tajawal5',
+  },
+  roboto: {
+    fontFamily: 'roboto-medium'
   },
   borders: {
     borderTopWidth: 2,

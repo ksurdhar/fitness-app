@@ -9,7 +9,6 @@ import DemoScreen from './components/DemoScreen'
 import Toast from './components/reusable/toast'
 import { Font } from 'expo'
 
-
 import Config from 'react-native-config'
 import config from '../config'
 
@@ -58,6 +57,7 @@ class Index extends Component {
       'rubik-medium': require('../assets/fonts/Rubik-Medium.ttf'),
       'tajawal3': require('../assets/fonts/tajawal/tajawal3.ttf'),
       'tajawal5': require('../assets/fonts/tajawal/tajawal5.ttf'),
+      'roboto-medium': require('../assets/fonts/Roboto/Roboto-Medium.ttf'),
     })
     this.setState({
       fontLoaded: true
