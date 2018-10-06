@@ -58,13 +58,14 @@ async function signInWithGoogleAsync() {
 async function signInWithFBAsync() {
   try {
     const { type, token } = await Expo.Facebook.logInWithReadPermissionsAsync(config.FACEBOOK_CLIENT_ID, {
-      permissions: ['public_profile']
+      permissions: ['public_profile', 'email']
     })
+
     if (type === 'success') {
       // Get the user's name using Facebook's Graph API
-      const result = await fetch(`https://graph.facebook.com/me?access_token=${token}`)
-      console.log('RESPONSE', result)
-      return result
+    const result = await fetch(`https://graph.facebook.com/me?access_token=${token}`)
+      .then((response) => response.json())
+    return result
     } else {
       console.log('signing into facebook failed', type)
     }
@@ -182,8 +183,7 @@ class LoginScreen extends Component {
   }
 
   onFBLogin = () => {
-    signInWithFBAsync().then(res => {
-      const user = res.user
+    signInWithFBAsync().then(user => {
       if (!user.uid) {
         // sets the uid on the user object
         user.uid = user.id
@@ -196,15 +196,17 @@ class LoginScreen extends Component {
   }
 
   onFBSignUp = () => {
-    signInWithFBAsync().then(res => {
-      // const user = res.user
-      // if (!user.uid) {
-      //   // sets the uid on the user object
-      //   user.uid = user.id
-      // }
-      // addListeners(user.uid)
-      // this.props.dispatchLogin(user)
-      // this.props.addUser(user)
+    signInWithFBAsync().then((user) => {
+      console.log('USER HERE', user)
+      console.log('user id', user.id)
+
+      if (!user.uid) {
+        // sets the uid on the user object
+        user.uid = user.id
+      }
+      addListeners(user.uid)
+      this.props.dispatchLogin(user)
+      this.props.addUser(user)
     }).catch(error => {
       console.log("signup failed: " + error)
     })
@@ -244,7 +246,7 @@ class LoginScreen extends Component {
                 shadowOffset: { width: 1, height: 1 },
                 shadowRadius: 2}}>
                 <Image source={{uri: googleURI}} style={{width: 50, height: 50, verticalAlign: 'text-bottom', marginLeft: 6}} />
-                <Text style={{ fontFamily: 'roboto-medium', fontSize: 18, color: DYNAMIC.text7, marginLeft: 16 }}>{googleText}</Text>
+                <Text style={{ fontFamily: 'roboto-medium', fontSize: 18, color: DYNAMIC.text7, marginLeft: 14 }}>{googleText}</Text>
               </View>
             </BasicButton>
             <BasicButton onPress={() => this.onFBSubmit()}>

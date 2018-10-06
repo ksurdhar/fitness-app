@@ -8,7 +8,7 @@ export function addUser(user) {
 
   userRef.set({
     userID: userID,
-    email: user.email,
+    email: user.email ? user.email : user.name,
   })
 
   return {
