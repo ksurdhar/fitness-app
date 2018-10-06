@@ -33,9 +33,9 @@ import store from '../redux/store.js'
 import { firebaseApp, rootRef } from '../firebase.js'
 
 const googleURI = Expo.Asset.fromModule(require('../../assets/images/test.png')).uri
-console.log('GOOGLE URI', googleURI)
+const facebookURI = Expo.Asset.fromModule(require('../../assets/images/fbwhite.png')).uri
 
-const LOGIN = "Login"
+const LOGIN = "I Already Have An Account"
 const SIGNUP = "Sign Up"
 
 async function signInWithGoogleAsync() {
@@ -51,7 +51,25 @@ async function signInWithGoogleAsync() {
       return {cancelled: true}
     }
   } catch(e) {
-    return {error: true}
+    console.log('error signing into google', e)
+  }
+}
+
+async function signInWithFBAsync() {
+  try {
+    const { type, token } = await Expo.Facebook.logInWithReadPermissionsAsync(config.FACEBOOK_CLIENT_ID, {
+      permissions: ['public_profile']
+    })
+    if (type === 'success') {
+      // Get the user's name using Facebook's Graph API
+      const result = await fetch(`https://graph.facebook.com/me?access_token=${token}`)
+      console.log('RESPONSE', result)
+      return result
+    } else {
+      console.log('signing into facebook failed', type)
+    }
+  } catch(e) {
+    console.log('error signing into facebook', e)
   }
 }
 
@@ -125,7 +143,7 @@ class LoginScreen extends Component {
     // }
   }
 
-  onLogin = () => {
+  onGoogleLogin = () => {
     signInWithGoogleAsync().then(res => {
       const user = res.user
       if (!user.uid) {
@@ -139,7 +157,7 @@ class LoginScreen extends Component {
     })
   }
 
-  onSignUp = () => {
+  onGoogleSignUp = () => {
     signInWithGoogleAsync().then(res => {
       const user = res.user
       if (!user.uid) {
@@ -154,12 +172,50 @@ class LoginScreen extends Component {
     })
   }
 
-  onSubmit = () => {
+  onGoogleSubmit = () => {
     switch (this.state.action) {
       case LOGIN:
-        return this.onLogin()
+        return this.onGoogleLogin()
       case SIGNUP:
-        return this.onSignUp()
+        return this.onGoogleSignUp()
+    }
+  }
+
+  onFBLogin = () => {
+    signInWithFBAsync().then(res => {
+      const user = res.user
+      if (!user.uid) {
+        // sets the uid on the user object
+        user.uid = user.id
+      }
+      addListeners(user.uid)
+      this.props.dispatchLogin(user)
+    }).catch(error => {
+      console.log("signin failed: " + error)
+    })
+  }
+
+  onFBSignUp = () => {
+    signInWithFBAsync().then(res => {
+      // const user = res.user
+      // if (!user.uid) {
+      //   // sets the uid on the user object
+      //   user.uid = user.id
+      // }
+      // addListeners(user.uid)
+      // this.props.dispatchLogin(user)
+      // this.props.addUser(user)
+    }).catch(error => {
+      console.log("signup failed: " + error)
+    })
+  }
+
+  onFBSubmit = () => {
+    switch (this.state.action) {
+      case LOGIN:
+        return this.onFBLogin()
+      case SIGNUP:
+        return this.onFBSignUp()
     }
   }
 
@@ -168,21 +224,36 @@ class LoginScreen extends Component {
   }
 
   render() {
-    const buttonText = this.state.action === LOGIN ? 'SIGN IN WITH GOOGLE' : 'SIGN UP WITH GOOGLE'
+    const { width } = Dimensions.get('window')
+    const buttonWidth = width - 36
+    const buttonPadding = 10
+
+    const googleText = this.state.action === LOGIN ? 'SIGN IN WITH GOOGLE' : 'SIGN UP WITH GOOGLE'
+    const facebookText = this.state.action === LOGIN ? 'SIGN IN WITH FACEBOOK' : 'SIGN UP WITH FACEBOOK'
+
     return (
       <PressCapture onPress={this.handleCapture}>
         <View style={[common.staticView]}>
           <Text style={[common.headerFont, { marginTop: 70, marginBottom: 50, textAlign:'center', color: DYNAMIC.text5 }]}>
             MIGHTY
           </Text>
-          <View style={[common.row, {marginTop: 50, marginBottom: 80}]}>
-            <BasicButton onPress={() => this.onSubmit()}>
-              <View style={{ flexDirection: 'row', alignItems: 'center', backgroundColor: 'white', padding: 7, paddingRight: 20, shadowColor: DYNAMIC.text10,
+          <View style={[common.col, {marginTop: 70, marginBottom: 60}]}>
+            <BasicButton onPress={() => this.onGoogleSubmit()}>
+              <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'left', width: buttonWidth, backgroundColor: 'white', height: 56, shadowColor: DYNAMIC.text10, paddingRight: buttonPadding, paddingLeft: buttonPadding,
                 shadowOpacity: 0.3,
                 shadowOffset: { width: 1, height: 1 },
                 shadowRadius: 2}}>
-                <Image source={{uri: googleURI}} style={{width: 50, height: 50, verticalAlign: 'text-bottom'}} />
-                <Text style={{ fontFamily: 'roboto-medium', fontSize: 18, color: DYNAMIC.text7, marginLeft: 10 }}>{buttonText}</Text>
+                <Image source={{uri: googleURI}} style={{width: 50, height: 50, verticalAlign: 'text-bottom', marginLeft: 6}} />
+                <Text style={{ fontFamily: 'roboto-medium', fontSize: 18, color: DYNAMIC.text7, marginLeft: 16 }}>{googleText}</Text>
+              </View>
+            </BasicButton>
+            <BasicButton onPress={() => this.onFBSubmit()}>
+              <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'left', width: buttonWidth, backgroundColor: 'rgb(59, 89, 152)', height: 56, shadowColor: DYNAMIC.text10, paddingRight: buttonPadding, paddingLeft: buttonPadding,
+                shadowOpacity: 0.3,
+                shadowOffset: { width: 1, height: 1 },
+                shadowRadius: 2}}>
+                <Image source={{uri: facebookURI}} style={{width: 40, height: 40, verticalAlign: 'text-bottom', marginLeft: 10}} />
+                <Text style={{ fontFamily: 'roboto-medium', fontSize: 18, color: DYNAMIC.text7, color: DYNAMIC.foreground, marginLeft: 20 }}>{facebookText}</Text>
               </View>
             </BasicButton>
           </View>
@@ -190,7 +261,7 @@ class LoginScreen extends Component {
             <Button
               style={{marginLeft: 10}}
               onPress={e => this.onToggleAction(e)}
-              title={this.state.action === LOGIN ? `or ${SIGNUP}` : `or ${LOGIN}`}
+              title={this.state.action === LOGIN ? `${SIGNUP}` : `${LOGIN}`}
             />
           </View>
         </View>
