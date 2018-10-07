@@ -45,7 +45,11 @@ async function signInWithGoogleAsync() {
       scopes: ['profile', 'email'],
     })
     if (result.type === 'success') {
-      return result
+      const credential = firebase.auth.GoogleAuthProvider.credential(result.idToken, result.accessToken)
+      firebase.auth().signInWithCredential(credential)
+      .catch((error) => {
+        console.log('ERROR - signing into firebase with google credentials:', error)
+      })
     } else {
       return {cancelled: true}
     }
@@ -159,32 +163,12 @@ class LoginScreen extends Component {
   }
 
   onGoogleLogin = () => {
-    signInWithGoogleAsync().then(res => {
-      const user = res.user
-      if (!user.uid) {
-        // sets the uid on the user object
-        user.uid = user.id
-      }
-      addListeners(user.uid)
-      this.props.dispatchLogin(user)
-    }).catch(error => {
-      console.log("signin failed: " + error)
-    })
+    signInWithGoogleAsync()
   }
 
   onGoogleSignUp = () => {
-    signInWithGoogleAsync().then(res => {
-      const user = res.user
-      if (!user.uid) {
-        // sets the uid on the user object
-        user.uid = user.id
-      }
-      addListeners(user.uid)
-      this.props.dispatchLogin(user)
-      this.props.addUser(user)
-    }).catch(error => {
-      console.log("signup failed: " + error)
-    })
+    // check to see if user exists already
+    signInWithGoogleAsync()
   }
 
   onGoogleSubmit = () => {
