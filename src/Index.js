@@ -9,11 +9,74 @@ import DemoScreen from './components/DemoScreen'
 import Toast from './components/reusable/toast'
 import { Font } from 'expo'
 
+import { addWorkoutSuccess, removeWorkoutSuccess, recievedWorkouts, updateWorkoutSuccess } from './redux/actions/workoutActions'
+import { addSessionSuccess, removeSessionSuccess, recievedSessions, updateSessionSuccess } from './redux/actions/sessionActions'
+import { addNotificationSuccess, removeNotificationSuccess, recievedNotifications, updateNotificationSuccess } from './redux/actions/notificationActions'
+import * as UserActions from './redux/actions/userActions'
+import { rootRef } from './firebase.js'
+
 import Config from 'react-native-config'
 import config from '../config'
 
 INDEX_STATE = {
   fontLoaded: false
+}
+
+function addListeners(userID) {
+  console.log('ADDING LISTENERS', userID)
+  // WORKOUTS
+  const workoutsRef = rootRef.child('workouts').orderByChild('userID').equalTo(userID)
+  workoutsRef.on('child_added', (snapshot) => {
+    store.dispatch(addWorkoutSuccess(snapshot.val()))
+  })
+  workoutsRef.on('child_removed', (snapshot) => {
+    store.dispatch(removeWorkoutSuccess(snapshot.val()))
+  })
+  workoutsRef.on('child_changed', (snapshot) => {
+    store.dispatch(updateWorkoutSuccess(snapshot.val()))
+  })
+  workoutsRef.once('value', (snapshot) => {
+    store.dispatch(recievedWorkouts(snapshot.val()))
+  })
+  //SESSIONS
+  const sessionsRef = rootRef.child('sessions').orderByChild('userID').equalTo(userID)
+  sessionsRef.on('child_added', (snapshot) => {
+    store.dispatch(addSessionSuccess(snapshot.val()))
+  })
+  sessionsRef.on('child_removed', (snapshot) => {
+    store.dispatch(removeSessionSuccess(snapshot.val()))
+  })
+  sessionsRef.on('child_changed', (snapshot) => {
+    store.dispatch(updateSessionSuccess(snapshot.val()))
+  })
+  sessionsRef.once('value', (snapshot) => {
+    store.dispatch(recievedSessions(snapshot.val()))
+  })
+  // NOTIFICATIONS
+  const notificationsRef = rootRef.child(`notifications`).orderByChild('userID').equalTo(userID)
+  notificationsRef.on('child_added', (snapshot) => {
+    store.dispatch(addNotificationSuccess(snapshot.val()))
+  })
+  notificationsRef.on('child_removed', (snapshot) => {
+    store.dispatch(removeNotificationSuccess(snapshot.val()))
+  })
+  notificationsRef.on('child_changed', (snapshot) => {
+    store.dispatch(updateNotificationSuccess(snapshot.val()))
+  })
+  notificationsRef.once('value', (snapshot) => {
+    store.dispatch(recievedNotifications(snapshot.val()))
+  })
+  // USERS
+  const usersRef = rootRef.child('users').orderByChild('userID').equalTo(userID)
+  usersRef.on('child_added', (snapshot) => {
+    store.dispatch(UserActions.addUserSuccess(snapshot.val()))
+  })
+  usersRef.on('child_changed', (snapshot) => {
+    store.dispatch(UserActions.updateUserSuccess(snapshot.val()))
+  })
+  usersRef.once('value', (snapshot) => {
+    store.dispatch(UserActions.recievedUser(snapshot.val()))
+  })
 }
 
 class Index extends Component {
@@ -51,6 +114,12 @@ class Index extends Component {
     }
   }
 
+  componentDidUpdate(prevProps, prevState) {
+    if (!prevProps.user.userID && this.props.user.userID) {
+      addListeners(this.props.user.userID)
+    }
+  }
+
   async componentDidMount() {
     await Font.loadAsync({
       'raleway-bold': require('../assets/fonts/Raleway-Bold.ttf'),
@@ -67,7 +136,8 @@ class Index extends Component {
 
 const mapStateToProps = (state, ownProps) => {
   return {
-    isLoggedIn: state.auth.isLoggedIn
+    isLoggedIn: state.auth.isLoggedIn,
+    user: state.auth.user
   }
 }
 

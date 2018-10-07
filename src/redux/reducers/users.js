@@ -9,7 +9,7 @@ export default function usersReducer(state = initialState, action) {
     case 'ADD_USER_SUCCESS':
       return { user: Object.values(action.user)[0] }
     case 'UPDATE_USER_SUCCESS':
-      return { user: Object.values(action.user)[0] }
+      return { user: Object.values(action.user)[0] } // might need to do something here
     default:
       return state
   }

@@ -110,6 +110,7 @@ class NotificationsScreen extends React.Component {
   }
 
   addNotification = (workoutID, workoutName) => {
+    console.log('USER DATA',this.props.userData) // for some reason this is just the email address
     const dateObj = new Date()
     const hours = dateObj.getUTCHours()
     const unroundedMinutes = dateObj.getMinutes()

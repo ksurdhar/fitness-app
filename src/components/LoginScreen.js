@@ -23,14 +23,10 @@ import PressCapture from './reusable/pressCapture'
 import { common, DYNAMIC } from './reusable/common'
 
 import { login, loginFailed } from '../redux/actions/authActions.js'
-import { addWorkoutSuccess, removeWorkoutSuccess, recievedWorkouts, updateWorkoutSuccess } from '../redux/actions/workoutActions'
-import { addSessionSuccess, removeSessionSuccess, recievedSessions, updateSessionSuccess } from '../redux/actions/sessionActions'
-import { addNotificationSuccess, removeNotificationSuccess, recievedNotifications, updateNotificationSuccess } from '../redux/actions/notificationActions'
 import * as UserActions from '../redux/actions/userActions'
 
 import config from '../../config.js'
 import store from '../redux/store.js'
-import { firebaseApp, rootRef } from '../firebase.js'
 
 const googleURI = Expo.Asset.fromModule(require('../../assets/images/test.png')).uri
 const facebookURI = Expo.Asset.fromModule(require('../../assets/images/fbwhite.png')).uri
@@ -83,62 +79,6 @@ async function signInWithFBAsync() {
   }
 }
 
-function addListeners(userID) {
-  // WORKOUTS
-  const workoutsRef = rootRef.child('workouts').orderByChild('userID').equalTo(userID)
-  workoutsRef.on('child_added', (snapshot) => {
-    store.dispatch(addWorkoutSuccess(snapshot.val()))
-  })
-  workoutsRef.on('child_removed', (snapshot) => {
-    store.dispatch(removeWorkoutSuccess(snapshot.val()))
-  })
-  workoutsRef.on('child_changed', (snapshot) => {
-    store.dispatch(updateWorkoutSuccess(snapshot.val()))
-  })
-  workoutsRef.once('value', (snapshot) => {
-    store.dispatch(recievedWorkouts(snapshot.val()))
-  })
-  //SESSIONS
-  const sessionsRef = rootRef.child('sessions').orderByChild('userID').equalTo(userID)
-  sessionsRef.on('child_added', (snapshot) => {
-    store.dispatch(addSessionSuccess(snapshot.val()))
-  })
-  sessionsRef.on('child_removed', (snapshot) => {
-    store.dispatch(removeSessionSuccess(snapshot.val()))
-  })
-  sessionsRef.on('child_changed', (snapshot) => {
-    store.dispatch(updateSessionSuccess(snapshot.val()))
-  })
-  sessionsRef.once('value', (snapshot) => {
-    store.dispatch(recievedSessions(snapshot.val()))
-  })
-  // NOTIFICATIONS
-  const notificationsRef = rootRef.child(`notifications`).orderByChild('userID').equalTo(userID)
-  notificationsRef.on('child_added', (snapshot) => {
-    store.dispatch(addNotificationSuccess(snapshot.val()))
-  })
-  notificationsRef.on('child_removed', (snapshot) => {
-    store.dispatch(removeNotificationSuccess(snapshot.val()))
-  })
-  notificationsRef.on('child_changed', (snapshot) => {
-    store.dispatch(updateNotificationSuccess(snapshot.val()))
-  })
-  notificationsRef.once('value', (snapshot) => {
-    store.dispatch(recievedNotifications(snapshot.val()))
-  })
-  // USERS
-  const usersRef = rootRef.child('users').orderByChild('userID').equalTo(userID)
-  usersRef.on('child_added', (snapshot) => {
-    store.dispatch(UserActions.addUserSuccess(snapshot.val()))
-  })
-  usersRef.on('child_changed', (snapshot) => {
-    store.dispatch(UserActions.updateUserSuccess(snapshot.val()))
-  })
-  usersRef.once('value', (snapshot) => {
-    store.dispatch(UserActions.recievedUser(snapshot.val()))
-  })
-}
-
 class LoginScreen extends Component {
   constructor(props) {
     super(props)
@@ -148,16 +88,18 @@ class LoginScreen extends Component {
 
     firebase.auth().onAuthStateChanged((user) => {
       console.log('AUTH CHANGED', user)
-      if (user != null) {
+      if (user != null && !this.props.isLoggedIn) {
         console.log("We are authenticated now!", user)
-        if (!user.uid) {
-          // sets the uid on the user object
-          user.uid = user.id
+        const userObj = {
+          email: user.email,
+          name: user.displayName,
+          uid: user.uid,
+          userID: user.uid,
         }
-        addListeners(user.uid)
-        props.dispatchLogin(user)
-        // when do we want to add a user ? check to see if we have one?
-        props.addUser(user)
+
+        props.dispatchLogin(userObj)
+        // only conditionally do this
+        props.addUser(userObj)
       }
     })
   }
@@ -251,7 +193,8 @@ class LoginScreen extends Component {
 
 const mapStateToProps = (state, ownProps) => {
   return {
-    isLoggedIn: state.auth.isLoggedIn
+    isLoggedIn: state.auth.isLoggedIn,
+    user: state.users.user
   }
 }
 
