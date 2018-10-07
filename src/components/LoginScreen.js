@@ -38,13 +38,19 @@ const facebookURI = Expo.Asset.fromModule(require('../../assets/images/fbwhite.p
 const LOGIN = "I Already Have An Account"
 const SIGNUP = "Sign Up"
 
+firebase.auth().onAuthStateChanged((user) => {
+  console.log('AUTH CHANGED')
+  if (user != null) {
+    console.log("We are authenticated now!", user)
+  }
+})
+
 async function signInWithGoogleAsync() {
   try {
     const result = await Expo.Google.logInAsync({
       iosClientId: config.IOS_CLIENT_ID,
       scopes: ['profile', 'email'],
     })
-    console.log('RESULT', result)
     if (result.type === 'success') {
       return result
     } else {
@@ -57,15 +63,32 @@ async function signInWithGoogleAsync() {
 
 async function signInWithFBAsync() {
   try {
-    const { type, token } = await Expo.Facebook.logInWithReadPermissionsAsync(config.FACEBOOK_CLIENT_ID, {
+    const { token, type } = await Expo.Facebook.logInWithReadPermissionsAsync(config.FACEBOOK_CLIENT_ID, {
       permissions: ['public_profile', 'email']
     })
 
     if (type === 'success') {
-      // Get the user's name using Facebook's Graph API
-    const result = await fetch(`https://graph.facebook.com/me?access_token=${token}`)
-      .then((response) => response.json())
-    return result
+      fetch(`https://graph.facebook.com/me?access_token=${token}`).then((res) => res.json()).then((userInfo) => {
+        fetch(`https://graph.facebook.com/v3.1/${userInfo.id}?fields=email&access_token=${token}`).then((res) => res.json()).then((emailInfo) => {
+          console.log('first', userInfo)
+          console.log('second', emailInfo)
+
+          // potentially craft this below
+          // const userObj = {
+          //   id: userInfo.id,
+          //   name: userInfo.name,
+          //   email: emailInfo.email
+          // }
+
+          const credential = firebase.auth.FacebookAuthProvider.credential(token)
+          firebase.auth().signInWithCredential(credential).then(() => {
+            // if we got this far, then we need to somehow sign in with the user info we have...
+          })
+          .catch((error) => {
+            console.log('ERROR - signing into firebase with facebook credentials:', error)
+          })
+        })
+      })
     } else {
       console.log('signing into facebook failed', type)
     }
@@ -183,16 +206,17 @@ class LoginScreen extends Component {
   }
 
   onFBLogin = () => {
-    signInWithFBAsync().then(user => {
-      if (!user.uid) {
-        // sets the uid on the user object
-        user.uid = user.id
-      }
-      addListeners(user.uid)
-      this.props.dispatchLogin(user)
-    }).catch(error => {
-      console.log("signin failed: " + error)
-    })
+    signInWithFBAsync()
+    // .then(user => {
+    //   if (!user.uid) {
+    //     // sets the uid on the user object
+    //     user.uid = user.id
+    //   }
+    //   addListeners(user.uid)
+    //   this.props.dispatchLogin(user)
+    // }).catch(error => {
+    //   console.log("signin failed: " + error)
+    // })
   }
 
   onFBSignUp = () => {
