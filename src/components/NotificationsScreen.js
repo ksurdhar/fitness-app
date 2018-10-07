@@ -106,11 +106,10 @@ class NotificationsScreen extends React.Component {
 
   componentDidUpdate() {
     // console.log('cmp update', this.props.notifications)
-    // console.log('PROMPT WORKOUT PROPS', this.props.workouts)
+    // console.log('PROMPT USER DATA', this.props.userData)
   }
 
   addNotification = (workoutID, workoutName) => {
-    console.log('USER DATA',this.props.userData) // for some reason this is just the email address
     const dateObj = new Date()
     const hours = dateObj.getUTCHours()
     const unroundedMinutes = dateObj.getMinutes()
