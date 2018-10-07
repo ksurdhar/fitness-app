@@ -38,13 +38,6 @@ const facebookURI = Expo.Asset.fromModule(require('../../assets/images/fbwhite.p
 const LOGIN = "I Already Have An Account"
 const SIGNUP = "Sign Up"
 
-firebase.auth().onAuthStateChanged((user) => {
-  console.log('AUTH CHANGED')
-  if (user != null) {
-    console.log("We are authenticated now!", user)
-  }
-})
-
 async function signInWithGoogleAsync() {
   try {
     const result = await Expo.Google.logInAsync({
@@ -70,20 +63,9 @@ async function signInWithFBAsync() {
     if (type === 'success') {
       fetch(`https://graph.facebook.com/me?access_token=${token}`).then((res) => res.json()).then((userInfo) => {
         fetch(`https://graph.facebook.com/v3.1/${userInfo.id}?fields=email&access_token=${token}`).then((res) => res.json()).then((emailInfo) => {
-          console.log('first', userInfo)
-          console.log('second', emailInfo)
-
-          // potentially craft this below
-          // const userObj = {
-          //   id: userInfo.id,
-          //   name: userInfo.name,
-          //   email: emailInfo.email
-          // }
 
           const credential = firebase.auth.FacebookAuthProvider.credential(token)
-          firebase.auth().signInWithCredential(credential).then(() => {
-            // if we got this far, then we need to somehow sign in with the user info we have...
-          })
+          firebase.auth().signInWithCredential(credential)
           .catch((error) => {
             console.log('ERROR - signing into firebase with facebook credentials:', error)
           })
@@ -160,11 +142,20 @@ class LoginScreen extends Component {
       action: LOGIN,
     }
 
-    // if (config.DEV_MODE) {
-    //   this.state.email = 'User5@gmail.com'
-    //   this.state.password = 'password'
-    //   this.onLogin()
-    // }
+    firebase.auth().onAuthStateChanged((user) => {
+      console.log('AUTH CHANGED', user)
+      if (user != null) {
+        console.log("We are authenticated now!", user)
+        if (!user.uid) {
+          // sets the uid on the user object
+          user.uid = user.id
+        }
+        addListeners(user.uid)
+        props.dispatchLogin(user)
+        // when do we want to add a user ? check to see if we have one?
+        props.addUser(user)
+      }
+    })
   }
 
   onGoogleLogin = () => {
@@ -207,33 +198,11 @@ class LoginScreen extends Component {
 
   onFBLogin = () => {
     signInWithFBAsync()
-    // .then(user => {
-    //   if (!user.uid) {
-    //     // sets the uid on the user object
-    //     user.uid = user.id
-    //   }
-    //   addListeners(user.uid)
-    //   this.props.dispatchLogin(user)
-    // }).catch(error => {
-    //   console.log("signin failed: " + error)
-    // })
   }
 
   onFBSignUp = () => {
-    signInWithFBAsync().then((user) => {
-      console.log('USER HERE', user)
-      console.log('user id', user.id)
-
-      if (!user.uid) {
-        // sets the uid on the user object
-        user.uid = user.id
-      }
-      addListeners(user.uid)
-      this.props.dispatchLogin(user)
-      this.props.addUser(user)
-    }).catch(error => {
-      console.log("signup failed: " + error)
-    })
+    // needs to check if user exists alreadys
+    signInWithFBAsync()
   }
 
   onFBSubmit = () => {
