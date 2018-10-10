@@ -6,7 +6,7 @@ import Navigator from './Navigator'
 import store from './redux/store'
 import LoginScreen from './components/LoginScreen'
 import DemoScreen from './components/DemoScreen'
-import Toast from './components/reusable/toast'
+import Toast from './components/toast'
 import { Font } from 'expo'
 
 import { addWorkoutSuccess, removeWorkoutSuccess, recievedWorkouts, updateWorkoutSuccess } from './redux/actions/workoutActions'
@@ -99,15 +99,14 @@ class Index extends Component {
 
     if (this.state.fontLoaded && this.props.isLoggedIn) {
       return (
-        <Provider store={store}>
+        <View style={{flex: 1}}>
+          <Toast />
           <Navigator />
-        </Provider>
+        </View>
       )
     } else if (this.state.fontLoaded) {
       return (
-        <Provider store={store}>
-          <LoginScreen />
-        </Provider>
+        <LoginScreen />
       )
     } else {
       return null

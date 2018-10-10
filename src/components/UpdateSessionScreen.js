@@ -27,6 +27,7 @@ import PressCapture from './reusable/pressCapture'
 import { common, DYNAMIC } from './reusable/common'
 import * as notificationActions from '../redux/actions/notificationActions'
 import * as sessionActions from '../redux/actions/sessionActions'
+import * as toastActions from '../redux/actions/toastActions'
 
 const mapStateToProps = (state, ownProps) => {
   return {
@@ -114,8 +115,8 @@ class UpdateSessionScreen extends React.Component {
     sessionToUpdate.exercises = this.state.exerciseData
     this.props.updateSession(sessionToUpdate.id, sessionToUpdate)
     this.resetState()
+    this.props.openToast('Session Updated')
     this.props.navigation.navigate('Workouts')
-    // throw toast here saying session updated
   }
 
   handleCapture = () => {
@@ -235,7 +236,8 @@ class UpdateSessionScreen extends React.Component {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    updateSession:(sessionID, patchObj) => { dispatch(sessionActions.updateSession(sessionID, patchObj)) }
+    updateSession:(sessionID, patchObj) => { dispatch(sessionActions.updateSession(sessionID, patchObj)) },
+    openToast: (message) => { dispatch(toastActions.openToast({ toastString: message }))}
   }
 }
 

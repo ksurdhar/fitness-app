@@ -23,7 +23,7 @@ import Input from './reusable/input'
 import Switch from './reusable/switch'
 import PressCapture from './reusable/pressCapture'
 import { common, DYNAMIC } from './reusable/common'
-import Toast from './reusable/toast'
+// import Toast from './reusable/toast'
 
 // SHAPE OF EXERCISE DATA
 // Object {
@@ -170,7 +170,7 @@ class DemoScreen extends React.Component {
     return (
       <PressCapture onPress={this.handleCapture}>
         <View style={{flex: 1}}>
-          <Toast ref={(element) => { this.toast = element } }/>
+          // <Toast ref={(element) => { this.toast = element } }/>
           <View style={[common.staticView, { paddingLeft: 10, paddingRight: 10, backgroundColor: DYNAMIC.foreground, height: height }]}>
             <KeyboardAwareScrollView style={{paddingTop: 10}}>
               { this.renderExercises() }

@@ -26,7 +26,7 @@ class ProfileScreen extends React.Component {
   componentDidUpdate(prevProps, prevState) {
     if (prevProps.sessions.length !== this.props.sessions.length) {
       if (this.props.sessions && this.props.sessions.length > 0) {
-        const lastMonday = new Date() // currently discluding workouts on monday
+        const lastMonday = new Date()
         lastMonday.setDate(lastMonday.getDate() - (lastMonday.getDay() + 6) % 7)
         lastMonday.setHours(0)
 

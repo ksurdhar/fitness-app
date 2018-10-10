@@ -5,13 +5,15 @@ import workouts from './workouts'
 import sessions from './sessions'
 import notifications from './notifications'
 import users from './users'
+import toasts from './toasts'
 
 const reducers = combineReducers({
   auth,
   workouts,
   sessions,
   notifications,
-  users
+  users,
+  toasts
 })
 
 const rootReducer = ( state, action ) => {

@@ -19,6 +19,7 @@ import BasicButton from './reusable/basicButton'
 import { common, DYNAMIC } from './reusable/common'
 import * as workoutActions from '../redux/actions/workoutActions'
 import * as sessionActions from '../redux/actions/sessionActions'
+import * as toastActions from '../redux/actions/toastActions'
 
 ATTR_ORDER = ['sets', 'reps', 'weight', 'time']
 
@@ -75,6 +76,7 @@ class WorkoutsScreen extends React.Component {
     const userID = this.props.userID
     this.props.removeSession(this.state.sessionEditing.id, userID)
     this.cancelModal()
+    this.props.openToast('Workout Deleted')
   }
 
   initiateEditing = () => {
@@ -288,6 +290,7 @@ class WorkoutsScreen extends React.Component {
 const mapDispatchToProps = (dispatch) => {
   return {
     removeSession: (id, userID) => { dispatch(sessionActions.removeSession(id, userID)) },
+    openToast: (message) => { dispatch(toastActions.openToast({ toastString: message }))}
   }
 }
 
