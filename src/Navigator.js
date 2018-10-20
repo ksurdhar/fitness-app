@@ -25,6 +25,15 @@ const WorkoutStack = createStackNavigator({
   UpdateSession: {
     screen: UpdateSessionScreen
   }
+}, {
+  navigationOptions: {
+    headerTitleStyle: {
+      fontFamily: 'rubik-medium',
+    },
+    headerBackTitleStyle: {
+      fontFamily: 'rubik-medium',
+    }
+  }
 })
 
 const RecordStack = createStackNavigator({
@@ -37,6 +46,15 @@ const RecordStack = createStackNavigator({
   ListExercises: ListExercisesScreen,
   ListAttributes: ListAttributesScreen,
   NameWorkout: NameWorkoutScreen
+}, {
+  navigationOptions: {
+    headerTitleStyle: {
+      fontFamily: 'rubik-medium',
+    },
+    headerBackTitleStyle: {
+      fontFamily: 'rubik-medium',
+    }
+  }
 })
 
 const ProfileStack = createStackNavigator({
@@ -45,6 +63,15 @@ const ProfileStack = createStackNavigator({
   },
   Notifications: {
     screen: NotificationsScreen
+  }
+}, {
+  navigationOptions: {
+    headerTitleStyle: {
+      fontFamily: 'rubik-medium',
+    },
+    headerBackTitleStyle: {
+      fontFamily: 'rubik-medium',
+    }
   }
 })
 
@@ -82,7 +109,7 @@ const Navigator = createBottomTabNavigator( // https://reactnavigation.org/docs/
     tabBarOptions: {
       activeTintColor: "#e91e63"
     },
-    initialRouteName: 'Record'
+    initialRouteName: 'Record',
   }
 )
 

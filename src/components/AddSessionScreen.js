@@ -66,9 +66,17 @@ class AddSessionScreen extends React.Component {
 
     return {
       title: `Recording ${params.workoutName}`,
-      tabBarLabel: 'Record',
-      tabBarIcon: ({ tintColor }) => (
-        <Text>Record</Text>
+      headerRight: (
+        <TouchableOpacity onPress={navigation.getParam('addSession')} disabled={!navigation.getParam('nextEnabled')}>
+          <View style={{paddingRight: 10}}>
+            <AnimatedText
+              value={'Record'}
+              textColors={[DYNAMIC.text3, DYNAMIC.link]}
+              isEnabled={navigation.getParam('nextEnabled')}
+              style={{fontSize: 18, fontFamily: 'rubik-medium'}}
+            />
+          </View>
+        </TouchableOpacity>
       )
     }
   }
@@ -93,10 +101,28 @@ class AddSessionScreen extends React.Component {
       exerciseNames: params.exerciseNames,
       prevSession
     })
+    
+    this.props.navigation.setParams({
+      nextEnabled: false,
+      addSession: this.addSession
+    })
   }
 
-  componentDidUpdate() {
-    // console.log('state',this.state)
+  componentDidUpdate(prevProps) {
+    const nextEnabled = this.props.navigation.getParam('nextEnabled')
+    // all exercises need to have a value
+    const necessaryValuesPopulated = Object.keys(this.state.exerciseData).every((key) => {
+      return Object.entries(this.state.exerciseData[key]).every(([attrIdx, attr]) => {
+        return attr.val && attr.val.length > 0
+      })
+    })
+    console.log('necessaryValuesPopulated', necessaryValuesPopulated)
+
+    if (necessaryValuesPopulated && nextEnabled === false) {
+      this.props.navigation.setParams({ nextEnabled: true })
+    } else if (prevProps.navigation.getParam('nextEnabled') !== false) {
+      this.props.navigation.setParams({ nextEnabled: false })
+    }
   }
 
   findPreviousSession = (workoutID) => {
@@ -276,15 +302,6 @@ class AddSessionScreen extends React.Component {
           <KeyboardAwareScrollView style={{paddingTop: 10}}>
             { this.renderExercises() }
             { this.renderNoteCard() }
-            <View style={[common.row]}>
-              <TouchableOpacity onPress={() => this.addSession() }>
-                <View style={{padding: 14, backgroundColor: DYNAMIC.link}}>
-                  <Text style={{fontSize: 24, fontFamily: 'rubik-medium', textAlign: 'center', color: DYNAMIC.foreground}}>
-                    Record
-                  </Text>
-                </View>
-              </TouchableOpacity>
-            </View>
           </KeyboardAwareScrollView>
         </View>
       </PressCapture>

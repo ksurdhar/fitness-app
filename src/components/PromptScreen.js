@@ -21,6 +21,7 @@ import { distanceInWords } from 'date-fns'
 import { common, DYNAMIC } from './reusable/common'
 import BasicButton from './reusable/basicButton'
 import * as workoutActions from '../redux/actions/workoutActions'
+import { openToast } from '../redux/actions/toastActions'
 
 INITIAL_STATE = {
   selectedWorkout: null,
@@ -37,7 +38,6 @@ const mapStateToProps = (state, ownProps) => {
 class PromptScreen extends React.Component {
   static navigationOptions = ({ navigation }) => {
     return {
-      // header: null,
       title: 'Record',
       tabBarLabel: 'Record',
       headerRight: (
@@ -46,7 +46,7 @@ class PromptScreen extends React.Component {
             Add Workout
           </Text>
         </TouchableOpacity>
-      )
+      ),
     }
   }
 
@@ -75,6 +75,7 @@ class PromptScreen extends React.Component {
   removeWorkout = (workoutID) => {
     const userID = this.props.userID
     this.props.removeWorkout(workoutID, userID)
+    this.props.openToast('Workout Deleted')
   }
 
   recordSession = (name) => {
@@ -192,6 +193,7 @@ class PromptScreen extends React.Component {
 const mapDispatchToProps = (dispatch) => {
   return {
     removeWorkout: (id, userID) => { dispatch(workoutActions.removeWorkout(id, userID)) },
+    openToast: (message) => { dispatch(openToast({ toastString: message}))} 
   }
 }
 

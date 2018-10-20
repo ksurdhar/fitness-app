@@ -15,15 +15,29 @@ import { StackActions, NavigationActions } from 'react-navigation'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import { MaterialIcons } from '@expo/vector-icons'
 
+import AnimatedText from '../reusable/animatedText'
 import Input from '../reusable/input'
 import PressCapture from '../reusable/pressCapture'
 import { common, DYNAMIC } from '../reusable/common'
 import * as workoutActions from '../../redux/actions/workoutActions'
+import { openToast } from '../../redux/actions/toastActions'
 
 class NameWorkout extends React.Component {
   static navigationOptions = ({navigation}) => {
     return {
-      title: `Name`
+      title: 'Name Workout',
+      headerRight: (
+        <TouchableOpacity onPress={navigation.getParam('addWorkout')} disabled={!navigation.getParam('nextEnabled')}>
+          <View style={{paddingRight: 10}}>
+            <AnimatedText
+              value={'Create'}
+              textColors={[DYNAMIC.text3, DYNAMIC.link]}
+              isEnabled={navigation.getParam('nextEnabled')}
+              style={{fontSize: 18, fontFamily: 'rubik-medium'}}
+            />
+          </View>
+        </TouchableOpacity>
+      )
     }
   }
 
@@ -31,6 +45,24 @@ class NameWorkout extends React.Component {
     super()
     this.state = {
       currentName: '',
+    }
+  }
+
+  componentDidMount() {
+    this.props.navigation.setParams({
+      nextEnabled: false,
+      addWorkout: this.addWorkout
+    })
+  }
+
+  componentDidUpdate(prevProps) {
+    const nextEnabled = this.props.navigation.getParam('nextEnabled')
+    const nameHasLength = this.state.currentName.length > 1
+
+    if (nameHasLength && nextEnabled === false) {
+      this.props.navigation.setParams({ nextEnabled: true })
+    } else if (prevProps.navigation.getParam('nextEnabled') !== false) {
+      this.props.navigation.setParams({ nextEnabled: false })
     }
   }
 
@@ -46,7 +78,7 @@ class NameWorkout extends React.Component {
       index: 0,
       actions: [NavigationActions.navigate({ routeName: 'Record' })],
     })
-
+    this.props.openToast('Workout Type Created')
     this.props.navigation.dispatch(resetAction)
   }
 
@@ -87,15 +119,6 @@ class NameWorkout extends React.Component {
             fontSize={24}
             animate={false}
           />
-          <View style={[common.row]}>
-            <TouchableOpacity onPress={this.addWorkout}>
-              <MaterialIcons
-                name={"add-circle"}
-                size={32} color={DYNAMIC.link}
-                style={{top: -62, left: width/2 - 26, backgroundColor: 'transparent'}}
-              />
-            </TouchableOpacity>
-          </View>
         </KeyboardAwareScrollView>
       </View>
     )
@@ -113,6 +136,7 @@ const mapDispatchToProps = (dispatch) => {
     addWorkout: (workoutName, exerciseData, uid) => {
       dispatch(workoutActions.addWorkout(workoutName, exerciseData, uid))
     },
+    openToast: (message) => { dispatch(openToast({ toastString: message }))}
   }
 }
 

@@ -63,7 +63,7 @@ class UpdateSessionScreen extends React.Component {
               value={'Update'}
               textColors={[DYNAMIC.text10, DYNAMIC.link]}
               isEnabled={true} // update with logic checking all vals
-              style={{fontSize: 18}}
+              style={{fontSize: 18, fontFamily: 'rubik-medium'}}
             />
           </TouchableOpacity>
         </View>

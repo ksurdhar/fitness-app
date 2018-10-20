@@ -30,9 +30,9 @@ class ListExercisesScreen extends React.Component {
           <TouchableOpacity onPress={navigation.getParam('toListAttributes')} disabled={!navigation.getParam('nextEnabled')}>
             <AnimatedText
               value={'Next'}
-              textColors={[DYNAMIC.text10, DYNAMIC.link]}
+              textColors={[DYNAMIC.text3, DYNAMIC.link]}
               isEnabled={navigation.getParam('nextEnabled')}
-              style={{fontSize: 18}}
+              style={{fontSize: 18, fontFamily: 'rubik-medium'}}
             />
           </TouchableOpacity>
         </View>

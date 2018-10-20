@@ -40,9 +40,9 @@ class ListAttributesScreen extends React.Component {
           <View style={{paddingRight: 10}}>
             <AnimatedText
               value={'Next'}
-              textColors={[DYNAMIC.text10, DYNAMIC.link]}
+              textColors={[DYNAMIC.text3, DYNAMIC.link]}
               isEnabled={navigation.getParam('nextEnabled')}
-              style={{fontSize: 18}}
+              style={{fontSize: 18, fontFamily: 'rubik-medium'}}
             />
           </View>
         </TouchableOpacity>
