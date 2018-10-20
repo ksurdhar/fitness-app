@@ -40,7 +40,7 @@ class ListAttributesScreen extends React.Component {
           <View style={{paddingRight: 10}}>
             <AnimatedText
               value={'Next'}
-              textColors={[DYNAMIC.text3, DYNAMIC.link]}
+              textColors={[DYNAMIC.black3, DYNAMIC.link]}
               isEnabled={navigation.getParam('nextEnabled')}
               style={{fontSize: 18, fontFamily: 'rubik-medium'}}
             />
@@ -173,12 +173,12 @@ class ListAttributesScreen extends React.Component {
     return (
       <View style={[common.staticView]}>
         <View style={[common.row, {marginTop: 10}]}>
-          <Text style={[common.tajawal5, {fontSize: 22, color: DYNAMIC.text10, textAlign: 'center'}]}>
+          <Text style={[common.tajawal5, {fontSize: 22, color: DYNAMIC.black10, textAlign: 'center'}]}>
             {`Choose what attributes to \n track for each exercise.`}
           </Text>
         </View>
         <View style={common.row}>
-          <Text style={[common.tajawal3, {fontSize: 18, color: DYNAMIC.text8}]}>Hit next when you’ve added them all.</Text>
+          <Text style={[common.tajawal3, {fontSize: 18, color: DYNAMIC.black8}]}>Hit next when you’ve added them all.</Text>
         </View>
         <View style={[common.row, {marginTop: 30, justifyContent: 'space-between'}]}>
           <KButton
@@ -187,7 +187,7 @@ class ListAttributesScreen extends React.Component {
             isEnabled={this.isButtonEnabled('back')}
             onPress={ () => this.goBack() }
           />
-          <Text style={[common.tajawal5, {fontSize: 30, color: DYNAMIC.text10, textAlign: 'center', marginTop: 10}]}>
+          <Text style={[common.tajawal5, {fontSize: 30, color: DYNAMIC.black10, textAlign: 'center', marginTop: 10}]}>
             {this.state.exerciseNames[this.state.exerciseIdx] + ` (${this.state.exerciseIdx + 1}/${this.state.exerciseNames.length})`}
           </Text>
           <KButton

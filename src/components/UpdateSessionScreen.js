@@ -61,7 +61,7 @@ class UpdateSessionScreen extends React.Component {
           <TouchableOpacity onPress={navigation.getParam('updateSession')} disabled={false}>
             <AnimatedText
               value={'Update'}
-              textColors={[DYNAMIC.text10, DYNAMIC.link]}
+              textColors={[DYNAMIC.black10, DYNAMIC.link]}
               isEnabled={true} // update with logic checking all vals
               style={{fontSize: 18, fontFamily: 'rubik-medium'}}
             />
@@ -141,7 +141,7 @@ class UpdateSessionScreen extends React.Component {
         <Text style={{
           fontFamily: 'rubik-medium',
           fontSize:20,
-          color: DYNAMIC.text7
+          color: DYNAMIC.black7
         }}>
           { attr.type }
         </Text>
@@ -176,7 +176,7 @@ class UpdateSessionScreen extends React.Component {
     return Object.entries(this.state.exerciseData).map(([exKey, exercise]) => {
       const completeEl = (
         <AnimatedIcon
-          icon1={<FontAwesome name={'check'} color={DYNAMIC.text1} size={30}/>}
+          icon1={<FontAwesome name={'check'} color={DYNAMIC.black1} size={30}/>}
           icon2={<FontAwesome name={'check'} color={DYNAMIC.green7} size={30}/>}
           isEnabled={this.cardComplete(exKey)}
           size={30}
@@ -223,7 +223,7 @@ class UpdateSessionScreen extends React.Component {
 
     return (
       <PressCapture onPress={this.handleCapture}>
-        <View style={[common.staticView, { paddingLeft: 10, paddingRight: 10, backgroundColor: DYNAMIC.foreground5, height: height }]}>
+        <View style={[common.staticView, { paddingLeft: 10, paddingRight: 10, backgroundColor: DYNAMIC.primary5, height: height }]}>
           <KeyboardAwareScrollView style={{paddingTop: 10}}>
           { this.renderExercises() }
           </KeyboardAwareScrollView>

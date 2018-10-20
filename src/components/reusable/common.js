@@ -12,6 +12,11 @@ const COLORS = {
   spiro: '37, 204, 247',
   sarawak: '248, 239, 186',
 
+  // test palatte
+  yaleBlue: '24, 68, 145',
+  almond: '237, 228, 203',
+  minionYellow: '247, 211, 84',
+
   // used
   peach: '253, 114, 114',
   navy: '24, 44, 97',
@@ -23,12 +28,13 @@ const COLORS = {
 }
 
 const TYPES = {
-  text: 'gray',
-  foreground: 'white',
-  background: 'navy',
-  link: 'summerSky',
-  red: 'fluorescentRed',
-  green: 'celestialGreen'
+  primary: 'minionYellow',
+  secondary: 'minionYellow',
+  black: 'gray',
+  white: 'white',
+  link: 'white',       // interactable color
+  red: 'fluorescentRed',   // error color
+  green: 'celestialGreen', // success color
 }
 
 const DYNAMIC = {}
@@ -44,7 +50,7 @@ Object.entries(TYPES).forEach(([type, color]) => {
 
 const common = StyleSheet.create({
   staticView: {
-    backgroundColor: DYNAMIC.foreground,
+    backgroundColor: DYNAMIC.primary,
     flex: 1,
     padding: 10,
     justifyContent: 'flex-start',

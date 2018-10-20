@@ -235,7 +235,7 @@ class AddWorkoutScreen extends React.Component {
       workoutName = (
         <Fade>
           <View style={common.row}>
-            <Text style={[common.baseFont, {fontSize: 24, textDecorationLine: 'underline', textDecorationColor: DYNAMIC.text5}]}>{this.state.workoutName}</Text>
+            <Text style={[common.baseFont, {fontSize: 24, textDecorationLine: 'underline', textDecorationColor: DYNAMIC.black5}]}>{this.state.workoutName}</Text>
           </View>
         </Fade>
       )
@@ -295,8 +295,8 @@ class AddWorkoutScreen extends React.Component {
             height: 180,
             borderBottomWidth: 2,
             borderTopWidth: 2,
-            borderTopColor: DYNAMIC.text1,
-            borderBottomColor: DYNAMIC.text1,
+            borderTopColor: DYNAMIC.black1,
+            borderBottomColor: DYNAMIC.black1,
             marginBottom: 20,
             paddingTop: 20
           }}>

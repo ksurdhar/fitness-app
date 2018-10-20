@@ -3,6 +3,7 @@ import { StyleSheet, Text, View, Button } from "react-native"
 import { createBottomTabNavigator, createStackNavigator } from "react-navigation"
 import { SimpleLineIcons } from '@expo/vector-icons'
 
+import { DYNAMIC } from './components/reusable/common'
 import PromptScreen from "./components/PromptScreen"
 import WorkoutsScreen from "./components/WorkoutsScreen"
 import SessionScreen from "./components/SessionScreen"
@@ -15,6 +16,20 @@ import NameWorkoutScreen from './components/addWorkout/NameWorkoutScreen'
 import NotificationsScreen from './components/NotificationsScreen'
 import UpdateSessionScreen from './components/UpdateSessionScreen'
 
+const commonNavOptions = {
+  headerStyle: {
+    backgroundColor: DYNAMIC.secondary
+  },
+  headerTintColor: DYNAMIC.black,
+  headerTitleStyle: {
+    fontFamily: 'rubik-medium',
+  },
+  headerBackTitleStyle: {
+    fontFamily: 'rubik-medium',
+  },
+
+}
+
 const WorkoutStack = createStackNavigator({
   Workouts: {
     screen: WorkoutsScreen
@@ -26,14 +41,7 @@ const WorkoutStack = createStackNavigator({
     screen: UpdateSessionScreen
   }
 }, {
-  navigationOptions: {
-    headerTitleStyle: {
-      fontFamily: 'rubik-medium',
-    },
-    headerBackTitleStyle: {
-      fontFamily: 'rubik-medium',
-    }
-  }
+  navigationOptions: commonNavOptions
 })
 
 const RecordStack = createStackNavigator({
@@ -47,14 +55,7 @@ const RecordStack = createStackNavigator({
   ListAttributes: ListAttributesScreen,
   NameWorkout: NameWorkoutScreen
 }, {
-  navigationOptions: {
-    headerTitleStyle: {
-      fontFamily: 'rubik-medium',
-    },
-    headerBackTitleStyle: {
-      fontFamily: 'rubik-medium',
-    }
-  }
+  navigationOptions: commonNavOptions
 })
 
 const ProfileStack = createStackNavigator({
@@ -65,14 +66,7 @@ const ProfileStack = createStackNavigator({
     screen: NotificationsScreen
   }
 }, {
-  navigationOptions: {
-    headerTitleStyle: {
-      fontFamily: 'rubik-medium',
-    },
-    headerBackTitleStyle: {
-      fontFamily: 'rubik-medium',
-    }
-  }
+  navigationOptions: commonNavOptions
 })
 
 const Navigator = createBottomTabNavigator( // https://reactnavigation.org/docs/en/bottom-tab-navigator.html
@@ -107,9 +101,13 @@ const Navigator = createBottomTabNavigator( // https://reactnavigation.org/docs/
   {
     animationEnabled: true,
     tabBarOptions: {
-      activeTintColor: "#e91e63"
+      activeTintColor: DYNAMIC.link,
+      style: {
+        backgroundColor: DYNAMIC.primary,
+        color: DYNAMIC.text
+      }
     },
-    initialRouteName: 'Record',
+    initialRouteName: 'Workouts',
   }
 )
 

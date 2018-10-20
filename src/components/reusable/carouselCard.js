@@ -54,10 +54,10 @@ class CarouselCard extends React.Component {
       <TouchableWithoutFeedback onPress={this.toggleIdx}>
         <View style={styleCard(width)}>
           <View>
-            <View style={{ borderBottomColor: DYNAMIC.text1, borderBottomWidth: 1, marginBottom: 10, top: 64, zIndex: 2}} />
+            <View style={{ borderBottomColor: DYNAMIC.black1, borderBottomWidth: 1, marginBottom: 10, top: 64, zIndex: 2}} />
             <View style={{ paddingLeft: 16, paddingRight: 16 }}>
-              <Text style={[common.tajawal3, {fontSize: 18, color: DYNAMIC.text8}]}>{this.props.subHeader}</Text>
-              <Text style={[common.tajawal5, {fontSize: 26, color: DYNAMIC.text10, paddingBottom: 10}]}>{this.props.header}</Text>
+              <Text style={[common.tajawal3, {fontSize: 18, color: DYNAMIC.black8}]}>{this.props.subHeader}</Text>
+              <Text style={[common.tajawal5, {fontSize: 26, color: DYNAMIC.black10, paddingBottom: 10}]}>{this.props.header}</Text>
               <SideSwipe
                 index={this.state.carouselIdx}
                 itemWidth={width}
@@ -85,10 +85,10 @@ function styleCard(width) {
   return {
     width: width - 30,
     minHeight: 180,
-    backgroundColor: DYNAMIC.foreground,
+    backgroundColor: DYNAMIC.primary,
     marginBottom: 16,
     marginLeft: 6,
-    shadowColor: DYNAMIC.text10,
+    shadowColor: DYNAMIC.black10,
     shadowOpacity: 0.3,
     shadowOffset: { width: 1, height: 1 },
     shadowRadius: 2,

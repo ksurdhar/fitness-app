@@ -13,7 +13,7 @@ class BasicCard extends React.Component {
 
     return (
       <View style={styleCard(width)}>
-        <View style={{borderBottomColor: DYNAMIC.text1, borderBottomWidth: 1}}>
+        <View style={{borderBottomColor: DYNAMIC.black1, borderBottomWidth: 1}}>
           <View style={{ paddingLeft: 16, paddingRight: 16, paddingTop: 16, justifyContent: 'space-between', flexDirection: 'row'}}>
             { this.props.header }
           </View>
@@ -29,10 +29,10 @@ class BasicCard extends React.Component {
 function styleCard(width) {
   return {
     width: width - 30,
-    backgroundColor: DYNAMIC.foreground10,
+    backgroundColor: DYNAMIC.primary10,
     marginBottom: 16,
     marginLeft: 6,
-    shadowColor: DYNAMIC.text10,
+    shadowColor: DYNAMIC.black10,
     shadowOpacity: 0.3,
     shadowOffset: { width: 1, height: 1 },
     shadowRadius: 2,

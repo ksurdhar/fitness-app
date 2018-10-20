@@ -31,7 +31,7 @@ class NameWorkout extends React.Component {
           <View style={{paddingRight: 10}}>
             <AnimatedText
               value={'Create'}
-              textColors={[DYNAMIC.text3, DYNAMIC.link]}
+              textColors={[DYNAMIC.black3, DYNAMIC.link]}
               isEnabled={navigation.getParam('nextEnabled')}
               style={{fontSize: 18, fontFamily: 'rubik-medium'}}
             />
@@ -96,7 +96,7 @@ class NameWorkout extends React.Component {
       <Text style={{
         fontFamily: 'rubik-medium',
         fontSize:20,
-        color: DYNAMIC.text7
+        color: DYNAMIC.black7
       }}>
         Workout Name
       </Text>
@@ -105,7 +105,7 @@ class NameWorkout extends React.Component {
       <View style={[common.staticView]}>
         <KeyboardAwareScrollView style={{flex:1, justifyContent: 'start'}}>
           <View style={[common.row, {marginTop: 10}]}>
-            <Text style={[common.tajawal5, {fontSize: 22, color: DYNAMIC.text10, textAlign: 'center'}]}>
+            <Text style={[common.tajawal5, {fontSize: 22, color: DYNAMIC.black10, textAlign: 'center'}]}>
               {`Finally, give your workout \n a good name.`}
             </Text>
           </View>

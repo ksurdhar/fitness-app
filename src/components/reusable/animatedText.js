@@ -26,7 +26,7 @@ class AnimatedText extends React.Component {
   }
 
   render() {
-    const textColors = this.props.textColors ? this.props.textColors : [DYNAMIC.text1, DYNAMIC.text10]
+    const textColors = this.props.textColors ? this.props.textColors : [DYNAMIC.black1, DYNAMIC.black10]
     const animations = {
       text: this.animations.text.interpolate(
         this.basicInterpolation(textColors)

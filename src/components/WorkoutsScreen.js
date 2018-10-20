@@ -98,7 +98,7 @@ class WorkoutsScreen extends React.Component {
       <View>
         <View style={{
           height: 60,
-          borderTopColor: DYNAMIC.text1, borderTopWidth: 1,
+          borderTopColor: DYNAMIC.black1, borderTopWidth: 1,
           justifyContent: 'center'
         }}>
           <BasicButton onPress={ this.navigateToUpdateSession }>
@@ -109,7 +109,7 @@ class WorkoutsScreen extends React.Component {
         </View>
         <View style={{
           height: 60,
-          borderTopColor: DYNAMIC.text1, borderTopWidth: 1,
+          borderTopColor: DYNAMIC.black1, borderTopWidth: 1,
           justifyContent: 'center'
         }}>
           <BasicButton onPress={ this.removeSession }>
@@ -120,7 +120,7 @@ class WorkoutsScreen extends React.Component {
         </View>
         <View style={{
           height: 60,
-          borderTopColor: DYNAMIC.text1, borderTopWidth: 1,
+          borderTopColor: DYNAMIC.black1, borderTopWidth: 1,
           justifyContent: 'center'
         }}>
           <BasicButton onPress={ this.cancelModal }>
@@ -144,14 +144,14 @@ class WorkoutsScreen extends React.Component {
           transparent={true}>
           <TouchableWithoutFeedback onPress={ this.cancelModal }>
             <View style={{
-              backgroundColor: DYNAMIC.text7,
+              backgroundColor: DYNAMIC.black7,
               justifyContent: 'space-around',
               height,
               width
             }}>
               <TouchableWithoutFeedback onPress={(event) => { event.stopPropagation() }}>
                 <View style={{
-                  backgroundColor: DYNAMIC.foreground,
+                  backgroundColor: DYNAMIC.primary,
                   marginLeft: 20,
                   marginTop: 20,
                   marginRight: 20,
@@ -179,7 +179,7 @@ class WorkoutsScreen extends React.Component {
     const isEmpty = this.props.sessions.length === 0
 
     return (
-      <View style={common.staticView, { paddingLeft: 10, paddingRight: 10, backgroundColor: DYNAMIC.foreground5, height: height }}>
+      <View style={common.staticView, { paddingLeft: 10, paddingRight: 10, backgroundColor: DYNAMIC.secondary, height: height }}>
         <ScrollView style={{paddingTop: 10, marginBottom: 110}}>
           { isEmpty? this.renderEmptyMessage() : this.renderSessionCards() }
           { this.maybeSessionRenderModal() }
@@ -196,16 +196,16 @@ class WorkoutsScreen extends React.Component {
       const cardHeader = (
         <View style={{flexDirection: 'row', justifyContent: 'space-between', flex: 1}}>
           <View style={{flexDirection: 'column'}}>
-            <Text style={[common.tajawal3, {fontSize: 18, color: DYNAMIC.text8}]}>
+            <Text style={[common.tajawal3, {fontSize: 18, color: DYNAMIC.black8}]}>
               { dateString }
             </Text>
-            <Text style={[common.tajawal5, {fontSize: 26, color: DYNAMIC.text10}]}>
+            <Text style={[common.tajawal5, {fontSize: 26, color: DYNAMIC.black10}]}>
               {session.workoutName}
             </Text>
           </View>
           <TouchableOpacity onPress={() => this.setState({ isModalOpen: true, sessionEditing: session }) }>
             <View style={{ marginRight: 10 }}>
-              <Ionicons name='ios-more' size={36} color={DYNAMIC.text}/>
+              <Ionicons name='ios-more' size={36} color={DYNAMIC.black}/>
             </View>
           </TouchableOpacity>
         </View>
@@ -231,9 +231,9 @@ class WorkoutsScreen extends React.Component {
   maybeRenderNotes(text) {
     if (text.length > 0 ) {
       return (
-        <Text style={[common.tajawal5, {fontSize: 20, color: DYNAMIC.text9, paddingBottom: 10}]}>
+        <Text style={[common.tajawal5, {fontSize: 20, color: DYNAMIC.black9, paddingBottom: 10}]}>
           { `Notes: \n` }
-          <Text style={[common.tajawal3, {fontSize: 18, color: DYNAMIC.text8}]}>
+          <Text style={[common.tajawal3, {fontSize: 18, color: DYNAMIC.black8}]}>
             { text }
           </Text>
         </Text>
@@ -260,9 +260,9 @@ class WorkoutsScreen extends React.Component {
         })
         const attrString = strings.join(' / ')
         return (
-          <Text style={[common.tajawal5, {fontSize: 20, color: DYNAMIC.text9, paddingBottom: 10}]}>
+          <Text style={[common.tajawal5, {fontSize: 20, color: DYNAMIC.black9, paddingBottom: 10}]}>
             { exercise.name }
-            <Text style={[common.tajawal3, {fontSize: 18, color: DYNAMIC.text8}]}>
+            <Text style={[common.tajawal3, {fontSize: 18, color: DYNAMIC.black8}]}>
               {`\n${attrString}`}
             </Text>
           </Text>
@@ -278,7 +278,7 @@ class WorkoutsScreen extends React.Component {
     return (
       <View style={{ justifyContent: 'center', top: (height/2 - 130) }}>
         <View style={common.row}>
-          <Text style={[{ fontFamily: 'rubik-medium', fontSize: 24, textAlign: 'center', color: DYNAMIC.text9 }]}>
+          <Text style={[{ fontFamily: 'rubik-medium', fontSize: 24, textAlign: 'center', color: DYNAMIC.black9 }]}>
             {'You have not recorded a workout. Try recording one!'}
           </Text>
         </View>

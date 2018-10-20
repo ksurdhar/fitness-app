@@ -51,8 +51,8 @@ class Switch extends React.Component {
   }
 
   render() {
-    const defaultBackgroundColors = [DYNAMIC.text0, DYNAMIC.link]
-    const defaultBorderColors = [DYNAMIC.text1, DYNAMIC.link]
+    const defaultBackgroundColors = [DYNAMIC.black0, DYNAMIC.link]
+    const defaultBorderColors = [DYNAMIC.black1, DYNAMIC.link]
     const animations = {
       background: this.animations.background.interpolate(
         this.basicInterpolation(defaultBackgroundColors)
@@ -68,7 +68,7 @@ class Switch extends React.Component {
         <TouchableOpacity onPress={this.handleOnPress}>
           <Animated.View style={[styleSwitch(animations), this.props.style]} />
         </TouchableOpacity>
-        <Text style={{ position: 'absolute', left: 36, bottom: 1, fontSize: 24, fontFamily: 'rubik-medium', color: DYNAMIC.text7, textAlign: 'center'}}>
+        <Text style={{ position: 'absolute', left: 36, bottom: 1, fontSize: 24, fontFamily: 'rubik-medium', color: DYNAMIC.black7, textAlign: 'center'}}>
           { this.props.label }
         </Text>
       </View>

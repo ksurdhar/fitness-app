@@ -104,7 +104,7 @@ class DemoScreen extends React.Component {
         <Text style={{
           fontFamily: 'rubik-medium',
           fontSize:20,
-          color: DYNAMIC.text7
+          color: DYNAMIC.black7
         }}>
           {attr.type}
         </Text>
@@ -140,7 +140,7 @@ class DemoScreen extends React.Component {
       return this.state.exerciseNames.map((val, exIdx) => {
         const completeEl = (
           <AnimatedIcon
-            icon1={<FontAwesome name={'check'} color={DYNAMIC.text1} size={30}/>}
+            icon1={<FontAwesome name={'check'} color={DYNAMIC.black1} size={30}/>}
             icon2={<FontAwesome name={'check'} color={DYNAMIC.green7} size={30}/>}
             isEnabled={this.cardComplete(exIdx)}
             size={30}
@@ -171,13 +171,13 @@ class DemoScreen extends React.Component {
       <PressCapture onPress={this.handleCapture}>
         <View style={{flex: 1}}>
           // <Toast ref={(element) => { this.toast = element } }/>
-          <View style={[common.staticView, { paddingLeft: 10, paddingRight: 10, backgroundColor: DYNAMIC.foreground, height: height }]}>
+          <View style={[common.staticView, { paddingLeft: 10, paddingRight: 10, backgroundColor: DYNAMIC.primary, height: height }]}>
             <KeyboardAwareScrollView style={{paddingTop: 10}}>
               { this.renderExercises() }
               <View style={[common.row]}>
                 <TouchableOpacity onPress={() => this.addSession() }>
                   <View style={{padding: 14, backgroundColor: DYNAMIC.link}}>
-                    <Text style={{fontSize: 24, fontFamily: 'rubik-medium', textAlign: 'center', color: DYNAMIC.foreground}}>
+                    <Text style={{fontSize: 24, fontFamily: 'rubik-medium', textAlign: 'center', color: DYNAMIC.primary}}>
                       Record Session
                     </Text>
                   </View>

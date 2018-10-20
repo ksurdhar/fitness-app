@@ -55,9 +55,9 @@ class Button extends React.Component {
   }
 
   render() {
-    const defaultBackgroundColors = [DYNAMIC.text0, DYNAMIC.link]
-    const defaultBorderColors = [DYNAMIC.text1, DYNAMIC.link]
-    const defaultTextColors = [DYNAMIC.text1, DYNAMIC.text10]
+    const defaultBackgroundColors = [DYNAMIC.black0, DYNAMIC.link]
+    const defaultBorderColors = [DYNAMIC.black1, DYNAMIC.link]
+    const defaultTextColors = [DYNAMIC.black1, DYNAMIC.black10]
     const animations = {
       background: this.animations.background.interpolate(
         this.basicInterpolation(defaultBackgroundColors)

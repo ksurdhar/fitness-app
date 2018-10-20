@@ -30,7 +30,7 @@ class ListExercisesScreen extends React.Component {
           <TouchableOpacity onPress={navigation.getParam('toListAttributes')} disabled={!navigation.getParam('nextEnabled')}>
             <AnimatedText
               value={'Next'}
-              textColors={[DYNAMIC.text3, DYNAMIC.link]}
+              textColors={[DYNAMIC.black3, DYNAMIC.link]}
               isEnabled={navigation.getParam('nextEnabled')}
               style={{fontSize: 18, fontFamily: 'rubik-medium'}}
             />
@@ -173,15 +173,15 @@ class ListExercisesScreen extends React.Component {
         <View>
           <View style={[common.row, { marginTop: 10 }]}>
             <TouchableOpacity onPress={() => this.setState({ isCatalogOpen: false}) }>
-              <Text style={[common.tajawal3, {fontSize: 20, textAlign: 'center', color: isCatalogOpen ? DYNAMIC.link : DYNAMIC.text, textDecorationLine: isCatalogOpen ? 'underline' : 'none' }]}>
+              <Text style={[common.tajawal3, {fontSize: 20, textAlign: 'center', color: isCatalogOpen ? DYNAMIC.link : DYNAMIC.black, textDecorationLine: isCatalogOpen ? 'underline' : 'none' }]}>
                 {`Use the input  `}
               </Text>
             </TouchableOpacity>
-            <Text style={[common.tajawal3, {fontSize: 20, color: DYNAMIC.text, textAlign: 'center'}]}>
+            <Text style={[common.tajawal3, {fontSize: 20, color: DYNAMIC.black, textAlign: 'center'}]}>
               or
             </Text>
             <TouchableOpacity onPress={() => this.setState({ isCatalogOpen: true }) }>
-              <Text style={[common.tajawal3, {fontSize: 20, textAlign: 'center', color: isCatalogOpen ? DYNAMIC.text : DYNAMIC.link, textDecorationLine: isCatalogOpen ? 'none' : 'underline'  }]}>
+              <Text style={[common.tajawal3, {fontSize: 20, textAlign: 'center', color: isCatalogOpen ? DYNAMIC.black : DYNAMIC.link, textDecorationLine: isCatalogOpen ? 'none' : 'underline'  }]}>
                 {` select from a category.`}
               </Text>
             </TouchableOpacity>
@@ -193,7 +193,7 @@ class ListExercisesScreen extends React.Component {
     const renderExerciseCount = () => {
       return (
         <View style={[common.row,  {marginTop: 20}]}>
-          <Text style={{fontSize: 18, fontFamily: 'rubik-medium', color: DYNAMIC.text}}>{`${this.state.exerciseNames.length} exercises added`}</Text>
+          <Text style={{fontSize: 18, fontFamily: 'rubik-medium', color: DYNAMIC.black}}>{`${this.state.exerciseNames.length} exercises added`}</Text>
         </View>
       )
     }
@@ -203,7 +203,7 @@ class ListExercisesScreen extends React.Component {
         <Text style={{
           fontFamily: 'rubik-medium',
           fontSize:20,
-          color: DYNAMIC.text7
+          color: DYNAMIC.black7
         }}>
           Exercise Name
         </Text>
@@ -248,7 +248,7 @@ class ListExercisesScreen extends React.Component {
       if (!this.state.isCatalogOpen && noResults && moreThanOneCharacter) {
         return (
           <View style={[common.col, { marginTop: 40 }]}>
-            <Text style={[common.tajawal5, {fontSize: 18, color: DYNAMIC.text8 }]}>No results found.</Text>
+            <Text style={[common.tajawal5, {fontSize: 18, color: DYNAMIC.black8 }]}>No results found.</Text>
             <TouchableOpacity onPress={() => this.addExercise(this.state.textField) }>
               <Text style={[common.tajawal3, {fontSize: 18, color: DYNAMIC.link, textDecorationLine: 'underline' }]}>Add custom exercise?</Text>
             </TouchableOpacity>
@@ -279,7 +279,7 @@ class ListExercisesScreen extends React.Component {
             return (
               <TouchableOpacity onPress={ this.toggleExerciseViaCatalog.bind(this, exercise.name) }>
                 <View style={{flexDirection: 'row', justifyContent: 'left'}}>
-                  <Text style={{ fontSize: 24, fontFamily: 'rubik-medium', marginBottom: 6, color: DYNAMIC.text8 }}>
+                  <Text style={{ fontSize: 24, fontFamily: 'rubik-medium', marginBottom: 6, color: DYNAMIC.black8 }}>
                     { exercise.name }
                   </Text>
                   { maybeRenderCheck(exercise.name) }
@@ -307,7 +307,7 @@ class ListExercisesScreen extends React.Component {
                 <Text style={{
                   fontSize: 30,
                   fontFamily: 'rubik-medium',
-                  color: this.state.activeCategory === category ? DYNAMIC.link : DYNAMIC.text5,
+                  color: this.state.activeCategory === category ? DYNAMIC.link : DYNAMIC.black5,
                 }}>
                   { category }
                 </Text>

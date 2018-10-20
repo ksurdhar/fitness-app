@@ -46,7 +46,7 @@ class ExpandingCard extends React.Component {
     if (this.props.footer) {
       return (
         <View style={{
-          borderTopColor: DYNAMIC.text1,
+          borderTopColor: DYNAMIC.black1,
           borderTopWidth: 1,
           marginTop: 20, paddingLeft: 16,
           paddingRight: 16, paddingBottom: 16
@@ -72,7 +72,7 @@ class ExpandingCard extends React.Component {
 
     const deleteButton = (
       <View style={[common.row, {paddingTop: 16}]}>
-        <Feather name={"trash"} size={28} color={DYNAMIC.foreground}/>
+        <Feather name={"trash"} size={28} color={DYNAMIC.primary}/>
       </View>
     )
 
@@ -86,17 +86,17 @@ class ExpandingCard extends React.Component {
 
     return (
       <View style={styleCard(width)}>
-        <View style={{borderBottomColor: DYNAMIC.text1, borderBottomWidth: 1}}>
-          <Swipeout disabled={this.props.swipeable ? false : true} right={swipeoutBtns} backgroundColor={DYNAMIC.foreground}>
+        <View style={{borderBottomColor: DYNAMIC.black1, borderBottomWidth: 1}}>
+          <Swipeout disabled={this.props.swipeable ? false : true} right={swipeoutBtns} backgroundColor={DYNAMIC.primary}>
             <View style={{ paddingLeft: 16, paddingRight: 16, paddingTop: 16, justifyContent: 'space-between', flexDirection: 'row'}}>
               <View style={{flexDirection: 'column'}}>
                 { this.props.subHeader
-                  ? (<Text style={[common.tajawal3, {fontSize: 18, color: DYNAMIC.text8}]}>
+                  ? (<Text style={[common.tajawal3, {fontSize: 18, color: DYNAMIC.black8}]}>
                       {this.props.subHeader}
                     </Text>)
                   : null
                 }
-                <Text style={[common.tajawal5, {fontSize: 26, color: DYNAMIC.text10}]}>
+                <Text style={[common.tajawal5, {fontSize: 26, color: DYNAMIC.black10}]}>
                   {this.props.header}
                 </Text>
               </View>
@@ -112,7 +112,7 @@ class ExpandingCard extends React.Component {
           { this.props.expandable
             ? (<View style={[common.row, {marginTop: 10}]}>
                 <TouchableWithoutFeedback onPress={this.handleOnPress}>
-                  <Entypo name={this.state.expanded ? "chevron-up" : "chevron-down"} size={22} color={DYNAMIC.text3}/>
+                  <Entypo name={this.state.expanded ? "chevron-up" : "chevron-down"} size={22} color={DYNAMIC.black3}/>
                 </TouchableWithoutFeedback>
               </View>)
             : null
@@ -138,10 +138,10 @@ function styleExpand(cardHeight, expanded) {
 function styleCard(width) {
   return {
     width: width - 30,
-    backgroundColor: DYNAMIC.foreground,
+    backgroundColor: DYNAMIC.primary,
     marginBottom: 16,
     marginLeft: 6,
-    shadowColor: DYNAMIC.text10,
+    shadowColor: DYNAMIC.black10,
     shadowOpacity: 0.3,
     shadowOffset: { width: 1, height: 1 },
     shadowRadius: 2,

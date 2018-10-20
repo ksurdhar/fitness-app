@@ -127,7 +127,7 @@ class Input extends React.Component {
         this.basicInterpolation([DYNAMIC.green0, DYNAMIC.green])
       ),
       blueLine: this.animations.blueLine.interpolate(
-        this.basicInterpolation([DYNAMIC.text1, DYNAMIC.link])
+        this.basicInterpolation([DYNAMIC.black1, DYNAMIC.link])
       ),
       redLine: this.animations.redLine.interpolate(
         this.basicInterpolation([DYNAMIC.red0, DYNAMIC.red])
@@ -142,7 +142,7 @@ class Input extends React.Component {
         return (
           <AnimatedText
             value={this.props.subLabel}
-            textColors={[DYNAMIC.foreground, DYNAMIC.text4]}
+            textColors={[DYNAMIC.primary, DYNAMIC.black4]}
             isEnabled={this.state.isFocused}
             style={{ marginLeft: 10, marginTop: 1, fontFamily: 'rubik-medium', fontSize: 18, textAlign: 'center'}}
           />

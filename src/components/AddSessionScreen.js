@@ -71,7 +71,7 @@ class AddSessionScreen extends React.Component {
           <View style={{paddingRight: 10}}>
             <AnimatedText
               value={'Record'}
-              textColors={[DYNAMIC.text3, DYNAMIC.link]}
+              textColors={[DYNAMIC.black3, DYNAMIC.link]}
               isEnabled={navigation.getParam('nextEnabled')}
               style={{fontSize: 18, fontFamily: 'rubik-medium'}}
             />
@@ -101,7 +101,7 @@ class AddSessionScreen extends React.Component {
       exerciseNames: params.exerciseNames,
       prevSession
     })
-    
+
     this.props.navigation.setParams({
       nextEnabled: false,
       addSession: this.addSession
@@ -116,7 +116,6 @@ class AddSessionScreen extends React.Component {
         return attr.val && attr.val.length > 0
       })
     })
-    console.log('necessaryValuesPopulated', necessaryValuesPopulated)
 
     if (necessaryValuesPopulated && nextEnabled === false) {
       this.props.navigation.setParams({ nextEnabled: true })
@@ -210,7 +209,7 @@ class AddSessionScreen extends React.Component {
         <Text style={{
           fontFamily: 'rubik-medium',
           fontSize:20,
-          color: DYNAMIC.text7
+          color: DYNAMIC.black7
         }}>
           {attr.type}
         </Text>
@@ -248,7 +247,7 @@ class AddSessionScreen extends React.Component {
       return this.state.exerciseNames.map((val, exIdx) => {
         const completeEl = (
           <AnimatedIcon
-            icon1={<FontAwesome name={'check'} color={DYNAMIC.text1} size={30}/>}
+            icon1={<FontAwesome name={'check'} color={DYNAMIC.black1} size={30}/>}
             icon2={<FontAwesome name={'check'} color={DYNAMIC.green7} size={30}/>}
             isEnabled={this.cardComplete(exIdx)}
             size={30}
@@ -298,7 +297,7 @@ class AddSessionScreen extends React.Component {
 
     return (
       <PressCapture onPress={this.handleCapture}>
-        <View style={[common.staticView, { paddingLeft: 10, paddingRight: 10, backgroundColor: DYNAMIC.foreground5, height: height }]}>
+        <View style={[common.staticView, { paddingLeft: 10, paddingRight: 10, backgroundColor: DYNAMIC.primary5, height: height }]}>
           <KeyboardAwareScrollView style={{paddingTop: 10}}>
             { this.renderExercises() }
             { this.renderNoteCard() }
