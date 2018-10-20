@@ -10,7 +10,9 @@ import {
   Keyboard,
   View,
   Picker,
-  Button
+  Button,
+  TouchableOpacity,
+  StatusBar
 } from 'react-native'
 import Swipeout from 'react-native-swipeout'
 import { Feather } from '@expo/vector-icons'
@@ -35,15 +37,15 @@ const mapStateToProps = (state, ownProps) => {
 class PromptScreen extends React.Component {
   static navigationOptions = ({ navigation }) => {
     return {
+      // header: null,
       title: 'Record',
       tabBarLabel: 'Record',
       headerRight: (
-        <View style={{paddingRight: 10}}>
-          <Button
-            title="Add"
-            onPress={navigation.getParam('toAddWorkoutFlow')}
-          />
-        </View>
+        <TouchableOpacity onPress={navigation.getParam('toAddWorkoutFlow')}>
+          <Text style={{ padding: 10, paddingLeft: 30, fontSize: 18, color: DYNAMIC.link, fontFamily: 'rubik-medium'}}>
+            Add Workout
+          </Text>
+        </TouchableOpacity>
       )
     }
   }
@@ -63,6 +65,7 @@ class PromptScreen extends React.Component {
 
   componentDidMount() {
     this.props.navigation.setParams({ toAddWorkoutFlow: this.toAddWorkoutFlow })
+    // StatusBar.setHidden(true)
   }
 
   toAddWorkoutFlow = () => {
@@ -171,17 +174,16 @@ class PromptScreen extends React.Component {
       </View>
     )
   }
+
   render() {
     const { height } = Dimensions.get('window')
     const isEmpty = this.props.workouts.length === 0
 
     return (
-      <View style={common.staticView, {paddingLeft: 10, paddingRight: 10, backgroundColor: DYNAMIC.foreground, height: height}}>
-        {
-          isEmpty
-          ? this.renderEmptyMessage()
-          : this.renderWorkoutButtons()
-      }
+      <View style={{backgroundColor: DYNAMIC.foreground, height: height, justifyContent: 'flex-start'}}>
+        <View style={[common.staticView, { paddingLeft: 10, paddingRight: 10 }]}>
+          { isEmpty ? this.renderEmptyMessage() : this.renderWorkoutButtons() }
+        </View>
       </View>
     )
   }

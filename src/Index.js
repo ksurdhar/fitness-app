@@ -15,6 +15,8 @@ import { addNotificationSuccess, removeNotificationSuccess, recievedNotification
 import * as UserActions from './redux/actions/userActions'
 import { rootRef } from './firebase.js'
 
+import { common, DYNAMIC } from './components/reusable/common'
+
 import Config from 'react-native-config'
 import config from '../config'
 

@@ -29,6 +29,7 @@ import PressCapture from './reusable/pressCapture'
 import { common, DYNAMIC } from './reusable/common'
 import * as notificationActions from '../redux/actions/notificationActions'
 import * as sessionActions from '../redux/actions/sessionActions'
+import { openToast } from '../redux/actions/toastActions'
 
 // SHAPE OF EXERCISE DATA
 // Object {
@@ -140,6 +141,7 @@ class AddSessionScreen extends React.Component {
     })
     this.props.navigation.dispatch(resetAction)
     this.props.navigation.navigate('Workouts')
+    this.props.openToast(`${this.state.workoutName} workout recorded.`)
   }
 
   handleCapture = () => {
@@ -294,6 +296,7 @@ const mapDispatchToProps = (dispatch) => {
   return {
     addSession: (exerciseNames, exerciseData, uid, workoutID, workoutName, noteText) => { dispatch(sessionActions.addSession(exerciseNames, exerciseData, uid, workoutID, workoutName, noteText)) },
     updateNotification: (workoutID, patchObj) => { dispatch(notificationActions.updateNotification(workoutID, patchObj))},
+    openToast: (message) => { dispatch(openToast({ toastString: message }))}
   }
 }
 

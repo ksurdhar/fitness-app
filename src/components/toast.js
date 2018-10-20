@@ -12,8 +12,6 @@ import { connect } from 'react-redux'
 import * as toastActions from '../redux/actions/toastActions.js'
 import { common, DYNAMIC } from './reusable/common'
 
-// props.toastState.isOpen, toastString, type [success, error]
-
 class Toast extends React.Component {
   animations = {
     opacity: new Animated.Value(0),
@@ -53,6 +51,18 @@ class Toast extends React.Component {
     }
   }
 
+  maybeRenderString = () => {
+    if ( this.props.toastState.toastString.length > 0) {
+      return (
+        <Text style={{fontSize: 18, fontFamily: 'rubik-medium', color: DYNAMIC.foreground, marginTop: 25}}>
+          { this.props.toastState.toastString }
+        </Text>
+      )
+    } else {
+      return null
+    }
+  }
+
   render() {
     const { width, height } = Dimensions.get('window')
     // actual min and max value
@@ -61,21 +71,17 @@ class Toast extends React.Component {
         this.basicInterpolation([0, 1])
       ),
       height: this.animations.height.interpolate(
-        this.basicInterpolation([0, 80])
+        this.basicInterpolation([0, 70])
       )
     }
 
     return (
       <View style={{zIndex: 10, position: 'absolute'}}>
         <Animated.View style={[{
-          paddingTop: 25,
-          paddingBottom: 25,
           width: width,
           backgroundColor: DYNAMIC.link
         }, common.row, animatedStyles(animations)]}>
-          <Text style={{fontSize: 18, fontFamily: 'rubik-medium', color: DYNAMIC.foreground}}>
-            { this.props.toastState.toastString }
-          </Text>
+         { this.maybeRenderString() }
         </Animated.View>
       </View>
     )

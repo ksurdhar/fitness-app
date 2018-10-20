@@ -36,16 +36,16 @@ class ListAttributesScreen extends React.Component {
     return {
       title: `Attributes`,
       headerRight: (
-        <View style={{paddingRight: 10}}>
-          <TouchableOpacity onPress={navigation.getParam('toNameWorkout')} disabled={!navigation.getParam('nextEnabled')}>
+        <TouchableOpacity onPress={navigation.getParam('toNameWorkout')} disabled={!navigation.getParam('nextEnabled')}>
+          <View style={{paddingRight: 10}}>
             <AnimatedText
               value={'Next'}
               textColors={[DYNAMIC.text10, DYNAMIC.link]}
               isEnabled={navigation.getParam('nextEnabled')}
               style={{fontSize: 18}}
             />
-          </TouchableOpacity>
-        </View>
+          </View>
+        </TouchableOpacity>
       )
     }
   }

@@ -217,7 +217,6 @@ class UpdateSessionScreen extends React.Component {
       </ExpandingCard>
     )
   }
-  // { this.renderNoteCard() }
 
   render() {
     const { width, height } = Dimensions.get('window')
