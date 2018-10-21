@@ -8,6 +8,7 @@ import { format } from 'date-fns'
 import * as authActions from '../redux/actions/authActions.js'
 import { firebaseApp } from '../firebase.js'
 import { common, DYNAMIC } from './reusable/common'
+import BasicButton from './reusable/basicButton'
 
 class ProfileScreen extends React.Component {
   static navigationOptions = {
@@ -65,7 +66,6 @@ class ProfileScreen extends React.Component {
   }
 
   toNotifications = () => {
-    console.log('notifications!')
     this.props.navigation.navigate('Notifications')
   }
 
@@ -78,31 +78,31 @@ class ProfileScreen extends React.Component {
 
     return (
       <View style={common.staticView, {paddingLeft: 10, paddingRight: 10, backgroundColor: DYNAMIC.white, height: height}}>
-        <View style={[{ borderBottomColor: DYNAMIC.black1, borderBottomWidth: 1, }]}>
-          <View style={[common.row, {marginTop: 20}]}>
-            <Text style={[common.tajawal5, {fontSize: 22, color: DYNAMIC.black10, textAlign: 'center'}]}>
-              {this.props.user.email}
-            </Text>
-          </View>
-          <View style={[common.row, {marginTop: 20}]}>
-            <Text style={[common.tajawal5, {fontSize: 22, color: DYNAMIC.black10, textAlign: 'center'}]}>
-              {`Number of workouts this week: ${this.state.numberSessionsThisWeek}`}
-            </Text>
-          </View>
-          <View style={[common.row, {marginTop: 20}]}>
-            <Text style={[common.tajawal5, {fontSize: 22, color: DYNAMIC.black10, textAlign: 'center'}]}>
-              { lastWorkoutText }
-            </Text>
-          </View>
+        <View style={[common.row, {marginTop: 20, justifyContent: 'flex-start'}]}>
+          <Text style={[common.tajawal5, {fontSize: 26, color: DYNAMIC.black9}]}>
+            {this.props.user.email}
+          </Text>
         </View>
-        <Button
-          title='Notifications'
-          onPress={() => this.toNotifications()}
-        />
-        <Button
-          title='Logout'
-          onPress={() => this.logout()}
-        />
+        <View style={[common.row, {marginTop: 16, justifyContent: 'flex-start'}]}>
+          <Text style={[common.tajawal5, {fontSize: 20, color: DYNAMIC.black9}]}>
+            {`Weekly workouts recorded: ${this.state.numberSessionsThisWeek}`}
+          </Text>
+        </View>
+        <View style={[common.row, {marginTop: 16, justifyContent: 'flex-start'}]}>
+          <Text style={[common.tajawal5, {fontSize: 20, color: DYNAMIC.black9}]}>
+            { lastWorkoutText }
+          </Text>
+        </View>
+        <BasicButton style={{marginLeft: -10, marginBottom: -10, justifyContent: 'flex-start'}} onPress={() => this.toNotifications()}>
+          <Text style={[ common.tajawal5, {fontSize: 20, color: DYNAMIC.primary, marginTop: 10}]}>
+            Notification Preferences
+          </Text>
+        </BasicButton>
+        <BasicButton style={{marginLeft: -10, maginTop: -10, justifyContent: 'flex-start'}} onPress={() => this.logout()}>
+          <Text style={[ common.tajawal5, {fontSize: 20, color: DYNAMIC.primary, marginTop: 10}]}>
+            Logout
+          </Text>
+        </BasicButton>
       </View>
     )
   }
