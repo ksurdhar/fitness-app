@@ -179,7 +179,7 @@ class WorkoutsScreen extends React.Component {
     const isEmpty = this.props.sessions.length === 0
 
     return (
-      <View style={common.staticView, { paddingLeft: 10, paddingRight: 10, backgroundColor: DYNAMIC.secondary, height: height }}>
+      <View style={common.staticView, { paddingLeft: 10, paddingRight: 10, backgroundColor: DYNAMIC.primary1, height: height }}>
         <ScrollView style={{paddingTop: 10, marginBottom: 110}}>
           { isEmpty? this.renderEmptyMessage() : this.renderSessionCards() }
           { this.maybeSessionRenderModal() }
@@ -199,7 +199,7 @@ class WorkoutsScreen extends React.Component {
             <Text style={[common.tajawal3, {fontSize: 18, color: DYNAMIC.black8}]}>
               { dateString }
             </Text>
-            <Text style={[common.tajawal5, {fontSize: 26, color: DYNAMIC.black10}]}>
+            <Text style={[common.tajawal5, {fontSize: 26, color: DYNAMIC.primary10}]}>
               {session.workoutName}
             </Text>
           </View>

@@ -23,7 +23,7 @@ import AnimatedIcon from './reusable/animatedIcon'
 import AnimatedText from './reusable/animatedText'
 import ExpandingCard from './reusable/expandingCard'
 import KButton from './reusable/button'
-import Input from './reusable/input'
+import KInput from './reusable/input'
 import Switch from './reusable/switch'
 import PressCapture from './reusable/pressCapture'
 import { common, DYNAMIC } from './reusable/common'
@@ -219,7 +219,7 @@ class AddSessionScreen extends React.Component {
       const prevVal = this.getPreviousValueForAttr(exVal, attr.type)
       return (
         <View key={attrIdx} style={{paddingTop: 20}}>
-          <Input
+          <KInput
             value={attrVal}
             label={labelElement}
             subLabel={ prevVal ? `${prevVal} previously` : '' }
@@ -279,7 +279,7 @@ class AddSessionScreen extends React.Component {
         expandable={false}
         cardHeights={[600, 600]}
       >
-      <Input
+      <KInput
         value={this.state.noteText}
         onChangeText={(val) => { this.setState({noteText: val}) }}
         fontSize={20}
@@ -297,7 +297,7 @@ class AddSessionScreen extends React.Component {
 
     return (
       <PressCapture onPress={this.handleCapture}>
-        <View style={[common.staticView, { paddingLeft: 10, paddingRight: 10, backgroundColor: DYNAMIC.primary5, height: height }]}>
+        <View style={[common.staticView, { paddingLeft: 10, paddingRight: 10, backgroundColor: DYNAMIC.primary1, height: height }]}>
           <KeyboardAwareScrollView style={{paddingTop: 10}}>
             { this.renderExercises() }
             { this.renderNoteCard() }

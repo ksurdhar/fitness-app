@@ -17,10 +17,15 @@ const COLORS = {
   almond: '237, 228, 203',
   minionYellow: '247, 211, 84',
 
+  prussianBlue: '0, 52, 89',
+  richBlack: '0, 23, 31',
+  white: '255, 255, 255',
+  unitedNationsBlue: '94, 124, 226',
+
   // used
   peach: '253, 114, 114',
   navy: '24, 44, 97',
-  white: '248, 248, 255',
+  ghostWhite: '248, 248, 255',
   summerSky: '52, 172, 224',
   fluorescentRed: '255, 82, 82',
   celestialGreen: '51, 217, 178',
@@ -28,11 +33,12 @@ const COLORS = {
 }
 
 const TYPES = {
-  primary: 'minionYellow',
+  primary: 'unitedNationsBlue',
   secondary: 'minionYellow',
+  text: 'unitedNationsBlue',
   black: 'gray',
-  white: 'white',
-  link: 'white',       // interactable color
+  white: 'ghostWhite',
+  link: 'minionYellow',       // interactable color
   red: 'fluorescentRed',   // error color
   green: 'celestialGreen', // success color
 }

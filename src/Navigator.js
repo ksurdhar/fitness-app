@@ -16,18 +16,25 @@ import NameWorkoutScreen from './components/addWorkout/NameWorkoutScreen'
 import NotificationsScreen from './components/NotificationsScreen'
 import UpdateSessionScreen from './components/UpdateSessionScreen'
 
+const commonTabOptions = {
+  activeTintColor: DYNAMIC.link,
+  style: {
+    backgroundColor: DYNAMIC.primary,
+    color: DYNAMIC.white
+  }
+}
+
 const commonNavOptions = {
   headerStyle: {
-    backgroundColor: DYNAMIC.secondary
+    backgroundColor: DYNAMIC.primary
   },
-  headerTintColor: DYNAMIC.black,
+  headerTintColor: DYNAMIC.white,
   headerTitleStyle: {
     fontFamily: 'rubik-medium',
   },
   headerBackTitleStyle: {
     fontFamily: 'rubik-medium',
   },
-
 }
 
 const WorkoutStack = createStackNavigator({
@@ -100,13 +107,7 @@ const Navigator = createBottomTabNavigator( // https://reactnavigation.org/docs/
   },
   {
     animationEnabled: true,
-    tabBarOptions: {
-      activeTintColor: DYNAMIC.link,
-      style: {
-        backgroundColor: DYNAMIC.primary,
-        color: DYNAMIC.text
-      }
-    },
+    tabBarOptions: commonTabOptions,
     initialRouteName: 'Workouts',
   }
 )

@@ -29,7 +29,7 @@ class BasicCard extends React.Component {
 function styleCard(width) {
   return {
     width: width - 30,
-    backgroundColor: DYNAMIC.primary10,
+    backgroundColor: DYNAMIC.white,
     marginBottom: 16,
     marginLeft: 6,
     shadowColor: DYNAMIC.black10,

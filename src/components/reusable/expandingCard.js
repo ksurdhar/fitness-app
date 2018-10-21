@@ -36,7 +36,6 @@ class ExpandingCard extends React.Component {
   }
 
   handleOnPress = () => {
-    console.log('toggling expand!', this.state.expanded)
     this.setState({
       expanded: !this.state.expanded
     })
@@ -87,7 +86,7 @@ class ExpandingCard extends React.Component {
     return (
       <View style={styleCard(width)}>
         <View style={{borderBottomColor: DYNAMIC.black1, borderBottomWidth: 1}}>
-          <Swipeout disabled={this.props.swipeable ? false : true} right={swipeoutBtns} backgroundColor={DYNAMIC.primary}>
+          <Swipeout disabled={this.props.swipeable ? false : true} right={swipeoutBtns} backgroundColor={DYNAMIC.white}>
             <View style={{ paddingLeft: 16, paddingRight: 16, paddingTop: 16, justifyContent: 'space-between', flexDirection: 'row'}}>
               <View style={{flexDirection: 'column'}}>
                 { this.props.subHeader
@@ -138,7 +137,7 @@ function styleExpand(cardHeight, expanded) {
 function styleCard(width) {
   return {
     width: width - 30,
-    backgroundColor: DYNAMIC.primary,
+    backgroundColor: DYNAMIC.white,
     marginBottom: 16,
     marginLeft: 6,
     shadowColor: DYNAMIC.black10,
