@@ -223,7 +223,7 @@ class UpdateSessionScreen extends React.Component {
 
     return (
       <PressCapture onPress={this.handleCapture}>
-        <View style={[common.staticView, { paddingLeft: 10, paddingRight: 10, backgroundColor: DYNAMIC.primary5, height: height }]}>
+        <View style={[common.staticView, { paddingLeft: 10, paddingRight: 10, backgroundColor: DYNAMIC.primary1, height: height }]}>
           <KeyboardAwareScrollView style={{paddingTop: 10}}>
           { this.renderExercises() }
           </KeyboardAwareScrollView>

@@ -98,7 +98,7 @@ class WorkoutsScreen extends React.Component {
           justifyContent: 'center'
         }}>
           <BasicButton onPress={ this.navigateToUpdateSession }>
-            <Text style={[ common.tajawal5, common.mdFont, {color: DYNAMIC.link, marginTop: 10}]}>
+            <Text style={[ common.tajawal5, common.mdFont, {color: DYNAMIC.primary, marginTop: 10}]}>
               Edit
             </Text>
           </BasicButton>
@@ -109,7 +109,7 @@ class WorkoutsScreen extends React.Component {
           justifyContent: 'center'
         }}>
           <BasicButton onPress={ this.removeSession }>
-            <Text style={[ common.tajawal5, common.mdFont, {color: DYNAMIC.link, marginTop: 10}]}>
+            <Text style={[ common.tajawal5, common.mdFont, {color: DYNAMIC.primary, marginTop: 10}]}>
               Delete
             </Text>
           </BasicButton>
@@ -120,7 +120,7 @@ class WorkoutsScreen extends React.Component {
           justifyContent: 'center'
         }}>
           <BasicButton onPress={ this.cancelModal }>
-            <Text style={[ common.tajawal5, common.mdFont, {color: DYNAMIC.link, marginTop: 10}]}>
+            <Text style={[ common.tajawal5, common.mdFont, {color: DYNAMIC.primary, marginTop: 10}]}>
               Cancel
             </Text>
           </BasicButton>
@@ -147,7 +147,7 @@ class WorkoutsScreen extends React.Component {
             }}>
               <TouchableWithoutFeedback onPress={(event) => { event.stopPropagation() }}>
                 <View style={{
-                  backgroundColor: DYNAMIC.primary,
+                  backgroundColor: DYNAMIC.white,
                   marginLeft: 20,
                   marginTop: 20,
                   marginRight: 20,

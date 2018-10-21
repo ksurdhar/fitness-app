@@ -104,11 +104,6 @@ class NotificationsScreen extends React.Component {
     })
   }
 
-  componentDidUpdate() {
-    // console.log('cmp update', this.props.notifications)
-    // console.log('PROMPT USER DATA', this.props.userData)
-  }
-
   addNotification = (workoutID, workoutName) => {
     const dateObj = new Date()
     const hours = dateObj.getUTCHours()
@@ -218,7 +213,7 @@ class NotificationsScreen extends React.Component {
         <TouchableWithoutFeedback onPress={() => { this.setState({ modalType: null }) }}>
           <View style={{ backgroundColor: DYNAMIC.black7, height, justifyContent: 'flex-end' }}>
             <TouchableWithoutFeedback onPress={(event) => { event.stopPropagation() }}>
-              <View style={{ backgroundColor: DYNAMIC.primary }}>
+              <View style={{ backgroundColor: DYNAMIC.white }}>
                 { this[`render${this.state.modalType}Modal`]() }
               </View>
             </TouchableWithoutFeedback>
@@ -231,7 +226,7 @@ class NotificationsScreen extends React.Component {
   renderHelpModal = () => {
     return (
       <View style={[common.row, { marginTop: 20, marginLeft: 20, marginRight: 20 }]}>
-        <Text style={[common.tajawal3, {fontSize: 20, color: DYNAMIC.black10, textAlign: 'left'}]}>
+        <Text style={[common.tajawal3, {fontSize: 20, color: DYNAMIC.black, textAlign: 'left'}]}>
           Set reminders for specific workouts by enabling notifications. {'\n'}{'\n'}
           Once a notification is enabled, you can tailor their delivery time. {'\n'}{'\n'}
           You will receive a notification after recording a session of a given workout. {'\n'}{'\n'}
@@ -260,7 +255,7 @@ class NotificationsScreen extends React.Component {
     return (
       <View>
         <View style={[common.row, { marginTop: 20, marginLeft: 10, marginRight: 10 }]}>
-          <Text style={[common.tajawal5, {fontSize: 22, color: DYNAMIC.black10, textAlign: 'center'}]}>
+          <Text style={[common.tajawal5, {fontSize: 22, color: DYNAMIC.black, textAlign: 'center'}]}>
             { `Send notifications for\n${workout.name}` }
           </Text>
         </View>
@@ -281,7 +276,7 @@ class NotificationsScreen extends React.Component {
         </Picker>
 
         <View style={common.row}>
-          <Text style={[common.tajawal5, {fontSize: 20, color: DYNAMIC.black10, textAlign: 'center'}]}>
+          <Text style={[common.tajawal5, {fontSize: 20, color: DYNAMIC.black, textAlign: 'center'}]}>
             At
           </Text>
         </View>
