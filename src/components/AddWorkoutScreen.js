@@ -41,11 +41,7 @@ const mapStateToProps = (state, ownProps) => {
 class AddWorkoutScreen extends React.Component {
   static navigationOptions = ({navigation}) => {
     return {
-      title: `Define Workout`,
-      tabBarLabel: 'Record',
-      tabBarIcon: ({ tintColor }) => (
-        <Text>Record</Text>
-      )
+      title: `Define Workout`
     }
   }
 

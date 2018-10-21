@@ -32,11 +32,7 @@ const mapStateToProps = (state, ownProps) => {
 
 class WorkoutsScreen extends React.Component {
   static navigationOptions = {
-    title: 'Workouts',
-    tabBarLabel: 'Workouts',
-    tabBarIcon: ({ tintColor }) => (
-      <Feather name={"trash"} size={28}/>
-    ),
+    title: 'Workouts'
   }
 
   constructor(props) {

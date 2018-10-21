@@ -18,10 +18,10 @@ import UpdateSessionScreen from './components/UpdateSessionScreen'
 
 const commonTabOptions = {
   activeTintColor: DYNAMIC.link,
+  inactiveTintColor: DYNAMIC.white,
   style: {
     backgroundColor: DYNAMIC.primary,
-    color: DYNAMIC.white
-  }
+  },
 }
 
 const commonNavOptions = {
@@ -81,9 +81,10 @@ const Navigator = createBottomTabNavigator( // https://reactnavigation.org/docs/
     Workouts: {
       screen: WorkoutStack,
       navigationOptions: {
-        tabBarIcon: ({ tintColor }) => (
-          <SimpleLineIcons name={"notebook"} size={24}/>
-        )
+        tabBarLabel: 'Workouts',
+        tabBarIcon: ({ tintColor }) => {
+          return <SimpleLineIcons name={"notebook"} size={24} color={tintColor}/>
+        },
       }
     },
     Record: {
@@ -91,8 +92,8 @@ const Navigator = createBottomTabNavigator( // https://reactnavigation.org/docs/
       navigationOptions: {
         tabBarLabel: 'Record',
         tabBarIcon: ({ tintColor }) => (
-          <SimpleLineIcons name={"pencil"} size={24}/>
-        )
+          <SimpleLineIcons name={"pencil"} size={24} color={tintColor}/>
+        ),
       }
     },
     Profile: {
@@ -100,7 +101,7 @@ const Navigator = createBottomTabNavigator( // https://reactnavigation.org/docs/
       navigationOptions: {
         tabBarLabel: 'Profile',
         tabBarIcon: ({ tintColor }) => (
-          <SimpleLineIcons name={"user"} size={24}/>
+          <SimpleLineIcons name={"user"} size={24} color={tintColor}/>
         ),
       }
     }

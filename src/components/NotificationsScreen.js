@@ -75,7 +75,7 @@ class NotificationsScreen extends React.Component {
       headerRight: (
         <View style={{paddingRight: 10}}>
           <TouchableOpacity onPress={navigation.getParam('openHelpModal')}>
-            <Ionicons name='ios-help-circle-outline' color={DYNAMIC.black8} size={30}/>
+            <Ionicons name='ios-help-circle-outline' color={DYNAMIC.white} size={30}/>
           </TouchableOpacity>
         </View>
       )
@@ -198,9 +198,9 @@ class NotificationsScreen extends React.Component {
         <TouchableOpacity onPress={() => { this.setState({ modalType: NOTIFICATION_MODALS.scheduling, modalWorkoutID: workout.id })}}>
           <Text style={[common.tajawal3, {fontSize: 20, color: DYNAMIC.black6}]}>
             {`deliver `}
-            <Text style={{ textDecorationLine: 'underline' }}>{`${interval} days`}</Text>
+            <Text style={{ textDecorationLine: 'underline', color: DYNAMIC.primary8 }}>{`${interval} days`}</Text>
             {` after a workout \nat `}
-            <Text style={{ textDecorationLine: 'underline' }}>{ formattedTime }</Text>
+            <Text style={{ textDecorationLine: 'underline', color: DYNAMIC.primary8 }}>{ formattedTime }</Text>
           </Text>
         </TouchableOpacity>
       </View>

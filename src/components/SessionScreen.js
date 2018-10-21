@@ -11,7 +11,6 @@ class SessionScreen extends React.Component {
 
     return {
       title: `${params.session.workoutName} Session`,
-      tabBarLabel: 'Workouts',
     }
   }
 

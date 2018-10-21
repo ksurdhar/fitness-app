@@ -39,7 +39,6 @@ class PromptScreen extends React.Component {
   static navigationOptions = ({ navigation }) => {
     return {
       title: 'Record',
-      tabBarLabel: 'Record',
       headerRight: (
         <TouchableOpacity onPress={navigation.getParam('toAddWorkoutFlow')}>
           <Text style={{ padding: 10, paddingLeft: 30, fontSize: 18, color: DYNAMIC.link, fontFamily: 'rubik-medium'}}>
@@ -152,17 +151,11 @@ class PromptScreen extends React.Component {
       )
     })
     return (
-      <View style={[{ borderBottomColor: DYNAMIC.black1, borderBottomWidth: 1, }]}>
-        <View style={[common.row, {margin: 10}]}>
-          <Text style={[common.tajawal5, {fontSize: 22, color: DYNAMIC.black10, textAlign: 'center'}]}>
-            {`Choose a workout:`}
-          </Text>
-        </View>
+      <View style={[{ borderBottomColor: DYNAMIC.black1, borderBottomWidth: 1, marginTop: -10 }]}>
         { workoutButtons }
       </View>
     )
   }
-
   renderEmptyMessage = () => {
     const { height } = Dimensions.get('window')
     return (
