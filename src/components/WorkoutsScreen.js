@@ -129,7 +129,7 @@ class WorkoutsScreen extends React.Component {
     )
   }
 
-  maybeSessionRenderModal() {
+  maybeRenderSessionModal() {
     const { height, width } = Dimensions.get('window')
     const session = this.state.sessionEditing
 
@@ -152,12 +152,21 @@ class WorkoutsScreen extends React.Component {
                   marginTop: 20,
                   marginRight: 20,
                   marginBottom: 20,
-                  height: height - 80,
                   width: width - 40,
-                  padding: 10
+                  padding: 10,
+                  paddingTop: 30,
+                  justifyContent: 'flex-end'
                 }}>
-                  <Text>{`${session.workoutName} session`}</Text>
-                  <Text>{ format(session.date, 'MMM D') }</Text>
+                  <View style={{flexDirection: 'row', justifyContent: 'center'}}>
+                    <Text style={[common.tajawal5, {fontSize: 30, color: DYNAMIC.primary}]}>
+                      {session.workoutName}
+                    </Text>
+                  </View>
+                  <View style={{flexDirection: 'row', justifyContent: 'center', paddingBottom: 20}}>
+                    <Text style={[common.tajawal3, {fontSize: 18, color: DYNAMIC.black8}]}>
+                      { format(session.date, 'dddd, MMM D [at] h:mm A') }
+                    </Text>
+                  </View>
                   { this.renderModalOptionList() }
                 </View>
               </TouchableWithoutFeedback>
@@ -178,7 +187,7 @@ class WorkoutsScreen extends React.Component {
       <View style={common.staticView, { paddingLeft: 10, paddingRight: 10, backgroundColor: DYNAMIC.primary1, height: height }}>
         <ScrollView style={{paddingTop: 10, marginBottom: 110}}>
           { isEmpty? this.renderEmptyMessage() : this.renderSessionCards() }
-          { this.maybeSessionRenderModal() }
+          { this.maybeRenderSessionModal() }
         </ScrollView>
       </View>
     )
@@ -187,7 +196,6 @@ class WorkoutsScreen extends React.Component {
   renderSessionCards = () => {
     return this.props.sessions.sort((a, b) => b.date - a.date).map((session) => {
       const dateString = format(session.date, 'dddd, MMM D [at] h:mm A')
-      const headerString = format(session.date, 'MMM D')
 
       const cardHeader = (
         <View style={{flexDirection: 'row', justifyContent: 'space-between', flex: 1}}>
