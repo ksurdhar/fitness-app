@@ -37,8 +37,8 @@ const TYPES = {
   secondary: 'minionYellow',
   text: 'unitedNationsBlue',
   black: 'gray',
-  white: 'ghostWhite',
-  link: 'minionYellow',       // interactable color
+  white: 'white',
+  link: 'minionYellow',    // interactable color
   red: 'fluorescentRed',   // error color
   green: 'celestialGreen', // success color
 }
@@ -54,9 +54,10 @@ Object.entries(TYPES).forEach(([type, color]) => {
   }
 })
 
+console.log('DYNAMIC', DYNAMIC)
+
 const common = StyleSheet.create({
   staticView: {
-    backgroundColor: DYNAMIC.primary,
     flex: 1,
     padding: 10,
     justifyContent: 'flex-start',

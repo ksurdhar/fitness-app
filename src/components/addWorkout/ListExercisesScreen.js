@@ -173,7 +173,7 @@ class ListExercisesScreen extends React.Component {
         <View>
           <View style={[common.row, { marginTop: 10 }]}>
             <TouchableOpacity onPress={() => this.setState({ isCatalogOpen: false}) }>
-              <Text style={[common.tajawal3, {fontSize: 20, textAlign: 'center', color: isCatalogOpen ? DYNAMIC.link : DYNAMIC.black, textDecorationLine: isCatalogOpen ? 'underline' : 'none' }]}>
+              <Text style={[common.tajawal3, {fontSize: 20, textAlign: 'center', color: isCatalogOpen ? DYNAMIC.primary : DYNAMIC.black, textDecorationLine: isCatalogOpen ? 'underline' : 'none' }]}>
                 {`Use the input  `}
               </Text>
             </TouchableOpacity>
@@ -181,7 +181,7 @@ class ListExercisesScreen extends React.Component {
               or
             </Text>
             <TouchableOpacity onPress={() => this.setState({ isCatalogOpen: true }) }>
-              <Text style={[common.tajawal3, {fontSize: 20, textAlign: 'center', color: isCatalogOpen ? DYNAMIC.black : DYNAMIC.link, textDecorationLine: isCatalogOpen ? 'none' : 'underline'  }]}>
+              <Text style={[common.tajawal3, {fontSize: 20, textAlign: 'center', color: isCatalogOpen ? DYNAMIC.black : DYNAMIC.primary, textDecorationLine: isCatalogOpen ? 'none' : 'underline'  }]}>
                 {` select from a category.`}
               </Text>
             </TouchableOpacity>
@@ -331,7 +331,7 @@ class ListExercisesScreen extends React.Component {
 
     return (
       <PressCapture onPress={this.handleCapture}>
-        <View style={[common.staticView]}>
+        <View style={[common.staticView, {backgroundColor: DYNAMIC.white}] }>
           <View style={{flex:1, justifyContent: 'start'}}>
             <View>
               { renderHeader() }

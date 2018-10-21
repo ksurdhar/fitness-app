@@ -135,14 +135,14 @@ class PromptScreen extends React.Component {
       ]
 
       return (
-        <Swipeout right={swipeoutBtns} backgroundColor={DYNAMIC.primary} key={workout.id}>
+        <Swipeout right={swipeoutBtns} backgroundColor={'transparent'} key={workout.id}>
           <View style={{
             height: 60,
             borderTopColor: DYNAMIC.black1, borderTopWidth: 1,
             justifyContent: 'center'
           }}>
             <BasicButton onPress={this.recordSession.bind(this, workout.name)}>
-              <Text style={[ common.tajawal5, common.mdFont, {color: DYNAMIC.link, marginTop: 10}]}>
+              <Text style={[ common.tajawal5, common.mdFont, {color: DYNAMIC.primary, marginTop: 10}]}>
                 { workout.name }
                 { this.renderLastWorkoutDate(workout) }
               </Text>
@@ -153,7 +153,7 @@ class PromptScreen extends React.Component {
     })
     return (
       <View style={[{ borderBottomColor: DYNAMIC.black1, borderBottomWidth: 1, }]}>
-        <View style={[common.row, {marginTop: 20}]}>
+        <View style={[common.row, {margin: 10}]}>
           <Text style={[common.tajawal5, {fontSize: 22, color: DYNAMIC.black10, textAlign: 'center'}]}>
             {`Choose a workout:`}
           </Text>
@@ -181,7 +181,7 @@ class PromptScreen extends React.Component {
     const isEmpty = this.props.workouts.length === 0
 
     return (
-      <View style={{backgroundColor: DYNAMIC.primary, height: height, justifyContent: 'flex-start'}}>
+      <View style={{ backgroundColor: DYNAMIC.white, height: height, justifyContent: 'flex-start' }}>
         <View style={[common.staticView, { paddingLeft: 10, paddingRight: 10 }]}>
           { isEmpty ? this.renderEmptyMessage() : this.renderWorkoutButtons() }
         </View>
@@ -193,7 +193,7 @@ class PromptScreen extends React.Component {
 const mapDispatchToProps = (dispatch) => {
   return {
     removeWorkout: (id, userID) => { dispatch(workoutActions.removeWorkout(id, userID)) },
-    openToast: (message) => { dispatch(openToast({ toastString: message}))} 
+    openToast: (message) => { dispatch(openToast({ toastString: message}))}
   }
 }
 

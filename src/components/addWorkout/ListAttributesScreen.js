@@ -171,7 +171,7 @@ class ListAttributesScreen extends React.Component {
 
   render() {
     return (
-      <View style={[common.staticView]}>
+      <View style={[common.staticView, {backgroundColor: DYNAMIC.white}]}>
         <View style={[common.row, {marginTop: 10}]}>
           <Text style={[common.tajawal5, {fontSize: 22, color: DYNAMIC.black10, textAlign: 'center'}]}>
             {`Choose what attributes to \n track for each exercise.`}

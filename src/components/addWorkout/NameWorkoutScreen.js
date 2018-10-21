@@ -102,7 +102,7 @@ class NameWorkout extends React.Component {
       </Text>
     )
     return (
-      <View style={[common.staticView]}>
+      <View style={[common.staticView, { backgroundColor: DYNAMIC.white }]}>
         <KeyboardAwareScrollView style={{flex:1, justifyContent: 'start'}}>
           <View style={[common.row, {marginTop: 10}]}>
             <Text style={[common.tajawal5, {fontSize: 22, color: DYNAMIC.black10, textAlign: 'center'}]}>

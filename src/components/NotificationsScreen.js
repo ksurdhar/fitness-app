@@ -315,7 +315,7 @@ class NotificationsScreen extends React.Component {
       return (
         <View style={{marginLeft: 5, marginRight: 5, paddingBottom: 8, borderBottomColor: DYNAMIC.black1, borderBottomWidth: 1}} key={workout.id}>
           <View style={[common.row, { marginTop: 18,justifyContent: 'space-between' }]}>
-            <Text style={[common.tajawal5, {fontSize: 22, color: DYNAMIC.black10, textAlign: 'center'}]}>
+            <Text style={[common.tajawal5, {fontSize: 22, color: DYNAMIC.primary, textAlign: 'center'}]}>
               { workout.name }
               <Text style={[common.tajawal5, {fontSize: 18, color: DYNAMIC.black5, textAlign: 'center',}]}>
                 { `    ${workout.notificationsEnabled ? 'Enabled' : 'Disabled'}` }
@@ -341,7 +341,7 @@ class NotificationsScreen extends React.Component {
     const isEmpty = this.props.workouts.length === 0
 
     return (
-      <View style={common.staticView, {paddingLeft: 10, paddingRight: 10, backgroundColor: DYNAMIC.primary, height: height}}>
+      <View style={common.staticView, {paddingLeft: 10, paddingRight: 10, backgroundColor: DYNAMIC.white, height: height}}>
         { this.state.modalType ? this.renderModal() : null }
         { this.renderWorkouts() }
       </View>

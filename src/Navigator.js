@@ -108,7 +108,7 @@ const Navigator = createBottomTabNavigator( // https://reactnavigation.org/docs/
   {
     animationEnabled: true,
     tabBarOptions: commonTabOptions,
-    initialRouteName: 'Workouts',
+    initialRouteName: 'Record',
   }
 )
 

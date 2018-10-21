@@ -77,7 +77,7 @@ class ProfileScreen extends React.Component {
       : 'Last workout: None'
 
     return (
-      <View style={common.staticView, {paddingLeft: 10, paddingRight: 10, backgroundColor: DYNAMIC.primary, height: height}}>
+      <View style={common.staticView, {paddingLeft: 10, paddingRight: 10, backgroundColor: DYNAMIC.white, height: height}}>
         <View style={[{ borderBottomColor: DYNAMIC.black1, borderBottomWidth: 1, }]}>
           <View style={[common.row, {marginTop: 20}]}>
             <Text style={[common.tajawal5, {fontSize: 22, color: DYNAMIC.black10, textAlign: 'center'}]}>

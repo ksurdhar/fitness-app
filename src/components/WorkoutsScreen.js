@@ -199,7 +199,7 @@ class WorkoutsScreen extends React.Component {
             <Text style={[common.tajawal3, {fontSize: 18, color: DYNAMIC.black8}]}>
               { dateString }
             </Text>
-            <Text style={[common.tajawal5, {fontSize: 26, color: DYNAMIC.primary10}]}>
+            <Text style={[common.tajawal5, {fontSize: 26, color: DYNAMIC.primary}]}>
               {session.workoutName}
             </Text>
           </View>
