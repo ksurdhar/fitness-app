@@ -7,7 +7,6 @@ import store from './redux/store'
 import LoginScreen from './components/LoginScreen'
 import DemoScreen from './components/DemoScreen'
 import Toast from './components/toast'
-import { Font } from 'expo'
 
 import { addWorkoutSuccess, removeWorkoutSuccess, recievedWorkouts, updateWorkoutSuccess } from './redux/actions/workoutActions'
 import { addSessionSuccess, removeSessionSuccess, recievedSessions, updateSessionSuccess } from './redux/actions/sessionActions'
@@ -19,10 +18,6 @@ import { common, DYNAMIC } from './components/reusable/common'
 
 import Config from 'react-native-config'
 import config from '../config'
-
-INDEX_STATE = {
-  fontLoaded: false
-}
 
 function addListeners(userID) {
   console.log('ADDING LISTENERS', userID)
@@ -82,10 +77,7 @@ function addListeners(userID) {
 }
 
 class Index extends Component {
-  constructor(props) {
-    super(props)
-    this.state = INDEX_STATE
-  }
+
 
   render() {
     // UNCOMMENT TO WORK ON DEMO
@@ -99,19 +91,17 @@ class Index extends Component {
     //   return null
     // }
 
-    if (this.state.fontLoaded && this.props.isLoggedIn) {
+    if (this.props.isLoggedIn) {
       return (
         <View style={{flex: 1}}>
           <Toast />
           <Navigator />
         </View>
       )
-    } else if (this.state.fontLoaded) {
+    } else {
       return (
         <LoginScreen />
       )
-    } else {
-      return null
     }
   }
 
@@ -119,19 +109,6 @@ class Index extends Component {
     if (!prevProps.user.userID && this.props.user.userID) {
       addListeners(this.props.user.userID)
     }
-  }
-
-  async componentDidMount() {
-    await Font.loadAsync({
-      'raleway-bold': require('../assets/fonts/Raleway-Bold.ttf'),
-      'rubik-medium': require('../assets/fonts/Rubik-Medium.ttf'),
-      'tajawal3': require('../assets/fonts/tajawal/tajawal3.ttf'),
-      'tajawal5': require('../assets/fonts/tajawal/tajawal5.ttf'),
-      'roboto-medium': require('../assets/fonts/Roboto/Roboto-Medium.ttf'),
-    })
-    this.setState({
-      fontLoaded: true
-    })
   }
 }
 

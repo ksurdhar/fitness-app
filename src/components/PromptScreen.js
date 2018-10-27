@@ -41,7 +41,7 @@ class PromptScreen extends React.Component {
       title: 'Record',
       headerRight: (
         <TouchableOpacity onPress={navigation.getParam('toAddWorkoutFlow')}>
-          <Text style={{ padding: 10, paddingLeft: 30, fontSize: 18, color: DYNAMIC.link, fontFamily: 'rubik-medium'}}>
+          <Text style={{ padding: 10, paddingLeft: 30, fontSize: 18, color: DYNAMIC.link, fontFamily: 'rubik'}}>
             Add Workout
           </Text>
         </TouchableOpacity>
@@ -161,7 +161,7 @@ class PromptScreen extends React.Component {
     return (
       <View style={{ justifyContent: 'center', top: (height/2 - 120) }}>
         <View style={common.row}>
-          <Text style={[{ fontFamily: 'rubik-medium', fontSize: 24, textAlign: 'center', color: DYNAMIC.black9 }]}>
+          <Text style={[{ fontFamily: 'rubik', fontSize: 24, textAlign: 'center', color: DYNAMIC.black9 }]}>
             {'You have no workouts to record. Try adding one!'}
           </Text>
         </View>

@@ -73,7 +73,7 @@ class AddSessionScreen extends React.Component {
               value={'Record'}
               textColors={[DYNAMIC.black3, DYNAMIC.link]}
               isEnabled={navigation.getParam('nextEnabled')}
-              style={{fontSize: 18, fontFamily: 'rubik-medium'}}
+              style={{fontSize: 18, fontFamily: 'rubik'}}
             />
           </View>
         </TouchableOpacity>
@@ -207,7 +207,7 @@ class AddSessionScreen extends React.Component {
     return Object.entries(this.state.exerciseData[exIdx]).map(([attrIdx, attr]) => {
       const labelElement = (
         <Text style={{
-          fontFamily: 'rubik-medium',
+          fontFamily: 'rubik',
           fontSize:20,
           color: DYNAMIC.black7
         }}>

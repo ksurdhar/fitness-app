@@ -42,7 +42,7 @@ class ListAttributesScreen extends React.Component {
               value={'Next'}
               textColors={[DYNAMIC.black3, DYNAMIC.link]}
               isEnabled={navigation.getParam('nextEnabled')}
-              style={{fontSize: 18, fontFamily: 'rubik-medium'}}
+              style={{fontSize: 18, fontFamily: 'rubik'}}
             />
           </View>
         </TouchableOpacity>

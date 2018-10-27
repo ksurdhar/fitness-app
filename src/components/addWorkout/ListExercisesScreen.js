@@ -32,7 +32,7 @@ class ListExercisesScreen extends React.Component {
               value={'Next'}
               textColors={[DYNAMIC.black3, DYNAMIC.link]}
               isEnabled={navigation.getParam('nextEnabled')}
-              style={{fontSize: 18, fontFamily: 'rubik-medium'}}
+              style={{fontSize: 18, fontFamily: 'rubik'}}
             />
           </TouchableOpacity>
         </View>
@@ -193,7 +193,7 @@ class ListExercisesScreen extends React.Component {
     const renderExerciseCount = () => {
       return (
         <View style={[common.row,  {marginTop: 20}]}>
-          <Text style={{fontSize: 18, fontFamily: 'rubik-medium', color: DYNAMIC.black}}>{`${this.state.exerciseNames.length} exercises added`}</Text>
+          <Text style={{fontSize: 18, fontFamily: 'rubik', color: DYNAMIC.black}}>{`${this.state.exerciseNames.length} exercises added`}</Text>
         </View>
       )
     }
@@ -201,7 +201,7 @@ class ListExercisesScreen extends React.Component {
     const maybeRenderAutoComplete = () => {
       const labelEl = (
         <Text style={{
-          fontFamily: 'rubik-medium',
+          fontFamily: 'rubik',
           fontSize:20,
           color: DYNAMIC.black7
         }}>
@@ -218,7 +218,7 @@ class ListExercisesScreen extends React.Component {
             data={this.state.results}
             renderItem={item => (
               <TouchableOpacity onPress={() => this.addExercise(item) }>
-                <Text style={{ fontSize: 24, fontFamily: 'rubik-medium'}}>{item}</Text>
+                <Text style={{ fontSize: 24, fontFamily: 'rubik'}}>{item}</Text>
               </TouchableOpacity>
             )}
             renderTextInput={something => (
@@ -279,7 +279,7 @@ class ListExercisesScreen extends React.Component {
             return (
               <TouchableOpacity onPress={ this.toggleExerciseViaCatalog.bind(this, exercise.name) }>
                 <View style={{flexDirection: 'row', justifyContent: 'left'}}>
-                  <Text style={{ fontSize: 24, fontFamily: 'rubik-medium', marginBottom: 6, color: DYNAMIC.black8 }}>
+                  <Text style={{ fontSize: 24, fontFamily: 'rubik', marginBottom: 6, color: DYNAMIC.black8 }}>
                     { exercise.name }
                   </Text>
                   { maybeRenderCheck(exercise.name) }
@@ -306,7 +306,7 @@ class ListExercisesScreen extends React.Component {
               <TouchableOpacity onPress={() => this.setState({ activeCategory: this.state.activeCategory === category ? '' : category }) }>
                 <Text style={{
                   fontSize: 30,
-                  fontFamily: 'rubik-medium',
+                  fontFamily: 'rubik',
                   color: this.state.activeCategory === category ? DYNAMIC.link : DYNAMIC.black5,
                 }}>
                   { category }

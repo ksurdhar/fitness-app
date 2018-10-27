@@ -30,10 +30,10 @@ const commonNavOptions = {
   },
   headerTintColor: DYNAMIC.white,
   headerTitleStyle: {
-    fontFamily: 'rubik-medium',
+    fontFamily: 'rubik',
   },
   headerBackTitleStyle: {
-    fontFamily: 'rubik-medium',
+    fontFamily: 'rubik',
   },
 }
 

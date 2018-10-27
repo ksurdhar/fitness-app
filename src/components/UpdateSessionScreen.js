@@ -63,7 +63,7 @@ class UpdateSessionScreen extends React.Component {
               value={'Update'}
               textColors={[DYNAMIC.black10, DYNAMIC.link]}
               isEnabled={true} // update with logic checking all vals
-              style={{fontSize: 18, fontFamily: 'rubik-medium'}}
+              style={{fontSize: 18, fontFamily: 'rubik'}}
             />
           </TouchableOpacity>
         </View>
@@ -139,7 +139,7 @@ class UpdateSessionScreen extends React.Component {
     return attributes.map((attr, attrIdx) => {
       const labelElement = (
         <Text style={{
-          fontFamily: 'rubik-medium',
+          fontFamily: 'rubik',
           fontSize:20,
           color: DYNAMIC.black7
         }}>

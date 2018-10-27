@@ -54,7 +54,7 @@ class Toast extends React.Component {
   maybeRenderString = () => {
     if ( this.props.toastState.toastString.length > 0) {
       return (
-        <Text style={{fontSize: 18, fontFamily: 'rubik-medium', color: DYNAMIC.primary, marginTop: 25}}>
+        <Text style={{fontSize: 18, fontFamily: 'rubik', color: DYNAMIC.black, marginTop: 25}}>
           { this.props.toastState.toastString }
         </Text>
       )

@@ -28,11 +28,12 @@ import * as UserActions from '../redux/actions/userActions'
 import config from '../../config.js'
 import store from '../redux/store.js'
 
+const logoURI =  Expo.Asset.fromModule(require('../../assets/images/logo.png')).uri
 const googleURI = Expo.Asset.fromModule(require('../../assets/images/test.png')).uri
 const facebookURI = Expo.Asset.fromModule(require('../../assets/images/fbwhite.png')).uri
 
-const LOGIN = "I Already Have An Account"
-const SIGNUP = "Sign Up"
+const LOGIN = "I already have an account"
+const SIGNUP = "Register"
 
 async function signInWithGoogleAsync() {
   try {
@@ -144,46 +145,62 @@ class LoginScreen extends Component {
     this.setState({ action: this.state.action === LOGIN ? SIGNUP : LOGIN })
   }
 
+  // <View style={{justifyContent: 'flex-start'}}>
+  //   <Text style={{ fontFamily: 'mplus', fontSize: 60, marginTop: 70, textAlign:'center', color: DYNAMIC.white }}>
+  //     倔
+  //   </Text>
+  //   <Text style={{ fontFamily: 'rubik', fontSize: 40, marginTop: -20, marginBottom: 20, textAlign:'center', color: DYNAMIC.white }}>
+  //     {`STUBBORN`}
+  //   </Text>
+  // </View>
+
   render() {
     const { width } = Dimensions.get('window')
-    const buttonWidth = width - 36
-    const buttonPadding = 10
-
-    const googleText = this.state.action === LOGIN ? 'SIGN IN WITH GOOGLE' : 'SIGN UP WITH GOOGLE'
-    const facebookText = this.state.action === LOGIN ? 'SIGN IN WITH FACEBOOK' : 'SIGN UP WITH FACEBOOK'
+    const buttonStyle = {
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'left',
+      width: (width - 36) / 2,
+      height: 56,
+      shadowColor: DYNAMIC.black10,
+      paddingRight: 10,
+      paddingLeft: 10,
+      shadowOpacity: 0.3,
+      shadowOffset: { width: 1, height: 1 },
+      shadowRadius: 2
+    }
 
     return (
       <PressCapture onPress={this.handleCapture}>
-        <View style={[common.staticView, {justifyContent: 'space-between'}]}>
-          <Text style={[common.headerFont, { marginTop: 70, marginBottom: 20, textAlign:'center', color: DYNAMIC.black5 }]}>
-            {`STUBBORN \n しぶとい \n FITNESS TRACKER`}
-          </Text>
-          <View style={[common.col, { marginBottom: 100}]}>
+        <View style={[common.staticView, {justifyContent: 'space-between', backgroundColor: DYNAMIC.primary}]}>
+          <View style={{flexDirection: 'row', justifyContent: 'space-around', marginTop: 50}}>
+            <Image source={{uri: logoURI}} style={{ width: 300, height: 200}}/>
+          </View>
+
+          <View style={[common.row, { marginBottom: 100}]}>
             <BasicButton onPress={() => this.onGoogleSubmit()}>
-              <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'left', width: buttonWidth, backgroundColor: 'white', height: 56, shadowColor: DYNAMIC.black10, paddingRight: buttonPadding, paddingLeft: buttonPadding,
-                shadowOpacity: 0.3,
-                shadowOffset: { width: 1, height: 1 },
-                shadowRadius: 2}}>
-                <Image source={{uri: googleURI}} style={{width: 50, height: 50, verticalAlign: 'text-bottom', marginLeft: 6}} />
-                <Text style={{ fontFamily: 'roboto-medium', fontSize: 18, color: DYNAMIC.black7, marginLeft: 14 }}>{googleText}</Text>
+              <View style={[buttonStyle, {backgroundColor: DYNAMIC.white}]}>
+                <Image source={{uri: googleURI}} style={{width: 50, height: 50, verticalAlign: 'text-bottom'}} />
+                <Text style={{ fontFamily: 'roboto-medium', fontSize: 16, color: DYNAMIC.black8, marginLeft: 8 }}>
+                  Google
+                </Text>
               </View>
             </BasicButton>
             <BasicButton onPress={() => this.onFBSubmit()}>
-              <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'left', width: buttonWidth, backgroundColor: 'rgb(59, 89, 152)', height: 56, shadowColor: DYNAMIC.black10, paddingRight: buttonPadding, paddingLeft: buttonPadding,
-                shadowOpacity: 0.3,
-                shadowOffset: { width: 1, height: 1 },
-                shadowRadius: 2}}>
+              <View style={[buttonStyle, {backgroundColor: 'rgb(59, 89, 152)'}]}>
                 <Image source={{uri: facebookURI}} style={{width: 40, height: 40, verticalAlign: 'text-bottom', marginLeft: 10}} />
-                <Text style={{ fontFamily: 'roboto-medium', fontSize: 18, color: DYNAMIC.black7, color: DYNAMIC.primary, marginLeft: 20 }}>{facebookText}</Text>
+                <Text style={{ fontFamily: 'roboto-medium', fontSize: 16, color: DYNAMIC.white, marginLeft: 20 }}>
+                  Facebook
+                </Text>
               </View>
             </BasicButton>
-            <View style={[common.row]}>
-              <Button
-                style={{marginLeft: 10}}
-                onPress={e => this.onToggleAction(e)}
-                title={this.state.action === LOGIN ? `${SIGNUP}` : `${LOGIN}`}
-              />
-            </View>
+          </View>
+          <View style={[common.row]}>
+            <Button
+              style={{marginLeft: 10}}
+              onPress={e => this.onToggleAction(e)}
+              title={this.state.action === LOGIN ? `${SIGNUP}` : `${LOGIN}`}
+            />
           </View>
         </View>
       </PressCapture>

@@ -282,7 +282,7 @@ class WorkoutsScreen extends React.Component {
     return (
       <View style={{ justifyContent: 'center', top: (height/2 - 130) }}>
         <View style={common.row}>
-          <Text style={[{ fontFamily: 'rubik-medium', fontSize: 24, textAlign: 'center', color: DYNAMIC.black9 }]}>
+          <Text style={[{ fontFamily: 'rubik', fontSize: 24, textAlign: 'center', color: DYNAMIC.black9 }]}>
             {'You have not recorded a workout. Try recording one!'}
           </Text>
         </View>

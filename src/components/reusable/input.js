@@ -144,7 +144,7 @@ class Input extends React.Component {
             value={this.props.subLabel}
             textColors={['transparent', DYNAMIC.black4]}
             isEnabled={this.state.isFocused}
-            style={{ marginLeft: 10, marginTop: 1, fontFamily: 'rubik-medium', fontSize: 18, textAlign: 'center'}}
+            style={{ marginLeft: 10, marginTop: 1, fontFamily: 'rubik', fontSize: 18, textAlign: 'center'}}
           />
         )
       } else {
@@ -202,7 +202,7 @@ function styleLabel(animations) {
 // instead of setting sizes, pass in your element and give us a top to animate
 const styles = StyleSheet.create({
   base: {
-    fontFamily: 'rubik-medium',
+    fontFamily: 'rubik',
   },
 })
 

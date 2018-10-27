@@ -20,7 +20,7 @@ const COLORS = {
   prussianBlue: '0, 52, 89',
   richBlack: '0, 23, 31',
   white: '255, 255, 255',
-  unitedNationsBlue: '94, 124, 226',
+  unitedNationsBlue: '94, 124, 226', // hex code #5e7ce2
 
   // used
   peach: '253, 114, 114',
@@ -67,7 +67,7 @@ const common = StyleSheet.create({
     fontSize: 42
   },
   baseFont: {
-    fontFamily: 'rubik-medium',
+    fontFamily: 'rubik',
     fontSize: 24
   },
   smFont: {

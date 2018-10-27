@@ -102,7 +102,7 @@ class DemoScreen extends React.Component {
     return Object.entries(this.state.exerciseData[exIdx]).map(([attrIdx, attr]) => {
       const labelElement = (
         <Text style={{
-          fontFamily: 'rubik-medium',
+          fontFamily: 'rubik',
           fontSize:20,
           color: DYNAMIC.black7
         }}>
@@ -177,7 +177,7 @@ class DemoScreen extends React.Component {
               <View style={[common.row]}>
                 <TouchableOpacity onPress={() => this.addSession() }>
                   <View style={{padding: 14, backgroundColor: DYNAMIC.link}}>
-                    <Text style={{fontSize: 24, fontFamily: 'rubik-medium', textAlign: 'center', color: DYNAMIC.primary}}>
+                    <Text style={{fontSize: 24, fontFamily: 'rubik', textAlign: 'center', color: DYNAMIC.primary}}>
                       Record Session
                     </Text>
                   </View>

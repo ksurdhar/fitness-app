@@ -68,7 +68,7 @@ class Switch extends React.Component {
         <TouchableOpacity onPress={this.handleOnPress}>
           <Animated.View style={[styleSwitch(animations), this.props.style]} />
         </TouchableOpacity>
-        <Text style={{ position: 'absolute', left: 36, bottom: 1, fontSize: 24, fontFamily: 'rubik-medium', color: DYNAMIC.black7, textAlign: 'center'}}>
+        <Text style={{ position: 'absolute', left: 36, bottom: 1, fontSize: 24, fontFamily: 'rubik', color: DYNAMIC.black7, textAlign: 'center'}}>
           { this.props.label }
         </Text>
       </View>

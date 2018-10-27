@@ -82,7 +82,7 @@ class Button extends React.Component {
     return (
       <TouchableOpacity onPress={this.handleOnPress}>
         <Animated.View style={[internalStyle, this.props.style]}>
-          <Animated.Text style={[{fontSize: 24, fontFamily: 'rubik-medium', color: animations.text, textAlign: this.props.textAlign ? this.props.textAlign : 'center'}, {color: this.props.textColor}]}>
+          <Animated.Text style={[{fontSize: 24, fontFamily: 'rubik', color: animations.text, textAlign: this.props.textAlign ? this.props.textAlign : 'center'}, {color: this.props.textColor}]}>
             { this.props.value }
           </Animated.Text>
           { this.props.children }

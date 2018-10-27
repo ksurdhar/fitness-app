@@ -33,7 +33,7 @@ class NameWorkout extends React.Component {
               value={'Create'}
               textColors={[DYNAMIC.black3, DYNAMIC.link]}
               isEnabled={navigation.getParam('nextEnabled')}
-              style={{fontSize: 18, fontFamily: 'rubik-medium'}}
+              style={{fontSize: 18, fontFamily: 'rubik'}}
             />
           </View>
         </TouchableOpacity>
@@ -94,7 +94,7 @@ class NameWorkout extends React.Component {
     const { width, height } = Dimensions.get('window')
     const labelEl = (
       <Text style={{
-        fontFamily: 'rubik-medium',
+        fontFamily: 'rubik',
         fontSize:20,
         color: DYNAMIC.black7
       }}>
