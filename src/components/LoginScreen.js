@@ -30,7 +30,7 @@ import * as toastActions from '../redux/actions/toastActions'
 import config from '../../config.js'
 import store from '../redux/store.js'
 
-const logoURI =  Expo.Asset.fromModule(require('../../assets/images/logo.png')).uri
+const logoURI =  Expo.Asset.fromModule(require('../../assets/images/small-logo.png')).uri
 const googleURI = Expo.Asset.fromModule(require('../../assets/images/test.png')).uri
 const facebookURI = Expo.Asset.fromModule(require('../../assets/images/fbwhite.png')).uri
 
@@ -195,9 +195,12 @@ class LoginScreen extends Component {
   }
 
   renderLogo() {
+    const { height } = Dimensions.get('window')
+    const imageHeight = height / 4
+    const imageWidth = height * (500/345) // image dimensions
     return (
-      <View style={{flexDirection: 'row', justifyContent: 'space-around', marginTop: 50, marginBottom: 40}}>
-        <Image source={{uri: logoURI}} style={{ width: 300, height: 200}}/>
+      <View style={{flexDirection: 'row', justifyContent: 'space-around', marginTop: 20, marginBottom: 50}}>
+        <Image source={{uri: logoURI}} resizeMode={'contain'} style={{ width: imageWidth, height: imageHeight }}/>
       </View>
     )
   }
@@ -266,6 +269,7 @@ class LoginScreen extends Component {
               fixedLabel={true}
               animate={true}
               invert={true}
+              style={{marginBottom: 30}}
             />
           )
           : null

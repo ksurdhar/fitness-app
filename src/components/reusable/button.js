@@ -43,7 +43,6 @@ class Button extends React.Component {
   }
 
   handleOnPress() {
-    console.log('pressed!')
     this.props.isEnabled && this.props.onPress && this.props.onPress()
   }
 

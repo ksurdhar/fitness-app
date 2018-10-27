@@ -32,7 +32,7 @@ class WorkoutApp extends Component {
   }
 
   async _cacheResourcesAsync() {
-    const imagePromise = Asset.fromModule(require('./assets/images/logo.png')).downloadAsync()
+    const imagePromise = Asset.fromModule(require('./assets/images/small-logo.png')).downloadAsync()
 
     await Promise.all([imagePromise, Font.loadAsync({
       'raleway-bold': require('./assets/fonts/Raleway-Bold.ttf'),
