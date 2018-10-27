@@ -4,6 +4,10 @@
     "splash": {
       "image": "./assets/images/splash.png",
       "backgroundColor": "#5e7ce2"
-    }
+    },
+    "name": "fitness-app",
+    "slug": "fitness-app",
+    "version": "0.1.0",
+    "description": ""
   }
 }

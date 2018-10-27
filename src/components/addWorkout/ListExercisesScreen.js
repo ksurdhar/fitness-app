@@ -20,6 +20,7 @@ import AnimatedText from '../reusable/animatedText'
 import Input from '../reusable/input'
 import PressCapture from '../reusable/pressCapture'
 import { common, DYNAMIC } from '../reusable/common'
+import * as toastActions from '../../redux/actions/toastActions'
 
 class ListExercisesScreen extends React.Component {
   static navigationOptions = ({navigation}) => {
@@ -149,6 +150,7 @@ class ListExercisesScreen extends React.Component {
       exerciseNames: this.state.exerciseNames.concat([exerciseName]),
       textField: ''
     })
+    this.props.openToast(`${exerciseName} added.`)
   }
 
   toggleExerciseViaCatalog = (catalogExercise) => {
@@ -157,10 +159,12 @@ class ListExercisesScreen extends React.Component {
         return exercise !== catalogExercise
       })
       this.setState({ exerciseNames: newExerciseNames })
+      this.props.openToast(`${catalogExercise} removed.`)
     } else {
       this.setState({
         exerciseNames: this.state.exerciseNames.concat([catalogExercise])
       })
+      this.props.openToast(`${catalogExercise} added.`)
     }
   }
 
@@ -354,5 +358,10 @@ function styleInput() {
   }
 }
 
+const mapDispatchToProps = (dispatch) => {
+  return {
+    openToast: (message) => { dispatch(toastActions.openToast({ toastString: message }))}
+  }
+}
 
-export default connect(null, null)(ListExercisesScreen)
+export default connect(null, mapDispatchToProps)(ListExercisesScreen)

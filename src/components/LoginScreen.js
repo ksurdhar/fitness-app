@@ -1,15 +1,11 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import {
-  ScrollView,
-  StyleSheet,
   Text,
-  TextInput,
   View,
-  KeyboardAvoidingView,
   Dimensions,
-  Button,
-  Image
+  Image,
+  StatusBar
 } from 'react-native'
 import firebase from 'firebase'
 import Expo from 'expo'
@@ -37,7 +33,7 @@ const facebookURI = Expo.Asset.fromModule(require('../../assets/images/fbwhite.p
 const LOGIN = "I already have an account"
 const REGISTER = "Register"
 
-async function signInWithGoogleAsync() {
+async function signInWithGoogleAsync(openToast) {
   try {
     const result = await Expo.Google.logInAsync({
       iosClientId: config.IOS_CLIENT_ID,
@@ -48,6 +44,7 @@ async function signInWithGoogleAsync() {
       firebase.auth().signInWithCredential(credential)
       .catch((error) => {
         console.log('ERROR - signing into firebase with google credentials:', error)
+        openToast(error.message)
       })
     } else {
       return {cancelled: true}
@@ -57,7 +54,7 @@ async function signInWithGoogleAsync() {
   }
 }
 
-async function signInWithFBAsync() {
+async function signInWithFBAsync(openToast) {
   try {
     const { token, type } = await Expo.Facebook.logInWithReadPermissionsAsync(config.FACEBOOK_CLIENT_ID, {
       permissions: ['public_profile', 'email']
@@ -71,6 +68,7 @@ async function signInWithFBAsync() {
           firebase.auth().signInWithCredential(credential)
           .catch((error) => {
             console.log('ERROR - signing into firebase with facebook credentials:', error)
+            openToast(error.message)
           })
         })
       })
@@ -106,8 +104,11 @@ class LoginScreen extends Component {
         props.dispatchLogin(userObj)
         props.addUser(userObj)
         props.openToast(`Welcome ${user.email}.`)
+        StatusBar.setHidden(false)
+        StatusBar.setBarStyle('light-content')
       }
     })
+    StatusBar.setHidden(true)
   }
 
   onEmailRegistration = () => {
@@ -132,11 +133,11 @@ class LoginScreen extends Component {
   }
 
   onGoogleSubmit = () => {
-    signInWithGoogleAsync()
+    signInWithGoogleAsync(this.props.openToast)
   }
 
   onFBSubmit = () => {
-    signInWithFBAsync()
+    signInWithFBAsync(this.props.openToast)
   }
 
   onToggleAction = () => {
@@ -161,23 +162,26 @@ class LoginScreen extends Component {
     }
 
     return (
-      <View style={[common.row]}>
-        <BasicButton onPress={() => this.onGoogleSubmit()}>
-          <View style={[buttonStyle, {backgroundColor: DYNAMIC.white}]}>
-            <Image source={{uri: googleURI}} style={{width: 50, height: 50, verticalAlign: 'text-bottom'}} />
-            <Text style={{ fontFamily: 'roboto-medium', fontSize: 16, color: DYNAMIC.black8, marginLeft: 8 }}>
-              Google
-            </Text>
-          </View>
-        </BasicButton>
-        <BasicButton onPress={() => this.onFBSubmit()}>
-          <View style={[buttonStyle, {backgroundColor: 'rgb(59, 89, 152)'}]}>
-            <Image source={{uri: facebookURI}} style={{width: 40, height: 40, verticalAlign: 'text-bottom', marginLeft: 10}} />
-            <Text style={{ fontFamily: 'roboto-medium', fontSize: 16, color: DYNAMIC.white, marginLeft: 20 }}>
-              Facebook
-            </Text>
-          </View>
-        </BasicButton>
+      <View>
+        <Text style={{color: DYNAMIC.white, textAlign:'center', marginTop: 10, marginBottom: 16, fontSize:16}}>Or connect with</Text>
+        <View style={[common.row]}>
+          <BasicButton onPress={() => this.onGoogleSubmit()}>
+            <View style={[buttonStyle, {backgroundColor: DYNAMIC.white}]}>
+              <Image source={{uri: googleURI}} style={{width: 50, height: 50, verticalAlign: 'text-bottom'}} />
+              <Text style={{ fontFamily: 'roboto-medium', fontSize: 16, color: DYNAMIC.black8, marginLeft: 8 }}>
+                Google
+              </Text>
+            </View>
+          </BasicButton>
+          <BasicButton onPress={() => this.onFBSubmit()}>
+            <View style={[buttonStyle, {backgroundColor: 'rgb(59, 89, 152)'}]}>
+              <Image source={{uri: facebookURI}} style={{width: 40, height: 40, verticalAlign: 'text-bottom', marginLeft: 10}} />
+              <Text style={{ fontFamily: 'roboto-medium', fontSize: 16, color: DYNAMIC.white, marginLeft: 20 }}>
+                Facebook
+              </Text>
+            </View>
+          </BasicButton>
+        </View>
       </View>
     )
   }
@@ -256,6 +260,7 @@ class LoginScreen extends Component {
           animate={true}
           invert={true}
           style={{marginBottom: 30}}
+          secureTextEntry={true}
         />
         { this.state.action === REGISTER
           ? (
@@ -270,6 +275,7 @@ class LoginScreen extends Component {
               animate={true}
               invert={true}
               style={{marginBottom: 30}}
+              secureTextEntry={true}
             />
           )
           : null
