@@ -11,7 +11,6 @@ import {
   View,
   Text,
   TouchableOpacity,
-  Button,
   TouchableWithoutFeedback
 } from 'react-native'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
@@ -20,7 +19,6 @@ import { FontAwesome } from '@expo/vector-icons'
 import AnimatedIcon from './reusable/animatedIcon'
 import AnimatedText from './reusable/animatedText'
 import ExpandingCard from './reusable/expandingCard'
-import KButton from './reusable/button'
 import Input from './reusable/input'
 import Switch from './reusable/switch'
 import PressCapture from './reusable/pressCapture'

@@ -24,7 +24,6 @@ import { format } from 'date-fns'
 
 import { common, DYNAMIC } from './reusable/common'
 import AnimatedIcon from './reusable/animatedIcon'
-import KButton from './reusable/button'
 import KSwitch from './reusable/switch'
 import * as notificationActions from '../redux/actions/notificationActions'
 import * as workoutActions from '../redux/actions/workoutActions'

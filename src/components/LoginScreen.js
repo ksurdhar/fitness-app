@@ -17,12 +17,13 @@ import Expo from 'expo'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import { MaterialIcons } from '@expo/vector-icons'
 
+import KButton from './reusable/button'
 import BasicButton from './reusable/basicButton'
 import KInput from './reusable/input'
 import PressCapture from './reusable/pressCapture'
 import { common, DYNAMIC } from './reusable/common'
 
-import { login, loginFailed } from '../redux/actions/authActions.js'
+import { login, loginFailed } from '../redux/actions/authActions'
 import * as UserActions from '../redux/actions/userActions'
 
 import config from '../../config.js'
@@ -163,7 +164,7 @@ class LoginScreen extends Component {
     return (
       <View style={[common.row]}>
         <BasicButton onPress={() => this.onToggleAction()}>
-          <Text style={{color: DYNAMIC.white}}>
+          <Text style={{color: DYNAMIC.white, textDecorationLine: 'underline'}}>
             {this.state.action === LOGIN ? `${REGISTER}` : `${LOGIN}`}
           </Text>
         </BasicButton>
@@ -190,6 +191,17 @@ class LoginScreen extends Component {
           { val }
         </Text>
       )
+    }
+
+    const submitButtonEnabled = () => {
+      if (this.state.action === REGISTER) {
+        return this.state.email.length > 0
+          && this.state.password.length > 0
+          && this.state.passwordConfirmation.length > 0
+      } else {
+        return this.state.email.length > 0
+          && this.state.password.length > 0
+      }
     }
 
     return (
@@ -234,6 +246,14 @@ class LoginScreen extends Component {
           )
           : null
         }
+        <KButton
+          value={this.state.action === REGISTER ? 'Sign Up' : 'Sign In'}
+          isEnabled={submitButtonEnabled()}
+          onPress={ () => console.log('doing something') }
+          backgroundColors={[DYNAMIC.primary, DYNAMIC.link]}
+          borderColors={[DYNAMIC.white, DYNAMIC.link]}
+          textColors={[DYNAMIC.white, DYNAMIC.black]}
+        />
       </View>
     )
   }

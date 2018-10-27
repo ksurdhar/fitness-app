@@ -8,7 +8,6 @@ import PromptScreen from "./components/PromptScreen"
 import WorkoutsScreen from "./components/WorkoutsScreen"
 import SessionScreen from "./components/SessionScreen"
 import ProfileScreen from "./components/ProfileScreen"
-import AddWorkoutScreen from './components/AddWorkoutScreen'
 import AddSessionScreen from './components/AddSessionScreen'
 import ListExercisesScreen from './components/addWorkout/ListExercisesScreen'
 import ListAttributesScreen from './components/addWorkout/ListAttributesScreen'

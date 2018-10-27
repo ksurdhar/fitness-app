@@ -58,15 +58,21 @@ class Button extends React.Component {
     const defaultBackgroundColors = [DYNAMIC.black0, DYNAMIC.link]
     const defaultBorderColors = [DYNAMIC.black1, DYNAMIC.link]
     const defaultTextColors = [DYNAMIC.black1, DYNAMIC.black10]
+    const animatedBGColors = this.props.backgroundColors ? this.props.backgroundColors : defaultBackgroundColors
+    const animatedBorderColors = this.props.borderColors ? this.props.borderColors : defaultBorderColors
+    const animatedTextColors = this.props.textColors ? this.props.textColors : defaultTextColors
+    console.log('black', defaultTextColors )
+    console.log('animatedTextColors', animatedTextColors)
+
     const animations = {
       background: this.animations.background.interpolate(
-        this.basicInterpolation(defaultBackgroundColors)
+        this.basicInterpolation(animatedBGColors)
       ),
       border: this.animations.border.interpolate(
-        this.basicInterpolation(defaultBorderColors)
+        this.basicInterpolation(animatedBorderColors)
       ),
       text: this.animations.text.interpolate(
-        this.basicInterpolation(defaultTextColors)
+        this.basicInterpolation(animatedTextColors)
       )
     }
     this.animateButton()
@@ -82,7 +88,7 @@ class Button extends React.Component {
     return (
       <TouchableOpacity onPress={this.handleOnPress}>
         <Animated.View style={[internalStyle, this.props.style]}>
-          <Animated.Text style={[{fontSize: 24, fontFamily: 'rubik', color: animations.text, textAlign: this.props.textAlign ? this.props.textAlign : 'center'}, {color: this.props.textColor}]}>
+          <Animated.Text style={[{fontSize: 24, fontFamily: 'rubik', color: animations.text, textAlign: this.props.textAlign ? this.props.textAlign : 'center'}]}>
             { this.props.value }
           </Animated.Text>
           { this.props.children }
