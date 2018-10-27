@@ -109,6 +109,21 @@ class LoginScreen extends Component {
     })
   }
 
+  onEmailRegistration = () => {
+    // ensure passwords match, otherwise throw toast
+    firebase
+     .auth()
+     .createUserWithEmailAndPassword(this.state.email, this.state.password)
+  }
+
+  onEmailSignIn = () => {
+    firebase
+      .auth()
+      .signInWithEmailAndPassword(this.state.email, this.state.password).catch((e) => {
+        console.log('ERROR', e)
+      })
+  }
+
   onGoogleSubmit = () => {
     signInWithGoogleAsync()
   }
@@ -252,7 +267,7 @@ class LoginScreen extends Component {
           <KButton
             value={this.state.action === REGISTER ? 'Sign Up' : 'Sign In'}
             isEnabled={submitButtonEnabled()}
-            onPress={ () => console.log('doing something') }
+            onPress={ () => { this.state.action === REGISTER ? this.onEmailRegistration() : this.onEmailSignIn() } }
             backgroundColors={[DYNAMIC.primary, DYNAMIC.link]}
             borderColors={[DYNAMIC.white, DYNAMIC.link]}
             textColors={[DYNAMIC.white, DYNAMIC.black]}

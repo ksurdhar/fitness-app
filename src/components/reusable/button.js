@@ -61,8 +61,6 @@ class Button extends React.Component {
     const animatedBGColors = this.props.backgroundColors ? this.props.backgroundColors : defaultBackgroundColors
     const animatedBorderColors = this.props.borderColors ? this.props.borderColors : defaultBorderColors
     const animatedTextColors = this.props.textColors ? this.props.textColors : defaultTextColors
-    console.log('black', defaultTextColors )
-    console.log('animatedTextColors', animatedTextColors)
 
     const animations = {
       background: this.animations.background.interpolate(
