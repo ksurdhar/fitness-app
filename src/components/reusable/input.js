@@ -17,7 +17,7 @@ class Input extends React.Component {
     labelPosition: new Animated.Value(0),
     greenLine: new Animated.Value(0),
     redLine: new Animated.Value(0),
-    blueLine: new Animated.Value(0)
+    baseLine: new Animated.Value(0)
   }
 
   constructor(props) {
@@ -65,7 +65,7 @@ class Input extends React.Component {
     }
 
     if (this.props.animate) {
-      Animated.timing(this.animations.blueLine, {
+      Animated.timing(this.animations.baseLine, {
         toValue: focused ? 100 : 0,
         duration: 400
       }).start()
@@ -126,8 +126,8 @@ class Input extends React.Component {
       greenLine: this.animations.greenLine.interpolate(
         this.basicInterpolation([DYNAMIC.green0, DYNAMIC.green])
       ),
-      blueLine: this.animations.blueLine.interpolate(
-        this.basicInterpolation([DYNAMIC.black1, DYNAMIC.link])
+      baseLine: this.animations.baseLine.interpolate(
+        this.basicInterpolation([ this.props.invert ? DYNAMIC.white : DYNAMIC.black1, DYNAMIC.link])
       ),
       redLine: this.animations.redLine.interpolate(
         this.basicInterpolation([DYNAMIC.red0, DYNAMIC.red])
@@ -157,14 +157,17 @@ class Input extends React.Component {
         <Animated.View style={[{
           borderBottomWidth: 3,
           marginTop:10
-        }, styleLine(animations, 'blueLine'), this.props.style]}>
+        }, styleLine(animations, 'baseLine'), this.props.style]}>
           <Animated.View style={styleLabel(animations)}>
             { this.props.label }
             { maybeRenderSublabel() }
           </Animated.View>
           <TextInput
             value={this.props.value}
-            style={[{fontSize: this.props.fontSize}, styles.base]}
+            style={[{fontSize: this.props.fontSize}, {
+              fontFamily: 'rubik',
+              color: this.props.invert ? DYNAMIC.white : DYNAMIC.black
+            }]}
             placeholder={this.props.placeholder}
             autoFocus={this.props.autoFocus}
             secureTextEntry={this.props.secureTextEntry}
@@ -198,12 +201,5 @@ function styleLabel(animations) {
     justifyContent: 'left'
   }
 }
-
-// instead of setting sizes, pass in your element and give us a top to animate
-const styles = StyleSheet.create({
-  base: {
-    fontFamily: 'rubik',
-  },
-})
 
 export default Input

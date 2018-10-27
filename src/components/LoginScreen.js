@@ -18,7 +18,7 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 import { MaterialIcons } from '@expo/vector-icons'
 
 import BasicButton from './reusable/basicButton'
-import Input from './reusable/input'
+import KInput from './reusable/input'
 import PressCapture from './reusable/pressCapture'
 import { common, DYNAMIC } from './reusable/common'
 
@@ -33,7 +33,7 @@ const googleURI = Expo.Asset.fromModule(require('../../assets/images/test.png'))
 const facebookURI = Expo.Asset.fromModule(require('../../assets/images/fbwhite.png')).uri
 
 const LOGIN = "I already have an account"
-const SIGNUP = "Register"
+const REGISTER = "Register"
 
 async function signInWithGoogleAsync() {
   try {
@@ -85,6 +85,9 @@ class LoginScreen extends Component {
     super(props)
     this.state = {
       action: LOGIN,
+      email: '',
+      password: '',
+      passwordConfirmation: ''
     }
 
     firebase.auth().onAuthStateChanged((user) => {
@@ -105,57 +108,21 @@ class LoginScreen extends Component {
     })
   }
 
-  onGoogleLogin = () => {
-    signInWithGoogleAsync()
-  }
-
-  onGoogleSignUp = () => {
-    // check to see if user exists already
-    signInWithGoogleAsync()
-  }
-
   onGoogleSubmit = () => {
-    switch (this.state.action) {
-      case LOGIN:
-        return this.onGoogleLogin()
-      case SIGNUP:
-        return this.onGoogleSignUp()
-    }
-  }
-
-  onFBLogin = () => {
-    signInWithFBAsync()
-  }
-
-  onFBSignUp = () => {
-    // needs to check if user exists alreadys
-    signInWithFBAsync()
+    signInWithGoogleAsync()
   }
 
   onFBSubmit = () => {
-    switch (this.state.action) {
-      case LOGIN:
-        return this.onFBLogin()
-      case SIGNUP:
-        return this.onFBSignUp()
-    }
+    signInWithFBAsync()
   }
 
   onToggleAction = () => {
-    this.setState({ action: this.state.action === LOGIN ? SIGNUP : LOGIN })
+    this.setState({ action: this.state.action === LOGIN ? REGISTER : LOGIN })
   }
 
-  // <View style={{justifyContent: 'flex-start'}}>
-  //   <Text style={{ fontFamily: 'mplus', fontSize: 60, marginTop: 70, textAlign:'center', color: DYNAMIC.white }}>
-  //     倔
-  //   </Text>
-  //   <Text style={{ fontFamily: 'rubik', fontSize: 40, marginTop: -20, marginBottom: 20, textAlign:'center', color: DYNAMIC.white }}>
-  //     {`STUBBORN`}
-  //   </Text>
-  // </View>
-
-  render() {
+  renderAuthButtons() {
     const { width } = Dimensions.get('window')
+
     const buttonStyle = {
       flexDirection: 'row',
       alignItems: 'center',
@@ -171,37 +138,114 @@ class LoginScreen extends Component {
     }
 
     return (
-      <PressCapture onPress={this.handleCapture}>
-        <View style={[common.staticView, {justifyContent: 'space-between', backgroundColor: DYNAMIC.primary}]}>
-          <View style={{flexDirection: 'row', justifyContent: 'space-around', marginTop: 50}}>
-            <Image source={{uri: logoURI}} style={{ width: 300, height: 200}}/>
+      <View style={[common.row]}>
+        <BasicButton onPress={() => this.onGoogleSubmit()}>
+          <View style={[buttonStyle, {backgroundColor: DYNAMIC.white}]}>
+            <Image source={{uri: googleURI}} style={{width: 50, height: 50, verticalAlign: 'text-bottom'}} />
+            <Text style={{ fontFamily: 'roboto-medium', fontSize: 16, color: DYNAMIC.black8, marginLeft: 8 }}>
+              Google
+            </Text>
           </View>
+        </BasicButton>
+        <BasicButton onPress={() => this.onFBSubmit()}>
+          <View style={[buttonStyle, {backgroundColor: 'rgb(59, 89, 152)'}]}>
+            <Image source={{uri: facebookURI}} style={{width: 40, height: 40, verticalAlign: 'text-bottom', marginLeft: 10}} />
+            <Text style={{ fontFamily: 'roboto-medium', fontSize: 16, color: DYNAMIC.white, marginLeft: 20 }}>
+              Facebook
+            </Text>
+          </View>
+        </BasicButton>
+      </View>
+    )
+  }
 
-          <View style={[common.row, { marginBottom: 100}]}>
-            <BasicButton onPress={() => this.onGoogleSubmit()}>
-              <View style={[buttonStyle, {backgroundColor: DYNAMIC.white}]}>
-                <Image source={{uri: googleURI}} style={{width: 50, height: 50, verticalAlign: 'text-bottom'}} />
-                <Text style={{ fontFamily: 'roboto-medium', fontSize: 16, color: DYNAMIC.black8, marginLeft: 8 }}>
-                  Google
-                </Text>
-              </View>
-            </BasicButton>
-            <BasicButton onPress={() => this.onFBSubmit()}>
-              <View style={[buttonStyle, {backgroundColor: 'rgb(59, 89, 152)'}]}>
-                <Image source={{uri: facebookURI}} style={{width: 40, height: 40, verticalAlign: 'text-bottom', marginLeft: 10}} />
-                <Text style={{ fontFamily: 'roboto-medium', fontSize: 16, color: DYNAMIC.white, marginLeft: 20 }}>
-                  Facebook
-                </Text>
-              </View>
-            </BasicButton>
-          </View>
-          <View style={[common.row]}>
-            <Button
-              style={{marginLeft: 10}}
-              onPress={e => this.onToggleAction(e)}
-              title={this.state.action === LOGIN ? `${SIGNUP}` : `${LOGIN}`}
+  renderToggleLink() {
+    return (
+      <View style={[common.row]}>
+        <BasicButton onPress={() => this.onToggleAction()}>
+          <Text style={{color: DYNAMIC.white}}>
+            {this.state.action === LOGIN ? `${REGISTER}` : `${LOGIN}`}
+          </Text>
+        </BasicButton>
+      </View>
+    )
+  }
+
+  renderLogo() {
+    return (
+      <View style={{flexDirection: 'row', justifyContent: 'space-around', marginTop: 50, marginBottom: 40}}>
+        <Image source={{uri: logoURI}} style={{ width: 300, height: 200}}/>
+      </View>
+    )
+  }
+
+  renderInputs() {
+    function generateLabel(val) {
+      return (
+        <Text style={{
+          fontFamily: 'rubik',
+          fontSize:20,
+          color: DYNAMIC.white
+        }}>
+          { val }
+        </Text>
+      )
+    }
+
+    return (
+      <View style={{marginBottom: 20}}>
+        <KInput
+          value={this.state.email}
+          label={generateLabel('Email')}
+          onChangeText={(val) => this.setState({ email: val })}
+          ref={'email-input'}
+          fontSize={24}
+          noValidation={true}
+          fixedLabel={true}
+          animate={true}
+          invert={true}
+          style={{marginBottom: 30}}
+        />
+        <KInput
+          value={this.state.password}
+          label={generateLabel('Password')}
+          onChangeText={(val) => this.setState({ password: val })}
+          ref={'password-input'}
+          fontSize={24}
+          noValidation={true}
+          fixedLabel={true}
+          animate={true}
+          invert={true}
+          style={{marginBottom: 30}}
+        />
+        { this.state.action === REGISTER
+          ? (
+            <KInput
+              value={this.state.passwordConfirmation}
+              label={generateLabel('Confirm Password')}
+              onChangeText={(val) => this.setState({ passwordConfirmation: val })}
+              ref={'confirmation-input'}
+              fontSize={24}
+              noValidation={true}
+              fixedLabel={true}
+              animate={true}
+              invert={true}
             />
-          </View>
+          )
+          : null
+        }
+      </View>
+    )
+  }
+
+  render() {
+    return (
+      <PressCapture onPress={this.handleCapture}>
+        <View style={[common.staticView, {justifyContent: 'flex-start', backgroundColor: DYNAMIC.primary}]}>
+          { this.renderLogo() }
+          { this.renderInputs() }
+          { this.renderAuthButtons() }
+          { this.renderToggleLink() }
         </View>
       </PressCapture>
     )
