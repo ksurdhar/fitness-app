@@ -100,7 +100,10 @@ class Index extends Component {
       )
     } else {
       return (
-        <LoginScreen />
+        <View style={{flex: 1}}>
+          <Toast />
+          <LoginScreen />
+        </View>
       )
     }
   }

@@ -25,6 +25,7 @@ import { common, DYNAMIC } from './reusable/common'
 
 import { login, loginFailed } from '../redux/actions/authActions'
 import * as UserActions from '../redux/actions/userActions'
+import * as toastActions from '../redux/actions/toastActions'
 
 import config from '../../config.js'
 import store from '../redux/store.js'
@@ -103,24 +104,30 @@ class LoginScreen extends Component {
         }
 
         props.dispatchLogin(userObj)
-        // only conditionally do this
         props.addUser(userObj)
+        props.openToast(`Welcome ${user.email}.`)
       }
     })
   }
 
   onEmailRegistration = () => {
-    // ensure passwords match, otherwise throw toast
-    firebase
-     .auth()
-     .createUserWithEmailAndPassword(this.state.email, this.state.password)
+    if (this.state.password !== this.state.passwordConfirmation) {
+      this.props.openToast('Password fields do not match.')
+    }
+    else {
+      firebase
+        .auth()
+        .createUserWithEmailAndPassword(this.state.email, this.state.password).catch((e) => {
+          this.props.openToast(e.message)
+        })
+    }
   }
 
   onEmailSignIn = () => {
     firebase
       .auth()
       .signInWithEmailAndPassword(this.state.email, this.state.password).catch((e) => {
-        console.log('ERROR', e)
+        this.props.openToast(e.message)
       })
   }
 
@@ -307,6 +314,9 @@ const mapDispatchToProps = dispatch => {
     },
     addUser: (user) => {
       dispatch(UserActions.addUser(user))
+    },
+    openToast: (message) => {
+      dispatch(toastActions.openToast({ toastString: message }))
     }
   }
 }
