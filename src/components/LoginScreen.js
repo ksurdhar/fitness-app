@@ -181,6 +181,8 @@ class LoginScreen extends Component {
   }
 
   renderInputs() {
+    const { width } = Dimensions.get('window')
+
     function generateLabel(val) {
       return (
         <Text style={{
@@ -246,28 +248,32 @@ class LoginScreen extends Component {
           )
           : null
         }
-        <KButton
-          value={this.state.action === REGISTER ? 'Sign Up' : 'Sign In'}
-          isEnabled={submitButtonEnabled()}
-          onPress={ () => console.log('doing something') }
-          backgroundColors={[DYNAMIC.primary, DYNAMIC.link]}
-          borderColors={[DYNAMIC.white, DYNAMIC.link]}
-          textColors={[DYNAMIC.white, DYNAMIC.black]}
-        />
+        <View style={{ justifyContent: 'space-around', flexDirection: 'row'}}>
+          <KButton
+            value={this.state.action === REGISTER ? 'Sign Up' : 'Sign In'}
+            isEnabled={submitButtonEnabled()}
+            onPress={ () => console.log('doing something') }
+            backgroundColors={[DYNAMIC.primary, DYNAMIC.link]}
+            borderColors={[DYNAMIC.white, DYNAMIC.link]}
+            textColors={[DYNAMIC.white, DYNAMIC.black]}
+            fontSize={20}
+            style={{ width: width / 2}}
+          />
+        </View>
       </View>
     )
   }
 
   render() {
     return (
-      <PressCapture onPress={this.handleCapture}>
         <View style={[common.staticView, {justifyContent: 'flex-start', backgroundColor: DYNAMIC.primary}]}>
+          <KeyboardAwareScrollView>
           { this.renderLogo() }
           { this.renderInputs() }
           { this.renderAuthButtons() }
           { this.renderToggleLink() }
+          </KeyboardAwareScrollView>
         </View>
-      </PressCapture>
     )
   }
 }
