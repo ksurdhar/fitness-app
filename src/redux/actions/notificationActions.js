@@ -7,10 +7,9 @@ export function recievedNotifications(notifications) {
   }
 }
 
-export function addNotification(notificationObj) {
+export function addNotification(userID, notificationObj) {
   const id = Math.random().toString(36).substring(7)
-  const notificationRef = rootRef.child(`notifications/${notificationObj.workoutID}`)
-
+  const notificationRef = rootRef.child(`notifications/${userID}/${notificationObj.workoutID}`) // needs userID
   const notification = Object.assign({}, notificationObj, {id})
 
   notificationRef.set(notification)
@@ -20,8 +19,8 @@ export function addNotification(notificationObj) {
   }
 }
 
-export function updateNotification(workoutID, patchObj) {
-  const notificationRef = rootRef.child(`notifications/${workoutID}`)
+export function updateNotification(userID, workoutID, patchObj) {
+  const notificationRef = rootRef.child(`notifications/${userID}/${workoutID}`)
 
   notificationRef.update(patchObj)
 
@@ -30,8 +29,8 @@ export function updateNotification(workoutID, patchObj) {
   }
 }
 
-export function removeNotification(workoutID) {
-  const notificationRef = rootRef.child(`notifications/${workoutID}`)
+export function removeNotification(userID, workoutID) {
+  const notificationRef = rootRef.child(`notifications/${userID}/${workoutID}`)
   notificationRef.remove()
 
   return {

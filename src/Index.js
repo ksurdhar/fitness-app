@@ -22,7 +22,7 @@ import config from '../config'
 function addListeners(userID) {
   console.log('ADDING LISTENERS', userID)
   // WORKOUTS
-  const workoutsRef = rootRef.child('workouts').orderByChild('userID').equalTo(userID)
+  const workoutsRef = rootRef.child(`workouts/${userID}`)
   workoutsRef.on('child_added', (snapshot) => {
     store.dispatch(addWorkoutSuccess(snapshot.val()))
   })
@@ -36,7 +36,7 @@ function addListeners(userID) {
     store.dispatch(recievedWorkouts(snapshot.val()))
   })
   //SESSIONS
-  const sessionsRef = rootRef.child('sessions').orderByChild('userID').equalTo(userID)
+  const sessionsRef = rootRef.child(`sessions/${userID}`)
   sessionsRef.on('child_added', (snapshot) => {
     store.dispatch(addSessionSuccess(snapshot.val()))
   })
@@ -50,7 +50,7 @@ function addListeners(userID) {
     store.dispatch(recievedSessions(snapshot.val()))
   })
   // NOTIFICATIONS
-  const notificationsRef = rootRef.child(`notifications`).orderByChild('userID').equalTo(userID)
+  const notificationsRef = rootRef.child(`notifications/${userID}`)
   notificationsRef.on('child_added', (snapshot) => {
     store.dispatch(addNotificationSuccess(snapshot.val()))
   })
@@ -64,8 +64,9 @@ function addListeners(userID) {
     store.dispatch(recievedNotifications(snapshot.val()))
   })
   // USERS
-  const usersRef = rootRef.child('users').orderByChild('userID').equalTo(userID)
+  const usersRef = rootRef.child(`users`)
   usersRef.on('child_added', (snapshot) => {
+
     store.dispatch(UserActions.addUserSuccess(snapshot.val()))
   })
   usersRef.on('child_changed', (snapshot) => {

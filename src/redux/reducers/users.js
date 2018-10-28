@@ -5,9 +5,9 @@ const initialState = {
 export default function usersReducer(state = initialState, action) {
   switch (action.type) {
     case 'RECIEVED_USER':
-      return { user: Object.values(action.user)[0] }
+      return { user: action.user }
     case 'ADD_USER_SUCCESS':
-      return { user: Object.values(action.user)[0] }
+      return { user: action.user }
     case 'UPDATE_USER_SUCCESS':
       return { user: action.user }
     default:

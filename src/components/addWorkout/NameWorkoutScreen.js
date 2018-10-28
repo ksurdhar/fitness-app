@@ -78,7 +78,7 @@ class NameWorkout extends React.Component {
       index: 0,
       actions: [NavigationActions.navigate({ routeName: 'Record' })],
     })
-    this.props.openToast('Workout Type Created')
+    this.props.openToast('Workout type created.')
     this.props.navigation.dispatch(resetAction)
   }
 

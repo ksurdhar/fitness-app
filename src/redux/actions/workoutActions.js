@@ -18,7 +18,7 @@ Array.prototype.toObj = function () {
 
 export function addWorkout(workoutName, exerciseData, userID) {
   const id = Math.random().toString(36).substring(7)
-  const workoutRef = rootRef.child(`workouts/${id}`)
+  const workoutRef = rootRef.child(`workouts/${userID}/${id}`)
 
   const exercises = {}
   const ePairs = Object.entries(exerciseData)
@@ -47,7 +47,7 @@ export function addWorkout(workoutName, exerciseData, userID) {
 }
 
 export function removeWorkout(id, userID) {
-  const workoutRef = rootRef.child(`workouts/${id}`)
+  const workoutRef = rootRef.child(`workouts/${userID}/${id}`)
   workoutRef.remove()
 
   return {
@@ -56,9 +56,8 @@ export function removeWorkout(id, userID) {
 }
 
 
-export function updateWorkout(id, patchObj) {
-  const workoutRef = rootRef.child(`workouts/${id}`)
-
+export function updateWorkout(userID, id, patchObj) {
+  const workoutRef = rootRef.child(`workouts/${userID}/${id}`)
   workoutRef.update(patchObj)
 
   return {

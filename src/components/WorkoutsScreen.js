@@ -72,7 +72,7 @@ class WorkoutsScreen extends React.Component {
     const userID = this.props.userID
     this.props.removeSession(this.state.sessionEditing.id, userID)
     this.cancelModal()
-    this.props.openToast('Workout Deleted')
+    this.props.openToast('Workout entry deleted.')
   }
 
   initiateEditing = () => {

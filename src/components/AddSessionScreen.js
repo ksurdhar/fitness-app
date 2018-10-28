@@ -152,7 +152,7 @@ class AddSessionScreen extends React.Component {
     })
     if (workout.notificationsEnabled) {
       const dateObj = addDays(new Date(), workout.notificationInterval)
-      this.props.updateNotification(this.state.workoutID, {
+      this.props.updateNotification(this.props.user.uid,this.state.workoutID, {
         month: dateObj.getUTCMonth() ,
         day: dateObj.getUTCDate(),
       })
@@ -310,7 +310,7 @@ class AddSessionScreen extends React.Component {
 const mapDispatchToProps = (dispatch) => {
   return {
     addSession: (exerciseNames, exerciseData, uid, workoutID, workoutName, noteText) => { dispatch(sessionActions.addSession(exerciseNames, exerciseData, uid, workoutID, workoutName, noteText)) },
-    updateNotification: (workoutID, patchObj) => { dispatch(notificationActions.updateNotification(workoutID, patchObj))},
+    updateNotification: (userID, workoutID, patchObj) => { dispatch(notificationActions.updateNotification(userID, workoutID, patchObj))},
     openToast: (message) => { dispatch(openToast({ toastString: message }))}
   }
 }

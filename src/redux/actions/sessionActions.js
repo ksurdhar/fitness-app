@@ -9,7 +9,7 @@ export function recievedSessions(sessions) {
 
 export function addSession(exerciseNames, exerciseData, userID, workoutID, workoutName, noteText) {
   const id = Math.random().toString(36).substring(7)
-  const sessionRef = rootRef.child(`sessions/${id}`)
+  const sessionRef = rootRef.child(`sessions/${userID}/${id}`)
   const date = Date.now()
 
   const exercises = {}
@@ -42,8 +42,8 @@ export function addSession(exerciseNames, exerciseData, userID, workoutID, worko
   }
 }
 
-export function updateSession(id, patchObj) {
-  const sessionRef = rootRef.child(`sessions/${id}`)
+export function updateSession(id, userID, patchObj) {
+  const sessionRef = rootRef.child(`sessions/${userID}/${id}`)
 
   sessionRef.update(patchObj)
 
@@ -61,7 +61,7 @@ export function updateSessionSuccess(session) {
 }
 
 export function removeSession(id, userID) {
-  const sessionRef = rootRef.child(`sessions/${id}`)
+  const sessionRef = rootRef.child(`sessions/${userID}/${id}`)
   sessionRef.remove()
 
   return {

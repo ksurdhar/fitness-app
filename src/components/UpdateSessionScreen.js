@@ -111,9 +111,10 @@ class UpdateSessionScreen extends React.Component {
   updateSession = () => {
     const sessionToUpdate = this.props.navigation.state.params.session
     sessionToUpdate.exercises = this.state.exerciseData
-    this.props.updateSession(sessionToUpdate.id, sessionToUpdate)
+    this.props.user.uid,
+    this.props.updateSession(sessionToUpdate.id, this.props.user.uid, sessionToUpdate)
     this.resetState()
-    this.props.openToast('Session Updated')
+    this.props.openToast('Workout entry updated.')
     this.props.navigation.navigate('Workouts')
   }
 
@@ -233,7 +234,7 @@ class UpdateSessionScreen extends React.Component {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    updateSession:(sessionID, patchObj) => { dispatch(sessionActions.updateSession(sessionID, patchObj)) },
+    updateSession:(sessionID, userID, patchObj) => { dispatch(sessionActions.updateSession(sessionID, userID, patchObj)) },
     openToast: (message) => { dispatch(toastActions.openToast({ toastString: message }))}
   }
 }

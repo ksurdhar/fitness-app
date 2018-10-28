@@ -35,7 +35,6 @@ async function registerForPushNotificationsAsync() {
     Permissions.NOTIFICATIONS
   )
   let finalStatus = existingStatus
-
   if (existingStatus !== 'granted') {
     const { status } = await Permissions.askAsync(Permissions.NOTIFICATIONS)
     finalStatus = status
@@ -92,7 +91,7 @@ class NotificationsScreen extends React.Component {
   componentDidMount() {
     if (!this.props.userData.pushToken) {
       registerForPushNotificationsAsync().then((token) => {
-        this.props.updateUser(this.props.userID, { pushToken: token })
+        this.props.updateUser(this.props.userID, { pushToken: token, userID: this.props.userID })
       })
     } else {
       console.log('push notification already saved:', this.props.userData.pushToken)
@@ -107,7 +106,6 @@ class NotificationsScreen extends React.Component {
     const hours = dateObj.getUTCHours()
     const unroundedMinutes = dateObj.getMinutes()
     const minutes = Math.floor(unroundedMinutes/15)*15
-
     const notificationObj = {
       workoutID,
       workoutName,
@@ -118,8 +116,8 @@ class NotificationsScreen extends React.Component {
       userID: this.props.userID
     }
 
-    this.props.addNotification(notificationObj)
-    this.props.updateWorkout(workoutID, {
+    this.props.addNotification(this.props.userID, notificationObj)
+    this.props.updateWorkout(this.props.userID, workoutID, {
       notificationsEnabled: true,
       notificationHours: hours,
       notificationMinutes: minutes,
@@ -128,8 +126,8 @@ class NotificationsScreen extends React.Component {
   }
 
   removeNotification = (workoutID) => {
-    this.props.removeNotification(workoutID)
-    this.props.updateWorkout(workoutID, {
+    this.props.removeNotification(this.props.userID, workoutID)
+    this.props.updateWorkout(this.props.userID, workoutID, {
       notificationsEnabled: false,
       notificationHours: null,
       notificationMinutes: null,
@@ -150,11 +148,11 @@ class NotificationsScreen extends React.Component {
     const minutes = dateObj.getMinutes()
     const userID = this.props.userID
 
-    this.props.updateNotification(workoutID, {
+    this.props.updateNotification(this.props.userID, workoutID, {
       hours,
       minutes
     })
-    this.props.updateWorkout(workoutID, {
+    this.props.updateWorkout(this.props.userID, workoutID, {
       notificationHours: hours,
       notificationMinutes: minutes
     })
@@ -162,10 +160,10 @@ class NotificationsScreen extends React.Component {
 
   updateNotificationInterval = (workoutID, val) => {
     const interval = parseInt(val, 10)
-    this.props.updateNotification(workoutID, {
+    this.props.updateNotification(this.props.userID, workoutID, {
       daysInterval: interval,
     })
-    this.props.updateWorkout(workoutID, {
+    this.props.updateWorkout(this.props.userID, workoutID, {
       notificationInterval: interval,
     })
   }
@@ -344,10 +342,10 @@ class NotificationsScreen extends React.Component {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    addNotification: (notificationObj) => { dispatch(notificationActions.addNotification(notificationObj)) },
-    removeNotification: (workoutID) => { dispatch(notificationActions.removeNotification(workoutID)) },
-    updateWorkout: (workoutID, patchObj) => { dispatch(workoutActions.updateWorkout(workoutID, patchObj))},
-    updateNotification: (workoutID, patchObj) => { dispatch(notificationActions.updateNotification(workoutID, patchObj))},
+    addNotification: (userID, notificationObj) => { dispatch(notificationActions.addNotification(userID, notificationObj)) },
+    updateNotification: (userID, workoutID, patchObj) => { dispatch(notificationActions.updateNotification(userID, workoutID, patchObj))},
+    removeNotification: (userID, workoutID) => { dispatch(notificationActions.removeNotification(userID, workoutID)) },
+    updateWorkout: (userID, workoutID, patchObj) => { dispatch(workoutActions.updateWorkout(userID, workoutID, patchObj))},
     updateUser: (userID, patchObj) => { dispatch(userActions.updateUser(userID, patchObj)) }
   }
 }
