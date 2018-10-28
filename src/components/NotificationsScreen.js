@@ -1,6 +1,5 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import produce from 'immer'
 import { Permissions, Notifications } from 'expo'
 import {
   Dimensions,

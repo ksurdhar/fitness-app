@@ -15,46 +15,11 @@ class ProfileScreen extends React.Component {
     title: 'Profile'
   }
 
-  constructor(props) {
-    super(props)
-
-    this.state = {
-      numberSessionsThisWeek: 0,
-      mostRecentSession: null
-    }
-  }
-
-  componentDidUpdate(prevProps, prevState) {
-    if (prevProps.sessions.length !== this.props.sessions.length) {
-      if (this.props.sessions && this.props.sessions.length > 0) {
-        const lastMonday = new Date()
-        lastMonday.setDate(lastMonday.getDate() - (lastMonday.getDay() + 6) % 7)
-        lastMonday.setHours(0)
-
-        let count = 0
-        let mostRecentSession = this.props.sessions[0]
-        this.props.sessions.forEach((session) => {
-          if (session.date > lastMonday.getTime()) {
-            count = count + 1
-          }
-          if (session.date > mostRecentSession.date) {
-            mostRecentSession = session
-          }
-        })
-
-        this.setState({
-          numberSessionsThisWeek: count,
-          mostRecentSession
-        })
-      }
-    }
-  }
-
   logout = () => {
-    firebaseApp.database().ref().child('workouts').orderByChild('userID').equalTo(this.props.user.userID).off()
-    firebaseApp.database().ref().child('notifications').orderByChild('userID').equalTo(this.props.user.userID).off()
-    firebaseApp.database().ref().child('sessions').orderByChild('userID').equalTo(this.props.user.userID).off()
-    firebaseApp.database().ref().child('users').orderByChild('userID').equalTo(this.props.user.userID).off()
+    firebaseApp.database().ref().child(`workouts/${this.props.user.userID}`).off()
+    firebaseApp.database().ref().child(`notifications/${this.props.user.userID}`).off()
+    firebaseApp.database().ref().child(`sessions/${this.props.user.userID}`).off()
+    firebaseApp.database().ref().child(`users`).off()
 
     firebase
       .auth()
@@ -71,7 +36,7 @@ class ProfileScreen extends React.Component {
 
   render() {
     const { height } = Dimensions.get('window')
-    const latestSession = this.state.mostRecentSession
+    const latestSession = this.props.mostRecentSession
     const lastWorkoutText = latestSession
       ? `Last workout: ${latestSession.workoutName} on ${format(latestSession.date, 'MMM D')}`
       : 'Last workout: None'
@@ -85,7 +50,7 @@ class ProfileScreen extends React.Component {
         </View>
         <View style={[common.row, {marginTop: 16, justifyContent: 'flex-start'}]}>
           <Text style={[common.tajawal5, {fontSize: 20, color: DYNAMIC.black9}]}>
-            {`Weekly workouts recorded: ${this.state.numberSessionsThisWeek}`}
+            {`Weekly workouts recorded: ${this.props.weeklyCount}`}
           </Text>
         </View>
         <View style={[common.row, {marginTop: 16, justifyContent: 'flex-start'}]}>
@@ -112,6 +77,8 @@ const mapStateToProps = (state, ownProps) => {
   return {
     user: state.auth.user,
     sessions: state.sessions.sessions,
+    mostRecentSession: state.sessions.mostRecentSession,
+    weeklyCount: state.sessions.weeklyCount,
     isLoggedIn: state.auth.isLoggedIn,
     userInfo: state.users.user
   }

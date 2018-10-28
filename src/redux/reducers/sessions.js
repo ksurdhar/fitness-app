@@ -1,51 +1,53 @@
 const initialState = {
   sessions: [],
+  mostRecentSession: null,
+  weeklyCount: 0
 }
 
-// initialState.sessions.push(
-//   {
-//     date: new Date(),
-//     exercises: [
-//       {
-//         name: 'Push Ups',
-//         attributes: [
-//           { type: 'sets', val: 4 },
-//           { type: 'reps', val: 8 },
-//           { type: 'weight', val: 25 },
-//           { type: 'time', val: 60 },
-//         ]
-//       },
-//       {
-//         name: 'Pull Ups',
-//         attributes: [
-//           { type: 'sets', val: 4 },
-//           { type: 'reps', val: 8 },
-//         ]
-//       },
-//       {
-//         name: 'Plank',
-//         attributes: [
-//           { type: 'sets', val: 2 },
-//           { type: 'time', val: 60 },
-//         ]
-//       }
-//     ],
-//     workoutName: 'Leg Blaster',
-//     noteText: 'Felt kind of weak, post long run.'
-//   }
-// )
+function determineWeeklyCount(sessions) {
+  const lastMonday = new Date()
+  lastMonday.setDate(lastMonday.getDate() - (lastMonday.getDay() + 6) % 7)
+  lastMonday.setHours(0)
+
+  let count = 0
+  sessions.forEach((session) => {
+    if (session.date > lastMonday.getTime()) {
+      count = count + 1
+    }
+  })
+  return count
+}
+
+function getMostRecentSession(sessions) {
+  let mostRecentSession = null
+  if (sessions.length > 0) {
+    mostRecentSession = sessions[0]
+    sessions.forEach((session) => {
+      if (session.date > mostRecentSession.date) {
+        mostRecentSession = session
+      }
+    })
+  }
+  return mostRecentSession
+}
 
 export default function sessionsReducer(state = initialState, action) {
+  let updatedSessions
   switch (action.type) {
     case 'RECIEVED_SESSIONS':
-      const updatedSessions = action.sessions ? Object.values(action.sessions) : []
+      updatedSessions = action.sessions ? Object.values(action.sessions) : []
       return Object.assign({}, state, {
-        sessions: updatedSessions
-      });
+        sessions: updatedSessions,
+        mostRecentSession: getMostRecentSession(updatedSessions),
+        weeklyCount: determineWeeklyCount(updatedSessions)
+      })
     case 'ADD_SESSION_SUCCESS':
+      updatedSessions = state.sessions.concat(action.session)
       return Object.assign({}, state, {
-        sessions: state.sessions.concat(action.session)
-      });
+        sessions: updatedSessions,
+        mostRecentSession: getMostRecentSession(updatedSessions),
+        weeklyCount: determineWeeklyCount(updatedSessions)
+      })
     case 'UPDATE_SESSION_SUCCESS':
       const newSessions = []
       state.sessions.forEach((session) => {
@@ -59,10 +61,13 @@ export default function sessionsReducer(state = initialState, action) {
         sessions: newSessions
       })
     case 'REMOVE_SESSION_SUCCESS':
+      updatedSessions = state.sessions.filter((session) => session.id !== action.session.id)
       return Object.assign({}, state, {
-        sessions: state.sessions.filter((session) => session.id !== action.session.id)
-      });
+        sessions: updatedSessions,
+        mostRecentSession: getMostRecentSession(updatedSessions),
+        weeklyCount: determineWeeklyCount(updatedSessions)
+      })
     default:
-      return state;
+      return state
   }
 }
