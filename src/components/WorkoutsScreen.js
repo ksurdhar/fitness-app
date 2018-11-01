@@ -247,10 +247,20 @@ class WorkoutsScreen extends React.Component {
     }
   }
 
+  nameComparator = (a, b) => {
+    if (a.name < b.name) {
+      return -1
+    }
+    if (a.name > b.name) {
+      return 1
+    }
+    return 0
+  }
+  
   // modify this so that each one is already a disabled, styled input
   renderExerciseTexts = (exercises, sessionID) => {
     if (exercises) {
-      return Object.values(exercises).map((exercise) => {
+      return Object.values(exercises).sort(this.nameComparator).map((exercise) => {
         exercise.attributes.sort((a, b) => ATTR_ORDER.indexOf(a.type) > ATTR_ORDER.indexOf(b.type))
         const strings = exercise.attributes.map((attr, idx) => {
           let formattedType = attr.type
